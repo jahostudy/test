@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"NCERT • Class 6","highlight":"Class 6","shortTitle":"NCERT","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • Class 6","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-ncert-class-6-ncert-class-6-20260713-140hz","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-13","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: प्राचीन भारतीय खगोलीय ग्रंथों में उज्जयिनी को प्रमुख याम्योत्तर माना गया था।\nकथन 2: प्रसिद्ध खगोलविद आर्यभट्ट ने उज्जयिनी में रहकर अपना कार्य किया था।","question_en":"Question 1: Consider the following statements:\nStatement 1: Ujjayini was considered the prime meridian in ancient Indian astronomical texts.\nStatement 2: Famous astronomer Aryabhata lived and worked in Ujjayini.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"प्राचीन भारत में उज्जयिनी प्रमुख याम्योत्तर थी लेकिन वहां प्रसिद्ध खगोलविद वराहमिहिर ने कार्य किया था न कि आर्यभट्ट ने।","explanation_en":"Ujjayini was the prime meridian in ancient India but famous astronomer Varahamihira worked there, not Aryabhata."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अंतर्राष्ट्रीय तिथि रेखा के संबंध में कौन सा तथ्य सही है?","question_en":"Question 2: Which fact is correct regarding the International Date Line?","options":[{"hi":"पूर्व से पश्चिम की ओर इसे पार करने पर एक दिन जुड़ जाता है","en":"Crossing it from east to west adds one day"},{"hi":"यह ठीक शून्य डिग्री देशांतर का अनुसरण करती है","en":"It strictly follows the zero degree longitude"},{"hi":"पश्चिम से पूर्व की ओर इसे पार करने पर एक दिन जुड़ जाता है","en":"Crossing it from west to east adds one day"},{"hi":"यह एक पूर्णतः सीधी रेखा है जो ध्रुवों को जोड़ती है","en":"It is a perfectly straight line connecting the poles"}],"answer":0,"explanation_hi":"अंतर्राष्ट्रीय तिथि रेखा लगभग 180 डिग्री देशांतर पर है और पूर्व से पश्चिम जाने पर एक दिन जुड़ता है जबकि पश्चिम से पूर्व जाने पर एक दिन घटता है।","explanation_en":"The International Date Line is approximately at 180 degrees longitude and going east to west adds a day, while west to east subtracts a day."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. कुरुंजी, B. मुल्लाई, C. मरुदम;\nसूची-II: 1. कृषि, 2. पशुपालन, 3. आखेट और संग्रह, का सही मिलान चुनें।","question_en":"Question 3: Choose the correct match for\nList-I: A. Kurinji, B. Mullai, C. Marudam;\nList-II: 1. Agriculture, 2. Animal husbandry, 3. Hunting and gathering.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"}],"answer":1,"explanation_hi":"प्राचीन तमिल संगम साहित्य में कुरुंजी पर्वतीय क्षेत्र (आखेट), मुल्लाई घास के मैदान (पशुपालन), और मरुदम उपजाऊ कृषि मैदान से जुड़े थे।","explanation_en":"In ancient Tamil Sangam literature, Kurinji relates to mountain areas (hunting), Mullai to grasslands (husbandry), and Marudam to fertile agricultural plains."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आकार के आधार पर निम्नलिखित महासागरों को बड़े से छोटे के क्रम में व्यवस्थित कीजिए: 1. दक्षिणी महासागर, 2. प्रशांत महासागर, 3. हिंद महासागर, 4. अटलांटिक महासागर।","question_en":"Question 4: Arrange the following oceans in descending order of size: 1. Southern Ocean, 2. Pacific Ocean, 3. Indian Ocean, 4. Atlantic Ocean.","options":[{"hi":"2, 3, 4, 1","en":"2, 3, 4, 1"},{"hi":"4, 2, 3, 1","en":"4, 2, 3, 1"},{"hi":"2, 3, 1, 4","en":"2, 3, 1, 4"},{"hi":"2, 4, 3, 1","en":"2, 4, 3, 1"}],"answer":3,"explanation_hi":"सबसे बड़ा प्रशांत महासागर है जिसके बाद क्रमशः अटलांटिक, हिंद और दक्षिणी महासागर आते हैं और सबसे छोटा आर्कटिक महासागर है।","explanation_en":"The Pacific Ocean is the largest, followed by the Atlantic, Indian, and Southern Oceans respectively. The Arctic is the smallest."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के मानचित्रों के लिए प्रतीक चिह्नों का संकलन किस सरकारी निकाय द्वारा निर्धारित किया जाता है?","question_en":"Question 5: Which government body determines the compilation of symbols for maps in India?","options":[{"hi":"भारतीय सर्वेक्षण विभाग","en":"Survey of India"},{"hi":"भारतीय पुरातत्व सर्वेक्षण","en":"Archaeological Survey of India"},{"hi":"पृथ्वी विज्ञान मंत्रालय","en":"Ministry of Earth Sciences"},{"hi":"राष्ट्रीय मानचित्रण एजेंसी","en":"National Mapping Agency"}],"answer":0,"explanation_hi":"भारत या उसके भागों के मानचित्रों के लिए विशिष्ट प्रतीक चिह्नों का निर्धारण सरकारी निकाय भारतीय सर्वेक्षण विभाग द्वारा किया जाता है।","explanation_en":"The compilation of specific symbols for maps of India or its parts is determined by the government body Survey of India."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"यदि ग्रीनविच (GMT) पर स्थानीय समय प्रातः 11 बजे है तो 30 डिग्री पश्चिम देशांतर पर समय क्या होगा?","question_en":"Question 6: If the local time at Greenwich (GMT) is 11 AM, what will be the time at 30 degrees West longitude?","options":[{"hi":"दोपहर 1 बजे","en":"1 PM"},{"hi":"प्रातः 10 बजे","en":"10 AM"},{"hi":"प्रातः 9 बजे","en":"9 AM"},{"hi":"दोपहर 12 बजे","en":"12 PM"}],"answer":2,"explanation_hi":"पृथ्वी हर 15 डिग्री के लिए 1 घंटे का समय लेती है और पश्चिम की ओर जाने पर समय घटता है, इसलिए 30 डिग्री पश्चिम पर समय 2 घंटे पीछे (प्रातः 9 बजे) होगा।","explanation_en":"The Earth takes 1 hour for every 15 degrees. Time decreases when moving west, so at 30 degrees west, it will be 2 hours behind (9 AM)."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: छोटा नागपुर का पठार लौह, कोयला और मैंगनीज के भंडार के लिए प्रसिद्ध है।\nकथन 2: पूर्वी अफ्रीका का पठार सोने और हीरे के खनन के लिए प्रसिद्ध है।","question_en":"Question 7: Consider the following statements:\nStatement 1: The Chhota Nagpur Plateau is famous for reserves of iron, coal and manganese.\nStatement 2: The East African Plateau is famous for gold and diamond mining.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"पठार खनिजों के विशाल भंडार होते हैं तथा छोटा नागपुर और पूर्वी अफ्रीका दोनों ही अपने समृद्ध खनिज और खनन के लिए विश्व विख्यात हैं।","explanation_en":"Plateaus are huge reserves of minerals. Both Chhota Nagpur and East Africa are world-famous for their rich minerals and mining."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त युग्मों में से कितने सही सुमेलित हैं? 1. विक्टोरिया जलप्रपात - जांबेजी नदी, 2. हुंडरू जलप्रपात - सुवर्णरेखा नदी, 3. जोग जलप्रपात - शरावती नदी।","question_en":"Question 8: How many of the above pairs are correctly matched? 1. Victoria Falls - Zambezi River, 2. Hundru Falls - Subarnarekha River, 3. Jog Falls - Sharavati River.","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"कोई भी युग्म नहीं","en":"No pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"तीनों युग्म सही हैं क्योंकि ये सभी प्रमुख जलप्रपात हैं जो पठारी क्षेत्रों में अपनी संबंधित नदियों से निर्मित होते हैं।","explanation_en":"All three pairs are correct as these are major waterfalls in plateau regions formed by their respective rivers."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इतिहास में 'सहस्राब्दी' (Millennium) शब्द का अर्थ क्या है?","question_en":"Question 9: What does the term 'Millennium' mean in history?","options":[{"hi":"किसी भी 1000 वर्षों का कालखंड","en":"Any time period of 1000 years"},{"hi":"किसी भी 100 वर्षों का कालखंड","en":"Any time period of 100 years"},{"hi":"किसी भी 10,000 वर्षों का कालखंड","en":"Any time period of 10,000 years"},{"hi":"ईसा मसीह के जन्म से पूर्व का समय","en":"The time before the birth of Jesus Christ"}],"answer":0,"explanation_hi":"सहस्राब्दी 1000 वर्षों के कालखंड को दर्शाती है जबकि शताब्दी 100 वर्षों के कालखंड को और दशक 10 वर्षों के कालखंड को दर्शाता है।","explanation_en":"A millennium represents a time period of 1000 years, just as a century represents 100 years and a decade represents 10 years."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पृथ्वी पर होमो सेपियंस (मानव) लगभग कितने वर्षों से निवास कर रहे हैं?","question_en":"Question 10: For approximately how many years have Homo sapiens (humans) been living on Earth?","options":[{"hi":"12,000 वर्ष","en":"12,000 years"},{"hi":"10,000,000 वर्ष","en":"10,000,000 years"},{"hi":"3,00,000 वर्ष","en":"3,00,000 years"},{"hi":"40,000 वर्ष","en":"40,000 years"}],"answer":2,"explanation_hi":"आधुनिक मानव या होमो सेपियंस पृथ्वी पर लगभग तीन लाख वर्षों से निवास कर रहे हैं जो पृथ्वी के लंबे इतिहास का एक बहुत छोटा सा अंश है।","explanation_en":"Modern humans or Homo sapiens have been living on Earth for about three lakh years, which is a tiny fraction of Earth's long history."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. अकोंकागुआ, B. ब्लांक, C. किलिमंजारो;\nसूची-II: 1. आल्पस, 2. एंडीज, 3. पूर्वी अफ्रीका, का सही मिलान चुनें।","question_en":"Question 11: Choose the correct match for\nList-I: A. Aconcagua, B. Blanc, C. Kilimanjaro;\nList-II: 1. Alps, 2. Andes, 3. East Africa.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"}],"answer":1,"explanation_hi":"अकोंकागुआ एंडीज (दक्षिण अमेरिका) की सबसे ऊँची चोटी है, ब्लांक आल्पस (यूरोप) में है, और किलिमंजारो पूर्वी अफ्रीका में एक पृथक पर्वत है।","explanation_en":"Aconcagua is the highest peak of the Andes (South America), Blanc is in the Alps (Europe), and Kilimanjaro is an isolated mountain in East Africa."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: हिंद महासागर का विस्तार उत्तर में एशिया और दक्षिण में दक्षिणी महासागर तक है।\nकथन 2: भारत के पूर्व में अरब सागर और पश्चिम में बंगाल की खाड़ी स्थित है।","question_en":"Question 12: Consider the following statements:\nStatement 1: The Indian Ocean extends to Asia in the north and the Southern Ocean in the south.\nStatement 2: The Arabian Sea lies to the east of India and the Bay of Bengal to the west.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"हिंद महासागर उत्तर में एशिया से घिरा है, लेकिन भारत के पश्चिम में अरब सागर और पूर्व में बंगाल की खाड़ी स्थित है जो कथन 2 को गलत बनाता है।","explanation_en":"The Indian Ocean is bounded by Asia in the north, but the Arabian Sea is to the west and the Bay of Bengal is to the east of India, making statement 2 false."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पृथ्वी पर हिम युग की अवधि लगभग क्या मानी जाती है?","question_en":"Question 13: What is considered the approximate duration of the Ice Age on Earth?","options":[{"hi":"3,00,000 वर्ष पूर्व से 40,000 वर्ष पूर्व","en":"3,00,000 years ago to 40,000 years ago"},{"hi":"10,000,000 वर्ष पूर्व से 1,000,000 वर्ष पूर्व","en":"10,000,000 years ago to 1,000,000 years ago"},{"hi":"1,00,000 वर्ष पूर्व से 12,000 वर्ष पूर्व","en":"1,00,000 years ago to 12,000 years ago"},{"hi":"40,000 वर्ष पूर्व से 6,500 वर्ष पूर्व","en":"40,000 years ago to 6,500 years ago"}],"answer":2,"explanation_hi":"हिम युग वह समय था जब पृथ्वी का एक बड़ा भाग बर्फ से ढका था और यह अवधि लगभग 1 लाख वर्ष पूर्व से 12 हज़ार वर्ष पूर्व तक रही।","explanation_en":"The Ice Age occurred when a large part of Earth was covered with ice, and this period lasted from about 1 lakh years ago to 12,000 years ago."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किसी भी मानचित्र के तीन मुख्य घटक क्या होते हैं?","question_en":"Question 14: What are the three main components of any map?","options":[{"hi":"दूरी, रंग और पैमाना","en":"Distance, Color and Scale"},{"hi":"पैमाना, प्रतीक चिह्न और रेखाएं","en":"Scale, Symbols and Lines"},{"hi":"अक्षांश, देशांतर और दिशा","en":"Latitude, Longitude and Direction"},{"hi":"दूरी, दिशा और प्रतीक चिह्न","en":"Distance, Direction and Symbols"}],"answer":3,"explanation_hi":"मानचित्र के तीन प्रमुख घटक दूरी, दिशा और प्रतीक चिह्न होते हैं जो किसी भी भौगोलिक क्षेत्र को सटीक रूप से दर्शाने में मदद करते हैं।","explanation_en":"The three main components of a map are distance, direction, and symbols, which help accurately represent any geographical area."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: सभी अक्षांश रेखाएँ भूमध्य रेखा के समानांतर होती हैं और ध्रुवों की ओर जाने पर इनकी लंबाई कम होती जाती है।\nकथन 2: सभी अक्षांश रेखाओं की लंबाई समान होती है।","question_en":"Question 15: Consider the following statements:\nStatement 1: All latitude lines are parallel to the equator and their length decreases towards the poles.\nStatement 2: All latitude lines are of equal length.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"अक्षांश रेखाएँ भूमध्य रेखा के समानांतर वृत्ताकार रेखाएँ होती हैं जो ध्रुवों की ओर जाते हुए छोटी होती जाती हैं; वे समान लंबाई की नहीं होतीं।","explanation_en":"Latitude lines are circular lines parallel to the equator that become smaller towards the poles; they are not of equal length."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"देशांतर (Longitudes) के संबंध में कौन सा कथन सही है?","question_en":"Question 16: Which statement is correct regarding Longitudes?","options":[{"hi":"ये पूर्ण वृत्ताकार रेखाएँ होती हैं जो पृथ्वी को पूर्व और पश्चिम में बांटती हैं","en":"They are full circular lines dividing the Earth into east and west"},{"hi":"भूमध्य रेखा सबसे लंबी देशांतर रेखा है","en":"The Equator is the longest longitude line"},{"hi":"ये अर्धवृत्त होते हैं जो एक ध्रुव से दूसरे ध्रुव तक जाते हैं","en":"They are semicircles that run from one pole to another"},{"hi":"देशांतर रेखाएँ भूमध्य रेखा के समानांतर चलती हैं","en":"Lines of longitude run parallel to the equator"}],"answer":2,"explanation_hi":"देशांतर याम्योत्तर अर्धवृत्त होते हैं जो उत्तरी ध्रुव से दक्षिणी ध्रुव तक जाते हैं और प्रमुख याम्योत्तर से दूरी को मापते हैं।","explanation_en":"Meridians of longitude are semicircles that run from the North Pole to the South Pole and measure distance from the Prime Meridian."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 2004 की हिंद महासागर सुनामी इंडोनेशिया में आए भूकंप के कारण उत्पन्न हुई थी।\nकथन 2: भारत में इस सुनामी से केवल अंडमान और निकोबार द्वीप समूह प्रभावित हुए थे।","question_en":"Question 17: Consider the following statements:\nStatement 1: The 2004 Indian Ocean Tsunami was caused by an earthquake in Indonesia.\nStatement 2: In India, only the Andaman and Nicobar Islands were affected by this tsunami.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"2004 की सुनामी इंडोनेशिया के भूकंप से आई थी लेकिन भारत में अंडमान निकोबार के साथ-साथ तमिलनाडु और केरल के तटीय क्षेत्र भी बुरी तरह प्रभावित हुए थे।","explanation_en":"The 2004 tsunami was caused by an Indonesian earthquake, but in India, along with Andaman Nicobar, coastal areas of Tamil Nadu and Kerala were also severely affected."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. भू-विज्ञानी, B. जीवाश्म विज्ञानी, C. मानव विज्ञानी;\nसूची-II: 1. मानव समाजों और संस्कृतियों का अध्ययन, 2. पृथ्वी के भौतिक स्वरूपों का अध्ययन, 3. करोड़ों वर्ष पूर्व के जीवों के अवशेषों का अध्ययन, का सही मिलान चुनें।","question_en":"Question 18: Choose the correct match for\nList-I: A. Geologist, B. Paleontologist, C. Anthropologist;\nList-II: 1. Study of human societies and cultures, 2. Study of Earth's physical features, 3. Study of remains of organisms from millions of years ago.","options":[{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"}],"answer":3,"explanation_hi":"भू-विज्ञानी पृथ्वी की सतह का, जीवाश्म विज्ञानी प्राचीन जीवों के अवशेषों का, और मानव विज्ञानी मानव समाजों का अध्ययन करते हैं।","explanation_en":"Geologists study Earth's surface, Paleontologists study remains of ancient organisms, and Anthropologists study human societies."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आधुनिक कैलेंडर प्रणाली में 'BCE' का पूर्ण रूप क्या है?","question_en":"Question 19: What is the full form of 'BCE' in the modern calendar system?","options":[{"hi":"बिफोर क्राइस्ट एरा","en":"Before Christ Era"},{"hi":"बिफोर कॉमन एरा","en":"Before Common Era"},{"hi":"बैकवर्ड सेंचुरी एरा","en":"Backward Century Era"},{"hi":"बियॉन्ड क्रिश्चियन एरा","en":"Beyond Christian Era"}],"answer":1,"explanation_hi":"पश्चिमी कैलेंडर में पहले जिसे B.C. (बिफोर क्राइस्ट) कहा जाता था उसे अब धर्मनिरपेक्ष रूप में B.C.E. (बिफोर कॉमन एरा) कहा जाता है।","explanation_en":"What was formerly known as B.C. (Before Christ) in the Western calendar is now secularly referred to as B.C.E. (Before Common Era)."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: हिमालय एक अपेक्षाकृत नवीन पर्वत है जिसकी चोटियाँ नुकीली हैं।\nकथन 2: अरावली शृंखला भी एक युवा पर्वत है जो अपरदन के कारण नुकीली हो गई है।","question_en":"Question 20: Consider the following statements:\nStatement 1: The Himalayas are relatively young mountains with sharp peaks.\nStatement 2: The Aravalli range is also a young mountain that has become sharp due to erosion.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"कोई नहीं","en":"Neither"}],"answer":2,"explanation_hi":"हिमालय युवा और नुकीला है जबकि अरावली बहुत पुरानी शृंखला है जो अपरदन के कारण घिसकर गोल आकार की हो गई है।","explanation_en":"The Himalayas are young and sharp, whereas the Aravallis are a very old range that has eroded into a rounded shape due to erosion."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त मरुस्थल और उनके प्रकार के युग्मों में से कितने सही सुमेलित हैं? 1. थार - गर्म मरुस्थल, 2. गोबी - ठंडा मरुस्थल, 3. अंटार्कटिका - ठंडा मरुस्थल।","question_en":"Question 21: How many of the above pairs of deserts and their types are correctly matched? 1. Thar - Hot desert, 2. Gobi - Cold desert, 3. Antarctica - Cold desert.","options":[{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"कोई भी युग्म नहीं","en":"No pair"}],"answer":0,"explanation_hi":"थार और सहारा गर्म मरुस्थल हैं जबकि एशिया का गोबी और अंटार्कटिका महाद्वीप ठंडे मरुस्थलों के प्रमुख उदाहरण माने जाते हैं।","explanation_en":"Thar and Sahara are hot deserts, while the Gobi in Asia and the continent of Antarctica are considered prime examples of cold deserts."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्वतीय वनों में पाए जाने वाले पाइन, फर और देवदार के वृक्षों का आकार आमतौर पर कैसा होता है?","question_en":"Question 22: What is the usual shape of Pine, Fir, and Deodar trees found in mountain forests?","options":[{"hi":"चौड़ी पत्तियों वाला छत्र","en":"Broad-leaved umbrella"},{"hi":"शंकुधारी (नुकीली पत्तियों वाला)","en":"Coniferous (with pointed leaves)"},{"hi":"झाड़ीनुमा और कंटीला","en":"Shrubby and thorny"},{"hi":"परजीवी और बेलदार","en":"Parasitic and creeper-like"}],"answer":1,"explanation_hi":"अधिक ऊँचाई पर पाए जाने वाले पर्वतीय वृक्ष जैसे पाइन और देवदार शंकु के आकार के होते हैं और उनकी पत्तियां पतली व नोंकदार होती हैं।","explanation_en":"Mountain trees like pine and deodar found at high altitudes are cone-shaped and have thin, pointed leaves."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: आदिमानव मुख्य रूप से आखेटक और खाद्य संग्राहक थे।\nकथन 2: आदिमानवों के शैल-चित्रों में केवल साधारण आकृतियाँ और प्रतीक पाए जाते हैं तथा उनमें पशुओं के चित्र नहीं हैं।","question_en":"Question 23: Consider the following statements:\nStatement 1: Early humans were primarily hunters and food gatherers.\nStatement 2: Rock paintings of early humans contain only simple shapes and symbols, and no animal figures.","options":[{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"Neither"},{"hi":"केवल 1","en":"Only 1"}],"answer":3,"explanation_hi":"आदिमानव आखेटक थे और उनकी गुफाओं में साधारण प्रतीकों के साथ-साथ पशुओं और मानवों के विस्तृत दृश्य भी चित्रित मिलते हैं।","explanation_en":"Early humans were hunters and their caves contain both simple symbols and detailed scenes featuring animals and humans."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"एक छोटे क्षेत्र को एक कागज के टुकड़े पर सटीक रूप से प्रस्तुत करने के लिए मानचित्र में किस उपकरण का उपयोग किया जाता है?","question_en":"Question 24: Which tool is used in a map to accurately represent a small area on a piece of paper?","options":[{"hi":"पैमाना (स्केल)","en":"Scale"},{"hi":"देशांतर (लोंगिट्यूड)","en":"Longitude"},{"hi":"अक्षांश (लैटिट्यूड)","en":"Latitude"},{"hi":"दिक्सूचक (कंपास)","en":"Compass"}],"answer":0,"explanation_hi":"मानचित्र का पैमाना धरातल पर वास्तविक दूरी और मानचित्र पर दी गई दूरी का अनुपात है जो बड़े क्षेत्र को छोटे कागज पर सटीक बनाता है।","explanation_en":"A map's scale is the ratio between the actual distance on the ground and the distance on the map, making it accurate on a small paper."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पृथ्वी के आकार को 'व्यावहारिक दृष्टि से गोलाकार' क्यों माना जाता है जबकि यह पूर्णतः गोल नहीं है?","question_en":"Question 25: Why is the shape of the Earth considered 'practically spherical' even though it is not perfectly round?","options":[{"hi":"क्योंकि यह भूमध्य रेखा पर चपटी है","en":"Because it is flat at the equator"},{"hi":"क्योंकि यह महासागरों के कारण चपटी है","en":"Because it is flat due to oceans"},{"hi":"क्योंकि यह ध्रुवों पर थोड़ी चपटी है","en":"Because it is slightly flat at the poles"},{"hi":"क्योंकि इसका उत्तरी गोलार्ध दक्षिणी से बड़ा है","en":"Because its northern hemisphere is larger than the southern"}],"answer":2,"explanation_hi":"पृथ्वी पूर्ण गोलाकार नहीं है बल्कि ध्रुवों पर थोड़ी चपटी है इसलिए इसका सटीक भौगोलिक प्रतिनिधित्व एक ग्लोब द्वारा किया जाता है।","explanation_en":"The Earth is not a perfect sphere but slightly flat at the poles, hence its accurate geographical representation is done by a globe."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2001 सा.सं. से 2100 सा.सं. तक के समय को इतिहास में कौन सी शताब्दी कहा जाता है?","question_en":"Question 26: The period from 2001 CE to 2100 CE is known as which century in history?","options":[{"hi":"20वीं शताब्दी","en":"20th Century"},{"hi":"21वीं शताब्दी","en":"21st Century"},{"hi":"22वीं शताब्दी","en":"22nd Century"},{"hi":"19वीं शताब्दी","en":"19th Century"}],"answer":1,"explanation_hi":"ऐतिहासिक कालक्रम में 21वीं शताब्दी 2001 से शुरू होकर 2100 तक चलती है क्योंकि प्रथम शताब्दी 1 सा.सं. से 100 सा.सं. तक थी।","explanation_en":"In historical chronology, the 21st century runs from 2001 to 2100, as the first century was from 1 CE to 100 CE."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अनाईमुडी पर्वत शिखर जिसे 'अनाई शिखर' भी कहा जाता है, कहाँ स्थित है?","question_en":"Question 27: Where is the Anaimudi mountain peak, also known as 'Anai Peak', located?","options":[{"hi":"कर्नाटक","en":"Karnataka"},{"hi":"तमिलनाडु","en":"Tamil Nadu"},{"hi":"महाराष्ट्र","en":"Maharashtra"},{"hi":"केरल","en":"Kerala"}],"answer":3,"explanation_hi":"अनाईमुडी दक्षिण भारत का सबसे ऊँचा पर्वत शिखर है जो केरल राज्य में स्थित है।","explanation_en":"Anaimudi is the highest mountain peak in South India, located in the state of Kerala."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: यमुना और घाघरा नदियाँ हिमालय से निकलती हैं और गंगा की सहायक नदियाँ हैं।\nकथन 2: सोन नदी भी हिमालय से निकलती है और गंगा में मिलती है।","question_en":"Question 28: Consider the following statements:\nStatement 1: The Yamuna and Ghaghara rivers originate from the Himalayas and are tributaries of the Ganga.\nStatement 2: The Son river also originates from the Himalayas and joins the Ganga.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"यमुना और घाघरा हिमालय से निकलती हैं लेकिन सोन नदी गंगा के मैदान के दक्षिण में स्थित विंध्याचल की शृंखलाओं से निकलती है।","explanation_en":"Yamuna and Ghaghara originate from the Himalayas, but the Son river originates from the Vindhyachal ranges located south of the Ganga plains."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. संयुक्त राज्य अमेरिका, B. रूस;\nसूची-II: 1. 11 समय क्षेत्र, 2. 6 समय क्षेत्र, का सही मिलान चुनें।","question_en":"Question 29: Choose the correct match for\nList-I: A. USA, B. Russia;\nList-II: 1. 11 time zones, 2. 6 time zones.","options":[{"hi":"A-1, B-2","en":"A-1, B-2"},{"hi":"A-1, B-1","en":"A-1, B-1"},{"hi":"A-2, B-1","en":"A-2, B-1"},{"hi":"A-2, B-2","en":"A-2, B-2"}],"answer":2,"explanation_hi":"विशाल विस्तार के कारण संयुक्त राज्य अमेरिका में 6 समय क्षेत्र हैं और रूस में 11 समय क्षेत्र हैं।","explanation_en":"Due to massive longitudinal extent, the United States has 6 time zones and Russia has 11 time zones."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत ने 1983 में अंटार्कटिका में अपना पहला वैज्ञानिक बेस 'दक्षिण गंगोत्री' स्थापित किया था।\nकथन 2: अंटार्कटिका में भारतीय शोध केंद्रों में कोई स्थायी संरचना या डॉक्टर उपलब्ध नहीं होते हैं।","question_en":"Question 30: Consider the following statements:\nStatement 1: India established its first scientific base 'Dakshin Gangotri' in Antarctica in 1983.\nStatement 2: There are no permanent structures or doctors available at Indian research stations in Antarctica.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"},{"hi":"केवल 1","en":"Only 1"}],"answer":3,"explanation_hi":"1983 में 'दक्षिण गंगोत्री' स्थापित हुआ और वहाँ बने आवासों में पुस्तकालय तथा डॉक्टर तक की सुविधा उपलब्ध होती है।","explanation_en":"'Dakshin Gangotri' was established in 1983 and the living quarters built there have facilities including a library and even a doctor."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व का दूसरा सबसे बड़ा महासागर कौन सा है?","question_en":"Question 31: Which is the second largest ocean in the world?","options":[{"hi":"हिंद महासागर","en":"Indian Ocean"},{"hi":"अटलांटिक महासागर","en":"Atlantic Ocean"},{"hi":"प्रशांत महासागर","en":"Pacific Ocean"},{"hi":"आर्कटिक महासागर","en":"Arctic Ocean"}],"answer":1,"explanation_hi":"प्रशांत महासागर विश्व का सबसे बड़ा महासागर है जबकि अटलांटिक महासागर क्षेत्रफल के हिसाब से दूसरे स्थान पर आता है।","explanation_en":"The Pacific Ocean is the largest ocean in the world, while the Atlantic Ocean ranks second in terms of area."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय मानक समय (IST) ग्रीनविच मीन टाइम (GMT) से कितना आगे है?","question_en":"Question 32: How much is the Indian Standard Time (IST) ahead of the Greenwich Mean Time (GMT)?","options":[{"hi":"4 घंटे 30 मिनट","en":"4 hours 30 minutes"},{"hi":"6 घंटे 30 मिनट","en":"6 hours 30 minutes"},{"hi":"5 घंटे 30 मिनट","en":"5 hours 30 minutes"},{"hi":"5 घंटे","en":"5 hours"}],"answer":2,"explanation_hi":"भारतीय मानक समय (IST) की गणना प्रमुख याम्योत्तर के आधार पर की जाती है और यह GMT से 5 घंटे 30 मिनट आगे है।","explanation_en":"Indian Standard Time (IST) is calculated based on the prime meridian and is 5 hours 30 minutes ahead of GMT."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अंडमान और निकोबार द्वीप समूह बंगाल की खाड़ी में स्थित हैं।\nकथन 2: लक्षद्वीप द्वीप समूह अरब सागर में स्थित हैं।","question_en":"Question 33: Consider the following statements:\nStatement 1: The Andaman and Nicobar Islands are located in the Bay of Bengal.\nStatement 2: The Lakshadweep Islands are located in the Arabian Sea.","options":[{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"भारत के मुख्य द्वीप समूहों में अंडमान और निकोबार (पूर्व में बंगाल की खाड़ी) और लक्षद्वीप (पश्चिम में अरब सागर) शामिल हैं।","explanation_en":"India's main island groups include Andaman and Nicobar (in the east, Bay of Bengal) and Lakshadweep (in the west, Arabian Sea)."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"\"इतिहास अतीत एवं वर्तमान के मध्य एक अनवरत संवाद है।\" यह प्रसिद्ध कथन किसका है?","question_en":"Question 34: \"History is an unending dialogue between the past and the present.\" Who made this famous statement?","options":[{"hi":"कार्ल मार्क्स","en":"Karl Marx"},{"hi":"हेरोडोटस","en":"Herodotus"},{"hi":"विंस्टन चर्चिल","en":"Winston Churchill"},{"hi":"ई.एच. कार","en":"E.H. Carr"}],"answer":3,"explanation_hi":"प्रसिद्ध इतिहासकार ई.एच. कार ने इतिहास को वर्तमान और अतीत के बीच एक निरंतर संवाद के रूप में परिभाषित किया था।","explanation_en":"Famous historian E.H. Carr defined history as an unending dialogue between the present and the past."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सामाजिक विज्ञान के उपविषयों का मिलान करें:\nसूची-I: A. अतीत का अध्ययन, B. पृथ्वी के भौतिक स्वरूपों का अध्ययन, C. अर्थव्यवस्था और धन का अध्ययन;\nसूची-II: 1. भूगोल, 2. इतिहास, 3. अर्थशास्त्र।","question_en":"Question 35: Match the sub-disciplines of Social Science:\nList-I: A. Study of the past, B. Study of Earth's physical features, C. Study of economy and wealth;\nList-II: 1. Geography, 2. History, 3. Economics.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"}],"answer":2,"explanation_hi":"इतिहास अतीत से संबंधित है जबकि भूगोल पृथ्वी के भौतिक स्वरूपों का और अर्थशास्त्र आर्थिक गतिविधियों का अध्ययन करता है।","explanation_en":"History deals with the past, Geography studies the physical forms of the Earth, and Economics relates to economic activities."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त गोलार्ध और भूमि-जल वितरण के आधार पर कौन सा कथन सत्य है?","question_en":"Question 36: Based on the hemisphere and land-water distribution, which statement is true?","options":[{"hi":"दक्षिणी गोलार्ध में उत्तरी गोलार्ध की तुलना में अधिक स्थल भाग है","en":"The Southern Hemisphere has more landmass than the Northern Hemisphere"},{"hi":"उत्तरी गोलार्ध में दक्षिणी गोलार्ध की तुलना में अधिक स्थल भाग है","en":"The Northern Hemisphere has more landmass than the Southern Hemisphere"},{"hi":"दोनों गोलार्धों में भूमि का अनुपात बिल्कुल समान है","en":"The proportion of land is exactly equal in both hemispheres"},{"hi":"दक्षिणी गोलार्ध पूर्णतः भूमि-विहीन है","en":"The Southern Hemisphere is completely devoid of land"}],"answer":1,"explanation_hi":"पृथ्वी पर भूखंडों का वितरण असमान है और उत्तरी गोलार्ध में दक्षिणी गोलार्ध की तुलना में अधिक स्थलीय भाग मौजूद है।","explanation_en":"Land distribution on Earth is uneven, and the Northern Hemisphere contains a larger landmass compared to the Southern Hemisphere."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"यदि किसी घटना का समय '10,000 सा.सं.पू.' (BCE) निर्धारित किया गया है और वर्तमान वर्ष 2024 सा.सं. (CE) है, तो वह घटना आज से लगभग कितने वर्ष पूर्व हुई?","question_en":"Question 37: If an event is dated '10,000 BCE' and the current year is 2024 CE, approximately how many years ago did the event occur?","options":[{"hi":"12,023 वर्ष पूर्व","en":"12,023 years ago"},{"hi":"10,024 वर्ष पूर्व","en":"10,024 years ago"},{"hi":"7,976 वर्ष पूर्व","en":"7,976 years ago"},{"hi":"12,024 वर्ष पूर्व","en":"12,024 years ago"}],"answer":0,"explanation_hi":"सा.सं.पू. और सा.सं. की तिथियों को जोड़कर उनमें से 1 घटाया जाता है क्योंकि 0 वर्ष का अस्तित्व नहीं है (10000+2024-1=12023)।","explanation_en":"BCE and CE years are added together and 1 is subtracted because year 0 does not exist (10000+2024-1=12023)."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: ग्रेगोरियन कैलेंडर में 'शून्य वर्ष' का कोई प्रावधान नहीं है।\nकथन 2: 1 सा.सं.पू. के तुरंत बाद 1 सा.सं. का वर्ष आता है।","question_en":"Question 38: Consider the following statements:\nStatement 1: There is no provision for a 'Year Zero' in the Gregorian calendar.\nStatement 2: The year 1 CE comes immediately after 1 BCE.","options":[{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"ग्रेगोरियन कैलेंडर में वर्ष '0' नहीं होता है और 1 सा.सं.पू. (BCE) के समाप्त होने के तुरंत बाद 1 सा.सं. (CE) शुरू होता है।","explanation_en":"The Gregorian calendar does not have a year '0' and immediately after 1 BCE ends, 1 CE begins."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नदियों द्वारा मैदानों के निर्माण की प्रक्रिया में मुख्य रूप से क्या जमा किया जाता है जो मिट्टी को उपजाऊ बनाता है?","question_en":"Question 39: What is primarily deposited in the process of plain formation by rivers that makes the soil fertile?","options":[{"hi":"केवल भारी चट्टानें","en":"Only heavy rocks"},{"hi":"समुद्री लवण","en":"Marine salts"},{"hi":"ज्वालामुखी राख","en":"Volcanic ash"},{"hi":"रेत, चट्टानों के कण और गाद","en":"Sand, rock particles, and silt"}],"answer":3,"explanation_hi":"नदियां पर्वतों से उतरते हुए रेत, छोटे कण और गाद लाती हैं जिन्हें तलछट कहा जाता है जो मैदानों को अत्यधिक उपजाऊ बनाता है।","explanation_en":"Rivers coming down from mountains carry sand, particles, and silt collectively called sediments, which make the plains highly fertile."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त युग्मों में से कितने सही सुमेलित हैं? 1. बछेंद्री पाल - 1984 में एवरेस्ट पर चढ़ने वाली प्रथम भारतीय महिला, 2. अरुणिमा सिन्हा - कृत्रिम पैर के साथ एवरेस्ट पर चढ़ाई (2013)।","question_en":"Question 40: How many of the above pairs are correctly matched? 1. Bachendri Pal - First Indian woman to climb Everest in 1984, 2. Arunima Sinha - Climbed Everest with a prosthetic leg (2013).","options":[{"hi":"कोई भी युग्म नहीं","en":"No pair"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"दोनों युग्म","en":"Both pairs"},{"hi":"यह जानकारी स्पष्ट नहीं है","en":"This information is not clear"}],"answer":2,"explanation_hi":"बछेंद्री पाल एवरेस्ट पर चढ़ने वाली पहली भारतीय महिला थीं और अरुणिमा सिन्हा ने एक पैर गंवाने के बावजूद यह उपलब्धि हासिल की।","explanation_en":"Bachendri Pal was the first Indian woman to climb Everest, and Arunima Sinha achieved this feat despite losing a leg."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संयुक्त राष्ट्र द्वारा प्रतिवर्ष 'विश्व महासागर दिवस' कब मनाया जाता है?","question_en":"Question 41: When is 'World Oceans Day' observed annually by the United Nations?","options":[{"hi":"5 जून","en":"5 June"},{"hi":"8 जून","en":"8 June"},{"hi":"22 अप्रैल","en":"22 April"},{"hi":"21 मार्च","en":"21 March"}],"answer":1,"explanation_hi":"महासागरों को संरक्षित करने और पृथ्वी के 'फेफड़ों' के रूप में उनके महत्व को उजागर करने के लिए प्रतिवर्ष 8 जून को विश्व महासागर दिवस मनाया जाता है।","explanation_en":"To conserve oceans and highlight their importance as the Earth's 'lungs', World Oceans Day is observed annually on 8 June."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"यूरोप और एशिया को एक ही विशाल भूखंड मानते हुए कुछ भूगोलवेत्ता किस नाम का प्रयोग करते हैं?","question_en":"Question 42: Considering Europe and Asia as a single massive landmass, what name do some geographers use?","options":[{"hi":"पैंजिया","en":"Pangea"},{"hi":"गोंडवाना","en":"Gondwana"},{"hi":"यूरेशिया","en":"Eurasia"},{"hi":"इंडो-यूरोप","en":"Indo-Europe"}],"answer":2,"explanation_hi":"हालांकि यूरोप और एशिया सांस्कृतिक रूप से अलग हैं लेकिन भौगोलिक दृष्टि से वे एक ही भूखंड हैं जिसे अक्सर यूरेशिया कहा जाता है।","explanation_en":"Although Europe and Asia are culturally distinct, geographically they form a single landmass often referred to as Eurasia."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन तमिल संगम साहित्य में 'मरुदम' परिदृश्य मुख्य रूप से किस गतिविधि से जुड़ा था?","question_en":"Question 43: In ancient Tamil Sangam literature, the 'Marudam' landscape was primarily associated with which activity?","options":[{"hi":"उपजाऊ कृषि","en":"Fertile agriculture"},{"hi":"मत्स्य पालन","en":"Fishing"},{"hi":"पशुपालन","en":"Animal husbandry"},{"hi":"आखेट (शिकार)","en":"Hunting"}],"answer":0,"explanation_hi":"संगम साहित्य के पांच परिदृश्यों (तिनै) में मरुदम उपजाऊ कृषि मैदानों का प्रतिनिधित्व करता था जहाँ खेती मुख्य व्यवसाय था।","explanation_en":"In the five landscapes (tinai) of Sangam literature, Marudam represented fertile agricultural plains where farming was the main occupation."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"तमिल संगम साहित्य में शुष्क, मरुस्थल जैसे प्रदेशों को क्या कहा जाता था?","question_en":"Question 44: What were dry, desert-like regions called in Tamil Sangam literature?","options":[{"hi":"नेयदल","en":"Neydal"},{"hi":"कुरुंजी","en":"Kurinji"},{"hi":"पालै","en":"Palai"},{"hi":"मुल्लाई","en":"Mullai"}],"answer":2,"explanation_hi":"संगम साहित्य में पालै शब्द शुष्क और मरुस्थलीय भूमि को दर्शाता था जहाँ लोग घुमंतू और युद्धरत जीवन शैली जीते थे।","explanation_en":"In Sangam literature, the term Palai denoted dry and desert-like lands where people lived nomadic and warring lifestyles."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. भौतिक मानचित्र, B. राजनैतिक मानचित्र, C. थीमेटिक मानचित्र;\nसूची-II: 1. देश, राज्य और सीमाएं, 2. पहाड़, नदियां और महासागर, 3. विशिष्ट प्रकार की सूचनाएं (जैसे वर्षा), का सही मिलान करें।","question_en":"Question 45: Match\nList-I: A. Physical map, B. Political map, C. Thematic map;\nList-II: 1. Countries, states, and borders, 2. Mountains, rivers, and oceans, 3. Specific information (e.g. rainfall).","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"}],"answer":0,"explanation_hi":"भौतिक मानचित्र प्राकृतिक आकृतियों को, राजनैतिक मानचित्र सीमाओं को, और थीमेटिक मानचित्र किसी विशेष विषय या सूचना को दर्शाते हैं।","explanation_en":"Physical maps show natural features, political maps show boundaries, and thematic maps focus on a specific theme or information."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भूमध्य रेखा का अक्षांशीय मान 0 डिग्री होता है।\nकथन 2: उत्तरी ध्रुव और दक्षिणी ध्रुव का अक्षांशीय मान क्रमशः 90° उ. और 90° द. होता है।","question_en":"Question 46: Consider the following statements:\nStatement 1: The latitudinal value of the equator is 0 degrees.\nStatement 2: The latitudinal values of the North Pole and South Pole are 90° N and 90° S respectively.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":2,"explanation_hi":"भूमध्य रेखा (0°) से ध्रुवों की ओर जाने पर अक्षांश बढ़ता है और उत्तरी तथा दक्षिणी ध्रुवों पर यह अधिकतम 90 डिग्री हो जाता है।","explanation_en":"Latitude increases from the equator (0°) towards the poles, reaching a maximum of 90 degrees at the North and South Poles."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पृथ्वी अपनी धुरी पर 24 घंटे में एक पूरा चक्कर (360°) लगाती है, इसका अर्थ है कि पृथ्वी 1 घंटे में कितने डिग्री घूमती है?","question_en":"Question 47: The Earth completes one full rotation (360°) on its axis in 24 hours, meaning how many degrees does it rotate in 1 hour?","options":[{"hi":"24 डिग्री","en":"24 degrees"},{"hi":"10 डिग्री","en":"10 degrees"},{"hi":"30 डिग्री","en":"30 degrees"},{"hi":"15 डिग्री","en":"15 degrees"}],"answer":3,"explanation_hi":"पृथ्वी 24 घंटे में 360 डिग्री घूमती है इसलिए 1 घंटे में 360/24 = 15 डिग्री घूमती है जो समय क्षेत्रों का आधार है।","explanation_en":"The Earth rotates 360 degrees in 24 hours, so in 1 hour it rotates 360/24 = 15 degrees, which forms the basis of time zones."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन काल में उज्जयिनी को प्रमुख याम्योत्तर मानने के बावजूद, देशांतर मापने में सटीक समय रखना क्यों कठिन था?","question_en":"Question 48: Despite considering Ujjayini as the prime meridian in ancient times, why was it difficult to keep accurate time for measuring longitudes?","options":[{"hi":"क्योंकि सूर्य की स्थिति लगातार बदलती थी","en":"Because the sun's position changed constantly"},{"hi":"क्योंकि समय मापन की तकनीकें वर्तमान की तुलना में उतनी सटीक नहीं थीं","en":"Because time measurement techniques were not as precise as today"},{"hi":"क्योंकि उस समय घड़ियों का आविष्कार पूर्णतः वर्जित था","en":"Because clocks were strictly prohibited at that time"},{"hi":"क्योंकि याम्योत्तर रेखाएं स्पष्ट रूप से परिभाषित नहीं थीं","en":"Because meridian lines were not clearly defined"}],"answer":1,"explanation_hi":"देशांतर को सटीक रूप से मापने के लिए समय का बिलकुल सही मापन आवश्यक है जो प्राचीन काल की तकनीकों से उतना सटीक संभव नहीं था।","explanation_en":"Accurately measuring longitude requires precise timekeeping, which was not as accurately possible with ancient techniques."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: महासागर पृथ्वी के जलचक्र का हिस्सा हैं और महाद्वीपों पर वर्षा के लिए उत्तरदायी हैं।\nकथन 2: दुनिया की आधी से अधिक ऑक्सीजन महासागरों के वनस्पति जगत द्वारा उत्पन्न की जाती है।","question_en":"Question 49: Consider the following statements:\nStatement 1: Oceans are part of Earth's water cycle and are responsible for rain on continents.\nStatement 2: More than half of the world's oxygen is produced by the flora of the oceans.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"महासागरों से वाष्पीकरण द्वारा वर्षा होती है और समुद्री पादप प्रकाश संश्लेषण द्वारा पृथ्वी की अधिकांश ऑक्सीजन का उत्पादन करते हैं।","explanation_en":"Oceans cause rain through evaporation, and marine plants produce the majority of Earth's oxygen through photosynthesis."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अंतरिक्ष यात्रियों द्वारा पृथ्वी को 'नीला ग्रह' (Blue Planet) क्यों कहा गया है?","question_en":"Question 50: Why is the Earth called the 'Blue Planet' by astronauts?","options":[{"hi":"क्योंकि इसके वायुमंडल में ओजोन गैस की अधिकता है","en":"Because of the abundance of ozone gas in its atmosphere"},{"hi":"क्योंकि अंतरिक्ष से देखने पर इसके बादल नीले दिखाई देते हैं","en":"Because its clouds appear blue when viewed from space"},{"hi":"क्योंकि इसकी सतह का लगभग तीन-चौथाई भाग जल से ढका है","en":"Because about three-fourths of its surface is covered with water"},{"hi":"क्योंकि यहाँ पाए जाने वाले महाद्वीप मुख्य रूप से नीले रंग के हैं","en":"Because the continents found here are mainly blue in color"}],"answer":2,"explanation_hi":"पृथ्वी के धरातल का लगभग तीन-चौथाई हिस्सा महासागरों के जल से ढका है जिस कारण यह अंतरिक्ष से नीले रंग की दिखाई देती है।","explanation_en":"About three-fourths of the Earth's surface is covered with ocean water, causing it to appear blue from space."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
