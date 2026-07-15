@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"NCERT • Class 6 final","highlight":"Class 6 final","shortTitle":"NCERT","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • Class 6 final","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-ncert-class-6-final-ncert-class-6-20260715-awoj0","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-15","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के सर्वोच्च न्यायालय का आदर्श वाक्य क्या है?","question_en":"What is the motto of the Supreme Court of India?","options":[{"hi":"यतो धर्मस्ततो जयः","en":"Yato Dharmastato Jayah"},{"hi":"सत्यमेव जयते","en":"Satyameva Jayate"},{"hi":"धर्मो रक्षति रक्षितः","en":"Dharmo Rakshati Rakshitah"},{"hi":"शं नो वरुणः","en":"Sham No Varunah"}],"answer":0,"explanation_hi":"सर्वोच्च न्यायालय का आदर्श वाक्य 'यतो धर्मस्ततो जयः' है जिसका अर्थ है कि जहाँ धर्म है वहीं विजय है।","explanation_en":"The motto of the Supreme Court is 'Yato Dharmastato Jayah', which means where there is Dharma, there is victory."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत के राष्ट्रपति वास्तविक कार्यपालिका प्रमुख होते हैं।\nकथन 2: राज्य स्तर पर कार्यपालिका का प्रमुख मुख्यमंत्री होता है जबकि राज्यपाल औपचारिक प्रधान होता है।","question_en":"Consider the following statements:\nStatement 1: The President of India is the real executive head.\nStatement 2: At the state level, the Chief Minister is the executive head while the Governor is the formal head.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"भारत के राष्ट्रपति और राज्यों के राज्यपाल औपचारिक प्रमुख होते हैं जबकि वास्तविक कार्यकारी शक्तियां क्रमशः प्रधानमंत्री और मुख्यमंत्री के पास होती हैं।","explanation_en":"The President of India and state Governors are formal heads, whereas real executive powers lie with the Prime Minister and Chief Ministers respectively."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कौटिल्य के अर्थशास्त्र के अनुसार ग्रामीण प्रशासनिक ढाँचे का मिलान करें:\nसूची-I: A. संग्रहण, B. द्रोणमुख, C. स्थानीय;\nसूची-II: 1. 400 गाँवों का समूह, 2. 800 गाँवों का समूह, 3. 10 गाँवों का समूह।","question_en":"Match the rural administrative structure according to Kautilya's Arthashastra:\nList-I: A. Sangrahana, B. Dronamukha, C. Sthaniya;\nList-II: 1. Group of 400 villages, 2. Group of 800 villages, 3. Group of 10 villages.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":2,"explanation_hi":"अर्थशास्त्र के अनुसार संग्रहण 10 गाँवों का, द्रोणमुख 400 गाँवों का और स्थानीय 800 गाँवों का प्रशासनिक मुख्यालय होता था।","explanation_en":"According to Arthashastra, Sangrahana was the administrative headquarters for 10 villages, Dronamukha for 400, and Sthaniya for 800 villages."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त सरपंचों और उनके राज्य या ग्राम के युग्मों में से कितने सही सुमेलित हैं? 1. ज्ञानेश्वर कांबले - तरंगफल (महाराष्ट्र), 2. वंदना बहादुर मैदा - खानखांडी (मध्य प्रदेश), 3. पोपटराव बागुजी पवार - हिवरे बाजार (महाराष्ट्र)।","question_en":"How many of the above pairs of Sarpanchs and their state or village are correctly matched? 1. Dnyaneshwar Kamble - Tarangfal (Maharashtra), 2. Vandana Bahadur Maida - Khankhandi (Madhya Pradesh), 3. Popatrao Baguji Pawar - Hiware Bazar (Maharashtra).","options":[{"hi":"कोई भी युग्म नहीं","en":"No pair"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"ये तीनों युग्म बिल्कुल सही हैं क्योंकि इन तीनों ने अपने-अपने क्षेत्रों में सरपंच के रूप में ऐतिहासिक विकासात्मक कार्य किए हैं।","explanation_en":"All three pairs are absolutely correct as these three have done historic developmental work as Sarpanchs in their respective areas."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस राज्य में 'बेयरफुट कॉलेज' की शाखा 'बाल संसद' को वर्ष 2001 में वर्ल्ड चिल्ड्रन्स ऑनरेरी अवार्ड से सम्मानित किया गया था?","question_en":"The 'Bal Sansad', a branch of 'Barefoot College' in which state, was awarded the World Children's Honorary Award in the year 2001?","options":[{"hi":"राजस्थान","en":"Rajasthan"},{"hi":"सिक्किम","en":"Sikkim"},{"hi":"महाराष्ट्र","en":"Maharashtra"},{"hi":"मध्य प्रदेश","en":"Madhya Pradesh"}],"answer":0,"explanation_hi":"राजस्थान में बेयरफुट कॉलेज द्वारा संचालित बाल संसद ने वंचित वर्ग के बच्चों को लोकतांत्रिक भागीदारी सिखाई जिसके लिए उन्हें यह पुरस्कार मिला।","explanation_en":"The Bal Sansad run by Barefoot College in Rajasthan taught democratic participation to underprivileged children, for which they received this award."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1 लाख से 10 लाख के बीच की जनसंख्या वाले नगरों में सर्वोच्च नगरीय निकाय को क्या कहा जाता है?","question_en":"What is the apex urban body called in cities with a population between 1 lakh and 10 lakh?","options":[{"hi":"नगर निगम","en":"Municipal Corporation"},{"hi":"नगर पंचायत","en":"Nagar Panchayat"},{"hi":"नगरपालिका","en":"Municipal Council"},{"hi":"वार्ड समिति","en":"Ward Committee"}],"answer":2,"explanation_hi":"1 लाख से 10 लाख की आबादी वाले नगरों में नगरपालिका या म्युनिसिपल काउंसिल होती है जबकि 10 लाख से अधिक पर नगर निगम होता है।","explanation_en":"Cities with a population of 1 lakh to 10 lakh have a Nagar Palika or Municipal Council, whereas populations over 10 lakh have a Municipal Corporation."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मद्रास कॉरपोरेशन की स्थापना वर्ष 1792 में एक संसदीय अधिनियम द्वारा की गई थी।\nकथन 2: यह भारत में सबसे प्राचीन नगर निगम संस्था है।","question_en":"Consider the following statements:\nStatement 1: Madras Corporation was established in the year 1792 by a parliamentary act.\nStatement 2: It is the oldest municipal corporation institution in India.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"मद्रास कॉरपोरेशन की स्थापना 29 सितंबर 1688 को हुई थी जो इसे सबसे प्राचीन बनाती है जबकि 1792 के अधिनियम ने इसे कर लगाने की शक्ति दी थी।","explanation_en":"Madras Corporation was established on 29 September 1688, making it the oldest, whereas the 1792 act gave it taxation powers."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I (आर्थिक गतिविधियाँ) और सूची-II (आर्थिक क्षेत्रक) का मिलान करें:\nसूची-I: A. वानिकी, B. विनिर्माण, C. बैंकिंग;\nसूची-II: 1. तृतीयक क्षेत्रक, 2. प्राथमिक क्षेत्रक, 3. द्वितीयक क्षेत्रक।","question_en":"Match List-I (Economic activities) with List-II (Economic sectors):\nList-I: A. Forestry, B. Manufacturing, C. Banking;\nList-II: 1. Tertiary sector, 2. Primary sector, 3. Secondary sector.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"}],"answer":3,"explanation_hi":"वानिकी प्रकृति से जुड़ी प्राथमिक गतिविधि है, विनिर्माण द्वितीयक क्षेत्रक में आता है और बैंकिंग सेवाएं तृतीयक क्षेत्रक का हिस्सा हैं।","explanation_en":"Forestry is a primary activity linked to nature, manufacturing comes under the secondary sector, and banking services are part of the tertiary sector."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"एक टन कागज का पुनर्चक्रण करने से कितने पेड़ों को कटने से बचाया जा सकता है?","question_en":"Recycling one ton of paper can save how many trees from being cut?","options":[{"hi":"12 पेड़","en":"12 trees"},{"hi":"17 पेड़","en":"17 trees"},{"hi":"25 पेड़","en":"25 trees"},{"hi":"50 पेड़","en":"50 trees"}],"answer":1,"explanation_hi":"एक टन कागज को रीसाइकिल करने से 17 पेड़ों के साथ-साथ 2.5 घन मीटर लैंडफिल स्थान और 70 प्रतिशत ऊर्जा व पानी की बचत होती है।","explanation_en":"Recycling one ton of paper saves 17 trees along with 2.5 cubic meters of landfill space and 70 percent of energy and water."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: आणंद मिल्क यूनियन लिमिटेड (अमूल) की स्थापना 1946 में हुई थी।\nकथन 2: सरदार वल्लभ भाई पटेल ने किसानों को बिचौलियों पर निर्भरता रोकने के लिए सहकारी संगठन बनाने का परामर्श दिया था।","question_en":"Consider the following statements:\nStatement 1: Anand Milk Union Limited (Amul) was established in 1946.\nStatement 2: Sardar Vallabhbhai Patel advised farmers to form a cooperative organization to stop dependence on middlemen.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं। बिचौलियों के शोषण से बचने के लिए सरदार पटेल की सलाह पर 1946 में किसानों ने अमूल सहकारी संघ की स्थापना की थी।","explanation_en":"Both statements are correct. To escape exploitation by middlemen, farmers established the Amul cooperative union in 1946 on the advice of Sardar Patel."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डॉ. ए.पी.जे. अब्दुल कलाम ने भारत के किस क्रम के राष्ट्रपति के रूप में कार्य किया था?","question_en":"Dr. A.P.J. Abdul Kalam served as which number President of India?","options":[{"hi":"11वें","en":"11th"},{"hi":"12वें","en":"12th"},{"hi":"10वें","en":"10th"},{"hi":"9वें","en":"9th"}],"answer":0,"explanation_hi":"मिसाइल मैन के नाम से प्रसिद्ध डॉ. अब्दुल कलाम ने वर्ष 2002 से 2007 तक भारत के 11वें राष्ट्रपति के रूप में देश की सेवा की।","explanation_en":"Famous as the Missile Man, Dr. Abdul Kalam served the country as the 11th President of India from the year 2002 to 2007."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त युग्मों (सरकार के अंग और उनके कार्य) में से कितने सही सुमेलित हैं? 1. विधायिका - नए कानून बनाना, 2. कार्यपालिका - कानूनों को लागू करना, 3. न्यायपालिका - दंड का निर्धारण करना।","question_en":"How many of the above pairs (Organs of government and their functions) are correctly matched? 1. Legislature - Making new laws, 2. Executive - Implementing laws, 3. Judiciary - Determining punishment.","options":[{"hi":"कोई भी युग्म नहीं","en":"No pair"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"सरकार के तीनों अंगों के ये कार्य बिल्कुल सटीक हैं जो शक्तियों के पृथक्करण के सिद्धांत के तहत एक-दूसरे को संतुलित करते हैं।","explanation_en":"These functions of all three organs of government are absolutely accurate, balancing each other under the principle of separation of powers."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ग्राम पंचायत स्तर पर भू-अभिलेखों का रख-रखाव करने वाले प्रशासनिक अधिकारी को आमतौर पर क्या कहा जाता है?","question_en":"What is the administrative officer who maintains land records at the Gram Panchayat level commonly called?","options":[{"hi":"पंचायत सचिव","en":"Panchayat Secretary"},{"hi":"सरपंच","en":"Sarpanch"},{"hi":"पटवारी","en":"Patwari"},{"hi":"खंड विकास अधिकारी","en":"Block Development Officer"}],"answer":2,"explanation_hi":"भारत के कई भागों में ग्राम स्तर पर भू-अभिलेखों और पुराने मानचित्रों को सुरक्षित रखने का कार्य पटवारी नामक प्रशासनिक अधिकारी करता है।","explanation_en":"In many parts of India, the administrative officer named Patwari performs the task of keeping land records and old maps safe at the village level."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: पंचायत समिति जिला स्तर पर कार्य करती है और ग्राम पंचायतों को जोड़ती है।\nकथन 2: पंचायती राज संस्थाओं में महिलाओं के लिए एक-तिहाई सीटें आरक्षित रखने का प्रावधान है।","question_en":"Consider the following statements:\nStatement 1: Panchayat Samiti works at the district level and connects Gram Panchayats.\nStatement 2: There is a provision to reserve one-third of the seats for women in Panchayati Raj institutions.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"पंचायत समिति खंड (Block) स्तर पर कार्य करती है न कि जिला स्तर पर। महिलाओं के लिए एक-तिहाई आरक्षण का प्रावधान सत्य है।","explanation_en":"Panchayat Samiti operates at the Block level, not the district level. The provision of one-third reservation for women is true."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बाल हितैषी पहल के लिए पुरस्कृत 'सांगखू राधू खांडू' ग्राम पंचायत किस राज्य में स्थित है?","question_en":"In which state is the 'Sangkhu Radhu Khandu' Gram Panchayat, awarded for its child-friendly initiative, located?","options":[{"hi":"सिक्किम","en":"Sikkim"},{"hi":"महाराष्ट्र","en":"Maharashtra"},{"hi":"नागालैंड","en":"Nagaland"},{"hi":"राजस्थान","en":"Rajasthan"}],"answer":0,"explanation_hi":"सिक्किम के पश्चिमी भाग में स्थित सांगखू राधू खांडू पंचायत ने बच्चों की सुरक्षा और शिक्षा के लिए सराहनीय कार्य कर बाल हितैषी का दर्जा प्राप्त किया।","explanation_en":"Located in the western part of Sikkim, the Sangkhu Radhu Khandu Panchayat achieved child-friendly status by doing commendable work for child safety and education."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I (सहकारी दुग्ध संगठन) और सूची-II (संबंधित राज्य या क्षेत्र) का मिलान करें:\nसूची-I: A. नंदिनी, B. मदर डेयरी, C. आविन;\nसूची-II: 1. दिल्ली-राष्ट्रीय राजधानी क्षेत्र, 2. तमिलनाडु, 3. कर्नाटक।","question_en":"Match List-I (Cooperative dairy organization) with List-II (Related state or region):\nList-I: A. Nandini, B. Mother Dairy, C. Aavin;\nList-II: 1. Delhi-National Capital Region, 2. Tamil Nadu, 3. Karnataka.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":2,"explanation_hi":"प्रसिद्ध दुग्ध सहकारी संगठनों में नंदिनी कर्नाटक से, मदर डेयरी दिल्ली-एनसीआर से और आविन तमिलनाडु से संबंधित है।","explanation_en":"Among famous dairy cooperatives, Nandini is from Karnataka, Mother Dairy from Delhi-NCR, and Aavin belongs to Tamil Nadu."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जब आर्थिक गतिविधियों में कच्चे माल को प्रसंस्कृत करके तैयार उत्पादों में बदला जाता है जिससे उसका मौद्रिक मान बढ़ जाता है, तो इसे क्या कहते हैं?","question_en":"When raw materials are processed into finished products in economic activities, increasing their monetary worth, what is it called?","options":[{"hi":"मौद्रिक मूल्य","en":"Monetary value"},{"hi":"वस्तु विनिमय","en":"Barter"},{"hi":"सेवा सृजन","en":"Service creation"},{"hi":"मूल्य संवर्धन","en":"Value addition"}],"answer":3,"explanation_hi":"लकड़ी से कुर्सी बनाने या कपास से कपड़ा बनाने की प्रक्रिया में वस्तु का रूप बदलता है और उसकी कीमत बढ़ती है जिसे मूल्य संवर्धन कहा जाता है।","explanation_en":"In the process of making a chair from wood or cloth from cotton, the form changes and its price increases, which is called value addition."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: एक चिकित्सक द्वारा अस्पताल में मरीज का इलाज करना आर्थिक गतिविधि है।\nकथन 2: परिवार के सदस्यों द्वारा घर के नवीनीकरण में सहायता करना भी एक आर्थिक गतिविधि है क्योंकि इससे धन की बचत होती है।","question_en":"Consider the following statements:\nStatement 1: A doctor treating a patient in a hospital is an economic activity.\nStatement 2: Family members helping in the renovation of the house is also an economic activity because it saves money.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"घर के काम में परिवार की सहायता करना एक गैर-आर्थिक गतिविधि है क्योंकि इसमें प्रत्यक्ष रूप से आय या संपत्ति का अर्जन शामिल नहीं होता है।","explanation_en":"Assisting the family in household work is a non-economic activity because it does not involve the direct earning of income or wealth."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अर्थशास्त्र की शब्दावली में उन व्यक्तियों को क्या कहा जाता है जो उत्पादकों से सामान खरीदते हैं और उपभोक्ताओं को बेचते हैं तथा इस सेवा के लिए शुल्क लेते हैं?","question_en":"In economics terminology, what are the persons called who buy goods from producers and sell to consumers and charge a fee for this service?","options":[{"hi":"थोक विक्रेता","en":"Wholesaler"},{"hi":"बिचौलिए","en":"Middlemen"},{"hi":"खुदरा विक्रेता","en":"Retailer"},{"hi":"अंशधारक","en":"Shareholder"}],"answer":1,"explanation_hi":"उत्पादक और अंतिम उपभोक्ता के बीच कड़ी का काम करने वाले और अपना मुनाफा निकालने वाले व्यक्तियों को बिचौलिए कहा जाता है।","explanation_en":"Persons acting as a link between the producer and the final consumer and extracting their profit are called middlemen."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त युग्मों (प्रसिद्ध व्यक्ति और उनकी उपलब्धि) में से कितने सही सुमेलित हैं? 1. डॉ. वर्गीज़ कुरियन - अमूल की स्थापना, 2. पोपटराव पवार - हिवरे बाजार में जल संरक्षण, 3. ज्ञानेश्वर कांबले - सांगखू राधू खांडू ग्राम पंचायत।","question_en":"How many of the above pairs (Famous person and their achievement) are correctly matched? 1. Dr. Verghese Kurien - Foundation of Amul, 2. Popatrao Pawar - Water conservation in Hiware Bazar, 3. Dnyaneshwar Kamble - Sangkhu Radhu Khandu Gram Panchayat.","options":[{"hi":"कोई भी युग्म नहीं","en":"No pair"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"}],"answer":2,"explanation_hi":"पहले दो युग्म सही हैं लेकिन ज्ञानेश्वर कांबले महाराष्ट्र के तरंगफल गाँव के सरपंच चुने गए थे, सांगखू राधू खांडू सिक्किम में है।","explanation_en":"The first two pairs are correct but Dnyaneshwar Kamble was elected Sarpanch of Tarangfal village in Maharashtra; Sangkhu Radhu Khandu is in Sikkim."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में 'विदेशी मामले' और 'परमाणु ऊर्जा' जैसे विषयों पर कार्य करने का उत्तरदायित्व किस स्तर की सरकार का है?","question_en":"In India, which level of government has the responsibility to work on subjects like 'Foreign affairs' and 'Atomic energy'?","options":[{"hi":"स्थानीय सरकार","en":"Local Government"},{"hi":"राज्य सरकार","en":"State Government"},{"hi":"नगर निगम","en":"Municipal Corporation"},{"hi":"संघ या केंद्र सरकार","en":"Union or Central Government"}],"answer":3,"explanation_hi":"राष्ट्रीय महत्व के विषय जैसे रक्षा, विदेशी मामले, संचार, मुद्रा और परमाणु ऊर्जा सीधे तौर पर केंद्र या संघ सरकार के अधीन आते हैं।","explanation_en":"Subjects of national importance like defense, foreign affairs, communication, currency, and atomic energy directly fall under the Central or Union Government."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: जन-स्वास्थ्य और कृषि राज्य सरकार के मुख्य कार्यों में शामिल हैं।\nकथन 2: संचार और मुद्रा से जुड़े कार्यों का प्रबंधन भी राज्य सरकार द्वारा किया जाता है।","question_en":"Consider the following statements:\nStatement 1: Public Health and Agriculture are included in the main functions of the state government.\nStatement 2: Functions related to Communication and Currency are also managed by the state government.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"जन-स्वास्थ्य, सिंचाई और कृषि राज्य सूची के विषय हैं जबकि संचार और मुद्रा का प्रबंधन विशुद्ध रूप से केंद्र सरकार का दायित्व है।","explanation_en":"Public health, irrigation, and agriculture are state list subjects, while the management of communication and currency is strictly the responsibility of the central government."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस नगर को लगातार सात वर्षों तक 'स्वच्छ सर्वेक्षण' योजना के अंतर्गत भारत के सर्वाधिक स्वच्छ नगर का पुरस्कार प्रदान किया गया है?","question_en":"Which city has been awarded the cleanest city of India under the 'Swachh Survekshan' scheme for seven consecutive years?","options":[{"hi":"सूरत","en":"Surat"},{"hi":"मैसूर","en":"Mysuru"},{"hi":"इंदौर","en":"Indore"},{"hi":"नवी मुंबई","en":"Navi Mumbai"}],"answer":2,"explanation_hi":"मध्य प्रदेश के इंदौर शहर ने नागरिकों की भागीदारी और कुशल अपशिष्ट प्रबंधन के कारण लगातार सात वर्षों तक यह प्रतिष्ठित पुरस्कार जीता है।","explanation_en":"The city of Indore in Madhya Pradesh has won this prestigious award for seven consecutive years due to citizen participation and efficient waste management."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I (जनसंख्या) और सूची-II (नगरीय स्थानीय निकाय) का मिलान करें:\nसूची-I: A. 10 लाख से अधिक, B. 1 लाख से कम, C. 1 लाख से 10 लाख;\nसूची-II: 1. नगर पंचायत, 2. नगरपालिका, 3. नगर निगम।","question_en":"Match List-I (Population) with List-II (Urban Local Body):\nList-I: A. More than 10 Lakh, B. Less than 1 Lakh, C. 1 Lakh to 10 Lakh;\nList-II: 1. Nagar Panchayat, 2. Municipal Council, 3. Municipal Corporation.","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":1,"explanation_hi":"10 लाख से अधिक पर नगर निगम, 1 से 10 लाख पर नगरपालिका और 1 लाख से कम जनसंख्या वाले कस्बों में नगर पंचायत गठित की जाती है।","explanation_en":"Municipal Corporation is formed for over 10 lakh, Municipal Council for 1 to 10 lakh, and Nagar Panchayat for towns with less than 1 lakh population."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'पाश्चुरीकरण' (Pasteurization) की प्रक्रिया का मुख्य उद्देश्य क्या है?","question_en":"What is the main objective of the 'Pasteurization' process?","options":[{"hi":"दूध से मक्खन और घी निकालना","en":"Extracting butter and ghee from milk"},{"hi":"दूध को लंबे समय तक ठंडा रखना","en":"Keeping milk cold for a long time"},{"hi":"दूध से पनीर का निर्माण करना","en":"Manufacturing paneer from milk"},{"hi":"हानिकारक बैक्टीरिया को नष्ट करके दूध को संरक्षित करना","en":"Preserving milk by destroying harmful bacteria"}],"answer":3,"explanation_hi":"दूध को सुरक्षित रखने के लिए उसे एक निश्चित तापमान तक गर्म किया जाता है जिससे उसमें मौजूद हानिकारक बैक्टीरिया नष्ट हो जाते हैं।","explanation_en":"To preserve milk, it is heated to a specific temperature which destroys the harmful bacteria present in it."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डॉ. ए.पी.जे. अब्दुल कलाम के अनुसार 'F.A.I.L.' का सटीक अर्थ क्या है?","question_en":"According to Dr. A.P.J. Abdul Kalam, what is the exact meaning of 'F.A.I.L.'?","options":[{"hi":"फर्स्ट अटैम्प्ट इन लर्निंग","en":"First Attempt In Learning"},{"hi":"फाइनल अचीवमेंट इन लाइफ","en":"Final Achievement In Life"},{"hi":"फॉरगेट अबाउट इनिशियल लॉसेस","en":"Forget About Initial Losses"},{"hi":"फेलियर ऑलवेज इंस्पायर्स लर्निंग","en":"Failure Always Inspires Learning"}],"answer":0,"explanation_hi":"डॉ. कलाम ने युवाओं को प्रेरित करते हुए कहा था कि असफलता (FAIL) का अर्थ सीखने की दिशा में पहला प्रयास (First Attempt In Learning) है।","explanation_en":"Inspiring the youth, Dr. Kalam said that failure (FAIL) means the First Attempt In Learning."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 'वस्तु के रूप में भुगतान' का अर्थ कार्य के बदले नकद या मौद्रिक धन देना है।\nकथन 2: मजदूरी एक विशिष्ट समय अवधि के लिए नियोक्ता द्वारा श्रमिक को किया गया नियमित भुगतान है।","question_en":"Consider the following statements:\nStatement 1: 'Payment in kind' means giving cash or monetary wealth in exchange for work.\nStatement 2: Wages is a regular payment made by the employer to the worker for a specific period of time.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"'वस्तु के रूप में भुगतान' एक गैर-मौद्रिक भुगतान है (जैसे काम के बदले अनाज देना), जबकि मजदूरी नकदी या बैंक खाते में दिया जाने वाला मौद्रिक धन है।","explanation_en":"'Payment in kind' is a non-monetary payment (like giving grain for work), whereas wages are monetary funds paid in cash or into a bank account."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किसी भी आधुनिक 'प्रतिनिधि लोकतंत्र' (Representative Democracy) की सबसे मुख्य विशेषता क्या है?","question_en":"What is the most prominent feature of any modern 'Representative Democracy'?","options":[{"hi":"जनता स्वयं सभी दैनिक कानून बनाती है","en":"The public themselves make all daily laws"},{"hi":"राजा या शासक द्वारा सभी निर्णय लिए जाते हैं","en":"All decisions are taken by the king or ruler"},{"hi":"जनता मतदान के माध्यम से अपने प्रतिनिधियों का चुनाव करती है","en":"The public elects its representatives through voting"},{"hi":"केवल कुछ विशिष्ट वर्गों को ही मतदान का अधिकार होता है","en":"Only certain elite classes have the right to vote"}],"answer":2,"explanation_hi":"विशाल जनसंख्या वाले देशों में प्रत्यक्ष लोकतंत्र संभव नहीं है इसलिए लोग मतदान कर अपने प्रतिनिधि चुनते हैं जो उनकी ओर से निर्णय लेते हैं।","explanation_en":"In countries with huge populations, direct democracy is not possible, so people vote to elect their representatives who make decisions on their behalf."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आर्थिक गतिविधियों के वर्गीकरण के अंतर्गत 'गोदाम या वेयरहाउस' (Warehouse) की सुविधा किस क्षेत्रक में शामिल है?","question_en":"Under the classification of economic activities, the facility of 'Warehouse (Godown)' is included in which sector?","options":[{"hi":"प्राथमिक क्षेत्रक","en":"Primary sector"},{"hi":"द्वितीयक क्षेत्रक","en":"Secondary sector"},{"hi":"विनिर्माण क्षेत्रक","en":"Manufacturing sector"},{"hi":"तृतीयक क्षेत्रक","en":"Tertiary sector"}],"answer":3,"explanation_hi":"गोदाम या वेयरहाउस एक सेवा है जो वस्तुओं को सुरक्षित रखने में मदद करती है, इसलिए इसे सेवा क्षेत्रक या तृतीयक क्षेत्रक में रखा जाता है।","explanation_en":"A warehouse or godown is a service that helps keep goods safe, hence it is placed in the service sector or tertiary sector."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I (गतिविधि) और सूची-II (आर्थिक क्षेत्रक) का मिलान करें:\nसूची-I: A. सौर ऊर्जा उत्पादन, B. संचार, C. कुक्कुट पालन;\nसूची-II: 1. द्वितीयक क्षेत्रक, 2. प्राथमिक क्षेत्रक, 3. तृतीयक क्षेत्रक।","question_en":"Match List-I (Activity) with List-II (Economic sector):\nList-I: A. Solar energy generation, B. Communication, C. Poultry farming;\nList-II: 1. Secondary sector, 2. Primary sector, 3. Tertiary sector.","options":[{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"}],"answer":0,"explanation_hi":"सौर ऊर्जा उत्पादन द्वितीयक क्षेत्रक, मोबाइल या इंटरनेट से संचार तृतीयक क्षेत्रक और मुर्गियां पालना प्राथमिक क्षेत्रक की गतिविधि है।","explanation_en":"Solar energy generation is a secondary sector activity, communication via mobile or internet is tertiary, and poultry farming is a primary sector activity."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन ग्रंथ 'अर्थशास्त्र' में कौटिल्य के अनुसार 'संग्रहण' (Sangrahana) क्या था?","question_en":"According to Kautilya in the ancient text 'Arthashastra', what was 'Sangrahana'?","options":[{"hi":"प्रांतीय मुख्यालय","en":"Provincial headquarters"},{"hi":"10 गाँवों पर उप-जिला मुख्यालय","en":"Sub-district headquarters over 10 villages"},{"hi":"राजा का मुख्य खजाना","en":"The king's main treasury"},{"hi":"400 गाँवों का केंद्र","en":"Center for 400 villages"}],"answer":1,"explanation_hi":"अर्थशास्त्र के अनुसार शासन को सुचारू बनाने के लिए 10 गाँवों के समूह पर 'संग्रहण' नामक एक उप-जिला मुख्यालय स्थापित किया जाता था।","explanation_en":"According to Arthashastra, to smoothen governance, a sub-district headquarters named 'Sangrahana' was established over a group of 10 villages."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: ग्राम सभा में केवल गाँव के निर्वाचित प्रतिनिधि (पंच) ही शामिल होते हैं।\nकथन 2: पंचायत समिति का गठन विशेष रूप से जिला स्तर पर किया जाता है।","question_en":"Consider the following statements:\nStatement 1: Only the elected representatives (Panchs) of the village are included in the Gram Sabha.\nStatement 2: Panchayat Samiti is formed specifically at the district level.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":3,"explanation_hi":"ग्राम सभा में गाँव के सभी वयस्क मतदाता शामिल होते हैं, और पंचायत समिति जिला स्तर पर नहीं बल्कि ब्लॉक (खंड) स्तर पर गठित होती है।","explanation_en":"The Gram Sabha includes all adult voters of the village, and the Panchayat Samiti is formed at the block level, not the district level."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में 'वन महोत्सव' का आयोजन मुख्य रूप से किस उद्देश्य से किया जाता है?","question_en":"For what main purpose is the 'Van Mahotsav' organized in India?","options":[{"hi":"लकड़ियों के व्यापार को बढ़ावा देने के लिए","en":"To promote the timber trade"},{"hi":"जनजातीय उत्पादों को बेचने के लिए","en":"To sell tribal products"},{"hi":"वृक्षारोपण और वन संरक्षण के प्रति जागरूकता लाने के लिए","en":"To bring awareness towards tree plantation and forest conservation"},{"hi":"कृषि उपज का प्रदर्शन करने के लिए","en":"To showcase agricultural produce"}],"answer":2,"explanation_hi":"सामुदायिक सहभागिता के तहत पेड़ों के महत्व को बताने और वनों को बचाने के लिए भारत में वन महोत्सव आयोजित किया जाता है।","explanation_en":"Under community participation, Van Mahotsav is organized in India to highlight the importance of trees and to save forests."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"यदि किसी कक्षा में पिकनिक का स्थान तय करने के लिए सभी छात्रों से हाथ उठाकर मतदान कराया जाता है, तो यह किस प्रकार के लोकतंत्र का उदाहरण है?","question_en":"If all students are asked to vote by raising their hands to decide the picnic spot in a classroom, what type of democracy is this an example of?","options":[{"hi":"प्रतिनिधि लोकतंत्र","en":"Representative democracy"},{"hi":"प्रत्यक्ष लोकतंत्र","en":"Direct democracy"},{"hi":"संघीय लोकतंत्र","en":"Federal democracy"},{"hi":"औपचारिक लोकतंत्र","en":"Formal democracy"}],"answer":1,"explanation_hi":"जब सभी सदस्य स्वयं किसी निर्णय पर सीधे अपना वोट देकर फैसला करते हैं बिना किसी प्रतिनिधि के, तो वह प्रत्यक्ष लोकतंत्र कहलाता है।","explanation_en":"When all members themselves directly vote to make a decision without any representative, it is called direct democracy."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त दुग्ध सहकारी संगठनों और उनके राज्यों के युग्मों में से कितने सही सुमेलित हैं? 1. केवी (Kevi) - बिहार, 2. सुधा (Sudha) - नागालैंड, 3. विजिया (Vijaya) - पंजाब।","question_en":"How many of the above pairs of dairy cooperative organizations and their states are correctly matched? 1. Kevi - Bihar, 2. Sudha - Nagaland, 3. Vijaya - Punjab.","options":[{"hi":"कोई भी युग्म नहीं","en":"No pair"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"}],"answer":0,"explanation_hi":"तीनों युग्म गलत हैं। सही मिलान है: केवी नागालैंड से, सुधा बिहार से और विजिया आंध्र प्रदेश से संबंधित दुग्ध सहकारी संस्थाएं हैं।","explanation_en":"All three pairs are wrong. The correct match is: Kevi from Nagaland, Sudha from Bihar, and Vijaya is a dairy cooperative related to Andhra Pradesh."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नगरों में गठित 'वार्ड समितियों' (Ward Committees) का मुख्य कार्य क्या है?","question_en":"What is the main function of the 'Ward Committees' formed in cities?","options":[{"hi":"पूरे राज्य के लिए कानून बनाना","en":"Making laws for the entire state"},{"hi":"राष्ट्रीय राजमार्गों का निर्माण करना","en":"Construction of national highways"},{"hi":"महानगरों के करों का निर्धारण करना","en":"Determining taxes of metropolitan cities"},{"hi":"स्थानीय समस्याओं को सुलझाना और स्वच्छता अभियानों में मदद करना","en":"Solving local problems and helping in sanitation campaigns"}],"answer":3,"explanation_hi":"वार्ड समितियां नगरों की छोटी इकाइयां हैं जो स्वास्थ्य शिविर, नाली जाम या जल-रिसाव जैसी समस्याओं की पहचान और समाधान में मदद करती हैं।","explanation_en":"Ward committees are small units of cities that help identify and solve problems like health camps, blocked drains, or water leaks."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: एक टन कागज के पुनर्चक्रण से 70 प्रतिशत ऊर्जा और पानी की बचत होती है।\nकथन 2: पेड़ों की लुगदी से कागज बनाना द्वितीयक क्षेत्रक की गतिविधि का उदाहरण है।","question_en":"Consider the following statements:\nStatement 1: Recycling one ton of paper saves 70 percent of energy and water.\nStatement 2: Making paper from tree pulp is an example of secondary sector activity.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं। कच्चे माल (लुगदी) को कारखाने में विनिर्मित कर तैयार उत्पाद (कागज) में बदलना द्वितीयक क्षेत्रक में आता है और रीसाइक्लिंग से भारी संसाधन बचते हैं।","explanation_en":"Both statements are correct. Manufacturing raw material (pulp) into a finished product (paper) in a factory comes under the secondary sector, and recycling saves massive resources."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I का सूची-II के साथ मिलान करें:\nसूची-I: A. ई.एन.डी. (E.N.D.), B. खुदरा विक्रेता, C. बिचौलिया;\nसूची-II: 1. उत्पादक से खरीदकर उपभोक्ता को बेचना, 2. एफर्ट्स नेवर डाइज़, 3. माल को थोड़ी मात्रा में अंतिम उपभोक्ता को बेचना।","question_en":"Match List-I with List-II:\nList-I: A. E.N.D., B. Retailer, C. Middleman;\nList-II: 1. Buying from producer and selling to consumer, 2. Efforts Never Dies, 3. Selling goods in small quantities to final consumer.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"}],"answer":1,"explanation_hi":"कलाम के अनुसार END मतलब 'एफर्ट्स नेवर डाइज़'। खुदरा विक्रेता माल अंतिम उपभोक्ता तक पहुंचाता है जबकि बिचौलिया उत्पादक से खरीदकर आगे बेचता है।","explanation_en":"According to Kalam END means 'Efforts Never Dies'. A retailer delivers goods to the final consumer whereas a middleman buys from the producer and sells further."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"\"स्वप्न का अर्थ सोते समय स्वप्न देखना नहीं है, बल्कि स्वप्न वे हैं जो आपको सोने न दें।\" यह प्रसिद्ध प्रेरक कथन किसका है?","question_en":"\"Dreams are not those you see while sleeping, but dreams are those that don't let you sleep.\" Whose famous inspirational quote is this?","options":[{"hi":"डॉ. ए.पी.जे. अब्दुल कलाम","en":"Dr. A.P.J. Abdul Kalam"},{"hi":"महात्मा गांधी","en":"Mahatma Gandhi"},{"hi":"स्वामी विवेकानंद","en":"Swami Vivekananda"},{"hi":"सरदार वल्लभभाई पटेल","en":"Sardar Vallabhbhai Patel"}],"answer":0,"explanation_hi":"भारत के पूर्व राष्ट्रपति और मिसाइल मैन डॉ. अब्दुल कलाम ने युवाओं को ऊंचे लक्ष्य रखने के लिए प्रेरित करते हुए यह प्रसिद्ध कथन कहा था।","explanation_en":"Former President of India and Missile Man Dr. Abdul Kalam said this famous quote to inspire the youth to aim high."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2017 में महाराष्ट्र के सोलापुर जिले के 'तरंगफल' गाँव के सरपंच के रूप में किसे चुना गया था, जो कि एक किन्नर (ट्रांसजेंडर) हैं?","question_en":"Who was elected as the Sarpanch of 'Tarangfal' village in Solapur district of Maharashtra in 2017, who is a transgender?","options":[{"hi":"पोपटराव बागुजी पवार","en":"Popatrao Baguji Pawar"},{"hi":"वंदना बहादुर मैदा","en":"Vandana Bahadur Maida"},{"hi":"त्रिभुवन दास पटेल","en":"Tribhuvandas Patel"},{"hi":"ज्ञानेश्वर कांबले","en":"Dnyaneshwar Kamble"}],"answer":3,"explanation_hi":"महाराष्ट्र के तरंगफल में ज्ञानेश्वर कांबले नामक किन्नर ने 6 अन्य उम्मीदवारों को हराकर सरपंच का चुनाव जीता था जिनका आदर्श 'लोक सेवा' है।","explanation_en":"Dnyaneshwar Kamble, a transgender in Tarangfal, Maharashtra, won the Sarpanch election by defeating 6 other candidates, whose ideal is 'public service'."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: नगरीय स्थानीय निकाय अपने सभी कार्यों के लिए पूर्णतः केंद्र सरकार के अनुदान पर निर्भर होते हैं।\nकथन 2: स्थानीय कर और अर्थदंड (Fines) एकत्र करना नगरीय निकायों के उत्तरदायित्वों में शामिल है।","question_en":"Consider the following statements:\nStatement 1: Urban local bodies depend entirely on central government grants for all their functions.\nStatement 2: Collecting local tax and fines is included in the responsibilities of urban bodies.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"नगरीय निकाय पूरी तरह केंद्र पर निर्भर नहीं होते, बल्कि वे अपनी सेवाएं चलाने के लिए स्थानीय कर, शुल्क और अर्थदंड भी एकत्र करते हैं।","explanation_en":"Urban bodies are not entirely dependent on the center, rather they also collect local taxes, fees, and fines to run their services."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कौन सी गतिविधि पूर्णतः 'प्राथमिक क्षेत्रक' (Primary Sector) से संबंधित है?","question_en":"Which of the following activities belongs entirely to the 'Primary Sector'?","options":[{"hi":"गन्ने से चीनी बनाना","en":"Making sugar from sugarcane"},{"hi":"संचार और बैंकिंग सेवाएं","en":"Communication and banking services"},{"hi":"खदानों से कोयला निकालना","en":"Extracting coal from mines"},{"hi":"कागज का निर्माण करना","en":"Manufacturing paper"}],"answer":2,"explanation_hi":"खनन, कृषि, पशुपालन और वानिकी सीधे प्रकृति से प्राप्त होते हैं इसलिए ये प्राथमिक क्षेत्रक हैं, जबकि विनिर्माण द्वितीयक क्षेत्रक में आता है।","explanation_en":"Mining, agriculture, animal husbandry, and forestry are obtained directly from nature, hence they are primary sectors, while manufacturing comes under the secondary sector."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डॉ. वर्गीज़ कुरियन, जिन्होंने अमूल की स्थापना में महत्वपूर्ण नेतृत्व किया, का मूल पेशा क्या था?","question_en":"What was the original profession of Dr. Verghese Kurien, who provided important leadership in the establishment of Amul?","options":[{"hi":"इंजीनियर","en":"Engineer"},{"hi":"अधिवक्ता","en":"Advocate"},{"hi":"किसान","en":"Farmer"},{"hi":"चिकित्सक","en":"Doctor"}],"answer":0,"explanation_hi":"डॉ. वर्गीज़ कुरियन मूल रूप से एक इंजीनियर थे जो मुंबई की एक डेयरी फैक्ट्री में काम करते थे और बाद में उन्होंने दुग्ध सहकारिता को मजबूत किया।","explanation_en":"Dr. Verghese Kurien was originally an engineer who worked in a dairy factory in Mumbai and later strengthened the milk cooperative."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त गतिविधियों और उनके क्षेत्रकों के युग्मों में से कितने सही सुमेलित हैं? 1. कपास से कपड़े तैयार करना - द्वितीयक क्षेत्रक, 2. मछलियां पकड़ना - प्राथमिक क्षेत्रक, 3. उत्पादों का परिवहन - तृतीयक क्षेत्रक।","question_en":"How many of the above pairs of activities and their sectors are correctly matched? 1. Making clothes from cotton - Secondary sector, 2. Catching fishes - Primary sector, 3. Transportation of products - Tertiary sector.","options":[{"hi":"कोई भी युग्म नहीं","en":"No pair"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"कारखाने में कपड़ा बनाना विनिर्माण (द्वितीयक), मछली पकड़ना प्रकृति से जुड़ा (प्राथमिक) और परिवहन एक सेवा (तृतीयक) है।","explanation_en":"Making clothes in a factory is manufacturing (secondary), fishing is linked to nature (primary), and transportation is a service (tertiary)."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 'मूल्य संवर्धन' (Value addition) की प्रक्रिया केवल प्राथमिक क्षेत्रक की गतिविधियों में ही संभव है।\nकथन 2: गैर-आर्थिक गतिविधियों में धनराशि शामिल नहीं होती, लेकिन वे सामाजिक कल्याण में योगदान देती हैं।","question_en":"Consider the following statements:\nStatement 1: The process of 'Value addition' is possible only in primary sector activities.\nStatement 2: Non-economic activities do not involve money, but they contribute to social welfare.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"मूल्य संवर्धन कच्चे माल को उत्पाद में बदलने (द्वितीयक क्षेत्रक) या सेवाएं देने पर होता है; यह केवल प्राथमिक क्षेत्रक तक सीमित नहीं है।","explanation_en":"Value addition happens when raw materials are turned into products (secondary sector) or services are provided; it is not limited only to the primary sector."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I (भुगतान का प्रकार) और सूची-II (परिभाषा) का मिलान करें:\nसूची-I: A. मजदूरी, B. वस्तु के रूप में भुगतान, C. शुल्क;\nसूची-II: 1. कार्य के बदले गैर-मौद्रिक भुगतान, 2. व्यावसायिक परामर्श या सेवाओं के लिए भुगतान, 3. एक निश्चित समय अवधि के लिए नियोक्ता द्वारा श्रमिक को किया गया भुगतान।","question_en":"Match List-I (Type of payment) with List-II (Definition):\nList-I: A. Wages, B. Payment in kind, C. Fee;\nList-II: 1. Non-monetary payment for work, 2. Payment for professional advice or services, 3. Payment made by employer to worker for a fixed time period.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":2,"explanation_hi":"मजदूरी श्रम के बदले नियमित नकद भुगतान है, वस्तु के रूप में भुगतान गैर-मौद्रिक होता है, और शुल्क डॉक्टर या वकील जैसी विशेष सेवाओं के लिए दिया जाता है।","explanation_en":"Wages are regular cash payments for labor, payment in kind is non-monetary, and fee is given for special services like a doctor or lawyer."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पोपटराव बागुजी पवार को हिवरे बाजार गाँव में उनके जल संरक्षण और विकास कार्यों के लिए वर्ष 2020 में किस पुरस्कार से सम्मानित किया गया था?","question_en":"Popatrao Baguji Pawar was awarded which prize in the year 2020 for his water conservation and development work in Hiware Bazar village?","options":[{"hi":"पद्म श्री","en":"Padma Shri"},{"hi":"पद्म भूषण","en":"Padma Bhushan"},{"hi":"भारत रत्न","en":"Bharat Ratna"},{"hi":"रेमन मैग्सेसे पुरस्कार","en":"Ramon Magsaysay Award"}],"answer":0,"explanation_hi":"सरपंच पोपटराव पवार ने अन्ना हजारे के मॉडल को लागू कर सूखे गाँव को समृद्ध बनाया जिसके लिए उन्हें 2020 में पद्म श्री से सम्मानित किया गया।","explanation_en":"Sarpanch Popatrao Pawar applied Anna Hazare's model to make a drought-hit village prosperous, for which he was awarded the Padma Shri in 2020."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'निर्यात' (Export) शब्द का सटीक अर्थ क्या है?","question_en":"What is the exact meaning of the term 'Export'?","options":[{"hi":"अन्य देशों से अपने देश में वस्तुएं मंगाना","en":"Bringing goods from other countries to one's own country"},{"hi":"केवल प्राथमिक क्षेत्र के उत्पादों का व्यापार","en":"Trade of primary sector products only"},{"hi":"वस्तुओं को खुदरा बाजार में सीधे उपभोक्ताओं को बेचना","en":"Selling goods directly to consumers in the retail market"},{"hi":"एक देश में उत्पादित वस्तुओं को अन्य देशों के ग्राहकों को बेचना","en":"Selling goods produced in one country to customers in other countries"}],"answer":3,"explanation_hi":"जब कोई देश अपने यहाँ निर्मित उत्पादों या सेवाओं को दूसरे देशों के बाज़ारों में बेचता है, तो उसे अर्थशास्त्र में निर्यात कहा जाता है।","explanation_en":"When a country sells its domestically manufactured products or services in the markets of other countries, it is called export in economics."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: \"जब आप कोई काम कर रहे हों, उससे बाहर कुछ न सोचें...\" यह प्रसिद्ध कथन महात्मा गांधी का है।\nकथन 2: कौटिल्य के अनुसार \"आर्थिक गतिविधि से ही समृद्धि आती है, इसका अभाव भौतिक विनाश देता है।\"","question_en":"Consider the following statements:\nStatement 1: \"When you are doing any work, do not think of anything beyond it...\" This famous quote belongs to Mahatma Gandhi.\nStatement 2: According to Kautilya, \"Economic activity brings prosperity, its absence brings material destruction.\"","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"कार्य को पूजा मानने वाला पहला कथन स्वामी विवेकानंद का है। दूसरा कथन अर्थशास्त्र के रचयिता कौटिल्य का है।","explanation_en":"The first statement treating work as worship belongs to Swami Vivekananda. The second statement belongs to Kautilya, the author of Arthashastra."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'ग्राम सभा' के संदर्भ में कौन सा कथन इसकी सही परिभाषा प्रस्तुत करता है?","question_en":"Which statement provides the correct definition of 'Gram Sabha'?","options":[{"hi":"यह केवल गाँव के चुने हुए पंचों की एक समिति है","en":"It is a committee of only the elected Panchs of the village"},{"hi":"यह गाँव के सभी बच्चों और वयस्कों की आम सभा है","en":"It is a general assembly of all the children and adults of the village"},{"hi":"यह मतदाता के रूप में नामांकित गाँव के सभी वयस्कों का समूह है","en":"It is a group of all adults of the village registered as voters"},{"hi":"यह ब्लॉक स्तर के अधिकारियों द्वारा संचालित एक परिषद है","en":"It is a council operated by block-level officials"}],"answer":2,"explanation_hi":"ग्राम सभा में गाँव या उसके आसपास के सभी वयस्क (18 वर्ष या अधिक) नागरिक शामिल होते हैं जिनका नाम मतदाता सूची में दर्ज होता है।","explanation_en":"Gram Sabha includes all adult (18 years or older) citizens of the village or its vicinity whose names are registered in the voter list."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
