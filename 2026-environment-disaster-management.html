@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"LOWER • environment+ disaster management","highlight":"environment+ disaster management","shortTitle":"LOWER","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • environment+ disaster management","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-lower-environment-disaster-management-environment-20260715-1xq0z","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-15","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आपदा प्रबंधन के संदर्भ में जोखिम का सही सूत्र कौन सा है?","question_en":"Question 1: What is the correct formula for risk in the context of disaster management?","options":[{"hi":"जोखिम = खतरा × संवेदनशीलता × अनावृत्ति ÷ क्षमता","en":"Risk = Hazard × Vulnerability × Exposure ÷ Capacity"},{"hi":"जोखिम = खतरा + संवेदनशीलता - क्षमता","en":"Risk = Hazard + Vulnerability - Capacity"},{"hi":"जोखिम = संवेदनशीलता × अनावृत्ति ÷ खतरा","en":"Risk = Vulnerability × Exposure ÷ Hazard"},{"hi":"जोखिम = क्षमता × अनावृत्ति ÷ खतरा","en":"Risk = Capacity × Exposure ÷ Hazard"}],"answer":0,"explanation_hi":"जोखिम का निर्धारण खतरा, संवेदनशीलता और अनावृत्ति के गुणनफल को क्षमता से भाग देकर किया जाता है, अर्थात् क्षमता बढ़ने पर जोखिम घटता है।","explanation_en":"Risk is determined by multiplying hazard, vulnerability, and exposure, divided by capacity, meaning as capacity increases, risk decreases."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भूकंपरोधी भवन और तटबंध बनाना आपदा प्रबंधन चक्र के किस चरण का उदाहरण है?","question_en":"Question 2: Constructing earthquake-resistant buildings and embankments is an example of which phase of the disaster management cycle?","options":[{"hi":"तैयारी","en":"Preparedness"},{"hi":"प्रतिक्रिया","en":"Response"},{"hi":"शमन","en":"Mitigation"},{"hi":"पुनर्प्राप्ति","en":"Recovery"}],"answer":2,"explanation_hi":"शमन (Mitigation) के अंतर्गत आपदा से पहले नुकसान कम करने वाले स्थायी उपाय किए जाते हैं, जैसे भूकंपरोधी भवन निर्माण।","explanation_en":"Mitigation involves permanent measures taken before a disaster to reduce damage, such as constructing earthquake-resistant buildings."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भूकंप के दौरान पृथ्वी की सतह पर चलने वाली सबसे विनाशकारी तरंग कौन सी है?","question_en":"Question 3: Which is the most destructive wave that travels on the Earth's surface during an earthquake?","options":[{"hi":"पी-तरंग","en":"P-wave"},{"hi":"एल-तरंग","en":"L-wave"},{"hi":"एस-तरंग","en":"S-wave"},{"hi":"जेड-तरंग","en":"Z-wave"}],"answer":1,"explanation_hi":"एल-तरंगें केवल पृथ्वी की सतह पर चलती हैं और अन्य सभी भूकंपीय तरंगों की तुलना में सर्वाधिक विनाशकारी होती हैं।","explanation_en":"L-waves travel only on the Earth's surface and are the most destructive compared to all other seismic waves."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आपदा प्रबंधन (संशोधन) अधिनियम 2025 के अनुसार शहरी क्षेत्रों के लिए किस नए प्राधिकरण का प्रावधान किया गया है?","question_en":"Question 4: According to the Disaster Management (Amendment) Act 2025, which new authority has been provisioned for urban areas?","options":[{"hi":"राष्ट्रीय शहरी विकास एजेंसी","en":"National Urban Development Agency"},{"hi":"राज्य नगर निगम बोर्ड","en":"State Municipal Corporation Board"},{"hi":"शहरी जोखिम न्यूनीकरण समिति","en":"Urban Risk Mitigation Committee"},{"hi":"शहरी आपदा प्रबंधन प्राधिकरण (UDMA)","en":"Urban Disaster Management Authority (UDMA)"}],"answer":3,"explanation_hi":"2025 के संशोधन में शहरी बाढ़ और हीट वेव जैसे जोखिमों से निपटने के लिए बड़े शहरों हेतु UDMA की स्थापना का प्रावधान है।","explanation_en":"The 2025 amendment provisions the establishment of UDMA for large cities to tackle risks like urban flooding and heat waves."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: आपदा प्रबंधन अधिनियम 2005 की धारा 14 के तहत राष्ट्रीय आपदा प्रबंधन प्राधिकरण (NDMA) की स्थापना की गई है।\nकथन 2: राज्य आपदा प्रबंधन प्राधिकरण (SDMA) का अध्यक्ष मुख्यमंत्री होता है।","question_en":"Question 5: Consider the following statements:\nStatement 1: The National Disaster Management Authority (NDMA) is established under Section 14 of the DM Act 2005.\nStatement 2: The Chief Minister is the chairperson of the State Disaster Management Authority (SDMA).","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों","en":"Both"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"None"}],"answer":2,"explanation_hi":"NDMA की स्थापना धारा 3 के तहत की गई है, जबकि धारा 14 SDMA से संबंधित है जिसका पदेन अध्यक्ष मुख्यमंत्री होता है।","explanation_en":"NDMA is established under Section 3, whereas Section 14 relates to SDMA, whose ex-officio chairperson is the Chief Minister."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1984 की भोपाल गैस त्रासदी में मुख्य रूप से किस गैस का रिसाव हुआ था?","question_en":"Question 6: Which gas primarily leaked during the 1984 Bhopal gas tragedy?","options":[{"hi":"अमोनिया गैस","en":"Ammonia Gas"},{"hi":"मिथाइल आइसोसाइनेट (MIC)","en":"Methyl Isocyanate (MIC)"},{"hi":"कार्बन मोनोऑक्साइड","en":"Carbon Monoxide"},{"hi":"सल्फर डाइऑक्साइड","en":"Sulfur Dioxide"}],"answer":1,"explanation_hi":"2-3 दिसंबर 1984 को यूनियन कार्बाइड इंडिया लिमिटेड के कारखाने से मिथाइल आइसोसाइनेट (MIC) नामक जहरीली गैस का भारी रिसाव हुआ था।","explanation_en":"On December 2-3, 1984, a massive leak of a toxic gas named Methyl Isocyanate (MIC) occurred from the Union Carbide India Limited factory."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किसी चक्रवात का सबसे खतरनाक भाग कौन सा होता है जहाँ सबसे तेज हवाएं और भारी वर्षा होती है?","question_en":"Question 7: Which is the most dangerous part of a cyclone where the strongest winds and heaviest rainfall occur?","options":[{"hi":"चक्रवात की आंख की दीवार (Eye Wall)","en":"Eye Wall of the cyclone"},{"hi":"चक्रवात की आंख (Eye)","en":"Eye of the cyclone"},{"hi":"चक्रवात का बाहरी घेरा","en":"Outer band of the cyclone"},{"hi":"चक्रवात का पृष्ठ भाग","en":"Rear section of the cyclone"}],"answer":0,"explanation_hi":"चक्रवात की आंख अपेक्षाकृत शांत होती है, लेकिन आई वॉल (Eye Wall) में सर्वाधिक भीषण हवाएं और चरम वर्षा का प्रभाव दिखाई देता है।","explanation_en":"The eye of a cyclone is relatively calm, but the Eye Wall experiences the most severe winds and extreme rainfall effects."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में सुनामी पूर्व चेतावनी प्रणाली का संचालन किस संस्था द्वारा किया जाता है?","question_en":"Question 8: Which institution operates the Tsunami Early Warning System in India?","options":[{"hi":"भारतीय मौसम विज्ञान विभाग (IMD) नई दिल्ली","en":"India Meteorological Department (IMD) New Delhi"},{"hi":"राष्ट्रीय आपदा मोचन बल (NDRF) नई दिल्ली","en":"National Disaster Response Force (NDRF) New Delhi"},{"hi":"राष्ट्रीय सुदूर संवेदन केंद्र (NRSC) हैदराबाद","en":"National Remote Sensing Centre (NRSC) Hyderabad"},{"hi":"भारतीय राष्ट्रीय महासागर सूचना सेवा केंद्र (INCOIS) हैदराबाद","en":"Indian National Centre for Ocean Information Services (INCOIS) Hyderabad"}],"answer":3,"explanation_hi":"INCOIS हैदराबाद भारतीय सुनामी पूर्व चेतावनी प्रणाली और समुद्री सूचनाओं के प्रबंधन से प्रमुख रूप से जुड़ा है।","explanation_en":"INCOIS Hyderabad is primarily associated with managing the Indian Tsunami Early Warning System and ocean information."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राज्य आपदा प्रतिक्रिया कोष (SDRF) में सामान्य राज्यों के लिए केंद्र और राज्य का वित्तपोषण अनुपात क्या है?","question_en":"Question 9: What is the center and state funding ratio for general states in the State Disaster Response Fund (SDRF)?","options":[{"hi":"75:25","en":"75:25"},{"hi":"90:10","en":"90:10"},{"hi":"50:50","en":"50:50"},{"hi":"60:40","en":"60:40"}],"answer":0,"explanation_hi":"सामान्य राज्यों के लिए SDRF का अनुपात 75:25 है, जबकि पूर्वोत्तर और हिमालयी राज्यों के लिए यह 90:10 होता है।","explanation_en":"The SDRF ratio for general states is 75:25, whereas for Northeastern and Himalayan states, it is 90:10."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आपदा-रोधी बुनियादी ढांचे के लिए गठबंधन (CDRI) की शुरुआत किस देश की पहल पर की गई थी?","question_en":"Question 10: The Coalition for Disaster Resilient Infrastructure (CDRI) was launched on the initiative of which country?","options":[{"hi":"जापान","en":"Japan"},{"hi":"भारत","en":"India"},{"hi":"संयुक्त राज्य अमेरिका","en":"United States of America"},{"hi":"फ्रांस","en":"France"}],"answer":1,"explanation_hi":"CDRI भारत की पहल है जिसे 2019 में संयुक्त राष्ट्र जलवायु कार्रवाई शिखर सम्मेलन में शुरू किया गया था, इसका सचिवालय नई दिल्ली में है।","explanation_en":"CDRI is an Indian initiative launched at the 2019 UN Climate Action Summit, with its secretariat in New Delhi."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सीबीआरएन (CBRN) आपदाओं के संदर्भ में 'R' का क्या अर्थ है जो परमाणु विस्फोट के बिना भी फैल सकता है?","question_en":"Question 11: In the context of CBRN disasters, what does 'R' stand for which can spread even without a nuclear explosion?","options":[{"hi":"रिएक्टिव (Reactive)","en":"Reactive"},{"hi":"रेडियोलॉजिकल (Radiological)","en":"Radiological"},{"hi":"रैंडम (Random)","en":"Random"},{"hi":"रेडिएशन (Radiation)","en":"Radiation"}],"answer":1,"explanation_hi":"CBRN में R का अर्थ रेडियोलॉजिकल है, जिसमें रेडियोधर्मी पदार्थ का फैलाव होता है और इसके लिए परमाणु विस्फोट का होना अनिवार्य नहीं है।","explanation_en":"In CBRN, R stands for Radiological, where radioactive material can spread, and a nuclear explosion is not mandatory for this to happen."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश में राष्ट्रीय आपदा मोचन बल (NDRF) की 11वीं बटालियन का मुख्यालय कहाँ स्थित है?","question_en":"Question 12: Where is the headquarters of the 11th Battalion of the National Disaster Response Force (NDRF) located in Uttar Pradesh?","options":[{"hi":"गाजियाबाद","en":"Ghaziabad"},{"hi":"लखनऊ","en":"Lucknow"},{"hi":"वाराणसी","en":"Varanasi"},{"hi":"गोरखपुर","en":"Gorakhpur"}],"answer":2,"explanation_hi":"उत्तर प्रदेश में NDRF की 11वीं बटालियन वाराणसी में और 8वीं बटालियन गाजियाबाद में स्थित है।","explanation_en":"In Uttar Pradesh, the 11th Battalion of NDRF is located in Varanasi and the 8th Battalion in Ghaziabad."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सामान्यतः बादल फटने (Cloudburst) की घटना में प्रति घंटे कितनी न्यूनतम वर्षा दर्ज की जाती है?","question_en":"Question 13: Generally, what is the minimum rainfall recorded per hour in a Cloudburst event?","options":[{"hi":"25 मिमी या अधिक","en":"25 mm or more"},{"hi":"50 मिमी या अधिक","en":"50 mm or more"},{"hi":"75 मिमी या अधिक","en":"75 mm or more"},{"hi":"100 मिमी या अधिक","en":"100 mm or more"}],"answer":3,"explanation_hi":"किसी छोटे क्षेत्र में बहुत कम समय में 100 मिमी या अधिक वर्षा प्रति घंटे होने की स्थिति को बादल फटना माना जाता है।","explanation_en":"A situation where 100 mm or more rainfall occurs per hour in a small area over a very short time is considered a cloudburst."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के व्यापक आपदा प्रबंधन अधिनियम को राष्ट्रपति की स्वीकृति किस तिथि को प्राप्त हुई थी?","question_en":"Question 14: On which date did the comprehensive Disaster Management Act of India receive the President's assent?","options":[{"hi":"26 जनवरी 2001","en":"26 January 2001"},{"hi":"9 अप्रैल 2005","en":"9 April 2005"},{"hi":"23 दिसंबर 2005","en":"23 December 2005"},{"hi":"29 मार्च 2025","en":"29 March 2025"}],"answer":2,"explanation_hi":"मूल आपदा प्रबंधन अधिनियम 2005 को 23 दिसंबर 2005 को राष्ट्रपति की औपचारिक स्वीकृति मिली थी।","explanation_en":"The original Disaster Management Act 2005 received the President's formal assent on 23 December 2005."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भूकंप के प्रभाव और मानव अनुभव को मापने के लिए किस पैमाने का उपयोग किया जाता है, जो I से XII तक होता है?","question_en":"Question 15: Which scale, ranging from I to XII, is used to measure the impact and human experience of an earthquake?","options":[{"hi":"मर्कैली पैमाना","en":"Mercalli Scale"},{"hi":"रिक्टर पैमाना","en":"Richter Scale"},{"hi":"मोमेंट मैग्नीट्यूड पैमाना","en":"Moment Magnitude Scale"},{"hi":"सफिर-सिम्पसन पैमाना","en":"Saffir-Simpson Scale"}],"answer":0,"explanation_hi":"रिक्टर पैमाना भूकंप की मुक्त ऊर्जा को मापता है, जबकि मर्कैली पैमाना (I से XII) मानव जीवन और भवनों पर पड़ने वाले प्रभाव या तीव्रता को मापता है।","explanation_en":"The Richter scale measures released earthquake energy, while the Mercalli scale (I to XII) measures the impact or intensity on human life and buildings."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय मौसम विज्ञान विभाग (IMD) के अनुसार सुपर साइक्लोनिक स्टॉर्म (Super Cyclonic Storm) में हवा की गति कितनी होती है?","question_en":"Question 16: According to the India Meteorological Department (IMD), what is the wind speed in a Super Cyclonic Storm?","options":[{"hi":"89 से 117 किमी/घंटा","en":"89 to 117 km/hr"},{"hi":"118 से 166 किमी/घंटा","en":"118 to 166 km/hr"},{"hi":"222 किमी/घंटा या अधिक","en":"222 km/hr or more"},{"hi":"167 से 221 किमी/घंटा","en":"167 to 221 km/hr"}],"answer":2,"explanation_hi":"IMD वर्गीकरण के अनुसार चक्रवात में हवा की गति 222 किमी/घंटा या उससे अधिक होने पर उसे सुपर साइक्लोनिक स्टॉर्म कहा जाता है।","explanation_en":"According to the IMD classification, when the wind speed in a cyclone reaches 222 km/hr or more, it is called a Super Cyclonic Storm."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: एपिडेमिक (Epidemic) किसी विशिष्ट क्षेत्र या देश में रोग का असामान्य फैलाव है।\nकथन 2: पैन्डेमिक (Pandemic) केवल पशुओं में फैलने वाली बीमारी को कहते हैं।","question_en":"Question 17: Consider the following statements:\nStatement 1: Epidemic is an abnormal spread of disease in a specific region or country.\nStatement 2: Pandemic refers only to a disease spreading among animals.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों","en":"Both"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"None"}],"answer":0,"explanation_hi":"एपिडेमिक क्षेत्रीय फैलाव है, जबकि पैन्डेमिक कई देशों या महाद्वीपों में फैलने वाली वैश्विक महामारी है; पशुओं से मानव में आने वाला रोग ज़ूनोटिक कहलाता है।","explanation_en":"Epidemic is a regional spread, while Pandemic is a global outbreak spreading across multiple countries or continents; a disease jumping from animals to humans is called Zoonotic."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का लगभग कितना प्रतिशत कृषि योग्य क्षेत्र सूखा जोखिम से प्रभावित हो सकता है?","question_en":"Question 18: Approximately what percentage of India's cultivable area can be affected by drought risk?","options":[{"hi":"12 प्रतिशत","en":"12 percent"},{"hi":"40 प्रतिशत","en":"40 percent"},{"hi":"58.6 प्रतिशत","en":"58.6 percent"},{"hi":"68 प्रतिशत","en":"68 percent"}],"answer":3,"explanation_hi":"भारत के आपदा जोखिम प्रोफाइल के अनुसार देश का लगभग 68% कृषि या कृषियोग्य क्षेत्र सूखे के जोखिम के प्रति संवेदनशील है।","explanation_en":"According to India's disaster risk profile, about 68% of the country's agricultural or cultivable area is vulnerable to drought risk."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2023 में सिक्किम में आई अचानक विनाशकारी बाढ़ (GLOF) मुख्य रूप से किस झील के टूटने के कारण आई थी?","question_en":"Question 19: The devastating flash flood (GLOF) in Sikkim in 2023 was primarily caused by the outburst of which lake?","options":[{"hi":"चोलामू झील","en":"Cholamu Lake"},{"hi":"दक्षिण ल्होनक झील","en":"South Lhonak Lake"},{"hi":"त्सोमगो झील","en":"Tsomgo Lake"},{"hi":"गुरुडोंगमार झील","en":"Gurudongmar Lake"}],"answer":1,"explanation_hi":"अक्टूबर 2023 में सिक्किम में दक्षिण ल्होनक हिमानी झील के टूटने से तीस्ता नदी में भारी जलराशि आ गई थी जिसे GLOF कहा जाता है।","explanation_en":"In October 2023, the outburst of the South Lhonak glacial lake in Sikkim released a massive volume of water into the Teesta River, known as GLOF."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में हिमस्खलन पूर्वानुमान के लिए उत्तरदायी प्रमुख संस्था DGRE (पूर्व में SASE) कहाँ स्थित है?","question_en":"Question 20: Where is DGRE (formerly SASE), the nodal agency responsible for avalanche forecasting in India, located?","options":[{"hi":"देहरादून","en":"Dehradun"},{"hi":"शिमला","en":"Shimla"},{"hi":"चंडीगढ़","en":"Chandigarh"},{"hi":"श्रीनगर","en":"Srinagar"}],"answer":2,"explanation_hi":"रक्षा अनुसंधान एवं विकास संगठन (DRDO) के अधीन काम करने वाली संस्था DGRE का मुख्यालय चंडीगढ़ में स्थित है, जो हिमस्खलन पूर्वानुमान से जुड़ी है।","explanation_en":"DGRE, an institution working under the Defence Research and Development Organisation (DRDO), is headquartered in Chandigarh and is associated with avalanche forecasting."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सेन्दाई फ्रेमवर्क (2015-2030) के अंतर्गत आपदा जोखिम न्यूनीकरण के लिए कितनी प्राथमिकताएं और लक्ष्य निर्धारित किए गए हैं?","question_en":"Question 21: How many priorities and targets have been set for disaster risk reduction under the Sendai Framework (2015-2030)?","options":[{"hi":"4 प्राथमिकताएं, 7 लक्ष्य","en":"4 Priorities, 7 Targets"},{"hi":"7 प्राथमिकताएं, 4 लक्ष्य","en":"7 Priorities, 4 Targets"},{"hi":"5 प्राथमिकताएं, 10 लक्ष्य","en":"5 Priorities, 10 Targets"},{"hi":"3 प्राथमिकताएं, 5 लक्ष्य","en":"3 Priorities, 5 Targets"}],"answer":0,"explanation_hi":"जापान में अपनाए गए सेन्दाई फ्रेमवर्क में वैश्विक स्तर पर प्रत्यास्थता और आपदा जोखिम को कम करने के लिए 4 प्राथमिकताएं और 7 लक्ष्य निर्धारित किए गए हैं।","explanation_en":"The Sendai Framework, adopted in Japan, sets 4 priorities and 7 targets to reduce disaster risk and build resilience globally."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय आपदा प्रबंधन संस्थान (NIDM) की स्थापना आपदा प्रबंधन अधिनियम 2005 की किस धारा के तहत की गई है?","question_en":"Question 22: Under which section of the Disaster Management Act 2005 is the National Institute of Disaster Management (NIDM) established?","options":[{"hi":"धारा 25","en":"Section 25"},{"hi":"धारा 42","en":"Section 42"},{"hi":"धारा 44","en":"Section 44"},{"hi":"धारा 46","en":"Section 46"}],"answer":1,"explanation_hi":"अधिनियम की धारा 42 के तहत NIDM की स्थापना प्रशिक्षण, शोध और क्षमता निर्माण के लिए की गई है, जबकि धारा 44 NDRF बल से संबंधित है।","explanation_en":"Under Section 42 of the Act, NIDM is established for training, research, and capacity building, whereas Section 44 relates to the NDRF force."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से किस नदी को ऐतिहासिक रूप से \"बंगाल का शोक\" कहा जाता था?","question_en":"Question 23: Which of the following rivers was historically called the \"Sorrow of Bengal\"?","options":[{"hi":"कोसी","en":"Kosi"},{"hi":"महानदी","en":"Mahanadi"},{"hi":"घाघरा","en":"Ghaghara"},{"hi":"दामोदर","en":"Damodar"}],"answer":3,"explanation_hi":"नदी मार्ग बदलने और भारी विनाश के कारण कोसी को 'बिहार का शोक' और दामोदर को 'बंगाल का शोक' कहा जाता था।","explanation_en":"Due to changing courses and massive destruction, Kosi was called the 'Sorrow of Bihar' and Damodar the 'Sorrow of Bengal'."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के भूकंपीय जोन के वर्गीकरण में सबसे अधिक जोखिम वाला जोन कौन सा है?","question_en":"Question 24: Which is the highest risk zone in the classification of seismic zones in India?","options":[{"hi":"जोन V (Zone V)","en":"Zone V"},{"hi":"जोन I (Zone I)","en":"Zone I"},{"hi":"जोन IV (Zone IV)","en":"Zone IV"},{"hi":"जोन X (Zone X)","en":"Zone X"}],"answer":0,"explanation_hi":"भारत में वर्तमान में चार सक्रिय भूकंपीय जोन (II, III, IV और V) हैं, जिनमें जोन V (पूर्वोत्तर, लद्दाख, कच्छ आदि) सर्वाधिक संवेदनशील और उच्चतम जोखिम वाला है।","explanation_en":"Currently, there are four active seismic zones in India (II, III, IV, and V), among which Zone V (Northeast, Ladakh, Kutch, etc.) is the most vulnerable and highest risk zone."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आपदा चेतावनी प्रणाली में उपयोग किए जाने वाले शब्द 'CAP' का पूर्ण रूप क्या है?","question_en":"Question 25: What is the full form of the term 'CAP' used in the disaster warning system?","options":[{"hi":"सेंट्रल अलर्ट प्रोग्राम","en":"Central Alert Program"},{"hi":"कोस्टल असेसमेंट प्रोटोकॉल","en":"Coastal Assessment Protocol"},{"hi":"कॉमन अलर्टिंग प्रोटोकॉल","en":"Common Alerting Protocol"},{"hi":"कम्युनिटी एक्शन प्लान","en":"Community Action Plan"}],"answer":2,"explanation_hi":"CAP (Common Alerting Protocol) एक समान चेतावनी संदेश प्रणाली है, जो मोबाइल, रेडियो और टीवी पर भौगोलिक रूप से लक्षित (geo-targeted) अलर्ट भेजती है।","explanation_en":"CAP (Common Alerting Protocol) is a uniform alert message system that sends geo-targeted alerts across mobile, radio, and TV."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में भूस्खलन अध्ययन और संवेदनशीलता मानचित्रण के लिए प्रमुख रूप से कौन सी संस्था उत्तरदायी है?","question_en":"Question 26: Which institution is primarily responsible for landslide studies and susceptibility mapping in India?","options":[{"hi":"राष्ट्रीय भूकंप विज्ञान केंद्र (NCS)","en":"National Center for Seismology (NCS)"},{"hi":"भारतीय मौसम विज्ञान विभाग (IMD)","en":"India Meteorological Department (IMD)"},{"hi":"केंद्रीय जल आयोग (CWC)","en":"Central Water Commission (CWC)"},{"hi":"भारतीय भूवैज्ञानिक सर्वेक्षण (GSI)","en":"Geological Survey of India (GSI)"}],"answer":3,"explanation_hi":"भूकंप की निगरानी NCS करता है, जबकि भूस्खलन एवं भूवैज्ञानिक अध्ययनों का कार्य मुख्य रूप से GSI (भारतीय भूवैज्ञानिक सर्वेक्षण) द्वारा किया जाता है।","explanation_en":"Earthquake monitoring is done by NCS, while landslide and geological studies are primarily conducted by GSI (Geological Survey of India)."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: राष्ट्रीय आपदा शमन कोष (NDMF) का उपयोग आपदा से पहले जोखिम घटाने के कार्यों के लिए किया जाता है।\nकथन 2: एनडीआरएफ कोष (NDRF Fund) का मुख्य उद्देश्य राज्य सरकारों को दीर्घकालिक पुनर्निर्माण सहायता देना है।","question_en":"Question 27: Consider the following statements:\nStatement 1: The National Disaster Mitigation Fund (NDMF) is used for risk reduction works before a disaster.\nStatement 2: The primary purpose of the NDRF Fund is to provide long-term reconstruction assistance to state governments.","options":[{"hi":"दोनों","en":"Both"},{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"कोई नहीं","en":"None"}],"answer":2,"explanation_hi":"NDMF शमन कार्यों (पूर्व-आपदा) के लिए है। NDRF कोष गंभीर आपदा में राज्य के SDRF को तत्काल सहायता प्रदान करता है, यह दीर्घकालिक पुनर्निर्माण के लिए नहीं है।","explanation_en":"NDMF is for mitigation (pre-disaster). The NDRF fund provides immediate assistance to the state's SDRF during severe disasters; it is not for long-term reconstruction."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जिला आपदा प्रबंधन प्राधिकरण (DDMA) का पदेन अध्यक्ष कौन होता है?","question_en":"Question 28: Who is the ex-officio chairperson of the District Disaster Management Authority (DDMA)?","options":[{"hi":"मुख्य चिकित्सा अधिकारी (CMO)","en":"Chief Medical Officer (CMO)"},{"hi":"जिलाधिकारी/कलेक्टर (DM/Collector)","en":"District Magistrate/Collector (DM/Collector)"},{"hi":"पुलिस अधीक्षक (SP)","en":"Superintendent of Police (SP)"},{"hi":"जिला पंचायत अध्यक्ष","en":"Zila Panchayat President"}],"answer":1,"explanation_hi":"अधिनियम की धारा 25 के अनुसार DDMA का अध्यक्ष जिलाधिकारी (कलेक्टर) होता है, जबकि जिला पंचायत या जिला परिषद अध्यक्ष इसका सह-अध्यक्ष होता है।","explanation_en":"As per Section 25 of the Act, the District Magistrate (Collector) is the chairperson of DDMA, while the Zila Panchayat or Parishad President acts as its co-chairperson."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आपदा जोखिम न्यूनीकरण (DRR) से संबंधित 'योकोहामा रणनीति' (Yokohama Strategy) किस वर्ष अपनाई गई थी?","question_en":"Question 29: In which year was the 'Yokohama Strategy' related to Disaster Risk Reduction (DRR) adopted?","options":[{"hi":"1994","en":"1994"},{"hi":"2005","en":"2005"},{"hi":"1984","en":"1984"},{"hi":"2015","en":"2015"}],"answer":0,"explanation_hi":"योकोहामा रणनीति DRR का प्रारंभिक वैश्विक ढांचा था जिसे 1994 में जापान में अपनाया गया था, जिसके बाद 2005 में ह्योगो फ्रेमवर्क आया।","explanation_en":"The Yokohama Strategy was the initial global framework for DRR adopted in Japan in 1994, which was followed by the Hyogo Framework in 2005."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'आपदा मित्र' योजना के तहत 350 बहु-आपदा-प्रवण जिलों में कितने प्रशिक्षित स्वयंसेवक तैयार करने का लक्ष्य है?","question_en":"Question 30: Under the 'Aapda Mitra' scheme, what is the target number of trained volunteers to be prepared in 350 multi-disaster-prone districts?","options":[{"hi":"50,000","en":"50,000"},{"hi":"1,00,000","en":"1,00,000"},{"hi":"5,00,000","en":"5,00,000"},{"hi":"10,00,000","en":"10,00,000"}],"answer":1,"explanation_hi":"NDMA की समुदाय-आधारित इस पहल का लक्ष्य देश भर के 350 जिलों में प्रथम अनुक्रियाकर्ता के रूप में 1,00,000 प्रशिक्षित स्वयंसेवक तैयार करना है।","explanation_en":"The goal of this community-based initiative by NDMA is to prepare 1,00,000 trained volunteers as first responders across 350 districts in the country."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भूकंप के दौरान सतह पर मौजूद वह बिंदु जो उद्गम केंद्र के ठीक ऊपर होता है, अधिकेंद्र (Epicenter) कहलाता है।\nकथन 2: उद्गम केंद्र (Focus) वह बिंदु है जहाँ पृथ्वी के अंदर ऊर्जा मुक्त होती है।","question_en":"Question 31: Consider the following statements:\nStatement 1: The point on the surface directly above the focus during an earthquake is called the Epicenter.\nStatement 2: The Focus is the point where energy is released inside the Earth.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"None"},{"hi":"दोनों","en":"Both"}],"answer":3,"explanation_hi":"भूकंप की ऊर्जा पृथ्वी के भीतर जिस बिंदु से उत्पन्न होती है उसे उद्गम केंद्र (Focus) कहते हैं और सतह पर ठीक उसके ऊपर का बिंदु अधिकेंद्र (Epicenter) कहलाता है।","explanation_en":"The point inside the Earth where earthquake energy generates is called the Focus, and the point on the surface directly above it is the Epicenter."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में परमाणु सुरक्षा नियमों को लागू करने वाली महत्वपूर्ण संस्था 'AERB' का मुख्यालय कहाँ स्थित है?","question_en":"Question 32: Where is the headquarters of 'AERB', the crucial institution enforcing nuclear safety regulations in India, located?","options":[{"hi":"मुंबई","en":"Mumbai"},{"hi":"नई दिल्ली","en":"New Delhi"},{"hi":"चेन्नई","en":"Chennai"},{"hi":"हैदराबाद","en":"Hyderabad"}],"answer":0,"explanation_hi":"परमाणु सुरक्षा नियमन से जुड़ी शीर्ष संस्था परमाणु ऊर्जा नियामक बोर्ड (AERB) का मुख्यालय मुंबई में स्थित है।","explanation_en":"The Atomic Energy Regulatory Board (AERB), the apex institution related to nuclear safety regulation, is headquartered in Mumbai."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निपाह (Nipah) और रेबीज़ (Rabies) जैसी बीमारियां जो पशुओं से मनुष्यों में फैलती हैं, किस श्रेणी में आती हैं?","question_en":"Question 33: Diseases like Nipah and Rabies that spread from animals to humans fall under which category?","options":[{"hi":"जल-जनित रोग","en":"Water-borne disease"},{"hi":"रेडियोलॉजिकल रोग","en":"Radiological disease"},{"hi":"ज़ूनोटिक रोग","en":"Zoonotic disease"},{"hi":"अनुवांशिक रोग","en":"Genetic disease"}],"answer":2,"explanation_hi":"वे रोग या संक्रमण जो प्राकृतिक रूप से पशुओं से मनुष्यों में संचारित होते हैं, ज़ूनोटिक रोग (Zoonotic disease) कहलाते हैं।","explanation_en":"Diseases or infections that are naturally transmitted from animals to humans are known as Zoonotic diseases."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उष्णकटिबंधीय चक्रवातों को ऑस्ट्रेलिया के क्षेत्र में किस स्थानीय नाम से जाना जाता है?","question_en":"Question 34: By what local name are tropical cyclones known in the Australian region?","options":[{"hi":"हरिकेन","en":"Hurricane"},{"hi":"टाइफून","en":"Typhoon"},{"hi":"बवंडर","en":"Tornado"},{"hi":"विली-विलीज","en":"Willy-willies"}],"answer":3,"explanation_hi":"चक्रवातों को हिंद महासागर में चक्रवात, अटलांटिक महासागर में हरिकेन, पश्चिमी प्रशांत क्षेत्र में टाइफून और ऑस्ट्रेलिया में विली-विलीज कहा जाता है।","explanation_en":"Cyclones are called Cyclones in the Indian Ocean, Hurricanes in the Atlantic, Typhoons in the Western Pacific, and Willy-willies in Australia."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस वर्ष के 'ओडिशा सुपर चक्रवात' को भारत में आपदा प्रबंधन सुधारों का टर्निंग पॉइंट (Turning Point) माना जाता है?","question_en":"Question 35: The 'Odisha Super Cyclone' of which year is considered the turning point for disaster management reforms in India?","options":[{"hi":"1970","en":"1970"},{"hi":"1999","en":"1999"},{"hi":"2013","en":"2013"},{"hi":"2020","en":"2020"}],"answer":1,"explanation_hi":"1999 के ओडिशा सुपर चक्रवात में लगभग 10,000 लोगों की मृत्यु हुई थी, जिसने भारत को प्रतिक्रिया-आधारित दृष्टिकोण से तैयारी-आधारित दृष्टिकोण की ओर मोड़ा।","explanation_en":"The 1999 Odisha Super Cyclone caused approximately 10,000 deaths, shifting India from a response-based approach to a preparedness-based approach."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में उपग्रह-आधारित वनाग्नि अलर्ट (Fire Alert) और उसकी निगरानी के लिए कौन सी संस्था मुख्य रूप से उत्तरदायी है?","question_en":"Question 36: Which institution is primarily responsible for satellite-based forest fire alerts and monitoring in India?","options":[{"hi":"भारतीय वन सर्वेक्षण (FSI) देहरादून","en":"Forest Survey of India (FSI) Dehradun"},{"hi":"राष्ट्रीय आपदा प्रबंधन प्राधिकरण (NDMA)","en":"National Disaster Management Authority (NDMA)"},{"hi":"कृषि अनुसंधान परिषद (ICAR)","en":"Council of Agricultural Research (ICAR)"},{"hi":"केंद्रीय जल आयोग (CWC)","en":"Central Water Commission (CWC)"}],"answer":0,"explanation_hi":"देहरादून स्थित भारतीय वन सर्वेक्षण (FSI) उपग्रह तकनीकों (MODIS और SNPP-VIIRS) के माध्यम से वनाग्नि की निगरानी और अलर्ट जारी करता है।","explanation_en":"The Forest Survey of India (FSI) located in Dehradun monitors and issues forest fire alerts through satellite technologies (MODIS and SNPP-VIIRS)."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में वज्रपात (Lightning) की पूर्व चेतावनी देने के लिए विशेष रूप से कौन सा मोबाइल ऐप विकसित किया गया है?","question_en":"Question 37: Which mobile app has been specifically developed to provide early warning of lightning strikes in India?","options":[{"hi":"सचेत ऐप","en":"Sachet App"},{"hi":"मेघदूत ऐप","en":"Meghdoot App"},{"hi":"दामिनी ऐप","en":"Damini App"},{"hi":"मौसम ऐप","en":"Mausam App"}],"answer":2,"explanation_hi":"वज्रपात या बिजली गिरने के संबंध में स्थानीय स्तर पर पूर्व चेतावनी और सुरक्षित व्यवहार की जानकारी प्रदान करने के लिए 'दामिनी ऐप' विकसित किया गया है।","explanation_en":"'Damini App' has been developed to provide local-level early warnings and safe behavioral information regarding lightning strikes."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2025 के आपदा प्रबंधन संशोधन के अनुसार जोखिम आकलन और वास्तविक समय सूचना के लिए किस नई प्रणाली की शुरुआत की गई है?","question_en":"Question 38: According to the Disaster Management Amendment of 2025, which new system has been introduced for risk assessment and real-time information?","options":[{"hi":"राष्ट्रीय आपदा डाटाबेस","en":"National Disaster Database"},{"hi":"आपदा राहत कोष","en":"Disaster Relief Fund"},{"hi":"राष्ट्रीय चेतावनी केंद्र","en":"National Warning Center"},{"hi":"त्वरित कार्यवाही बल","en":"Rapid Action Force"}],"answer":0,"explanation_hi":"2025 के संशोधन में राष्ट्रीय और राज्य स्तर पर एक 'राष्ट्रीय आपदा डाटाबेस' का वैधानिक प्रावधान है, जो योजना और जोखिम आकलन में मदद करेगा।","explanation_en":"The 2025 amendment has a statutory provision for a 'National Disaster Database' at national and state levels to assist in planning and risk assessment."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के आपदा जोखिम प्रोफाइल के अनुसार देश की लगभग कितनी प्रतिशत भूमि मध्यम से बहुत उच्च तीव्रता के भूकंप के प्रति संवेदनशील है?","question_en":"Question 39: According to India's disaster risk profile, approximately what percentage of the country's landmass is vulnerable to moderate to very high-intensity earthquakes?","options":[{"hi":"12 प्रतिशत","en":"12 percent"},{"hi":"25.4 प्रतिशत","en":"25.4 percent"},{"hi":"45.2 प्रतिशत","en":"45.2 percent"},{"hi":"58.6 प्रतिशत","en":"58.6 percent"}],"answer":3,"explanation_hi":"भारत का लगभग 58.6% भूभाग भूकंपीय रूप से सक्रिय है, जिसमें हिमालयी पट्टी और पूर्वोत्तर क्षेत्र सर्वाधिक खतरे वाले ज़ोन V में आते हैं।","explanation_en":"Approximately 58.6% of India's landmass is seismically active, with the Himalayan belt and Northeast region falling in the highest risk Zone V."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आपदा के बाद घर, सड़क, बिजली, स्कूल और आजीविका को फिर से सामान्य स्थिति में लाना आपदा प्रबंधन चक्र का कौन सा चरण है?","question_en":"Question 40: Restoring homes, roads, electricity, schools, and livelihoods to normal status after a disaster belongs to which phase of the disaster management cycle?","options":[{"hi":"प्रतिक्रिया (Response)","en":"Response"},{"hi":"पुनर्प्राप्ति (Recovery)","en":"Recovery"},{"hi":"शमन (Mitigation)","en":"Mitigation"},{"hi":"तैयारी (Preparedness)","en":"Preparedness"}],"answer":1,"explanation_hi":"जब आपदा के बाद तत्काल खोज-बचाव (प्रतिक्रिया) का कार्य समाप्त हो जाता है, तब समाज को वापस सामान्य जीवन में लौटाने की प्रक्रिया 'पुनर्प्राप्ति' कहलाती है।","explanation_en":"Once the immediate search and rescue (response) post-disaster ends, the process of bringing society back to normal life is called 'Recovery'."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: खाली मैदान में आने वाला भूकंप केवल एक भूवैज्ञानिक खतरा (Hazard) है।\nकथन 2: जब कोई खतरा किसी कमजोर आबादी और संपत्ति को भारी नुकसान पहुँचाता है, तब वह आपदा (Disaster) बन जाता है।","question_en":"Question 41: Consider the following statements:\nStatement 1: An earthquake occurring in an empty field is merely a geological Hazard.\nStatement 2: When a hazard causes massive damage to a vulnerable population and property, it becomes a Disaster.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"None"}],"answer":2,"explanation_hi":"खतरा (Hazard) अपने आप में आपदा नहीं है; यह आपदा तब बनता है जब इसका सामना असुरक्षित आबादी (Exposure) और संरचनात्मक कमज़ोरी (Vulnerability) से होता है।","explanation_en":"A hazard itself is not a disaster; it becomes a disaster when it interacts with an unprotected population (Exposure) and structural weakness (Vulnerability)."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गंभीर राष्ट्रीय प्रभाव वाली आपदा के दौरान समन्वय स्थापित करने वाली 'राष्ट्रीय संकट प्रबंधन समिति' (NCMC) का अध्यक्ष कौन होता है?","question_en":"Question 42: Who chairs the 'National Crisis Management Committee' (NCMC) that coordinates during a disaster with severe national impact?","options":[{"hi":"प्रधानमंत्री","en":"Prime Minister"},{"hi":"गृह सचिव","en":"Home Secretary"},{"hi":"केंद्रीय गृह मंत्री","en":"Union Home Minister"},{"hi":"कैबिनेट सचिव","en":"Cabinet Secretary"}],"answer":3,"explanation_hi":"गंभीर आपदाओं में राष्ट्रीय स्तर पर समन्वय का कार्य NCMC करती है जिसके अध्यक्ष कैबिनेट सचिव होते हैं (2025 संशोधन द्वारा इसे वैधानिक आधार भी मिला है)।","explanation_en":"In severe disasters, national-level coordination is handled by NCMC, chaired by the Cabinet Secretary (granted statutory basis via the 2025 amendment)."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सेन्दाई फ्रेमवर्क के कार्यान्वयन से जुड़ी प्रमुख संस्था 'UNDRR' का मुख्यालय कहाँ स्थित है?","question_en":"Question 43: Where is the headquarters of 'UNDRR', the premier institution associated with the implementation of the Sendai Framework, located?","options":[{"hi":"पेरिस","en":"Paris"},{"hi":"जिनेवा","en":"Geneva"},{"hi":"न्यूयॉर्क","en":"New York"},{"hi":"नैरोबी","en":"Nairobi"}],"answer":1,"explanation_hi":"UNDRR (United Nations Office for Disaster Risk Reduction), जिसका पुराना नाम UNISDR था, जिनेवा (स्विट्जरलैंड) में स्थित है।","explanation_en":"UNDRR (United Nations Office for Disaster Risk Reduction), formerly known as UNISDR, is located in Geneva (Switzerland)."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के आपदा मानचित्र के अनुसार राज्य का कौन सा क्षेत्र 'सूखा' (Drought) के लिए सर्वाधिक संवेदनशील है?","question_en":"Question 44: According to the disaster map of Uttar Pradesh, which region of the state is most vulnerable to 'Drought'?","options":[{"hi":"बुंदेलखंड और विंध्य क्षेत्र","en":"Bundelkhand and Vindhya region"},{"hi":"तराई क्षेत्र","en":"Tarai region"},{"hi":"पूर्वांचल","en":"Purvanchal"},{"hi":"गंगा-घाघरा दोआब","en":"Ganga-Ghaghara Doab"}],"answer":0,"explanation_hi":"उत्तर प्रदेश में जहाँ पूर्वांचल और तराई क्षेत्र मुख्य रूप से बाढ़ के लिए जाने जाते हैं, वहीं बुंदेलखंड और विंध्य क्षेत्र पानी की कमी और सूखे से प्रभावित रहते हैं।","explanation_en":"In Uttar Pradesh, while Purvanchal and the Tarai region are primarily known for floods, the Bundelkhand and Vindhya regions remain affected by water scarcity and drought."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सुनामी के निर्माण का सबसे प्रमुख कारण क्या होता है?","question_en":"Question 45: What is the most prominent cause for the generation of a tsunami?","options":[{"hi":"समुद्र की सतह पर तेज हवाएं","en":"Strong winds on the ocean surface"},{"hi":"समुद्र के भीतर भूकंप या ज्वालामुखी विस्फोट","en":"Submarine earthquakes or volcanic eruptions"},{"hi":"चंद्र और सूर्य का गुरुत्वाकर्षण बल","en":"Gravitational force of the moon and sun"},{"hi":"ग्लोबल वार्मिंग से समुद्र का जलस्तर बढ़ना","en":"Sea level rise due to global warming"}],"answer":1,"explanation_hi":"सुनामी विशाल समुद्री लहरें हैं जो मुख्य रूप से समुद्र के तल में आने वाले तीव्र भूकंप, ज्वालामुखी विस्फोट या बड़े भूस्खलन के कारण पानी के विस्थापन से बनती हैं।","explanation_en":"Tsunamis are massive sea waves primarily generated by the displacement of water due to severe submarine earthquakes, volcanic eruptions, or large landslides."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आपदा प्रबंधन (संशोधन) अधिनियम 2025 में राज्यों को किस विशेष बल के गठन के लिए स्पष्ट सक्षम प्रावधान दिए गए हैं?","question_en":"Question 46: The Disaster Management (Amendment) Act 2025 provides clear enabling provisions to the states for the constitution of which specific force?","options":[{"hi":"राज्य तटीय रक्षक बल","en":"State Coastal Guard Force"},{"hi":"शहरी आपदा प्रतिक्रिया बल","en":"Urban Disaster Response Force"},{"hi":"राज्य आपदा प्रतिक्रिया बल (SDRF)","en":"State Disaster Response Force (SDRF)"},{"hi":"राज्य अग्निशमन और बचाव बल","en":"State Fire and Rescue Force"}],"answer":2,"explanation_hi":"2025 का संशोधन अधिनियम राज्यों को राष्ट्रीय आपदा मोचन बल (NDRF) की तर्ज पर स्वयं के SDRF बल स्थापित करने और विनियमित करने का वैधानिक अधिकार स्पष्ट करता है।","explanation_en":"The 2025 amendment act clearly clarifies the statutory right of the states to establish and regulate their own SDRF forces on the lines of the National Disaster Response Force (NDRF)."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व स्वास्थ्य संगठन (WHO) ने 14 अगस्त 2024 को किस बीमारी के उभार को दोबारा 'PHEIC' (अंतरराष्ट्रीय चिंता का सार्वजनिक स्वास्थ्य आपातकाल) घोषित किया?","question_en":"Question 47: The resurgence of which disease was re-declared as a 'PHEIC' (Public Health Emergency of International Concern) by the WHO on 14 August 2024?","options":[{"hi":"कोविड-19","en":"COVID-19"},{"hi":"इबोला","en":"Ebola"},{"hi":"जीका वायरस","en":"Zika Virus"},{"hi":"एमपॉक्स (Mpox)","en":"Mpox"}],"answer":3,"explanation_hi":"WHO ने पहले 2022 में एमपॉक्स को PHEIC घोषित किया था और फिर अगस्त 2024 में इसके नए उभार के कारण इसे दोबारा अंतरराष्ट्रीय आपातकाल घोषित किया।","explanation_en":"The WHO previously declared Mpox a PHEIC in 2022 and then re-declared it an international emergency in August 2024 due to its resurgence."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: आपदा प्रबंधन अधिनियम की धारा 44 के तहत राष्ट्रीय आपदा मोचन बल (NDRF) का गठन किया गया है।\nकथन 2: NDRF का आदर्श वाक्य \"सेवा परमो धर्म:\" है।","question_en":"Question 48: Consider the following statements:\nStatement 1: The National Disaster Response Force (NDRF) is constituted under Section 44 of the DM Act.\nStatement 2: The motto of NDRF is \"Seva Paramo Dharma:\".","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"None"}],"answer":0,"explanation_hi":"NDRF का गठन धारा 44 के तहत हुआ है, लेकिन इसका आदर्श वाक्य \"आपदा सेवा सदैव सर्वत्र\" है, न कि \"सेवा परमो धर्म:\"।","explanation_en":"NDRF is constituted under Section 44, but its motto is \"Aapda Seva Sadaiv Sarvatra\", not \"Seva Paramo Dharma:\"."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में आधिकारिक बाढ़ पूर्वानुमान (Flood Forecasting) जारी करने वाली प्रमुख राष्ट्रीय संस्था कौन सी है?","question_en":"Question 49: Which is the primary national institution that issues official Flood Forecasting in India?","options":[{"hi":"भारतीय मौसम विज्ञान विभाग (IMD)","en":"India Meteorological Department (IMD)"},{"hi":"केंद्रीय जल आयोग (CWC)","en":"Central Water Commission (CWC)"},{"hi":"भारतीय राष्ट्रीय महासागर सूचना सेवा केंद्र (INCOIS)","en":"Indian National Centre for Ocean Information Services (INCOIS)"},{"hi":"राष्ट्रीय आपदा प्रबंधन प्राधिकरण (NDMA)","en":"National Disaster Management Authority (NDMA)"}],"answer":1,"explanation_hi":"नई दिल्ली स्थित केंद्रीय जल आयोग (CWC) नदियों के जलस्तर की निगरानी और आधिकारिक रूप से बाढ़ का पूर्वानुमान जारी करने के लिए उत्तरदायी है।","explanation_en":"The Central Water Commission (CWC) based in New Delhi is responsible for monitoring river water levels and officially issuing flood forecasts."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आपदा प्रबंधन अधिनियम 2005 की किस धारा के अंतर्गत 'NDRF कोष' (National Disaster Response Fund) का प्रावधान किया गया है?","question_en":"Question 50: Under which section of the Disaster Management Act 2005 is the 'NDRF Fund' (National Disaster Response Fund) provisioned?","options":[{"hi":"धारा 14","en":"Section 14"},{"hi":"धारा 25","en":"Section 25"},{"hi":"धारा 46","en":"Section 46"},{"hi":"धारा 48","en":"Section 48"}],"answer":2,"explanation_hi":"अधिनियम की धारा 46 में NDRF कोष का प्रावधान है जो गंभीर आपदाओं में राज्यों के SDRF को तत्काल सहायता या पूरक राशि उपलब्ध कराता है।","explanation_en":"Section 46 of the Act provisions the NDRF fund which provides immediate or supplementary assistance to the states' SDRF during severe disasters."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
