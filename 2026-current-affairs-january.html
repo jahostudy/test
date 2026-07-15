@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"CURRENT AFFAIRS • January - june","highlight":"January","shortTitle":"CURRENT AFFAIRS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • January - june","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-current-affairs-january-june-current-affairs-20260715-ly5cl","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-15","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"असम के सोनितपुर जिले में स्थित 'बोरजुली साइट' को किस फसल की जंगली प्रजाति के संरक्षण के लिए 'बायोडायवर्सिटी हेरिटेज साइट' घोषित किया गया है?","question_en":"Question 1: For the conservation of the wild species of which crop has the 'Borjuli Site' in Sonitpur district of Assam been declared a 'Biodiversity Heritage Site'?","options":[{"hi":"चावल","en":"Rice"},{"hi":"गेहूं","en":"Wheat"},{"hi":"गन्ना","en":"Sugarcane"},{"hi":"मक्का","en":"Maize"}],"answer":0,"explanation_hi":"असम की बोरजुली साइट को जंगली चावल की प्रजाति (ओरिजा रूफिपोगोन) के इन-सीटू संरक्षण के लिए बायोडायवर्सिटी हेरिटेज साइट घोषित किया गया है।","explanation_en":"The Borjuli site in Assam has been declared a Biodiversity Heritage Site for the in-situ conservation of the wild rice species (Oryza rufipogon)."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हाल ही में किस राज्य सरकार ने अपने हर नागरिक के लिए 'वन स्टॉप मल्टीपर्पज यूनिफाइड कार्ड' शुरू करने का निर्देश दिया है?","question_en":"Question 2: Which state government has recently directed to launch a 'One Stop Multipurpose Unified Card' for every citizen?","options":[{"hi":"कर्नाटक","en":"Karnataka"},{"hi":"केरल","en":"Kerala"},{"hi":"तेलंगाना","en":"Telangana"},{"hi":"आंध्र प्रदेश","en":"Andhra Pradesh"}],"answer":2,"explanation_hi":"तेलंगाना सरकार ने राज्य के सभी नागरिकों को आवश्यक सरकारी सेवाएं एक ही स्थान पर सुगमता से प्रदान करने के लिए यह यूनिफाइड कार्ड शुरू किया है।","explanation_en":"The Telangana government has introduced this unified card to easily provide essential government services to all citizens of the state in one place."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: हाल ही में काजीरंगा नेशनल पार्क में 'बेबेसिया' संक्रमण से 8 शेर शावकों की मृत्यु हो गई।\nकथन 2: 'बेबेसिया' एक प्रकार का परजीवी संक्रमण है।","question_en":"Question 3: Consider the following statements:\nStatement 1: Recently 8 lion cubs died due to 'Babesia' infection in Kaziranga National Park.\nStatement 2: 'Babesia' is a type of parasitic infection.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"कथन 1 गलत है क्योंकि शेर शावकों की मृत्यु गुजरात के गिर नेशनल पार्क में हुई है। कथन 2 सही है क्योंकि बेबेसिया एक घातक परजीवी संक्रमण है।","explanation_en":"Statement 1 is incorrect because the death of lion cubs occurred in Gir National Park, Gujarat. Statement 2 is correct as Babesia is a deadly parasitic infection."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दुनिया की दूसरी और भारत की पहली सबसे बड़ी बैटरी ऊर्जा भंडारण प्रणाली (BESS) किस स्थान पर शुरू की गई है?","question_en":"Question 4: At which place has the world's second and India's first largest Battery Energy Storage System (BESS) been started?","options":[{"hi":"बीकानेर (राजस्थान)","en":"Bikaner (Rajasthan)"},{"hi":"कुर्नूल (आंध्र प्रदेश)","en":"Kurnool (Andhra Pradesh)"},{"hi":"रीवा (मध्य प्रदेश)","en":"Rewa (Madhya Pradesh)"},{"hi":"खावड़ा (गुजरात)","en":"Khavda (Gujarat)"}],"answer":3,"explanation_hi":"नवीकरणीय ऊर्जा के भंडारण के लिए चीन के बाद दुनिया की दूसरी सबसे बड़ी बैटरी ऊर्जा भंडारण प्रणाली गुजरात के कच्छ जिले के खावड़ा में शुरू की गई है।","explanation_en":"After China, the world's second largest battery energy storage system for renewable energy storage has been started in Khavda in Kutch district of Gujarat."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"शिक्षा मंत्रालय की रिपोर्ट के अनुसार, स्कूली बुनियादी ढांचे (Infrastructure) में श्रेष्ठ प्रदर्शन करने में देश का कौन सा राज्य शीर्ष पर है?","question_en":"Question 5: According to the Ministry of Education report, which state of the country is at the top in performing best in school infrastructure?","options":[{"hi":"पंजाब","en":"Punjab"},{"hi":"केरल","en":"Kerala"},{"hi":"तमिलनाडु","en":"Tamil Nadu"},{"hi":"हिमाचल प्रदेश","en":"Himachal Pradesh"}],"answer":0,"explanation_hi":"शिक्षा मंत्रालय की हालिया रिपोर्ट के अनुसार स्कूली शिक्षा और बेहतरीन बुनियादी ढांचे के मामले में पंजाब राज्य को देश में प्रथम स्थान प्राप्त हुआ है।","explanation_en":"According to the recent report of the Ministry of Education, the state of Punjab has secured the first position in the country in terms of school education and excellent infrastructure."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस राज्य सरकार ने ओलंपिक स्वर्ण पदक विजेताओं के लिए आठ करोड़ रुपये के नकद पुरस्कार और 'डीएसपी' स्तर की नौकरी देने की घोषणा की है?","question_en":"Question 6: Which state government has announced a cash prize of Rupees eight crore and a 'DSP' level job for Olympic gold medalists?","options":[{"hi":"हरियाणा","en":"Haryana"},{"hi":"पश्चिम बंगाल","en":"West Bengal"},{"hi":"पंजाब","en":"Punjab"},{"hi":"ओडिशा","en":"Odisha"}],"answer":1,"explanation_hi":"पश्चिम बंगाल की नवनिर्मित सरकार ने खेलों को बढ़ावा देने के लिए ओलंपिक में स्वर्ण पदक जीतने वाले खिलाड़ियों को यह विशाल पुरस्कार देने की घोषणा की है।","explanation_en":"To promote sports, the newly formed government of West Bengal has announced to give this huge award to the players winning gold medals in the Olympics."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सामाजिक न्याय और अधिकारिता मंत्रालय द्वारा शुरू किया गया 'पीएम-अजय' (PM-AJAY) पोर्टल मुख्य रूप से किससे संबंधित है?","question_en":"Question 7: The 'PM-AJAY' portal launched by the Ministry of Social Justice and Empowerment is primarily related to what?","options":[{"hi":"वरिष्ठ नागरिकों के लिए पेंशन","en":"Pension for senior citizens"},{"hi":"दिव्यांगजनों को उपकरण वितरण","en":"Distribution of equipment to Divyangjans"},{"hi":"अनुसूचित जाति अभ्युदय योजनाओं की निगरानी","en":"Monitoring of Scheduled Caste Abhyuday schemes"},{"hi":"अल्पसंख्यक छात्रों को छात्रवृत्ति","en":"Scholarship to minority students"}],"answer":2,"explanation_hi":"'पीएम-अजय' पोर्टल और मोबाइल ऐप को प्रधानमंत्री अनुसूचित जाति अभ्युदय योजनाओं की वास्तविक समय पर निगरानी करने के लिए लॉन्च किया गया है।","explanation_en":"The 'PM-AJAY' portal and mobile app have been launched for real-time monitoring of the Pradhan Mantri Scheduled Caste Abhyuday schemes."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हाल ही में वैज्ञानिकों ने किस राज्य के लिग्नाइट कोयला खदानों में दुर्लभ और सूक्ष्म सूरजमुखी के आकार का खनिज 'पायराइट' खोजा है?","question_en":"Question 8: Recently scientists have discovered a rare and microscopic sunflower-shaped mineral 'Pyrite' in the lignite coal mines of which state?","options":[{"hi":"तमिलनाडु","en":"Tamil Nadu"},{"hi":"राजस्थान","en":"Rajasthan"},{"hi":"पश्चिम बंगाल","en":"West Bengal"},{"hi":"गुजरात","en":"Gujarat"}],"answer":3,"explanation_hi":"शोधकर्ताओं ने गुजरात की खदानों में लिग्नाइट कोयले के भीतर सूक्ष्म सूरजमुखी के आकार के दुर्लभ 'पायराइट' खनिज की खोज की है।","explanation_en":"Researchers have discovered the rare microscopic sunflower-shaped 'Pyrite' mineral within lignite coal in the mines of Gujarat."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की पहली हाइड्रोजन ईंधन सेल बस सेवा किस शहर में व्यावसायिक रूप से शुरू की गई है?","question_en":"Question 9: In which city has India's first hydrogen fuel cell bus service been launched commercially?","options":[{"hi":"नई दिल्ली","en":"New Delhi"},{"hi":"मुंबई","en":"Mumbai"},{"hi":"पुणे","en":"Pune"},{"hi":"बेंगलुरु","en":"Bengaluru"}],"answer":0,"explanation_hi":"भारत की पहली हाइड्रोजन बस सेवा नई दिल्ली स्थित केंद्रीय सचिवालय क्षेत्र में शुरू की गई है, जो पर्यावरण अनुकूल सार्वजनिक परिवहन की दिशा में एक बड़ा कदम है।","explanation_en":"India's first hydrogen bus service has been started in the Central Secretariat area of New Delhi, which is a big step towards eco-friendly public transport."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: कल्पसर परियोजना खंभात की खाड़ी में एक विशाल बांध बनाने की योजना है।\nकथन 2: यह परियोजना गुजरात राज्य से संबंधित है।","question_en":"Question 10: Consider the following statements:\nStatement 1: Kalpasar project is a plan to build a huge dam in the Gulf of Khambhat.\nStatement 2: This project belongs to the state of Gujarat.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं। कल्पसर परियोजना गुजरात की एक प्रमुख जल संसाधन परियोजना है जिसमें खंभात की खाड़ी में बांध बनाकर सात नदियों के मीठे पानी का उपयोग किया जाएगा।","explanation_en":"Both statements are correct. Kalpasar project is a major water resource project of Gujarat in which sweet water of seven rivers will be utilized by building a dam in the Gulf of Khambhat."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के यूनिफाइड पेमेंट्स इंटरफेस (UPI) प्लेटफॉर्म को अपनाने वाला पहला कैरेबियाई देश कौन सा बन गया है?","question_en":"Question 11: Which has become the first Caribbean country to adopt India's Unified Payments Interface (UPI) platform?","options":[{"hi":"जमैका","en":"Jamaica"},{"hi":"त्रिनिदाद और टोबैगो","en":"Trinidad and Tobago"},{"hi":"बारबाडोस","en":"Barbados"},{"hi":"क्यूबा","en":"Cuba"}],"answer":1,"explanation_hi":"त्रिनिदाद और टोबैगो ने डिजिटल लेनदेन को बढ़ावा देने के लिए भारत के यूपीआई प्लेटफॉर्म को अपनाया है, जो कैरेबियाई क्षेत्र में भारत की पहली ऐसी साझेदारी है।","explanation_en":"Trinidad and Tobago has adopted India's UPI platform to promote digital transactions, making it India's first such partnership in the Caribbean region."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"यूनेस्को की 'विश्व धरोहर' की संभावित सूची में शामिल किया गया बौद्ध स्थलों का 'डायमंड ट्रायंगल' (हीरा त्रिकोण) किस राज्य में स्थित है?","question_en":"Question 12: In which state is the 'Diamond Triangle' of Buddhist sites, included in the tentative list of UNESCO's 'World Heritage', located?","options":[{"hi":"ओडिशा","en":"Odisha"},{"hi":"बिहार","en":"Bihar"},{"hi":"उत्तर प्रदेश","en":"Uttar Pradesh"},{"hi":"मध्य प्रदेश","en":"Madhya Pradesh"}],"answer":0,"explanation_hi":"ओडिशा के जाजपुर और कटक जिलों में स्थित प्राचीन रत्नागिरि, उदयगिरि और ललितगिरि बौद्ध स्थलों को संयुक्त रूप से 'डायमंड ट्रायंगल' कहा जाता है।","explanation_en":"Ancient Ratnagiri, Udayagiri and Lalitgiri Buddhist sites located in Jajpur and Cuttack districts of Odisha are jointly called the 'Diamond Triangle'."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व पर्यावरण दिवस के अवसर पर उत्तर प्रदेश के श्रावस्ती जिले में स्थित किस स्थल को 'बायोडायवर्सिटी हेरिटेज साइट' (BHS) घोषित किया गया है?","question_en":"Question 13: Which site located in Shravasti district of Uttar Pradesh has been declared a 'Biodiversity Heritage Site' (BHS) on the occasion of World Environment Day?","options":[{"hi":"शेखा झील","en":"Shekha Jheel"},{"hi":"पार्वती अरगा","en":"Parvati Arga"},{"hi":"केन नाला (गुलरा नाला)","en":"Ken Nala (Gulara Nala)"},{"hi":"सुरहा ताल","en":"Surha Taal"}],"answer":2,"explanation_hi":"उत्तर प्रदेश सरकार ने श्रावस्ती वन प्रभाग के भिनगा रेंज में स्थित गुलरा क्षेत्र के केन नाला को आधिकारिक रूप से जैव विविधता विरासत स्थल घोषित किया है।","explanation_en":"The Uttar Pradesh government has officially declared Ken Nala of Gulara area located in the Bhinga range of Shravasti forest division as a Biodiversity Heritage Site."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश का पहला 'तेंदुआ सफारी पार्क' (Leopard Safari Park) किस जिले में विकसित किया जा रहा है?","question_en":"Question 14: In which district is Uttar Pradesh's first 'Leopard Safari Park' being developed?","options":[{"hi":"लखीमपुर खीरी","en":"Lakhimpur Kheri"},{"hi":"बहराइच","en":"Bahraich"},{"hi":"बिजनौर","en":"Bijnor"},{"hi":"पीलीभीत","en":"Pilibhit"}],"answer":3,"explanation_hi":"उत्तर प्रदेश का पहला तेंदुआ सफारी पार्क पीलीभीत जिले के शाहजहांपुर सीमा से सटे गोपालपुर वन खंड में लगभग 1716 हेक्टेयर क्षेत्र में विकसित किया जा रहा है।","explanation_en":"Uttar Pradesh's first leopard safari park is being developed in the Gopalpur forest tract adjacent to the Shahjahanpur border in Pilibhit district in an area of about 1716 hectares."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का पहला समर्पित 'ग्लास म्यूजियम' (Glass Museum) उत्तर प्रदेश के किस शहर में स्थापित किया जा रहा है?","question_en":"Question 15: In which city of Uttar Pradesh is India's first dedicated 'Glass Museum' being established?","options":[{"hi":"मुरादाबाद","en":"Moradabad"},{"hi":"फिरोजाबाद","en":"Firozabad"},{"hi":"भदोही","en":"Bhadohi"},{"hi":"अलीगढ़","en":"Aligarh"}],"answer":1,"explanation_hi":"शहर की कांच और चूड़ी विरासत को विश्व स्तर पर प्रदर्शित करने के लिए फिरोजाबाद (जिसे ग्लास सिटी भी कहा जाता है) में भारत का पहला ग्लास म्यूजियम स्थापित किया जा रहा है।","explanation_en":"To globally showcase the city's glass and bangle heritage, India's first Glass Museum is being established in Firozabad (also known as the Glass City)."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय भूवैज्ञानिक सर्वेक्षण (GSI) ने उत्तर प्रदेश के किस ऐतिहासिक किले को हाल ही में 'राष्ट्रीय भू-धरोहर स्थल' (National Geo-heritage Site) का दर्जा दिया है?","question_en":"Question 16: Which historical fort of Uttar Pradesh has recently been given the status of 'National Geo-heritage Site' by the Geological Survey of India (GSI)?","options":[{"hi":"कालिंजर का किला","en":"Kalinjar Fort"},{"hi":"चुनार का किला","en":"Chunar Fort"},{"hi":"झाँसी का किला","en":"Jhansi Fort"},{"hi":"रामनगर का किला","en":"Ramnagar Fort"}],"answer":0,"explanation_hi":"बांदा जिले में स्थित चंदेल राजाओं की राजधानी रहे कालिंजर किले को इसकी प्राचीन और मजबूत चट्टानी संरचनाओं के कारण राष्ट्रीय भू-धरोहर घोषित किया गया है।","explanation_en":"Kalinjar Fort, the capital of Chandela kings located in Banda district, has been declared a national geo-heritage due to its ancient and strong rock formations."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत सरकार द्वारा देश का पहला और एकमात्र 'पर्ल फार्मिंग क्लस्टर' (मोती उत्पादन क्लस्टर) कहाँ स्थापित किया गया है?","question_en":"Question 17: Where has the country's first and only 'Pearl Farming Cluster' been established by the Government of India?","options":[{"hi":"सूरत (गुजरात)","en":"Surat (Gujarat)"},{"hi":"कोच्चि (केरल)","en":"Kochi (Kerala)"},{"hi":"कटक (ओडिशा)","en":"Cuttack (Odisha)"},{"hi":"हज़ारीबाग (झारखंड)","en":"Hazaribagh (Jharkhand)"}],"answer":3,"explanation_hi":"ग्रामीण आय और रोजगार सृजन को बढ़ाने तथा वैज्ञानिक जलीय कृषि को बढ़ावा देने के लिए झारखंड के हज़ारीबाग को भारत का पहला पर्ल फार्मिंग क्लस्टर चुना गया है।","explanation_en":"To boost rural income and employment generation and promote scientific aquaculture, Hazaribagh in Jharkhand has been chosen as India's first pearl farming cluster."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बहुराष्ट्रीय सैन्य अभ्यास 'खान क्वेस्ट 2026' (Khan Quest) का आयोजन किस देश में किया गया, जिसमें भारतीय सेना ने भी भाग लिया?","question_en":"Question 18: In which country was the multinational military exercise 'Khan Quest 2026' organized, in which the Indian Army also participated?","options":[{"hi":"कजाकिस्तान","en":"Kazakhstan"},{"hi":"ताजिकिस्तान","en":"Tajikistan"},{"hi":"मंगोलिया","en":"Mongolia"},{"hi":"उज़्बेकिस्तान","en":"Uzbekistan"}],"answer":2,"explanation_hi":"संयुक्त राष्ट्र पीसकीपिंग अभियानों में समन्वय बढ़ाने के उद्देश्य से मंगोलिया की राजधानी उलानबटोर के पास यह बहुराष्ट्रीय सैन्य अभ्यास आयोजित किया गया।","explanation_en":"With the aim of enhancing coordination in UN Peacekeeping operations, this multinational military exercise was organized near Ulaanbaatar, the capital of Mongolia."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: बहुराष्ट्रीय समुद्री अभ्यास 'काकाडू 2026' (Kakadu) का आयोजन जापान द्वारा किया गया।\nकथन 2: इस अभ्यास में भारतीय नौसेना के आईएनएस नीलगिरि ने भाग लिया।","question_en":"Question 19: Consider the following statements:\nStatement 1: The multinational maritime exercise 'Kakadu 2026' was organized by Japan.\nStatement 2: INS Nilgiri of the Indian Navy participated in this exercise.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"अभ्यास 'काकाडू' का आयोजन जापान नहीं बल्कि रॉयल ऑस्ट्रेलियाई नौसेना द्वारा किया जाता है। अतः कथन 1 गलत है, जबकि कथन 2 (आईएनएस नीलगिरि की भागीदारी) सत्य है।","explanation_en":"The exercise 'Kakadu' is organized by the Royal Australian Navy, not Japan. Hence statement 1 is incorrect, while statement 2 (participation of INS Nilgiri) is true."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"खगोलविदों ने हाल ही में किस विशालकाय ब्लैक होल से निकलने वाली पवन धाराओं (Wind streams) की पहली बार तस्वीर ली है?","question_en":"Question 20: Astronomers have recently photographed the wind streams emerging from which supermassive black hole for the first time?","options":[{"hi":"टोन 618","en":"TON 618"},{"hi":"मेसियर 87","en":"Messier 87"},{"hi":"धनु ए* (Sagittarius A*)","en":"Sagittarius A"},{"hi":"सिग्नस एक्स-1","en":"Cygnus X-1"}],"answer":2,"explanation_hi":"वैज्ञानिकों ने हमारी आकाशगंगा (मिल्की वे) के केंद्र में स्थित सुपरमैसिव ब्लैक होल 'धनु ए*' (Sagittarius A*) से निकलने वाली शक्तिशाली हवाओं के प्रमाण पहली बार खोजे हैं।","explanation_en":"Scientists have for the first time discovered evidence of powerful winds emerging from the supermassive black hole 'Sagittarius A*' located at the center of our galaxy (Milky Way)."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अंतरिक्ष स्टार्टअप 'अग्निकुल कॉसमॉस' द्वारा सफलतापूर्वक परीक्षित 'अग्निलेट' (Agnilet) क्या है?","question_en":"Question 21: What is 'Agnilet' successfully tested by space startup 'Agnikul Cosmos'?","options":[{"hi":"एक नया संचार उपग्रह","en":"A new communication satellite"},{"hi":"स्वदेशी एंटी-रेडिएशन मिसाइल","en":"Indigenous anti-radiation missile"},{"hi":"मानव रहित अंतरिक्ष यान","en":"Unmanned spacecraft"},{"hi":"3D-प्रिंटेड रॉकेट इंजन","en":"3D-printed rocket engine"}],"answer":3,"explanation_hi":"अग्निलेट दुनिया का पहला पूर्णतः 3D-प्रिंटेड, सिंगल-पीस सेमी-क्रायोजेनिक रॉकेट इंजन है जिसे चेन्नई स्थित स्टार्टअप अग्निकुल कॉसमॉस ने बनाया है।","explanation_en":"Agnilet is the world's first fully 3D-printed, single-piece semi-cryogenic rocket engine built by Chennai-based startup Agnikul Cosmos."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हाल ही में डीआरडीओ द्वारा परीक्षित लंबी दूरी की लैंड अटैक क्रूज मिसाइल (LRLACM) में किस स्वदेशी टर्बोफैन इंजन का उपयोग किया गया है?","question_en":"Question 22: Which indigenous turbofan engine has been used in the Long Range Land Attack Cruise Missile (LRLACM) recently tested by DRDO?","options":[{"hi":"मणिक (Manik)","en":"Manik"},{"hi":"कावेरी (Kaveri)","en":"Kaveri"},{"hi":"शक्ति (Shakti)","en":"Shakti"},{"hi":"गरुड़ (Garud)","en":"Garud"}],"answer":0,"explanation_hi":"1000-1500 किमी रेंज वाली इस सबसोनिक क्रूज मिसाइल में डीआरडीओ द्वारा विकसित स्वदेशी 'मणिक' छोटे टर्बोफैन इंजन का सफलतापूर्वक उपयोग किया गया है।","explanation_en":"The indigenous 'Manik' small turbofan engine developed by DRDO has been successfully used in this subsonic cruise missile having a range of 1000-1500 km."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"समुद्री अनुसंधान और संरक्षण को मजबूत करने के लिए डीप-सी (गहरे समुद्र) जीवों के 'राष्ट्रीय भंडार' के रूप में मान्यता प्राप्त 'भवसागर' केंद्र कहाँ स्थित है?","question_en":"Question 23: Where is the 'Bhavasagar' center, recognized as a 'National Repository' of deep-sea organisms to strengthen marine research and conservation, located?","options":[{"hi":"चेन्नई","en":"Chennai"},{"hi":"विशाखापत्तनम","en":"Visakhapatnam"},{"hi":"कोच्चि","en":"Kochi"},{"hi":"पोर्ट ब्लेयर","en":"Port Blair"}],"answer":2,"explanation_hi":"कोच्चि (केरल) स्थित इस केंद्र को गहरे समुद्र के जीवों के डीएनए डेटा संरक्षण, नई प्रजातियों के वर्गीकरण और अनुसंधान के लिए राष्ट्रीय भंडार घोषित किया गया है।","explanation_en":"This center located in Kochi (Kerala) has been declared a national repository for the preservation of DNA data of deep sea organisms, classification of new species and research."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संसद द्वारा पारित 'ट्रांसजेंडर व्यक्ति अधिकारों का संरक्षण (संशोधन) विधेयक 2026' के तहत, किसी व्यक्ति की ट्रांसजेंडर पहचान को प्रमाणित करने का अधिकार किसे दिया गया है?","question_en":"Question 24: Under the 'Transgender Persons (Protection of Rights) Amendment Bill 2026' passed by the Parliament, who has been given the right to certify the transgender identity of a person?","options":[{"hi":"जिला मजिस्ट्रेट को","en":"To the District Magistrate"},{"hi":"एक विशेष मेडिकल बोर्ड को","en":"To a special Medical Board"},{"hi":"राज्य मानवाधिकार आयोग को","en":"To the State Human Rights Commission"},{"hi":"राष्ट्रीय महिला आयोग को","en":"To the National Commission for Women"}],"answer":1,"explanation_hi":"नए संशोधन के अनुसार, आत्म-पहचान (Self-identification) के बजाय अब एक वरिष्ठ चिकित्सा अधिकारी के नेतृत्व वाला 'मेडिकल बोर्ड' ट्रांसजेंडर पहचान को प्रमाणित करेगा।","explanation_en":"According to the new amendment, instead of self-identification, a 'Medical Board' headed by a senior medical officer will now certify transgender identity."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 11वें रायसीना संवाद 2026 का मुख्य विषय \"संस्कार-अभिकथन, सामंजस्य, उन्नति\" था।\nकथन 2: इस संवाद के उद्घाटन समारोह में फिनलैंड के राष्ट्रपति मुख्य अतिथि के रूप में शामिल हुए।","question_en":"Question 25: Consider the following statements:\nStatement 1: The main theme of the 11th Raisina Dialogue 2026 was \"Sanskara-Assertion, Accommodation, Advancement\".\nStatement 2: The President of Finland attended the inaugural ceremony of this dialogue as the chief guest.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं। रायसीना संवाद के 11वें संस्करण का उद्घाटन प्रधानमंत्री मोदी और फिनलैंड के राष्ट्रपति अलेक्जेंडर स्टब (मुख्य अतिथि) द्वारा संयुक्त रूप से किया गया।","explanation_en":"Both statements are correct. The 11th edition of the Raisina Dialogue was inaugurated jointly by PM Modi and the President of Finland Alexander Stubb (Chief Guest)."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत ने छह स्टेल्थ पनडुब्बियों के निर्माण के लिए किस देश की कंपनी थिसेन क्रुप (Thyssenkrupp) के साथ एक प्रमुख रक्षा समझौता किया है?","question_en":"Question 26: India has signed a major defense agreement with which country's company Thyssenkrupp for the construction of six stealth submarines?","options":[{"hi":"फ्रांस","en":"France"},{"hi":"रूस","en":"Russia"},{"hi":"जर्मनी","en":"Germany"},{"hi":"स्वीडन","en":"Sweden"}],"answer":2,"explanation_hi":"जर्मनी के चांसलर फ्रेडरिक मर्ज़ की भारत यात्रा के दौरान जर्मनी की थिसेन क्रुप और भारत के मझगांव डॉक के बीच छह पनडुब्बियों के निर्माण का समझौता हुआ है।","explanation_en":"During the German Chancellor Friedrich Merz's visit to India, an agreement was signed between Germany's Thyssenkrupp and India's Mazagon Dock for the construction of six submarines."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"महिला टी-20 अंतरराष्ट्रीय क्रिकेट के इतिहास में सर्वाधिक विकेट (166) लेने वाली विश्व की पहली गेंदबाज कौन बन गई हैं?","question_en":"Question 27: Who has become the first bowler in the world to take the highest number of wickets (166) in the history of women's T20 international cricket?","options":[{"hi":"दीप्ति शर्मा","en":"Deepti Sharma"},{"hi":"झूलन गोस्वामी","en":"Jhulan Goswami"},{"hi":"सूजी बेट्स","en":"Suzie Bates"},{"hi":"एलिसे पेरी","en":"Ellyse Perry"}],"answer":0,"explanation_hi":"भारतीय ऑलराउंडर दीप्ति शर्मा महिला टी-20 अंतरराष्ट्रीय में 166 विकेट और कुल अंतरराष्ट्रीय क्रिकेट में सर्वाधिक 356 विकेट लेकर विश्व की अग्रणी गेंदबाज बन गई हैं।","explanation_en":"Indian all-rounder Deepti Sharma has become the world's leading bowler by taking 166 wickets in women's T20 internationals and a highest of 356 wickets in total international cricket."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"तमिलनाडु क्रिकेट एसोसिएशन (TNCA) द्वारा चुनी गई देश की पहली ट्रांसजेंडर क्रिकेट अंपायर कौन हैं?","question_en":"Question 28: Who is the country's first transgender cricket umpire selected by the Tamil Nadu Cricket Association (TNCA)?","options":[{"hi":"जोयिता मंडल","en":"Joyita Mondal"},{"hi":"रिथिका श्री","en":"Rithika Sri"},{"hi":"प्रितिका याशिनी","en":"Prithika Yashini"},{"hi":"शबनम बानो","en":"Shabnam Bano"}],"answer":1,"explanation_hi":"सेलम (तमिलनाडु) की रिथिका श्री भारतीय क्रिकेट इतिहास में पहली ट्रांसजेंडर अंपायर बन गई हैं, जो खेलों में समावेशिता की दिशा में एक बड़ा कदम है।","explanation_en":"Rithika Sri from Salem (Tamil Nadu) has become the first transgender umpire in Indian cricket history, a big step towards inclusivity in sports."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2026-2029 के कार्यकाल के लिए 'विश्व बैडमिंटन महासंघ (BWF) एथलीट्स कमीशन' की चेयरपर्सन के रूप में किसे चुना गया है?","question_en":"Question 29: Who has been elected as the Chairperson of the 'Badminton World Federation (BWF) Athletes Commission' for the term 2026-2029?","options":[{"hi":"साइना नेहवाल","en":"Saina Nehwal"},{"hi":"कैरोलिना मारिन","en":"Carolina Marin"},{"hi":"ताई त्ज़ु-यिंग","en":"Tai Tzu-ying"},{"hi":"पी.वी. सिंधु","en":"P.V. Sindhu"}],"answer":3,"explanation_hi":"भारत की दो बार की ओलंपिक पदक विजेता पी.वी. सिंधु को विश्व बैडमिंटन महासंघ के एथलीट्स कमीशन का अध्यक्ष चुना गया है।","explanation_en":"India's two-time Olympic medalist P.V. Sindhu has been elected as the chairperson of the Athletes Commission of the Badminton World Federation."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: आईसीसी अंडर-19 विश्व कप क्रिकेट 2026 का खिताब भारत ने इंग्लैंड को हराकर जीता है।\nकथन 2: इस टूर्नामेंट का आयोजन जिम्बाब्वे और नामीबिया की संयुक्त मेजबानी में किया गया।","question_en":"Question 30: Consider the following statements:\nStatement 1: India has won the ICC Under-19 World Cup Cricket 2026 title by defeating England.\nStatement 2: This tournament was jointly hosted by Zimbabwe and Namibia.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"जिम्बाब्वे और नामीबिया की मेजबानी में खेले गए इस विश्व कप के फाइनल में भारतीय टीम ने इंग्लैंड को 100 रनों से हराकर छठी बार अंडर-19 विश्व कप का खिताब जीता है।","explanation_en":"In the final of this World Cup hosted by Zimbabwe and Namibia, the Indian team defeated England by 100 runs to win the Under-19 World Cup title for the sixth time."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"महिला प्रीमियर लीग (WPL) 2026 के दूसरे संस्करण का खिताब किस टीम ने दिल्ली कैपिटल्स को हराकर जीता है?","question_en":"Question 31: Which team has won the title of the second edition of Women's Premier League (WPL) 2026 by defeating Delhi Capitals?","options":[{"hi":"मुंबई इंडियंस","en":"Mumbai Indians"},{"hi":"रॉयल चैलेंजर्स बेंगलुरु","en":"Royal Challengers Bengaluru"},{"hi":"यूपी वॉरियर्स","en":"UP Warriorz"},{"hi":"गुजरात जायंट्स","en":"Gujarat Giants"}],"answer":1,"explanation_hi":"स्मृति मंधाना की कप्तानी में रॉयल चैलेंजर्स बेंगलुरु (RCB) ने फाइनल में दिल्ली कैपिटल्स को हराकर डब्ल्यूपीएल 2026 की ट्रॉफी अपने नाम की है।","explanation_en":"Under the captaincy of Smriti Mandhana, Royal Challengers Bengaluru (RCB) has won the WPL 2026 trophy by defeating Delhi Capitals in the final."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय एकदिवसीय क्रिकेट चैंपियनशिप 'विजय हजारे ट्रॉफी 2025-26' का खिताब पहली बार किस टीम ने जीता है?","question_en":"Question 32: Which team has won the National ODI Cricket Championship 'Vijay Hazare Trophy 2025-26' title for the first time?","options":[{"hi":"तमिलनाडु","en":"Tamil Nadu"},{"hi":"सौराष्ट्र","en":"Saurashtra"},{"hi":"मुंबई","en":"Mumbai"},{"hi":"विदर्भ","en":"Vidarbha"}],"answer":3,"explanation_hi":"विदर्भ की टीम ने बेंगलुरु में खेले गए फाइनल मुकाबले में दो बार की चैंपियन सौराष्ट्र को 38 रन से हराकर पहली बार विजय हजारे ट्रॉफी पर कब्ज़ा किया है।","explanation_en":"The Vidarbha team captured the Vijay Hazare Trophy for the first time by defeating two-time champion Saurashtra by 38 runs in the final match played in Bengaluru."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विजडन अल्मनैक पुरस्कार 2026 में किस भारतीय खिलाड़ी को 'लीडिंग टी-20 क्रिकेटर इन द वर्ल्ड' (विश्व का सर्वश्रेष्ठ टी-20 क्रिकेटर) चुना गया है?","question_en":"Question 33: Which Indian player has been named the 'Leading T20 Cricketer in the World' in the Wisden Almanack Awards 2026?","options":[{"hi":"अभिषेक शर्मा","en":"Abhishek Sharma"},{"hi":"सूर्यकुमार यादव","en":"Suryakumar Yadav"},{"hi":"जसप्रीत बुमराह","en":"Jasprit Bumrah"},{"hi":"विराट कोहली","en":"Virat Kohli"}],"answer":0,"explanation_hi":"विजडन के 2026 संस्करण में भारत के अभिषेक शर्मा को सर्वश्रेष्ठ टी-20 क्रिकेटर और दीप्ति शर्मा को सर्वश्रेष्ठ महिला क्रिकेटर चुना गया है।","explanation_en":"In the 2026 edition of Wisden, India's Abhishek Sharma has been chosen as the best T20 cricketer and Deepti Sharma as the best women's cricketer."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दो भारतीय छात्रों द्वारा इमली के बीजों से विकसित कम लागत वाले 'प्लास्टिक' के पर्यावरण अनुकूल विकल्प का क्या नाम रखा गया है?","question_en":"Question 34: What is the name given to the eco-friendly, low-cost alternative to 'plastic' developed from tamarind seeds by two Indian students?","options":[{"hi":"इको-बाइंड (Eco-Bind)","en":"Eco-Bind"},{"hi":"टैम-प्लास्ट (Tam-Plast)","en":"Tam-Plast"},{"hi":"प्लास-स्टिक (Plas-Stick)","en":"Plas-Stick"},{"hi":"बायो-पैक (Bio-Pack)","en":"Bio-Pack"}],"answer":2,"explanation_hi":"16 वर्षीय नवप्रवर्तकों ने इमली के बीजों से 'प्लास-स्टिक' नामक जैव-अपघटनीय पाउडर विकसित किया है, जो माइक्रोप्लास्टिक हटाने और जल शोधन में भी सहायक है।","explanation_en":"The 16-year-old innovators have developed a biodegradable powder called 'Plas-Stick' from tamarind seeds, which also helps in removing microplastics and water purification."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मैड्रिड में आयोजित 'ग्लोबल वाटर समिट 2026' में बेंगलुरु जल आपूर्ति और सीवरेज बोर्ड (BWSSB) को 'यूटिलिटी ऑफ द ईयर' चुना गया है।\nकथन 2: यह बोर्ड शीर्ष 5 वैश्विक जल उपयोगिताओं में शामिल होने वाला एकमात्र भारतीय निकाय है।","question_en":"Question 35: Consider the following statements:\nStatement 1: Bengaluru Water Supply and Sewerage Board (BWSSB) has been named 'Utility of the Year' at the 'Global Water Summit 2026' held in Madrid.\nStatement 2: This board is the only Indian body to be included in the top 5 global water utilities.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"दोनों कथन सही हैं। बेंगलुरु जल आपूर्ति बोर्ड को उसके जल संरक्षण और अपशिष्ट जल पुनर्चक्रण नवाचारों के लिए यह प्रतिष्ठित वैश्विक स्थान मिला है।","explanation_en":"Both statements are correct. Bengaluru Water Supply Board got this prestigious global position for its water conservation and wastewater recycling innovations."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2026 के प्रतिष्ठित लॉरियस खेल पुरस्कारों (Laureus Sports Awards) में किसे 'स्पोर्ट्समैन ऑफ द ईयर' का पुरस्कार प्रदान किया गया है?","question_en":"Question 36: Who has been awarded the 'Sportsman of the Year' at the prestigious Laureus Sports Awards 2026?","options":[{"hi":"कार्लोस अल्कराज","en":"Carlos Alcaraz"},{"hi":"नोवाक जोकोविच","en":"Novak Djokovic"},{"hi":"लियोनेल मेसी","en":"Lionel Messi"},{"hi":"रोरी मैक्लेरॉय","en":"Rory McIlroy"}],"answer":0,"explanation_hi":"स्पेन के दिग्गज टेनिस खिलाड़ी कार्लोस अल्कराज को लॉरियस वर्ल्ड स्पोर्ट्स अवार्ड्स 2026 में सर्वश्रेष्ठ पुरुष खिलाड़ी (स्पोर्ट्समैन ऑफ द ईयर) का सम्मान दिया गया है।","explanation_en":"Spanish tennis legend Carlos Alcaraz has been honored as the best male athlete (Sportsman of the Year) at the Laureus World Sports Awards 2026."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अमेरिकी सेना कमांड कॉलेज में उत्कृष्ट सैन्य शोध के लिए किस भारतीय मेजर को प्रतिष्ठित 'बेर्र-ब्रूक्स' और 'मैकआर्थर मिलिट्री लीडरशिप' अवार्ड से सम्मानित किया गया है?","question_en":"Question 37: Which Indian Major has been honored with the prestigious 'Berr-Brooks' and 'MacArthur Military Leadership' awards for outstanding military research at the US Army Command College?","options":[{"hi":"मेजर विकास सिंह","en":"Major Vikas Singh"},{"hi":"मेजर अनिरुद्ध थापा","en":"Major Aniruddh Thapa"},{"hi":"मेजर गौरव आर्या","en":"Major Gaurav Arya"},{"hi":"मेजर प्रभात मिश्रा","en":"Major Prabhat Mishra"}],"answer":3,"explanation_hi":"भारतीय सेना की 22 कुमाऊं रेजिमेंट के मेजर प्रभात मिश्रा को बहुध्रुवीय विश्व में भारत की सैन्य रणनीतिक स्वायत्तता पर उनके शोध के लिए यह दुर्लभ सम्मान मिला है।","explanation_en":"Major Prabhat Mishra of the 22 Kumaon Regiment of the Indian Army received this rare honor for his research on India's military strategic autonomy in a multipolar world."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गणित के क्षेत्र का सर्वोच्च सम्मान 'एबेल पुरस्कार 2026' (Abel Prize) किस जर्मन गणितज्ञ को प्रदान किया गया है?","question_en":"Question 38: Which German mathematician has been awarded the 'Abel Prize 2026', the highest honor in the field of mathematics?","options":[{"hi":"पीटर सरनाक","en":"Peter Sarnak"},{"hi":"अवी विगडरसन","en":"Avi Wigderson"},{"hi":"गेर्ड फाल्टिंग्स","en":"Gerd Faltings"},{"hi":"जैकब इलियाशबर्ग","en":"Jacob Eliashberg"}],"answer":2,"explanation_hi":"नॉर्वे अकादमी द्वारा गेर्ड फाल्टिंग्स को 'अंकगणितीय ज्यामिति' में शक्तिशाली उपकरणों की शुरुआत करने और डायोफैंटाइन अनुमानों को हल करने के लिए यह पुरस्कार दिया गया है।","explanation_en":"The Norwegian Academy has awarded this prize to Gerd Faltings for introducing powerful tools in 'arithmetic geometry' and solving Diophantine conjectures."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण संरक्षण के लिए दिया जाने वाला 'स्टॉकहोम जल पुरस्कार 2026' किस ईरानी मूल के पर्यावरण वैज्ञानिक को प्रदान किया गया है?","question_en":"Question 39: Which Iranian-origin environmental scientist has been awarded the 'Stockholm Water Prize 2026' given for environmental conservation?","options":[{"hi":"सैय्यद हुसैन","en":"Seyed Hossein"},{"hi":"कावेह मदानी","en":"Kaveh Madani"},{"hi":"माजिद शफी","en":"Majid Shafi"},{"hi":"अली रज़ा","en":"Ali Reza"}],"answer":1,"explanation_hi":"प्रोफेसर कावेह मदानी को जल संसाधन प्रबंधन में उनके नवाचार और वैश्विक स्तर पर जागरूकता बढ़ाने के लिए यह 'जल का नोबेल' पुरस्कार दिया गया है।","explanation_en":"Professor Kaveh Madani has been awarded this 'Nobel of Water' prize for his innovation in water resource management and raising awareness globally."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"98वें ऑस्कर (अकादमी) पुरस्कार 2026 में किस फिल्म को 'सर्वश्रेष्ठ फिल्म' (Best Picture) का पुरस्कार प्रदान किया गया?","question_en":"Question 40: Which film was awarded the 'Best Picture' at the 98th Oscar (Academy) Awards 2026?","options":[{"hi":"वन बैटल आफ्टर अनदर","en":"One Battle After Another"},{"hi":"अवतार फायर एंड ऐश","en":"Avatar Fire and Ash"},{"hi":"हेमनत","en":"Hamnet"},{"hi":"द मिस्ट्री ऑफ रोम","en":"The Mystery of Rome"}],"answer":0,"explanation_hi":"पॉल थॉमस एंडरसन द्वारा निर्देशित हास्य व राजनीतिक ड्रामा फिल्म 'वन बैटल आफ्टर अनदर' ने सर्वश्रेष्ठ फिल्म सहित कुल छह ऑस्कर पुरस्कार जीते।","explanation_en":"The comedy and political drama film 'One Battle After Another' directed by Paul Thomas Anderson won a total of six Oscar awards including Best Picture."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: बाफ्टा (BAFTA) पुरस्कारों में 'बाल एवं पारिवारिक फिल्म' श्रेणी में सर्वश्रेष्ठ फिल्म का पुरस्कार भारतीय फिल्म 'बूंग' (Boong) ने जीता है।\nकथन 2: यह मणिपुरी भाषा की एक फिल्म है।","question_en":"Question 41: Consider the following statements:\nStatement 1: Indian film 'Boong' has won the award for Best Film in the 'Children and Family Film' category at the BAFTA Awards.\nStatement 2: It is a Manipuri language film.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं। लक्ष्मी प्रिया देवी द्वारा निर्देशित मणिपुरी भाषा की फिल्म 'बूंग' बाफ्टा में किसी भी श्रेणी में सर्वश्रेष्ठ फिल्म जीतने वाली पहली भारतीय फिल्म बन गई है।","explanation_en":"Both statements are correct. Manipuri language film 'Boong' directed by Lakshmipriya Devi has become the first Indian film to win Best Film in any category at BAFTA."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रसिद्ध स्कॉटिश इतिहासकार विलियम डेलरिम्पल को उनकी किस पुस्तक के लिए 2026 का 'मार्क लिंटन इतिहास पुरस्कार' प्रदान किया गया है?","question_en":"Question 42: For which of his books has the famous Scottish historian William Dalrymple been awarded the 'Mark Lynton History Prize' of 2026?","options":[{"hi":"द अनार्की","en":"The Anarchy"},{"hi":"द गोल्डन रोड : हाउ एंसिएंट इंडिया ट्रांसफॉर्मड द वर्ल्ड","en":"The Golden Road : How Ancient India Transformed the World"},{"hi":"सिटी ऑफ जिन्स","en":"City of Djinns"},{"hi":"द लास्ट मुग़ल","en":"The Last Mughal"}],"answer":1,"explanation_hi":"विलियम डेलरिम्पल को प्राचीन भारत के वैश्विक प्रभाव को दर्शाने वाली उनकी पुस्तक 'द गोल्डन रोड' में गहन शोध के लिए यह अंतरराष्ट्रीय ऐतिहासिक पुरस्कार मिला है।","explanation_en":"William Dalrymple has received this international historical award for his deep research in his book 'The Golden Road', which depicts the global impact of ancient India."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"साहित्य अकादमी पुरस्कार 2025 में हिंदी भाषा का पुरस्कार वरिष्ठ लेखिका ममता कालिया को उनकी किस रचना के लिए दिया गया है?","question_en":"Question 43: In the Sahitya Akademi Awards 2025, the Hindi language award has been given to senior writer Mamta Kalia for which of her works?","options":[{"hi":"कितने पाकिस्तान","en":"Kitne Pakistan"},{"hi":"दुखम सुखम","en":"Dukkham Sukham"},{"hi":"जीते जी इलाहाबाद","en":"Jeete Ji Allahabad"},{"hi":"पोस्ट बॉक्स नं. 203","en":"Post Box No. 203"}],"answer":2,"explanation_hi":"वरिष्ठ साहित्यकार ममता कालिया को उनके संस्मरण 'जीते जी इलाहाबाद' के लिए हिंदी भाषा का प्रतिष्ठित साहित्य अकादमी पुरस्कार प्रदान किया गया है।","explanation_en":"Senior litterateur Mamta Kalia has been awarded the prestigious Sahitya Akademi Award in Hindi language for her memoir 'Jeete Ji Allahabad'."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2026 के पद्म पुरस्कारों में मरणोपरांत 'पद्म विभूषण' से सम्मानित किए गए प्रसिद्ध अभिनेता का क्या नाम है?","question_en":"Question 44: What is the name of the famous actor who was posthumously awarded the 'Padma Vibhushan' in the Padma Awards of the year 2026?","options":[{"hi":"दिलीप कुमार","en":"Dilip Kumar"},{"hi":"देव आनंद","en":"Dev Anand"},{"hi":"शम्मी कपूर","en":"Shammi Kapoor"},{"hi":"धर्मेंद्र देओल","en":"Dharmendra Deol"}],"answer":3,"explanation_hi":"कला के क्षेत्र में अप्रतिम योगदान के लिए दिग्गज अभिनेता धर्मेंद्र देओल को मरणोपरांत 2026 में देश के दूसरे सर्वोच्च नागरिक सम्मान 'पद्म विभूषण' से सम्मानित किया गया है।","explanation_en":"For his unparalleled contribution in the field of art, veteran actor Dharmendra Deol has been posthumously awarded the country's second highest civilian honor 'Padma Vibhushan' in 2026."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 'नेताजी सुभाष चंद्र बोस आपदा प्रबंधन पुरस्कार' में संस्थागत श्रेणी के विजेता को 51 लाख रुपये की नकद राशि दी जाती है।\nकथन 2: व्यक्तिगत श्रेणी के विजेता को 15 लाख रुपये दिए जाते हैं।","question_en":"Question 45: Consider the following statements:\nStatement 1: In the 'Netaji Subhash Chandra Bose Aapda Prabandhan Puraskar', a cash prize of Rs 51 lakh is given to the winner in the institutional category.\nStatement 2: The winner in the individual category is given Rs 15 lakh.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"कथन 1 सही है। कथन 2 गलत है क्योंकि इस पुरस्कार के तहत व्यक्तिगत श्रेणी के विजेता को 15 लाख नहीं, बल्कि 5 लाख रुपये की नकद राशि प्रदान की जाती है।","explanation_en":"Statement 1 is correct. Statement 2 is incorrect because under this award, the winner in the individual category is given a cash prize of Rs 5 lakh, not 15 lakh."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लेबनान में संयुक्त राष्ट्र शांति रक्षा मिशन में कार्यरत किस भारतीय सैन्य अधिकारी को 2025 के 'मिलिट्री जेंडर एडवोकेट ऑफ द ईयर' पुरस्कार से सम्मानित किया गया है?","question_en":"Question 46: Which Indian military officer serving in the UN Peacekeeping Mission in Lebanon has been honored with the 'Military Gender Advocate of the Year' award for 2025?","options":[{"hi":"मेजर राधिका सेन","en":"Major Radhika Sen"},{"hi":"मेजर अभिलाषा बराक","en":"Major Abhilasha Barak"},{"hi":"मेजर सुमन गवानी","en":"Major Suman Gawani"},{"hi":"मेजर मिताली राज","en":"Major Mithali Raj"}],"answer":1,"explanation_hi":"भारतीय सेना की पहली महिला लड़ाकू हेलीकॉप्टर पायलट, मेजर अभिलाषा बराक संयुक्त राष्ट्र का यह प्रतिष्ठित पुरस्कार पाने वाली तीसरी भारतीय शांति रक्षक बन गई हैं।","explanation_en":"Major Abhilasha Barak, the first female combat helicopter pilot of the Indian Army, has become the third Indian peacekeeper to receive this prestigious UN award."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इसरो (ISRO) के 'चंद्रयान-3' मिशन को चंद्रमा के दक्षिणी ध्रुव पर ऐतिहासिक लैंडिंग के लिए किस देश के 'गोडार्ड एस्ट्रोनॉटिक्स अंतरिक्ष पुरस्कार 2026' से सम्मानित किया गया है?","question_en":"Question 47: ISRO's 'Chandrayaan-3' mission has been honored with which country's 'Goddard Astronautics Space Award 2026' for its historic landing on the Moon's South Pole?","options":[{"hi":"अमेरिका","en":"America"},{"hi":"फ्रांस","en":"France"},{"hi":"रूस","en":"Russia"},{"hi":"जापान","en":"Japan"}],"answer":0,"explanation_hi":"भारतीय अंतरिक्ष अनुसंधान संगठन को यह प्रतिष्ठित अंतरराष्ट्रीय सम्मान अमेरिकी वैमानिकी एवं अंतरिक्ष विज्ञान संस्थान द्वारा उनके ऐतिहासिक चंद्र मिशन के लिए प्रदान किया गया है।","explanation_en":"The Indian Space Research Organisation has been given this prestigious international honor by the American Institute of Aeronautics and Astronautics for its historic lunar mission."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"साइबर अपराधों का भंडाफोड़ करने वाली रिपोर्ट के लिए किस भारतीय पत्रकार जोड़ी को 'पुलित्जर पुरस्कार 2026' से सम्मानित किया गया है?","question_en":"Question 48: Which Indian journalist duo has been awarded the 'Pulitzer Prize 2026' for their report exposing cyber crimes?","options":[{"hi":"रवीश कुमार और निधि राजदान","en":"Ravish Kumar and Nidhi Razdan"},{"hi":"पुण्य प्रसून वाजपेयी और सिद्धार्थ वरदराजन","en":"Punya Prasun Bajpai and Siddharth Varadarajan"},{"hi":"नेहा दीक्षित और आरफा खानुम","en":"Neha Dixit and Arfa Khanum"},{"hi":"आनंद आर.के. और सुपर्णा शर्मा","en":"Anand R.K. and Suparna Sharma"}],"answer":3,"explanation_hi":"आनंद आर.के. और सुपर्णा शर्मा को ब्लूमबर्ग में प्रकाशित साइबर अपराध रिपोर्ट के लिए इलस्ट्रेटेड एंड कमेंट्री श्रेणी में इस अंतरराष्ट्रीय पत्रकारिता पुरस्कार से सम्मानित किया गया है।","explanation_en":"Anand R.K. and Suparna Sharma have been honored with this international journalism award in the Illustrated and Commentary category for their cyber crime report published in Bloomberg."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश में 1716 हेक्टेयर क्षेत्र में विस्तृत राज्य का पहला 'तेंदुआ सफारी पार्क' किस वन खंड में आकार ले रहा है?","question_en":"Question 49: In which forest block is the state's first 'Leopard Safari Park', spread over an area of 1716 hectares in Uttar Pradesh, taking shape?","options":[{"hi":"कतर्नियाघाट वन खंड","en":"Katarniaghat Forest Block"},{"hi":"रानीपुर वन खंड","en":"Ranipur Forest Block"},{"hi":"गोपालपुर वन खंड","en":"Gopalpur Forest Block"},{"hi":"सुहेलवा वन खंड","en":"Suhelwa Forest Block"}],"answer":2,"explanation_hi":"पीलीभीत जिले में शाहजहांपुर की सीमा से सटे गोपालपुर वन खंड में 49 करोड़ रुपये की लागत से उत्तर प्रदेश का पहला तेंदुआ सफारी बनाया जा रहा है।","explanation_en":"Uttar Pradesh's first leopard safari is being built at a cost of Rs 49 crore in the Gopalpur forest block adjacent to the border of Shahjahanpur in Pilibhit district."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सेंटर फॉर वाटर पीस की शोध टीम ने उत्तर प्रदेश के सहारनपुर जिले के शिवालिक क्षेत्र में किस नदी के किनारे 6.5 करोड़ वर्ष पुराने डायनासोर के अंडे मिलने का दावा किया है?","question_en":"Question 50: The research team of Center for Water Peace has claimed to have found 65 million year old dinosaur eggs along the banks of which river in the Shivalik region of Saharanpur district of Uttar Pradesh?","options":[{"hi":"सहंसरा नदी","en":"Sahansara River"},{"hi":"हिंडन नदी","en":"Hindon River"},{"hi":"काली नदी","en":"Kali River"},{"hi":"गोमती नदी","en":"Gomti River"}],"answer":0,"explanation_hi":"सहारनपुर के शिवालिक क्षेत्र में सहंसरा नदी के किनारे हुई खुदाई में शोधकर्ताओं को करोड़ों वर्ष पुराने डायनासोर के अंडे के जीवाश्म प्राप्त हुए हैं।","explanation_en":"Researchers have found fossils of millions of years old dinosaur eggs during excavation along the Sahansara river in the Shivalik region of Saharanpur."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
