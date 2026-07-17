@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"LOWER • History+ geo","highlight":"History+ geo","shortTitle":"LOWER","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • History+ geo","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-lower-history-geo-history-20260717-1orua","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-17","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1498 में कालीकट में वास्को डी गामा का पथ-प्रदर्शन किसने किया था?","question_en":"Question 1: Who piloted Vasco da Gama to Calicut in 1498?","options":[{"hi":"अहमद इब्न माजिद","en":"Ahmad Ibn Majid"},{"hi":"फ्रांसिस्को डी अल्मीडा","en":"Francisco De Almeida"},{"hi":"अल्फोंसो डी अल्बुकर्क","en":"Alfonso de Albuquerque"},{"hi":"कैप्टन विलियम हॉकिन्स","en":"Captain William Hawkins"}],"answer":0,"explanation_hi":"वास्को डी गामा 1498 में एक अरब नाविक अहमद इब्न माजिद की मदद से पूर्वी अफ्रीका से कालीकट पहुंचा था।","explanation_en":"Vasco da Gama arrived at Calicut in 1498 with the help of an Arab navigator named Ahmad Ibn Majid, who guided him from East Africa."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कर्क रेखा भारत के निम्नलिखित में से किस राज्य से होकर नहीं गुजरती है?","question_en":"Question 2: The Tropic of Cancer does not pass through which of the following states of India?","options":[{"hi":"गुजरात","en":"Gujarat"},{"hi":"महाराष्ट्र","en":"Maharashtra"},{"hi":"मध्य प्रदेश","en":"Madhya Pradesh"},{"hi":"झारखंड","en":"Jharkhand"}],"answer":1,"explanation_hi":"कर्क रेखा भारत के 8 राज्यों (गुजरात, राजस्थान, मध्य प्रदेश, छत्तीसगढ़, झारखंड, पश्चिम बंगाल, त्रिपुरा और मिजोरम) से होकर गुजरती है, महाराष्ट्र से नहीं।","explanation_en":"The Tropic of Cancer passes through 8 states in India (Gujarat, Rajasthan, MP, Chhattisgarh, Jharkhand, West Bengal, Tripura, and Mizoram), not Maharashtra."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डच ईस्ट इंडिया कंपनी ने पटना में अपना कारखाना किस वर्ष स्थापित किया था?","question_en":"Question 3: In which year did the Dutch East India Company establish its factory at Patna?","options":[{"hi":"1602","en":""},{"hi":"1605","en":""},{"hi":"1632","en":""},{"hi":"1651","en":""}],"answer":2,"explanation_hi":"डच ईस्ट इंडिया कंपनी ने 1632 में पटना में अपना कारखाना स्थापित किया था।","explanation_en":"The Dutch East India Company established its factory at Patna in the year 1632."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"माजुली, जो विश्व का सबसे बड़ा नदी द्वीप है, किस राज्य में स्थित है?","question_en":"Question 4: Majuli, which is the world's largest river island, is located in which state?","options":[{"hi":"पश्चिम बंगाल","en":"West Bengal"},{"hi":"अरुणाचल प्रदेश","en":"Arunachal Pradesh"},{"hi":"मेघालय","en":"Meghalaya"},{"hi":"असम","en":"Assam"}],"answer":3,"explanation_hi":"माजुली विश्व का सबसे बड़ा नदी द्वीप है जो असम राज्य में ब्रह्मपुत्र नदी पर स्थित है और यह भारत का पहला द्वीप जिला भी है।","explanation_en":"Majuli is the largest river island in the world, located on the Brahmaputra river in the state of Assam, and is also India's first island district."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1764 में बक्सर के युद्ध में अंग्रेजी सेना का नेतृत्व किसने किया था?","question_en":"Question 5: Who led the English army in the Battle of Buxar in 1764?","options":[{"hi":"रॉबर्ट क्लाइव","en":"Robert Clive"},{"hi":"हेक्टर मुनरो","en":"Hector Munro"},{"hi":"आयर कूट","en":"Eyre Coote"},{"hi":"विलियम हॉकिन्स","en":"William Hawkins"}],"answer":1,"explanation_hi":"22 अक्टूबर 1764 को लड़े गए बक्सर के युद्ध में अंग्रेजी सेना का नेतृत्व हेक्टर मुनरो ने किया था।","explanation_en":"The English army was led by Hector Munro in the Battle of Buxar fought on 22 October, 1764."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दक्षिण भारत की सबसे ऊँची चोटी कौन सी है?","question_en":"Question 6: Which is the highest peak of South India?","options":[{"hi":"अनाईमुडी","en":"Anaimudi"},{"hi":"दोदाबेट्टा","en":"Dodabetta"},{"hi":"महेंद्रगिरि","en":"Mahendragiri"},{"hi":"गुरु शिखर","en":"Guru Shikhar"}],"answer":0,"explanation_hi":"दक्षिण भारत की सबसे ऊँची चोटी अनाईमुडी (2695 मीटर) है, जो अन्नामलाई पर्वत पर स्थित है।","explanation_en":"The highest peak of South India is Anaimudi (2695 meters), located on the Annamalai mountain."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: प्रथम कर्नाटक युद्ध एक्स-ला शापेल की संधि (1748) के साथ समाप्त हुआ।\nकथन 2: तृतीय कर्नाटक युद्ध वांडीवाश की लड़ाई के बाद पेरिस की संधि (1763) के साथ समाप्त हुआ।","question_en":"Question 7: Consider the following statements:\nStatement 1: The First Carnatic War ended with the Treaty of Aix-La Chapelle (1748).\nStatement 2: The Third Carnatic War ended with the Treaty of Paris (1763) following the Battle of Wandiwash.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"None"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं। प्रथम कर्नाटक युद्ध एक्स-ला शापेल की संधि और तृतीय युद्ध पेरिस की संधि द्वारा समाप्त हुआ।","explanation_en":"Both statements are correct. The First Carnatic War ended by the Treaty of Aix-La Chapelle and the Third by the Treaty of Paris."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वायुमंडल की किस परत में वायुमंडलीय तत्वों का 75 प्रतिशत भाग समाविष्ट है और जो सबसे सघन स्तर है?","question_en":"Question 8: Which layer of the atmosphere contains 75 percent of the atmospheric elements and is the densest layer?","options":[{"hi":"आयनमंडल","en":"Ionosphere"},{"hi":"समतापमंडल","en":"Stratosphere"},{"hi":"मध्यमंडल","en":"Mesosphere"},{"hi":"क्षोभमंडल","en":"Troposphere"}],"answer":3,"explanation_hi":"क्षोभमंडल वायुमंडल की सबसे निचली और सघन परत है जिसमें 75% तत्व और सभी मौसमी घटनाएँ होती हैं।","explanation_en":"The Troposphere is the lowest and densest layer of the atmosphere containing 75% of elements, where all weather events occur."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1857 के विद्रोह का नेतृत्व लखनऊ में किसने किया था?","question_en":"Question 9: Who led the Revolt of 1857 in Lucknow?","options":[{"hi":"रानी लक्ष्मीबाई","en":"Rani Laxmibai"},{"hi":"तात्या टोपे","en":"Tatya Tope"},{"hi":"बेगम हजरत महल","en":"Begum Hazrat Mahal"},{"hi":"कुंवर सिंह","en":"Kunwar Singh"}],"answer":2,"explanation_hi":"लखनऊ (अवध) में 4 जून 1857 को शुरू हुए विद्रोह का नेतृत्व बेगम हजरत महल ने किया था।","explanation_en":"The revolt in Lucknow (Oudh) starting on 4th June 1857 was led by Begum Hazrat Mahal."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर-पश्चिम भारत के अंतःउष्णकटिबंधीय अभिसरण क्षेत्र में दोपहर के बाद चलने वाली गर्म स्थानीय हवाओं को क्या कहा जाता है?","question_en":"Question 10: What are the hot local winds that blow in the afternoon in the inter-tropical convergence zone of North-West India called?","options":[{"hi":"लू","en":"Loo"},{"hi":"चिनूक","en":"Chinook"},{"hi":"हरमट्टन","en":"Harmattan"},{"hi":"मिस्ट्रल","en":"Mistral"}],"answer":0,"explanation_hi":"भारत के उत्तर-पश्चिमी मैदानी इलाकों में गर्मियों में दोपहर के बाद 'लू' नामक गर्म हवाएँ चलती हैं।","explanation_en":"Hot winds called 'Loo' blow in the afternoon during summer in the north-western plains of India."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में 'आधुनिक प्रेस का जनक' किसे माना जाता है?","question_en":"Question 11: Who is considered the 'Father of Modern Press' in India?","options":[{"hi":"जेम्स ऑगस्टस हिक्की","en":"James Augustus Hickey"},{"hi":"राजा राम मोहन रॉय","en":"Raja Ram Mohan Roy"},{"hi":"फरदुनजी मर्ज़बान","en":"Furdunji Marzban"},{"hi":"जेम्स सिल्क बकिंघम","en":"James Silk Buckingham"}],"answer":3,"explanation_hi":"जेम्स सिल्क बकिंघम ने 1818 में 'कलकत्ता जर्नल' की शुरुआत की और वस्तुनिष्ठ, निर्भीक पत्रकारिता तथा प्रेस की स्वतंत्रता की नींव रखी, इसीलिए उन्हें भारत में आधुनिक प्रेस का जनक माना जाता है।","explanation_en":"James Silk Buckingham started the 'Calcutta Journal' in 1818 and laid the foundation of objective, fearless journalism and freedom of the press, which is why he is considered the Father of Modern Press in India."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वायुमंडल की कौन सी परत जलवायुविक घटनाओं से मुक्त होने के कारण वायु यातायात के लिए आदर्श मानी जाती है?","question_en":"Question 12: Which atmospheric layer is considered ideal for air transport due to being free from climatic phenomena?","options":[{"hi":"क्षोभमंडल","en":"Troposphere"},{"hi":"समतापमंडल","en":"Stratosphere"},{"hi":"मध्यमंडल","en":"Mesosphere"},{"hi":"आयनमंडल","en":"Ionosphere"}],"answer":1,"explanation_hi":"समतापमंडल मौसमी घटनाओं से मुक्त होता है, जिससे यह वायु यातायात के लिए सर्वोत्तम है।","explanation_en":"The stratosphere is free from weather phenomena, making it ideal for air transport."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय राष्ट्रीय कांग्रेस की पहली महिला अध्यक्ष कौन थीं?","question_en":"Question 13: Who was the first woman President of the Indian National Congress?","options":[{"hi":"एनी बेसेंट","en":"Annie Besant"},{"hi":"सरोजिनी नायडू","en":"Sarojini Naidu"},{"hi":"कादंबिनी गांगुली","en":"Kadambini Ganguly"},{"hi":"मैडम भीकाजी कामा","en":"Madam Bhikaji Cama"}],"answer":0,"explanation_hi":"एनी बेसेंट 1917 के कलकत्ता अधिवेशन में भारतीय राष्ट्रीय कांग्रेस की पहली महिला अध्यक्ष बनीं।","explanation_en":"Annie Besant became the first woman President of the Indian National Congress in the 1917 Calcutta Session."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बेसाल्ट चट्टानों के विखंडन से किस मिट्टी का निर्माण हुआ है, जिसे 'कपासी मिट्टी' भी कहा जाता है?","question_en":"Question 14: Which soil is formed by the fragmentation of basalt rocks and is also known as 'cotton soil'?","options":[{"hi":"जलोढ़ मिट्टी","en":"Alluvial soil"},{"hi":"लाल-पीली मिट्टी","en":"Red-yellow soil"},{"hi":"काली या रेगुर मिट्टी","en":"Black or Regur soil"},{"hi":"लैटेराइट मिट्टी","en":"Laterite soil"}],"answer":2,"explanation_hi":"काली मिट्टी बेसाल्ट चट्टानों से बनती है, इसमें स्वतः जुताई की क्षमता होती है और इसे रेगुर या कपासी मिट्टी भी कहते हैं।","explanation_en":"Black soil is formed from basalt rocks, has self-ploughing capacity, and is known as Regur or cotton soil."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अखिल भारतीय ट्रेड यूनियन कांग्रेस (AITUC) की स्थापना लाला लाजपत राय ने की थी।\nकथन 2: जवाहरलाल नेहरू ने 1929 में नागपुर में आयोजित AITUC की अध्यक्षता की थी।","question_en":"Question 15: Consider the following statements:\nStatement 1: All India Trade Union Congress (AITUC) was founded by Lala Lajpat Rai.\nStatement 2: Jawaharlal Nehru presided over the AITUC held at Nagpur in 1929.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"None"}],"answer":1,"explanation_hi":"AITUC की स्थापना 1920 में एन. एम. जोशी ने की थी, लाला लाजपत राय इसके पहले अध्यक्ष थे। अतः केवल कथन 2 सही है।","explanation_en":"AITUC was founded by N.M. Joshi in 1920, while Lala Lajpat Rai was its first President. Hence only statement 2 is true."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का सबसे छोटा राष्ट्रीय राजमार्ग NH966B (पुराना नाम 47A) किस राज्य में स्थित है?","question_en":"Question 16: In which state is India's shortest national highway NH966B (old name 47A) located?","options":[{"hi":"महाराष्ट्र","en":"Maharashtra"},{"hi":"गोवा","en":"Goa"},{"hi":"तमिलनाडु","en":"Tamil Nadu"},{"hi":"केरल","en":"Kerala"}],"answer":3,"explanation_hi":"भारत का सबसे छोटा राष्ट्रीय राजमार्ग NH966B केरल के वेलिंगटन द्वीप से होकर गुजरता है।","explanation_en":"India's shortest National Highway NH966B passes through Willingdon Island in Kerala."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस ब्रिटिश अधिनियम ने भारत में शिक्षा की शुरुआत के लिए प्रति वर्ष एक लाख रुपये की मंजूरी दी थी?","question_en":"Question 17: Which British act sanctioned one lakh rupees annually for the introduction of education in India?","options":[{"hi":"चार्टर एक्ट 1813","en":"Charter Act 1813"},{"hi":"पिट्स इंडिया एक्ट 1784","en":"Pitt's India Act 1784"},{"hi":"चार्टर एक्ट 1833","en":"Charter Act 1833"},{"hi":"चार्टर एक्ट 1853","en":"Charter Act 1853"}],"answer":0,"explanation_hi":"1813 के चार्टर अधिनियम ने पहली बार भारत में शिक्षा के लिए एक लाख रुपये की वार्षिक राशि आवंटित की।","explanation_en":"The Charter Act of 1813 allocated an annual sum of one lakh rupees for education in India for the first time."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लोकटक झील किस राज्य की घाटी के मध्य में स्थित है?","question_en":"Question 18: Loktak lake is situated in the middle of the valley of which state?","options":[{"hi":"मिजोरम","en":"Mizoram"},{"hi":"नगालैंड","en":"Nagaland"},{"hi":"असम","en":"Assam"},{"hi":"मणिपुर","en":"Manipur"}],"answer":3,"explanation_hi":"लोकटक झील पूर्वोत्तर भारत में मणिपुर घाटी के मध्य में स्थित है।","explanation_en":"Loktak Lake is located in the middle of the Manipur valley in Northeast India."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जब भारत को अंग्रेजों से स्वतंत्रता मिली, तब ब्रिटेन के प्रधान मंत्री कौन थे?","question_en":"Question 19: Who was the Prime Minister of Britain when India got independence from the Britishers?","options":[{"hi":"विंस्टन चर्चिल","en":"Winston Churchill"},{"hi":"क्लेमेंट आर. एटली","en":"Clement R. Attlee"},{"hi":"रामसे मैकडोनाल्ड","en":"Ramsay MacDonald"},{"hi":"विस्काउंट पामर्स्टन","en":"Viscount Palmerston"}],"answer":1,"explanation_hi":"1947 में भारत की स्वतंत्रता के समय क्लेमेंट रिचर्ड एटली ब्रिटेन के प्रधान मंत्री थे।","explanation_en":"Clement Richard Attlee was the Prime Minister of Britain at the time of India's independence in 1947."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चाय की खेती के लिए इष्टतम औसत वार्षिक वर्षा कितनी होनी चाहिए?","question_en":"Question 20: What should be the optimum average annual rainfall for tea cultivation?","options":[{"hi":"50 - 100 सेमी","en":"50 - 100 cm"},{"hi":"75 - 150 सेमी","en":"75 - 150 cm"},{"hi":"150 - 250 सेमी","en":"150 - 250 cm"},{"hi":"100 - 200 सेमी","en":"100 - 200 cm"}],"answer":2,"explanation_hi":"चाय की फसल के लिए 150 से 250 सेमी वर्षा की आवश्यकता होती है, लेकिन जड़ों में पानी जमा नहीं होना चाहिए।","explanation_en":"Tea crop requires 150 to 250 cm of rainfall, but water should not stagnate at the roots."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डेविड हेयर और अलेक्जेंडर डफ के सहयोग से 1817 में कलकत्ता में हिंदू कॉलेज की स्थापना किसने की थी?","question_en":"Question 21: Who founded the Hindu College in Calcutta in 1817 with the cooperation of David Hare and Alexander Duff?","options":[{"hi":"ईश्वर चंद्र विद्यासागर","en":"Ishwar Chandra Vidyasagar"},{"hi":"राजा राम मोहन रॉय","en":"Raja Ram Mohan Roy"},{"hi":"देबेंद्रनाथ टैगोर","en":"Debendranath Tagore"},{"hi":"स्वामी विवेकानंद","en":"Swami Vivekananda"}],"answer":1,"explanation_hi":"राजा राम मोहन रॉय ने डेविड हेयर और अलेक्जेंडर डफ के साथ मिलकर 1817 में कलकत्ता में हिंदू कॉलेज की स्थापना की।","explanation_en":"Raja Ram Mohan Roy along with David Hare and Alexander Duff established the Hindu College in Calcutta in 1817."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुजरात में कच्छ की खाड़ी में स्थित ज्वारीय पत्तन (बंदरगाह) कौन सा है?","question_en":"Question 22: Which is the tidal port located in the Gulf of Kutch in Gujarat?","options":[{"hi":"मर्मगाओ","en":"Mormugao"},{"hi":"न्यू मैंगलोर","en":"New Mangalore"},{"hi":"कांडला","en":"Kandla"},{"hi":"पारादीप","en":"Paradip"}],"answer":2,"explanation_hi":"कांडला एक ज्वारीय पत्तन है जो गुजरात में कच्छ की खाड़ी में स्थित है और मुख्य रूप से आयात के लिए जाना जाता है।","explanation_en":"Kandla is a tidal port located in the Gulf of Kutch in Gujarat, known primarily for imports."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1905 में 'सर्वेंट्स ऑफ इंडिया सोसाइटी' (Servants of India Society) की स्थापना किसने की थी?","question_en":"Question 23: Who founded the 'Servants of India Society' in 1905?","options":[{"hi":"गोपाल कृष्ण गोखले","en":"Gopal Krishna Gokhale"},{"hi":"बाल गंगाधर तिलक","en":"Bal Gangadhar Tilak"},{"hi":"लाला लाजपत राय","en":"Lala Lajpat Rai"},{"hi":"मदन मोहन मालवीय","en":"Madan Mohan Malviya"}],"answer":0,"explanation_hi":"गोपाल कृष्ण गोखले ने 1905 में विभिन्न धर्मों और जातियों के भारतीयों को कल्याणकारी कार्यों में प्रशिक्षित करने के लिए इस सोसाइटी की स्थापना की थी।","explanation_en":"Gopal Krishna Gokhale founded this society in 1905 to train Indians of different religions and ethnicities in welfare work."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अमरकंटक के पठार से निम्नलिखित में से किन नदियों का उद्गम होता है?","question_en":"Question 24: Which of the following rivers originate from the Amarkantak plateau?","options":[{"hi":"गोदावरी और कृष्णा","en":"Godavari and Krishna"},{"hi":"महानदी और चंबल","en":"Mahanadi and Chambal"},{"hi":"ताप्ती और लूनी","en":"Tapti and Luni"},{"hi":"नर्मदा, सोन और महानदी","en":"Narmada, Son and Mahanadi"}],"answer":3,"explanation_hi":"मैकाल श्रेणी पर स्थित अमरकंटक के पठार से नर्मदा, सोन और महानदी नदियाँ निकलती हैं।","explanation_en":"The Narmada, Son, and Mahanadi rivers originate from the Amarkantak plateau located on the Maikal range."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बंकिम चंद्र चटर्जी ने अपनी पुस्तक 'आनंद मठ' में किस विद्रोह को प्रसिद्ध किया?","question_en":"Question 25: Which rebellion did Bankim Chandra Chatterjee make famous in his book 'Anand Math'?","options":[{"hi":"संन्यासी-फकीर विद्रोह","en":"Sanyasi-Fakir Rebellion"},{"hi":"नील विद्रोह","en":"Indigo Revolt"},{"hi":"संथाल विद्रोह","en":"Santhal Rebellion"},{"hi":"फराइजी विद्रोह","en":"Faraizi Rebellion"}],"answer":0,"explanation_hi":"1763-1800 के संन्यासी-फकीर विद्रोह को बंकिम चंद्र चटर्जी ने अपनी कृति 'आनंद मठ' के माध्यम से प्रसिद्ध किया था।","explanation_en":"The Sanyasi-Fakir Rebellion of 1763-1800 was made famous by Bankim Chandra Chatterjee through his work 'Anand Math'."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इग्लू (बर्फ का घर) बनाने वाली एस्किमो (Eskimo) जनजाति मुख्य रूप से कहाँ पाई जाती है?","question_en":"Question 26: Where is the Eskimo tribe, which builds Igloos (ice houses), primarily found?","options":[{"hi":"साइबेरिया","en":"Siberia"},{"hi":"कनाडा व ग्रीनलैंड के टुंड्रा प्रदेश","en":"Tundra region of Canada and Greenland"},{"hi":"अमेज़न बेसिन","en":"Amazon Basin"},{"hi":"कालाहारी मरुस्थल","en":"Kalahari Desert"}],"answer":1,"explanation_hi":"एस्किमो जनजाति कनाडा और ग्रीनलैंड के ठंडे टुंड्रा क्षेत्रों में निवास करती है और बर्फ के घर (इग्लू) बनाती है।","explanation_en":"The Eskimo tribe inhabits the cold Tundra regions of Canada and Greenland and builds ice houses (Igloos)."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: वर्नाक्यूलर प्रेस एक्ट 1878 में लॉर्ड रिपन द्वारा पारित किया गया था।\nकथन 2: इस एक्ट को लॉर्ड लिटन ने 1882 में निरस्त कर दिया था।","question_en":"Question 27: Consider the following statements:\nStatement 1: The Vernacular Press Act was passed by Lord Ripon in 1878.\nStatement 2: This act was repealed by Lord Lytton in 1882.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"None"}],"answer":3,"explanation_hi":"दोनों कथन गलत हैं। यह एक्ट 1878 में लॉर्ड लिटन द्वारा पारित किया गया था और 1882 में लॉर्ड रिपन द्वारा निरस्त किया गया था।","explanation_en":"Both statements are false. The act was passed by Lord Lytton in 1878 and repealed by Lord Ripon in 1882."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में कुल जूट उत्पादन का लगभग 85 प्रतिशत हिस्सा कौन सा राज्य उत्पादित करता है?","question_en":"Question 28: Which state produces about 85 percent of the total jute production in India?","options":[{"hi":"ओडिशा","en":"Odisha"},{"hi":"बिहार","en":"Bihar"},{"hi":"पश्चिम बंगाल","en":"West Bengal"},{"hi":"असम","en":"Assam"}],"answer":2,"explanation_hi":"पश्चिम बंगाल देश में कुल जूट उत्पादन का लगभग 85 प्रतिशत हिस्सा उत्पादित करता है क्योंकि यहाँ की जलवायु जूट के लिए उपयुक्त है।","explanation_en":"West Bengal produces about 85 percent of the total jute production in the country as its climate is highly suitable for jute."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1882 में गठित हंटर शिक्षा आयोग भारत का पहला शिक्षा आयोग था, इसे किसके कार्यकाल में स्थापित किया गया था?","question_en":"Question 29: The Hunter Education Commission constituted in 1882 was the first Education Commission in India, during whose tenure was it established?","options":[{"hi":"लॉर्ड रिपन","en":"Lord Ripon"},{"hi":"लॉर्ड कर्जन","en":"Lord Curzon"},{"hi":"लॉर्ड डलहौजी","en":"Lord Dalhousie"},{"hi":"लॉर्ड विलियम बेंटिक","en":"Lord William Bentinck"}],"answer":0,"explanation_hi":"हंटर शिक्षा आयोग (1882) का गठन लॉर्ड रिपन के कार्यकाल में किया गया था, जिसका मुख्य ध्यान प्राथमिक व माध्यमिक शिक्षा के विस्तार और उसके प्रशासन को स्थानीय निकायों को हस्तांतरित करने पर था।","explanation_en":"The Hunter Education Commission (1882) was constituted during the tenure of Lord Ripon, focusing mainly on the expansion of primary and secondary education and transferring its administration to local bodies."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राजस्थान का 'खेतड़ी' क्षेत्र किस खनिज के निष्कर्षण के लिए सिंधु घाटी सभ्यता से पहले से ही प्रसिद्ध है?","question_en":"Question 30: The 'Khetri' region of Rajasthan is famous for the extraction of which mineral since before the Indus Valley Civilization?","options":[{"hi":"सीसा","en":"Lead"},{"hi":"जस्ता","en":"Zinc"},{"hi":"तांबा","en":"Copper"},{"hi":"अभ्रक","en":"Mica"}],"answer":2,"explanation_hi":"राजस्थान में अरावली क्षेत्र के पास स्थित खेतड़ी से तांबा सिंधु सभ्यता के समय से भी पहले से निकाला जाता रहा है।","explanation_en":"Copper has been extracted from Khetri near the Aravalli region in Rajasthan since before the Indus Valley civilization."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1901 में 'पॉवर्टी एंड अन-ब्रिटिश रूल इन इंडिया' (Poverty and Un-British Rule in India) पुस्तक किसने लिखी थी?","question_en":"Question 31: Who wrote the book 'Poverty and Un-British Rule in India' in 1901?","options":[{"hi":"गोपाल कृष्ण गोखले","en":"Gopal Krishna Gokhale"},{"hi":"दादाभाई नौरोजी","en":"Dadabhai Naoroji"},{"hi":"आर. सी. दत्त","en":"R.C. Dutt"},{"hi":"वारेन हेस्टिंग्स","en":"Warren Hastings"}],"answer":1,"explanation_hi":"भारत के 'ग्रैंड ओल्ड मैन' दादाभाई नौरोजी ने 1901 में यह पुस्तक लिखी थी, जिसमें उन्होंने 'धन की निकासी' के सिद्धांत को प्रतिपादित किया।","explanation_en":"Dadabhai Naoroji, the Grand Old Man of India, wrote this book in 1901, propounding the Drain of Wealth theory."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डंकन पैसेज (Duncan Passage) निम्नलिखित में से किन दो द्वीपों के मध्य स्थित है?","question_en":"Question 32: The Duncan Passage is located between which two of the following islands?","options":[{"hi":"उत्तरी अंडमान और मध्य अंडमान","en":"North Andaman and Middle Andaman"},{"hi":"मिनीकॉय और मालदीव","en":"Minicoy and Maldives"},{"hi":"अंडमान और निकोबार","en":"Andaman and Nicobar"},{"hi":"लघु (लिटिल) अंडमान और दक्षिणी अंडमान","en":"Little Andaman and South Andaman"}],"answer":3,"explanation_hi":"डंकन पैसेज अंडमान द्वीप समूह में लघु (लिटिल) अंडमान और दक्षिणी अंडमान के बीच स्थित है।","explanation_en":"Duncan Passage is located between Little (Laghu) Andaman and South Andaman in the Andaman archipelago."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1907 के सूरत अधिवेशन की अध्यक्षता किसने की थी, जहाँ कांग्रेस 'नरम दल' और 'गरम दल' में विभाजित हो गई थी?","question_en":"Question 33: Who presided over the 1907 Surat Session where the Congress split into Moderates and Extremists?","options":[{"hi":"बाल गंगाधर तिलक","en":"Bal Gangadhar Tilak"},{"hi":"गोपाल कृष्ण गोखले","en":"Gopal Krishna Gokhale"},{"hi":"एनी बेसेंट","en":"Annie Besant"},{"hi":"राश बिहारी घोष","en":"Rash Bihari Ghosh"}],"answer":3,"explanation_hi":"1907 में ताप्ती नदी के तट पर हुए सूरत अधिवेशन की अध्यक्षता राश बिहारी घोष ने की थी, जिसमें कांग्रेस का ऐतिहासिक विभाजन हुआ था।","explanation_en":"The Surat session of 1907, held on the banks of the Tapti river, was presided over by Rash Bihari Ghosh, marking the historic split in Congress."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व का सबसे गहरा समुद्री गर्त, 'मारियाना ट्रेंच' (Mariana Trench), किस महासागर में स्थित है?","question_en":"Question 34: In which ocean is the 'Mariana Trench', the deepest oceanic trench in the world, located?","options":[{"hi":"अटलांटिक महासागर","en":"Atlantic Ocean"},{"hi":"हिंद महासागर","en":"Indian Ocean"},{"hi":"प्रशांत महासागर","en":"Pacific Ocean"},{"hi":"आर्कटिक महासागर","en":"Arctic Ocean"}],"answer":2,"explanation_hi":"मारियाना ट्रेंच प्रशांत महासागर में स्थित है और इसकी गहराई 11 किलोमीटर से भी अधिक है।","explanation_en":"The Mariana Trench is located in the Pacific Ocean and is more than 11 kilometers deep."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: नौजवान भारत सभा की स्थापना मार्च 1926 में भगत सिंह ने की थी।\nकथन 2: यह हिंदुस्तान रिपब्लिकन एसोसिएशन का हिस्सा थी।","question_en":"Question 35: Consider the following statements:\nStatement 1: Naujawan Bharat Sabha was founded by Bhagat Singh in March 1926.\nStatement 2: It was a part of the Hindustan Republican Association.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों","en":"Both"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"None"}],"answer":1,"explanation_hi":"दोनों कथन सही हैं। नौजवान भारत सभा की स्थापना 1926 में भगत सिंह ने की थी और यह हिंदुस्तान रिपब्लिकन एसोसिएशन से जुड़ी हुई थी।","explanation_en":"Both statements are true. Naujawan Bharat Sabha was founded by Bhagat Singh in 1926 and was associated with HRA."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इक्वाडोर में स्थित 'कोटोपैक्सी' (Cotopaxi) किस प्रकार का ज्वालामुखी है?","question_en":"Question 36: What type of volcano is 'Cotopaxi', located in Ecuador?","options":[{"hi":"विश्व का सबसे ऊँचा सक्रिय ज्वालामुखी","en":"World's highest active volcano"},{"hi":"शांत ज्वालामुखी","en":"Extinct volcano"},{"hi":"प्रसुप्त ज्वालामुखी","en":"Dormant volcano"},{"hi":"भूमध्यसागर का प्रकाश स्तंभ","en":"Lighthouse of the Mediterranean"}],"answer":0,"explanation_hi":"कोटोपैक्सी इक्वाडोर में स्थित है और यह विश्व का सबसे ऊँचा सक्रिय (Active) ज्वालामुखी है।","explanation_en":"Cotopaxi is located in Ecuador and is the highest active volcano in the world."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चितरंजन दास और मोतीलाल नेहरू द्वारा 'स्वराज पार्टी' का गठन कब किया गया था?","question_en":"Question 37: When was the 'Swaraj Party' formed by Chittaranjan Das and Motilal Nehru?","options":[{"hi":"दिसंबर 1920","en":"December 1920"},{"hi":"फरवरी 1922","en":"February 1922"},{"hi":"जनवरी 1923","en":"January 1923"},{"hi":"मार्च 1931","en":"March 1931"}],"answer":2,"explanation_hi":"असहयोग आंदोलन के निलंबन के बाद कांग्रेस के गया अधिवेशन (1922) में विवाद हुआ, जिसके परिणामस्वरूप जनवरी 1923 में स्वराज पार्टी बनी।","explanation_en":"Following the suspension of the Non-Cooperation Movement and disputes at the Gaya session (1922), the Swaraj Party was formed in January 1923."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वायुमंडल की किस परत से पृथ्वी से भेजी गई रेडियो तरंगें वापस लौट आती हैं, जिससे रेडियो और टेलीविजन का संचालन संभव होता है?","question_en":"Question 38: Which layer of the atmosphere reflects the radio waves sent from the Earth back, making radio and television operations possible?","options":[{"hi":"समतापमंडल","en":"Stratosphere"},{"hi":"आयनमंडल","en":"Ionosphere"},{"hi":"क्षोभमंडल","en":"Troposphere"},{"hi":"मध्यमंडल","en":"Mesosphere"}],"answer":1,"explanation_hi":"आयनमंडल (80 से 400 किमी) में विद्युत आवेशित कण (आयन) होते हैं जो रेडियो तरंगों को परावर्तित करके संचार को संभव बनाते हैं।","explanation_en":"The Ionosphere (80 to 400 km) contains electrically charged particles (ions) that reflect radio waves, enabling communication."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1857 के विद्रोह के दौरान भारत का गवर्नर जनरल कौन था, जो बाद में पहला वायसराय भी बना?","question_en":"Question 39: Who was the Governor General of India during the 1857 revolt, who later also became the first Viceroy?","options":[{"hi":"लॉर्ड डलहौजी","en":"Lord Dalhousie"},{"hi":"लॉर्ड एलेनबरो","en":"Lord Ellenborough"},{"hi":"लॉर्ड जॉन लॉरेंस","en":"Lord John Lawrence"},{"hi":"लॉर्ड कैनिंग","en":"Lord Canning"}],"answer":3,"explanation_hi":"1857 के विद्रोह के समय लॉर्ड कैनिंग भारत के गवर्नर-जनरल थे और कंपनी के शासन के अंत के बाद वे पहले वायसराय बने।","explanation_en":"Lord Canning was the Governor-General of India during the 1857 revolt and became the first Viceroy after the end of Company rule."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'मिस्ट्रल' (Mistral) एक ठंडी स्थानीय हवा है, यह मुख्य रूप से किस क्षेत्र में बहती है?","question_en":"Question 40: 'Mistral' is a cold local wind; in which region does it primarily blow?","options":[{"hi":"स्पेन और फ्रांस के पठारी क्षेत्र","en":"Plateau regions of Spain and France"},{"hi":"साइबेरिया","en":"Siberia"},{"hi":"संयुक्त राज्य अमेरिका","en":"USA"},{"hi":"एड्रियाटिक सागर के पूर्वी तट","en":"Eastern coast of Adriatic Sea"}],"answer":0,"explanation_hi":"'मिस्ट्रल' एक ठंडी स्थानीय पवन है जो स्पेन और फ्रांस के पठारी क्षेत्रों में बहती है।","explanation_en":"'Mistral' is a cold local wind that blows in the plateau regions of Spain and France."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"17 अक्टूबर, 1940 को 'व्यक्तिगत सत्याग्रह' शुरू करने के लिए प्रथम सत्याग्रही के रूप में किसे चुना गया था?","question_en":"Question 41: Who was chosen as the first Satyagrahi to start the 'Individual Satyagraha' on 17th October, 1940?","options":[{"hi":"जवाहरलाल नेहरू","en":"Jawaharlal Nehru"},{"hi":"आचार्य विनोबा भावे","en":"Acharya Vinoba Bhave"},{"hi":"यतियतनलाल जैन","en":"Yatiyatanlal Jain"},{"hi":"डॉ. राजेंद्र प्रसाद","en":"Dr. Rajendra Prasad"}],"answer":1,"explanation_hi":"गांधीजी ने विनोबा भावे को प्रथम सत्याग्रही चुना, जिन्होंने वर्धा के पास पवनार गाँव से युद्ध-विरोधी भाषण के साथ आंदोलन की शुरुआत की।","explanation_en":"Gandhiji chose Vinoba Bhave as the first Satyagrahi, who started the movement with an anti-war speech from Paunar village near Wardha."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"समुद्री जल की औसत लवणता (Salinity) कितनी होती है?","question_en":"Question 42: What is the average salinity of ocean water?","options":[{"hi":"35‰","en":""},{"hi":"25‰","en":""},{"hi":"45‰","en":""},{"hi":"15‰","en":""}],"answer":0,"explanation_hi":"समुद्री जल की औसत लवणता 35‰ (प्रति हज़ार) होती है, जिसका अर्थ है 1 किलोग्राम (1000 ग्राम) समुद्री जल में 35 ग्राम घुले हुए लवण उपस्थित होते हैं।","explanation_en":"The average salinity of ocean water is 35‰ (parts per thousand), meaning 35 grams of dissolved salts are present in 1 kilogram (1000 grams) of sea water."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस अधिनियम द्वारा ईस्ट इंडिया कंपनी के नागरिक, सैन्य और राजस्व मामलों को नियंत्रित करने के लिए 'बोर्ड ऑफ कंट्रोल' (Board of Control) की स्थापना की गई?","question_en":"Question 43: By which act was the 'Board of Control' established to manage the civil, military, and revenue affairs of the East India Company?","options":[{"hi":"रेगुलेटिंग एक्ट 1773","en":"Regulating Act of 1773"},{"hi":"चार्टर एक्ट 1813","en":"Charter Act of 1813"},{"hi":"पिट्स इंडिया एक्ट 1784","en":"Pitt's India Act of 1784"},{"hi":"1858 का भारत शासन अधिनियम","en":"Government of India Act, 1858"}],"answer":2,"explanation_hi":"1784 के पिट्स इंडिया एक्ट ने दोहरी नियंत्रण प्रणाली शुरू की और कंपनी के मामलों पर नियंत्रण के लिए 6 सदस्यों वाले बोर्ड ऑफ कंट्रोल का निर्माण किया।","explanation_en":"Pitt's India Act of 1784 introduced a dual system of control and created a 6-member Board of Control to manage company affairs."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'राष्ट्रीय राजमार्ग विकास परियोजना' (NHDP) के तहत 'स्वर्णिम चतुर्भुज योजना' किन चार महानगरों को जोड़ती है?","question_en":"Question 44: The 'Golden Quadrilateral' under the National Highways Development Project (NHDP) connects which four metropolitan cities?","options":[{"hi":"दिल्ली, मुंबई, हैदराबाद, कोलकाता","en":"Delhi, Mumbai, Hyderabad, Kolkata"},{"hi":"दिल्ली, अहमदाबाद, चेन्नई, कोलकाता","en":"Delhi, Ahmedabad, Chennai, Kolkata"},{"hi":"मुंबई, चेन्नई, बेंगलुरु, कोलकाता","en":"Mumbai, Chennai, Bengaluru, Kolkata"},{"hi":"दिल्ली, मुंबई, चेन्नई, कोलकाता","en":"Delhi, Mumbai, Chennai, Kolkata"}],"answer":3,"explanation_hi":"5,846 किमी लंबी स्वर्णिम चतुर्भुज योजना भारत के चार प्रमुख महानगरों दिल्ली, मुंबई, चेन्नई और कोलकाता को राजमार्गों से जोड़ती है।","explanation_en":"The 5,846 km long Golden Quadrilateral project connects India's four major metropolitan cities - Delhi, Mumbai, Chennai, and Kolkata via highways."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: कैबिनेट मिशन 1946 ने भारत के लिए त्रि-स्तरीय राजव्यवस्था का प्रस्ताव रखा था।\nकथन 2: महात्मा गांधी कैबिनेट मिशन योजना के पूरी तरह खिलाफ थे।","question_en":"Question 45: Consider the following statements:\nStatement 1: The Cabinet Mission of 1946 proposed a three-tier polity for India.\nStatement 2: Mahatma Gandhi was totally against the Cabinet Mission Plan.","options":[{"hi":"दोनों","en":"Both"},{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"कोई नहीं","en":"None"}],"answer":2,"explanation_hi":"कथन 1 सही है। कथन 2 गलत है क्योंकि महात्मा गांधी ने कांग्रेस को यह सलाह दी थी कि वह कैबिनेट मिशन योजना को स्वीकार कर ले, यद्यपि व्यक्तिगत रूप से वे इसके संघीय ढाँचे के कुछ पहलुओं से पूर्णतः सहमत नहीं थे। अतः यह कहना गलत है कि वे योजना के 'पूरी तरह खिलाफ' थे।","explanation_en":"Statement 1 is true. Statement 2 is false because Mahatma Gandhi advised the Congress to accept the Cabinet Mission Plan, although he personally did not fully agree with certain aspects of its federal structure. Hence it is incorrect to say he was 'totally against' the plan."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'बुशमैन' (Bushman) नामक जनजाति मुख्य रूप से किस मरुस्थल में पाई जाती है?","question_en":"Question 46: The 'Bushman' tribe is primarily found in which desert?","options":[{"hi":"कालाहारी मरुस्थल","en":"Kalahari Desert"},{"hi":"सहारा मरुस्थल","en":"Sahara Desert"},{"hi":"अटाकामा मरुस्थल","en":"Atacama Desert"},{"hi":"गोबी मरुस्थल","en":"Gobi Desert"}],"answer":0,"explanation_hi":"बुशमैन जनजाति मुख्य रूप से दक्षिणी अफ्रीका के कालाहारी मरुस्थल (बोत्सवाना) में निवास करती है।","explanation_en":"The Bushman tribe primarily inhabits the Kalahari Desert (Botswana) in Southern Africa."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1848 में 'व्यपगत का सिद्धांत' (Doctrine of Lapse) किसने पेश किया और सतारा पर अधिकार कर लिया?","question_en":"Question 47: Who introduced the 'Doctrine of Lapse' and annexed Satara in 1848?","options":[{"hi":"लॉर्ड वेलेस्ली","en":"Lord Wellesley"},{"hi":"लॉर्ड डलहौजी","en":"Lord Dalhousie"},{"hi":"लॉर्ड हेस्टिंग्स","en":"Lord Hastings"},{"hi":"लॉर्ड कॉर्नवालिस","en":"Lord Cornwallis"}],"answer":1,"explanation_hi":"लॉर्ड डलहौजी ने व्यपगत का सिद्धांत लागू किया और सबसे पहले 1848 में सतारा का विलय किया।","explanation_en":"Lord Dalhousie introduced the Doctrine of Lapse and first annexed Satara in 1848."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अल्फ्रेड वेगनर के महाद्वीपीय विस्थापन सिद्धांत के अनुसार, कार्बोनिफेरस के उत्तरार्द्ध में सभी महाद्वीप एक ही स्थलखंड के रूप में थे, जिसे क्या कहा गया?","question_en":"Question 48: According to Alfred Wegener's Continental Drift Theory, all continents were a single landmass towards the end of the Carboniferous period, which was called what?","options":[{"hi":"पैंथालासा","en":"Panthalassa"},{"hi":"लॉरेशिया","en":"Laurasia"},{"hi":"गोंडवानालैंड","en":"Gondwanaland"},{"hi":"पैंजिया","en":"Pangaea"}],"answer":3,"explanation_hi":"वेगनर के अनुसार कार्बोनिफेरस के उत्तरार्द्ध से पर्मियन युग तक सभी महाद्वीप आपस में जुड़े हुए एक विशाल स्थलखंड के रूप में थे, जिसे 'पैंजिया' कहा गया; बाद में मेसोज़ोइक युग में यह टूटकर लॉरेशिया और गोंडवानालैंड में विभाजित हो गया।","explanation_en":"According to Wegener, from the late Carboniferous to the Permian period, all continents formed a single connected landmass called 'Pangaea', which later broke up into Laurasia and Gondwanaland during the Mesozoic era."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अमृतसर में प्रसिद्ध 'जलियांवाला बाग हत्याकांड' किस तिथि को हुआ था?","question_en":"Question 49: On which date did the famous 'Jallianwala Bagh Massacre' take place in Amritsar?","options":[{"hi":"13 अप्रैल 1919","en":"13 April 1919"},{"hi":"4 फरवरी 1922","en":"4 February 1922"},{"hi":"12 मार्च 1930","en":"12 March 1930"},{"hi":"23 मार्च 1931","en":"23 March 1931"}],"answer":0,"explanation_hi":"रॉलेट एक्ट और नेताओं की गिरफ्तारी के विरोध में शांतिपूर्ण सभा कर रहे लोगों पर जनरल डायर ने 13 अप्रैल 1919 को गोलियां चलवाई थीं।","explanation_en":"General Dyer fired on a peaceful gathering protesting against the Rowlatt Act and leaders' arrest on 13 April 1919."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारी वर्षा और उच्च तापमान वाले क्षेत्रों में कौन सी निक्षालित (Leached) मिट्टी विकसित होती है, जो ईंट की तरह कठोर हो जाती है?","question_en":"Question 50: Which leached soil develops in areas of heavy rainfall and high temperature, and becomes hard like a brick?","options":[{"hi":"लाल-पीली मिट्टी","en":"Red-Yellow Soil"},{"hi":"लैटेराइट मिट्टी","en":"Laterite Soil"},{"hi":"जलोढ़ मिट्टी","en":"Alluvial Soil"},{"hi":"लवणीय मिट्टी","en":"Saline Soil"}],"answer":1,"explanation_hi":"लैटेराइट मिट्टी भारी वर्षा के कारण निक्षालन (Leaching) से बनती है और सूखने पर ईंट की तरह कठोर हो जाती है।","explanation_en":"Laterite soil is formed by leaching due to heavy rainfall and becomes as hard as a brick when it dries."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
