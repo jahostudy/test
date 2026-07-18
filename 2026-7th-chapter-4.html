@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"PCS • 7th • Chapter 4-7","highlight":"7th","shortTitle":"PCS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • 7th • Chapter 4-7","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-pcs-7th-chapter-4-7-20260718-14n8l","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-18","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मगध महाजनपद की प्रारंभिक राजधानी कौन सी थी?","question_en":"Question 1: What was the initial capital of the Magadha Mahajanapada?","options":[{"hi":"पाटलिपुत्र","en":"Pataliputra"},{"hi":"राजगृह","en":"Rajagriha"},{"hi":"वैशाली","en":"Vaishali"},{"hi":"कौशाम्बी","en":"Kaushambi"}],"answer":1,"explanation_hi":"मगध महाजनपद की प्रारंभिक राजधानी राजगृह थी, जिसे आधुनिक समय में बिहार के राजगीर के नाम से जाना जाता है।","explanation_en":"The initial capital of the Magadha Mahajanapada was Rajagriha, known in modern times as Rajgir in Bihar."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के प्रारंभिक 'आहत सिक्के' (पंच-मार्क सिक्के) मुख्य रूप से किस धातु के बने होते थे?","question_en":"Question 2: The early 'punch-marked coins' of India were primarily made of which metal?","options":[{"hi":"तांबा","en":"Copper"},{"hi":"सोना","en":"Gold"},{"hi":"चाँदी","en":"Silver"},{"hi":"सीसा","en":"Lead"}],"answer":2,"explanation_hi":"भारत के प्रारंभिक सिक्के चाँदी के बने होते थे, जो एक नरम धातु है और इस पर प्रतीकों को आहत कर अंकित किया जाता था।","explanation_en":"The early coins of India were made of silver, which is a soft metal, and symbols were punched onto them."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 'जनपद' का शाब्दिक अर्थ वह स्थान है जहाँ जन ने अपने कदम रखे हों।\nकथन 2: महाजनपदों की प्राचीरों के बाहर सुरक्षा के लिए बनाई गई गहरी खाई को 'परिखा' कहा जाता था।","question_en":"Question 3: Consider the following statements:\nStatement 1: The literal meaning of 'Janapada' is the place where people set their feet.\nStatement 2: The deep trench built outside the ramparts of Mahajanapadas for security was called 'Parikha'.","options":[{"hi":"दोनों","en":"Both"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"जनपद का अर्थ लोगों के बसने का स्थान है, और नगरों की सुरक्षा के लिए मजबूत प्राचीरों के बाहर एक गहरी खाई (परिखा) बनाई जाती थी।","explanation_en":"Janapada means a place where people settle, and a deep trench (Parikha) was built outside strong ramparts for the security of cities."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ऐतिहासिक नगरों को उनके आधुनिक स्थान से सुमेलित करें:\nसूची-I: A. राजगृह, B. कौशाम्बी, C. शिशुपालगढ़;\nसूची-II: 1. ओडिशा, 2. बिहार, 3. प्रयागराज के समीप","question_en":"Question 4: Match the historical cities with their modern locations:\nList-I: A. Rajagriha, B. Kaushambi, C. Shishupalgarh;\nList-II: 1. Odisha, 2. Bihar, 3. Near Prayagraj","options":[{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-2, B-1, C-3","en":""},{"hi":"A-3, B-2, C-1","en":""},{"hi":"A-2, B-3, C-1","en":""}],"answer":3,"explanation_hi":"राजगृह बिहार में, कौशाम्बी प्रयागराज के समीप और शिशुपालगढ़ वर्तमान भुवनेश्वर (ओडिशा) में स्थित है।","explanation_en":"Rajagriha is in Bihar, Kaushambi near Prayagraj, and Shishupalgarh is located in present-day Bhubaneswar (Odisha)."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रसिद्ध व्याकरणविद् पाणिनि द्वारा रचित 'अष्टाध्यायी' में संस्कृत व्याकरण के नियमों को कितने सूत्रों के माध्यम से संकलित किया गया है?","question_en":"Question 5: Through how many sutras have the rules of Sanskrit grammar been compiled in 'Ashtadhyayi' composed by the famous grammarian Panini?","options":[{"hi":"3900","en":""},{"hi":"3996","en":""},{"hi":"4000","en":""},{"hi":"4096","en":""}],"answer":1,"explanation_hi":"विद्वान पाणिनि की रचना अष्टाध्यायी में संस्कृत व्याकरण के नियमों को 3996 सूत्रों में संकलित किया गया है।","explanation_en":"In the work Ashtadhyayi by scholar Panini, the rules of Sanskrit grammar have been compiled into 3996 sutras."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ऐतिहासिक स्थानों और उनके विवरण के संबंध में कितने युग्म सही सुमेलित हैं? 1. राजगृह - मगध महाजनपद की राजधानी, 2. शिशुपालगढ़ - कलिंग क्षेत्र, 3. अष्टाध्यायी - संस्कृत व्याकरण","question_en":"Question 6: How many pairs are correctly matched regarding historical places and their descriptions? 1. Rajagriha - Capital of Magadha Mahajanapada, 2. Shishupalgarh - Kalinga region, 3. Ashtadhyayi - Sanskrit grammar","options":[{"hi":"केवल 1 युग्म","en":"Only 1 pair"},{"hi":"केवल 2 युग्म","en":"Only 2 pairs"},{"hi":"सभी 3 युग्म","en":"All 3 pairs"},{"hi":"कोई नहीं","en":"None"}],"answer":2,"explanation_hi":"ये तीनों ऐतिहासिक तथ्य पूर्णतः सत्य हैं, शिशुपालगढ़ कलिंग की राजधानी थी और अष्टाध्यायी पाणिनि का व्याकरण ग्रंथ है।","explanation_en":"All three historical facts are completely true; Shishupalgarh was the capital of Kalinga and Ashtadhyayi is Panini's grammar text."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कुषाण वंश के शक्तिशाली शासक कनिष्क की प्रसिद्ध 'सिरविहीन' मूर्ति की ऊंचाई कितनी है?","question_en":"Question 7: What is the height of the famous 'headless' statue of the powerful Kushana ruler Kanishka?","options":[{"hi":"1.50 मीटर","en":"1.50 meters"},{"hi":"1.75 मीटर","en":"1.75 meters"},{"hi":"1.65 मीटर","en":"1.65 meters"},{"hi":"1.85 मीटर","en":"1.85 meters"}],"answer":3,"explanation_hi":"कनिष्क की यह विशाल सिरविहीन मूर्ति 1.85 मीटर ऊँची है, जिस पर ब्राह्मी लिपि में उनका नाम और उपाधियाँ अंकित हैं।","explanation_en":"This massive headless statue of Kanishka is 1.85 meters tall, on which his name and titles are inscribed in the Brahmi script."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश में खोजे गए 'सोहगौरा ताम्रपत्र अभिलेख' में मुख्य रूप से किस उद्देश्य के लिए एक अन्नागार की स्थापना का उल्लेख है?","question_en":"Question 8: The 'Sohgaura copper plate inscription' discovered in Uttar Pradesh primarily mentions the establishment of a granary for what purpose?","options":[{"hi":"दुर्भिक्ष (अकाल) से राहत","en":"Relief from famine"},{"hi":"सेना के लिए भोजन भंडारण","en":"Food storage for the army"},{"hi":"धार्मिक अनुष्ठान","en":"Religious rituals"},{"hi":"विदेशी व्यापार","en":"Foreign trade"}],"answer":0,"explanation_hi":"सोहगौरा ताम्रपत्र अभिलेख में संकट के समय प्रजा को राहत देने के लिए दुर्भिक्ष (अकाल) से बचाव हेतु अन्नागार की स्थापना का उल्लेख है।","explanation_en":"The Sohgaura copper plate inscription mentions the establishment of a granary for relief and protection from famine to support subjects during crises."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अशोक के अधिकांश शिलालेख संस्कृत भाषा और देवनागरी लिपि में उत्कीर्ण थे।\nकथन 2: अशोक ने अपने शिलालेखों में स्वयं को 'देवानांपिय पियदसि' कहा है।","question_en":"Question 9: Consider the following statements:\nStatement 1: Most of Ashoka's edicts were engraved in Sanskrit language and Devanagari script.\nStatement 2: Ashoka referred to himself as 'Devanampiya Piyadasi' in his edicts.","options":[{"hi":"दोनों","en":"Both"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":2,"explanation_hi":"अशोक के अधिकांश शिलालेख लोकप्रचलित प्राकृत भाषा और ब्राह्मी लिपि में उत्कीर्ण थे, जिनमें उन्हें 'देवानांपिय पियदसि' कहा गया है।","explanation_en":"Most of Ashoka's edicts were engraved in the popular Prakrit language and Brahmi script, in which he is called 'Devanampiya Piyadasi'."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दक्षिण भारतीय राज्यों को उनकी विशेषताओं से सुमेलित करें:\nसूची-I: A. चेर, B. चोल, C. पांड्य;\nसूची-II: 1. कावेरी डेल्टा क्षेत्र, 2. मोतियों के लिए प्रसिद्ध, 3. वंचि या करूर राजधानी","question_en":"Question 10: Match the South Indian kingdoms with their features:\nList-I: A. Chera, B. Chola, C. Pandya;\nList-II: 1. Kaveri delta region, 2. Famous for pearls, 3. Vanchi or Karur capital","options":[{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-3, B-1, C-2","en":""},{"hi":"A-2, B-3, C-1","en":""},{"hi":"A-3, B-2, C-1","en":""}],"answer":1,"explanation_hi":"चेर राज्य की राजधानी वंचि थी, चोलों का शासन कावेरी डेल्टा में था, और पांड्य राज्य अपने मोतियों के व्यापार के लिए प्रसिद्ध था।","explanation_en":"The Chera capital was Vanchi, the Cholas ruled the Kaveri delta, and the Pandya kingdom was famous for its pearl trade."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चोल शासक करिकाल द्वारा निर्मित 'कल्लनई' या 'ग्रैंड एनीकट' जल-वितरण प्रणाली किस नदी पर स्थित है?","question_en":"Question 11: The 'Kallanai' or 'Grand Anicut' water distribution system built by the Chola ruler Karikala is located on which river?","options":[{"hi":"गोदावरी","en":"Godavari"},{"hi":"कृष्णा","en":"Krishna"},{"hi":"तुंगभद्रा","en":"Tungabhadra"},{"hi":"कावेरी","en":"Kaveri"}],"answer":3,"explanation_hi":"कल्लनई या ग्रैंड एनीकट एक प्राचीन जल-वितरण प्रणाली है जो कावेरी नदी के श्रीरंगम द्वीप के पास चोल शासक करिकाल द्वारा बनाई गई थी।","explanation_en":"Kallanai or Grand Anicut is an ancient water distribution system built near Srirangam island on the Kaveri river by Chola ruler Karikala."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"शासकों द्वारा जारी सिक्कों पर अंकित आकृतियों के संबंध में कितने सही सुमेलित हैं? 1. कनिष्क - शिव और नंदी, 2. कनिष्क - महात्मा बुद्ध, 3. इंडो-ग्रीक - वासुदेव-कृष्ण","question_en":"Question 12: How many are correctly matched regarding the figures depicted on the coins issued by rulers? 1. Kanishka - Shiva and Nandi, 2. Kanishka - Mahatma Buddha, 3. Indo-Greek - Vasudeva-Krishna","options":[{"hi":"सभी 3 युग्म","en":"All 3 pairs"},{"hi":"केवल 2 युग्म","en":"Only 2 pairs"},{"hi":"केवल 1 युग्म","en":"Only 1 pair"},{"hi":"कोई नहीं","en":"None"}],"answer":0,"explanation_hi":"कनिष्क के सिक्कों पर शिव-नंदी और बुद्ध दोनों मिलते हैं, जबकि इंडो-ग्रीक सिक्कों पर वासुदेव-कृष्ण का अंकन पाया गया है।","explanation_en":"Both Shiva-Nandi and Buddha are found on Kanishka's coins, while the depiction of Vasudeva-Krishna has been found on Indo-Greek coins."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उदयगिरि की गुफाओं में स्थित 'हाथीगुंफा अभिलेख' मुख्य रूप से किस शासक के विजयी सैन्य अभियानों का वर्णन करता है?","question_en":"Question 13: The 'Hathigumpha inscription' located in the Udayagiri caves primarily describes the victorious military campaigns of which ruler?","options":[{"hi":"अशोक","en":"Ashoka"},{"hi":"अजातशत्रु","en":"Ajatashatru"},{"hi":"खारवेल","en":"Kharavela"},{"hi":"चन्द्रगुप्त","en":"Chandragupta"}],"answer":2,"explanation_hi":"हाथीगुंफा अभिलेख चेदि वंश के शासक खारवेल से संबंधित है, जिसमें उनके सैन्य अभियानों और जनहित के कार्यों का वर्णन है।","explanation_en":"The Hathigumpha inscription belongs to Kharavela, a ruler of the Chedi dynasty, and describes his military campaigns and public welfare works."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सातवाहन वंश के शासक मुख्य रूप से किसके उपासक थे?","question_en":"Question 14: The rulers of the Satavahana dynasty were primarily worshippers of whom?","options":[{"hi":"शिव","en":"Shiva"},{"hi":"वासुदेव (कृष्ण)","en":"Vasudeva (Krishna)"},{"hi":"सूर्य","en":"Surya"},{"hi":"महात्मा बुद्ध","en":"Mahatma Buddha"}],"answer":1,"explanation_hi":"सातवाहन शासक मुख्य रूप से वासुदेव (कृष्ण) के उपासक थे, यद्यपि उन्होंने अन्य दर्शन और परंपराओं का भी संरक्षण किया।","explanation_en":"Satavahana rulers were primarily worshippers of Vasudeva (Krishna), although they patronized other philosophies and traditions as well."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भरहुत स्तूप का मूल निर्माण शुंग शासकों द्वारा करवाया गया था।\nकथन 2: शुंगों ने भरहुत स्तूप में महात्मा बुद्ध के जीवन की कथाओं को दर्शाते हुए उत्कीर्ण शिल्प जोड़े।","question_en":"Question 15: Consider the following statements:\nStatement 1: The original construction of the Bharhut stupa was done by the Shunga rulers.\nStatement 2: The Shungas added engraved sculptures depicting stories from the life of Mahatma Buddha to the Bharhut stupa.","options":[{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"Neither"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"}],"answer":3,"explanation_hi":"भरहुत स्तूप का मूल निर्माण संभवतः सम्राट अशोक के काल में हुआ था, लेकिन बाद में शुंग शासकों ने इसमें सुंदर वेदिकाएँ और शिल्प जोड़े।","explanation_en":"The original construction of the Bharhut stupa probably happened during Emperor Ashoka's time, but later Shunga rulers added beautiful railings and sculptures to it."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"शासकों को उनकी उपाधियों से सुमेलित करें:\nसूची-I: A. अशोक, B. कनिष्क, C. चन्द्रगुप्त द्वितीय;\nसूची-II: 1. देवानांपिय, 2. देवपुत्र, 3. विक्रमादित्य","question_en":"Question 16: Match the rulers with their titles:\nList-I: A. Ashoka, B. Kanishka, C. Chandragupta II;\nList-II: 1. Devanampiya, 2. Devaputra, 3. Vikramaditya","options":[{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-2, B-1, C-3","en":""},{"hi":"A-1, B-3, C-2","en":""},{"hi":"A-3, B-2, C-1","en":""}],"answer":0,"explanation_hi":"अशोक की उपाधि 'देवानांपिय' थी, कनिष्क ने 'देवपुत्र' की उपाधि धारण की थी, और चन्द्रगुप्त द्वितीय को 'विक्रमादित्य' के नाम से जाना जाता था।","explanation_en":"Ashoka's title was 'Devanampiya', Kanishka assumed the title of 'Devaputra', and Chandragupta II was known as 'Vikramaditya'."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दिल्ली के महरौली में स्थित प्रसिद्ध लौह-स्तंभ का अनुमानित वजन कितना है?","question_en":"Question 17: What is the approximate weight of the famous iron pillar located at Mehrauli in Delhi?","options":[{"hi":"4 टन","en":"4 tons"},{"hi":"5 टन","en":"5 tons"},{"hi":"6 टन","en":"6 tons"},{"hi":"8 टन","en":"8 tons"}],"answer":2,"explanation_hi":"महरौली का लौह-स्तंभ छह टन का है, जो गुप्त काल के दौरान चंद्रगुप्त द्वितीय के शासनकाल में स्थापित किया गया था।","explanation_en":"The Mehrauli iron pillar weighs six tons and was established during the reign of Chandragupta II in the Gupta period."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सम्राट चन्द्रगुप्त द्वितीय की पुत्री प्रभावती गुप्त का विवाह किस पड़ोसी राज्य के राजकुमार से हुआ था?","question_en":"Question 18: Prabhavatigupta, daughter of Emperor Chandragupta II, was married to the prince of which neighboring kingdom?","options":[{"hi":"पल्लव","en":"Pallava"},{"hi":"वाकाटक","en":"Vakataka"},{"hi":"चेर","en":"Chera"},{"hi":"कामरूप","en":"Kamarupa"}],"answer":1,"explanation_hi":"प्रभावती गुप्त का विवाह गुप्त साम्राज्य के दक्षिण में स्थित शक्तिशाली पड़ोसी वाकाटक राज्य के राजकुमार से हुआ था।","explanation_en":"Prabhavatigupta was married to the prince of Vakataka, a powerful neighboring kingdom located to the south of the Gupta Empire."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चीनी यात्री फा-शिएन के विवरण के संबंध में कितने कथन सत्य हैं? 1. किसान अनाज का एक भाग कर देते थे, 2. चांडाल नगर के बाहर रहते थे, 3. वैश्यों ने चिकित्सालय बनवाए।","question_en":"Question 19: How many statements are true regarding the account of Chinese traveler Fa-Xian? 1. Cultivators paid a portion of grain as tax, 2. Chandalas lived outside the city, 3. Vaishyas built hospitals.","options":[{"hi":"केवल 1 कथन","en":"Only 1 statement"},{"hi":"कोई नहीं","en":"None"},{"hi":"केवल 2 कथन","en":"Only 2 statements"},{"hi":"सभी 3 कथन","en":"All 3 statements"}],"answer":3,"explanation_hi":"फा-शिएन के अनुसार, राजकीय कृषि पर कर था, चांडाल बहिष्कृत रूप से नगर से बाहर रहते थे, और वैश्यों ने दान व औषधि के भवन बनवाए।","explanation_en":"According to Fa-Xian, there was a tax on royal agriculture, Chandalas lived outside the city as outcasts, and Vaishyas built centers for charity and medicine."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: चरक संहिता और सुश्रुत संहिता जैसे आयुर्वेद के ग्रंथ गुप्त काल में संकलित और पूर्ण किए गए थे।\nकथन 2: ये ग्रंथ रोगों के वर्गीकरण, उनके निदान और शल्य-चिकित्सा की जानकारी प्रदान करते हैं।","question_en":"Question 20: Consider the following statements:\nStatement 1: Ayurvedic texts like Charaka Samhita and Sushruta Samhita were compiled and completed during the Gupta period.\nStatement 2: These texts provide information on the classification of diseases, their diagnosis, and surgery.","options":[{"hi":"दोनों","en":"Both"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"चरक और सुश्रुत संहिताएं गुप्त काल में पूर्ण हुईं, जो चिकित्सा विज्ञान, रोगों के निदान और उन्नत शल्य-चिकित्सा का आधारभूत ज्ञान देती हैं।","explanation_en":"Charaka and Sushruta Samhitas were completed in the Gupta period, providing foundational knowledge of medical science, disease diagnosis, and advanced surgery."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुप्तकालीन 'दशावतार मंदिर', जहाँ शेषनाग पर लेटे हुए भगवान विष्णु की मूर्ति स्थित है, कहाँ स्थित है?","question_en":"Question 21: Where is the Gupta period 'Dashavatara Temple' located, which houses the idol of Lord Vishnu reclining on Sheshanaga?","options":[{"hi":"साँची, मध्य प्रदेश","en":"Sanchi, Madhya Pradesh"},{"hi":"भीतरगाँव, उत्तर प्रदेश","en":"Bhitargaon, Uttar Pradesh"},{"hi":"देवगढ़, उत्तर प्रदेश","en":"Deogarh, Uttar Pradesh"},{"hi":"अजंता, महाराष्ट्र","en":"Ajanta, Maharashtra"}],"answer":2,"explanation_hi":"उत्तर प्रदेश के देवगढ़ में स्थित दशावतार मंदिर गुप्तकालीन वास्तुकला का उदाहरण है, जिसमें शेषनाग पर विष्णु की भव्य मूर्ति है।","explanation_en":"The Dashavatara Temple located in Deogarh, Uttar Pradesh, is an example of Gupta architecture featuring a grand idol of Vishnu on Sheshanaga."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सम्राट समुद्रगुप्त ने अपने एक सिक्के पर स्वयं को कौन सा वाद्ययंत्र बजाते हुए दर्शाया है?","question_en":"Question 22: Emperor Samudragupta depicted himself playing which musical instrument on one of his coins?","options":[{"hi":"बांसुरी","en":"Flute"},{"hi":"वीणा","en":"Veena"},{"hi":"मृदंगम","en":"Mridangam"},{"hi":"सितार","en":"Sitar"}],"answer":1,"explanation_hi":"समुद्रगुप्त को संगीत और कला का संरक्षक माना जाता है, उन्होंने अपने एक सिक्के पर स्वयं को वीणा बजाते हुए उत्कीर्ण करवाया है।","explanation_en":"Samudragupta is considered a patron of music and art, and had himself engraved playing the Veena on one of his coins."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुप्त काल में भूमध्यसागरीय बाजारों के व्यापार मार्ग पर स्थित एक महत्वपूर्ण सामरिक पड़ाव 'सोकोट्रा द्वीप' कहाँ स्थित था?","question_en":"Question 23: During the Gupta period, where was the 'Socotra Island', an important strategic stopover on the trade route to Mediterranean markets, located?","options":[{"hi":"लाल सागर","en":"Red Sea"},{"hi":"बंगाल की खाड़ी","en":"Bay of Bengal"},{"hi":"भूमध्य सागर","en":"Mediterranean Sea"},{"hi":"अरब सागर","en":"Arabian Sea"}],"answer":3,"explanation_hi":"सोकोट्रा द्वीप अरब सागर में, अदन की खाड़ी और गार्डाफुई चैनल के बीच स्थित है, और प्राचीन काल में भारत तथा भूमध्यसागरीय क्षेत्र के बीच व्यापार का एक अत्यंत महत्वपूर्ण सामरिक पड़ाव था।","explanation_en":"Socotra Island lies in the Arabian Sea, between the Gulf of Aden and the Guardafui Channel, and was a highly important strategic stopover for trade between India and the Mediterranean region in ancient times."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कौटिल्य के 'सप्तांग सिद्धांत' के अंगों को उनके अर्थ से सुमेलित करें:\nसूची-I: A. अमात्य, B. दुर्ग, C. दंड;\nसूची-II: 1. मंत्री और अधिकारी, 2. किलेबंद नगर, 3. रक्षा और कानून की शक्ति","question_en":"Question 24: Match the parts of Kautilya's 'Saptanga theory' with their meanings:\nList-I: A. Amatya, B. Durga, C. Danda;\nList-II: 1. Ministers and officials, 2. Fortified cities, 3. Power of defense and law","options":[{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-2, B-1, C-3","en":""},{"hi":"A-3, B-2, C-1","en":""},{"hi":"A-1, B-3, C-2","en":""}],"answer":0,"explanation_hi":"सप्तांग सिद्धांत के अनुसार अमात्य का अर्थ मंत्री, दुर्ग का अर्थ किलेबंद नगर और दंड का अर्थ कानून एवं रक्षा शक्ति होता है।","explanation_en":"According to the Saptanga theory, Amatya means minister, Durga means fortified city, and Danda means the power of law and defense."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की लगभग सभी क्षेत्रीय लिपियों की जननी किस प्राचीन लिपि को माना जाता है, जिसमें अशोक के अधिकांश शिलालेख लिखे गए थे?","question_en":"Question 25: Which ancient script is considered the mother of almost all regional scripts of India, in which most of Ashoka's edicts were written?","options":[{"hi":"खरोष्ठी लिपि","en":"Kharoshthi script"},{"hi":"देवनागरी लिपि","en":"Devanagari script"},{"hi":"ब्राह्मी लिपि","en":"Brahmi script"},{"hi":"अरामाइक लिपि","en":"Aramaic script"}],"answer":2,"explanation_hi":"ब्राह्मी लिपि को भारत की अधिकांश क्षेत्रीय लिपियों की जननी माना जाता है, और अशोक के प्राकृत शिलालेख इसी लिपि में उत्कीर्ण थे।","explanation_en":"The Brahmi script is considered the mother of most regional scripts of India, and Ashoka's Prakrit edicts were engraved in this script."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: साम्राज्य विस्तार के लिए केवल कूटनीति का प्रयोग किया जाता था।\nकथन 2: प्राचीन काल में जिस राज्य के पास प्रबल सैन्य बल और अधिशेष संसाधन होते थे, वह अंततः सार्वभौम अधिपति बन जाता था।","question_en":"Question 26: Consider the following statements:\nStatement 1: Only diplomacy was used for empire expansion.\nStatement 2: In ancient times, the state that had strong military power and surplus resources ultimately became the sovereign overlord.","options":[{"hi":"दोनों","en":"Both"},{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"साम्राज्य विस्तार के लिए केवल कूटनीति नहीं बल्कि युद्ध, सैन्य बल और व्यापारिक नियंत्रण का भी व्यापक रूप से प्रयोग किया जाता था।","explanation_en":"Not only diplomacy, but war, military power, and trade control were also extensively used for empire expansion."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विष्णु पुराण में उल्लिखित गुप्त साम्राज्य के क्षेत्रों के संबंध में कितने सही सुमेलित हैं? 1. अनुगंगा - मध्य-गंगा घाटी, 2. साकेत - अयोध्या, 3. प्रयाग - प्रयागराज","question_en":"Question 27: How many are correctly matched regarding the regions of the Gupta Empire mentioned in the Vishnu Purana? 1. Anuganga - Mid-Ganga valley, 2. Saketa - Ayodhya, 3. Prayag - Prayagraj","options":[{"hi":"केवल 1 युग्म","en":"Only 1 pair"},{"hi":"कोई नहीं","en":"None"},{"hi":"केवल 2 युग्म","en":"Only 2 pairs"},{"hi":"सभी 3 युग्म","en":"All 3 pairs"}],"answer":3,"explanation_hi":"विष्णु पुराण के अनुसार गुप्त शासक अनुगंगा (मध्य-गंगा घाटी), साकेत (अयोध्या) और प्रयाग (प्रयागराज) क्षेत्रों पर शासन करेंगे।","explanation_en":"According to the Vishnu Purana, the Gupta rulers would rule over the regions of Anuganga (Mid-Ganga valley), Saketa (Ayodhya), and Prayag (Prayagraj)."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बौद्ध ग्रंथों के अनुसार, कौटिल्य (चाणक्य) किस विश्वविख्यात प्राचीन विश्वविद्यालय के आचार्य थे?","question_en":"Question 28: According to Buddhist texts, Kautilya (Chanakya) was a teacher at which world-famous ancient university?","options":[{"hi":"तक्षशिला विश्वविद्यालय","en":"Taxila University"},{"hi":"नालंदा विश्वविद्यालय","en":"Nalanda University"},{"hi":"विक्रमशिला विश्वविद्यालय","en":"Vikramashila University"},{"hi":"वल्लभी विश्वविद्यालय","en":"Vallabhi University"}],"answer":0,"explanation_hi":"बौद्ध ग्रंथों में उल्लेख मिलता है कि विष्णुगुप्त या कौटिल्य विश्वविख्यात तक्षशिला विश्वविद्यालय के एक प्रमुख आचार्य थे।","explanation_en":"Buddhist texts mention that Vishnugupta or Kautilya was a prominent teacher at the world-famous Taxila University."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'प्रयाग प्रशस्ति' के अनुसार, सम्राट समुद्रगुप्त ने दक्षिण भारत के किस वंश के शासक को पराजित किया, लेकिन उसके क्षेत्र को सीधे अपने अधिकार में नहीं लिया?","question_en":"Question 29: According to the 'Prayag Prashasti', Emperor Samudragupta defeated the ruler of which South Indian dynasty, but did not take direct control of his territory?","options":[{"hi":"चोल","en":"Chola"},{"hi":"वाकाटक","en":"Vakataka"},{"hi":"पल्लव","en":"Pallava"},{"hi":"चेर","en":"Chera"}],"answer":2,"explanation_hi":"समुद्रगुप्त ने पल्लव शासक को पराजित किया, लेकिन उसे अपना क्षेत्र वापस सौंप दिया और अधीनता स्वीकार कर कर देने की नीति अपनाई।","explanation_en":"Samudragupta defeated the Pallava ruler but returned his territory, adopting a policy of accepting suzerainty and paying tribute."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुप्त काल में भूमि अनुदानों को सटीक रूप से संरक्षित करने और प्रमाण के रूप में दर्ज करने के लिए मुख्य रूप से किसका उपयोग किया जाता था?","question_en":"Question 30: During the Gupta period, what was primarily used to accurately preserve and record land grants as proof?","options":[{"hi":"भोजपत्र","en":"Birch bark"},{"hi":"ताम्रपत्र","en":"Copper plates"},{"hi":"लौह-स्तंभ","en":"Iron pillars"},{"hi":"ताड़पत्र","en":"Palm leaves"}],"answer":1,"explanation_hi":"भूमिदान के विवरण को कानूनी प्रमाण के रूप में सुरक्षित रखने के लिए गुप्त काल में ताम्रपत्रों (तांबे की पट्टियों) का प्रयोग किया गया था।","explanation_en":"To preserve the details of land grants as legal proof, copper plates were used during the Gupta period."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"शासकों को उनके संबंधित राजवंशों से सुमेलित करें:\nसूची-I: A. अजातशत्रु, B. कनिष्क, C. खारवेल;\nसूची-II: 1. कुषाण, 2. प्रारंभिक मगध, 3. चेदि","question_en":"Question 31: Match the rulers with their dynasties:\nList-I: A. Ajatashatru, B. Kanishka, C. Kharavela;\nList-II: 1. Kushana, 2. Early Magadha, 3. Chedi","options":[{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-2, B-3, C-1","en":""},{"hi":"A-3, B-1, C-2","en":""},{"hi":"A-2, B-1, C-3","en":""}],"answer":3,"explanation_hi":"अजातशत्रु ने प्रारंभिक मगध पर शासन किया, कनिष्क कुषाण वंश के प्रतापी राजा थे, और खारवेल चेदि वंश से संबंधित थे।","explanation_en":"Ajatashatru ruled early Magadha, Kanishka was a great Kushana king, and Kharavela belonged to the Chedi dynasty."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: कुषाण शासक कनिष्क की प्रसिद्ध सिरविहीन मूर्ति पर खरोष्ठी लिपि में लेख अंकित है।\nकथन 2: इस मूर्ति पर कनिष्क को 'देवपुत्र' की उपाधि दी गई है।","question_en":"Question 32: Consider the following statements:\nStatement 1: The famous headless statue of the Kushana ruler Kanishka bears an inscription in the Kharoshthi script.\nStatement 2: On this statue, Kanishka is given the title of 'Devaputra'.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"केवल 1","en":"Only 1"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"कनिष्क की सिरविहीन मूर्ति पर ब्राह्मी लिपि में लेख अंकित है, जिसमें उसे 'महाराजा राजाधिराज देवपुत्र कनिष्क' की उपाधि दी गई है।","explanation_en":"The headless statue of Kanishka has an inscription in Brahmi script, giving him the title 'Maharaja Rajadhiraja Devaputra Kanishka'."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दक्षिण भारत के इतिहास में 'संगम युग' के संदर्भ में, 'संगम' शब्द का मुख्य तात्पर्य क्या है?","question_en":"Question 33: In the context of the 'Sangam Age' in South Indian history, what is the main implication of the word 'Sangam'?","options":[{"hi":"तीन नदियों का मिलन","en":"Confluence of three rivers"},{"hi":"व्यापारियों का संघ","en":"Guild of merchants"},{"hi":"कवियों की सभाएँ","en":"Assemblies of poets"},{"hi":"तीन राज्यों का सैन्य गठबंधन","en":"Military alliance of three kingdoms"}],"answer":2,"explanation_hi":"संगम शब्द का अर्थ समिति या एकत्र होना है, और इतिहास में इसका तात्पर्य तमिल कवियों की उन सभाओं से है जहाँ साहित्य रचा गया।","explanation_en":"The word Sangam means assembly or gathering, and in history, it refers to the assemblies of Tamil poets where literature was composed."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुप्तकालीन मूर्तिकला में नदियों के प्रतीकों के संबंध में कितने युग्म सही सुमेलित हैं? 1. गंगा - मकर (मगरमच्छ), 2. यमुना - कछुआ, 3. सरस्वती - हंस","question_en":"Question 34: How many pairs are correctly matched regarding river symbols in Gupta sculpture? 1. Ganga - Makara (crocodile), 2. Yamuna - Turtle, 3. Saraswati - Swan","options":[{"hi":"केवल 1 युग्म","en":"Only 1 pair"},{"hi":"केवल 2 युग्म","en":"Only 2 pairs"},{"hi":"सभी 3 युग्म","en":"All 3 pairs"},{"hi":"कोई नहीं","en":"None"}],"answer":1,"explanation_hi":"मूर्तिकला में गंगा को मकर पर और यमुना को कछुए पर खड़े दिखाया गया है; सरस्वती के हंस वाहन का यहाँ उल्लेख नहीं है।","explanation_en":"In sculpture, Ganga is shown standing on a Makara and Yamuna on a turtle; the swan vehicle of Saraswati is not mentioned here."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन दक्षिण भारतीय महाकाव्य 'सिलप्पदिकारम' मुख्य रूप से किन तीन राजवंशों के क्षेत्रों की यात्रा का वर्णन करता है?","question_en":"Question 35: The ancient South Indian epic 'Silappadikaram' primarily describes the journey through the territories of which three dynasties?","options":[{"hi":"चालुक्य, पल्लव, और राष्ट्रकूट","en":"Chalukya, Pallava, and Rashtrakuta"},{"hi":"सातवाहन, वाकाटक, और इक्ष्वाकु","en":"Satavahana, Vakataka, and Ikshvaku"},{"hi":"नंद, मौर्य, और शुंग","en":"Nanda, Maurya, and Shunga"},{"hi":"चेर, चोल, और पांड्य","en":"Chera, Chola, and Pandya"}],"answer":3,"explanation_hi":"महाकाव्य सिलप्पदिकारम नायक-नायिका के माध्यम से हमें दक्षिण भारत के चेर, चोल और पांड्य राजवंशों के समृद्ध क्षेत्रों की यात्रा कराता है।","explanation_en":"The epic Silappadikaram takes us on a journey through the prosperous territories of the Chera, Chola, and Pandya dynasties of South India."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'संगम काव्य' में मुख्य रूप से किन विषयों या भावनाओं को अभिव्यक्त किया गया है?","question_en":"Question 36: Which themes or emotions have been primarily expressed in 'Sangam poetry'?","options":[{"hi":"व्यक्तिगत भावनाएँ (प्रेम) और सामाजिक मूल्य (वीरता)","en":"Personal emotions (love) and social values (valor)"},{"hi":"केवल धार्मिक कर्मकांड","en":"Only religious rituals"},{"hi":"दार्शनिक सिद्धांत","en":"Philosophical theories"},{"hi":"कृषि तकनीक और व्यापार","en":"Agricultural techniques and trade"}],"answer":0,"explanation_hi":"संगम साहित्य में अत्यंत सरल और कुशल भाषा-शैली में प्रेम जैसी व्यक्तिगत भावनाएँ तथा वीरता जैसे सामाजिक मूल्य वर्णित हैं।","explanation_en":"Sangam literature describes personal emotions like love and social values like valor in an extremely simple and skillful language style."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस अलोकप्रिय शासक द्वारा कौटिल्य (चाणक्य) का अपमान किए जाने के बाद, कौटिल्य ने उस वंश के शासन को समाप्त करने की शपथ ली थी?","question_en":"Question 37: After being insulted by which unpopular ruler did Kautilya (Chanakya) vow to end the rule of that dynasty?","options":[{"hi":"अजातशत्रु","en":"Ajatashatru"},{"hi":"बिंबिसार","en":"Bimbisara"},{"hi":"धनानंद","en":"Dhanananda"},{"hi":"अशोक","en":"Ashoka"}],"answer":2,"explanation_hi":"धनानंद के अलोकप्रिय शासन को बदलने का परामर्श देने पर अपमानित होने के बाद कौटिल्य ने नंद वंश का अंत करने की शपथ ली थी।","explanation_en":"After being insulted for advising to change Dhanananda's unpopular rule, Kautilya took an oath to end the Nanda dynasty."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: चेर शासकों का रोमन साम्राज्य के साथ कोई व्यापारिक संबंध नहीं था।\nकथन 2: चेर राज्य से मसाले, लकड़ी और हाथीदाँत का भारी मात्रा में निर्यात किया जाता था।","question_en":"Question 38: Consider the following statements:\nStatement 1: The Chera rulers had no trade relations with the Roman Empire.\nStatement 2: Spices, timber, and ivory were exported in large quantities from the Chera kingdom.","options":[{"hi":"दोनों","en":"Both"},{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"चेर शासकों के रोमन साम्राज्य और पश्चिम एशिया के साथ विस्तृत व्यापारिक संबंध थे और वे मसालों तथा लकड़ी का निर्यात करते थे।","explanation_en":"Chera rulers had extensive trade relations with the Roman Empire and West Asia, exporting spices and timber."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रसिद्ध 'प्रयाग प्रशस्ति' (इलाहाबाद स्तंभ लेख) की रचना मुख्य रूप से किस राजकवि द्वारा की गई थी?","question_en":"Question 39: The famous 'Prayag Prashasti' (Allahabad pillar inscription) was primarily composed by which court poet?","options":[{"hi":"कालिदास","en":"Kalidasa"},{"hi":"बाणभट्ट","en":"Banabhatta"},{"hi":"रवि कीर्ति","en":"Ravi Kirti"},{"hi":"हरिषेण","en":"Harishena"}],"answer":3,"explanation_hi":"सम्राट समुद्रगुप्त की उपलब्धियों का वर्णन करने वाली 'प्रयाग प्रशस्ति' की रचना उनके राजकवि हरिषेण द्वारा की गई थी।","explanation_en":"The 'Prayag Prashasti', which describes the achievements of Emperor Samudragupta, was composed by his court poet Harishena."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ऐतिहासिक साक्ष्यों को उनके संबंधित शासकों या विषयों से सुमेलित करें:\nसूची-I: A. हाथीगुंफा अभिलेख, B. महरौली लौह-स्तंभ, C. सोहगौरा ताम्रपत्र;\nसूची-II: 1. चन्द्रगुप्त द्वितीय, 2. अकाल राहत (अन्नागार), 3. राजा खारवेल","question_en":"Question 40: Match the historical evidences with their related rulers or subjects:\nList-I: A. Hathigumpha inscription, B. Mehrauli iron pillar, C. Sohgaura copper plate;\nList-II: 1. Chandragupta II, 2. Famine relief (granary), 3. King Kharavela","options":[{"hi":"A-3, B-1, C-2","en":""},{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-2, B-3, C-1","en":""},{"hi":"A-3, B-2, C-1","en":""}],"answer":0,"explanation_hi":"हाथीगुंफा अभिलेख खारवेल से, महरौली लौह-स्तंभ चंद्रगुप्त द्वितीय से और सोहगौरा ताम्रपत्र अकाल राहत (अन्नागार) से संबंधित है।","explanation_en":"Hathigumpha inscription is related to Kharavela, Mehrauli iron pillar to Chandragupta II, and Sohgaura copper plate to famine relief (granary)."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौर्य सम्राट अशोक ने जनसामान्य तक अपने संदेश पहुँचाने के लिए मुख्य रूप से किस भाषा का प्रयोग किया?","question_en":"Question 41: Which language did Mauryan Emperor Ashoka primarily use to convey his messages to the common people?","options":[{"hi":"संस्कृत","en":"Sanskrit"},{"hi":"प्राकृत","en":"Prakrit"},{"hi":"पाली","en":"Pali"},{"hi":"तमिल","en":"Tamil"}],"answer":1,"explanation_hi":"अशोक ने अपनी प्रजा तक पहुँचने के लिए अपने अधिकांश शिलालेखों में लोक-प्रचलित प्राकृत भाषा और ब्राह्मी लिपि का उपयोग किया।","explanation_en":"Ashoka used the popular Prakrit language and Brahmi script in most of his edicts to reach his subjects."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गाइड के अनुसार, महरौली स्थित लौह-स्तंभ को दिल्ली लाए जाने से पहले संभवतः कहाँ स्थापित किया गया था?","question_en":"Question 42: According to the guide, where was the Mehrauli iron pillar possibly installed before being brought to Delhi?","options":[{"hi":"साँची, मध्य प्रदेश","en":"Sanchi, Madhya Pradesh"},{"hi":"पाटलिपुत्र, बिहार","en":"Pataliputra, Bihar"},{"hi":"उदयगिरि, मध्य प्रदेश","en":"Udayagiri, Madhya Pradesh"},{"hi":"अजंता, महाराष्ट्र","en":"Ajanta, Maharashtra"}],"answer":2,"explanation_hi":"महरौली का लौह-स्तंभ संभवतः मूल रूप से मध्य प्रदेश की उदयगिरि गुफा के सम्मुख स्थापित था, जिसे बाद में दिल्ली लाया गया।","explanation_en":"The Mehrauli iron pillar was possibly originally installed in front of the Udayagiri cave in Madhya Pradesh, and later brought to Delhi."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन सिक्कों और उन पर अंकित आकृतियों के कितने युग्म सही सुमेलित हैं? 1. इंडो-ग्रीक सिक्के - वासुदेव-कृष्ण, 2. समुद्रगुप्त के सिक्के - वीणा वादन, 3. कनिष्क के सिक्के - शिव और नंदी","question_en":"Question 43: How many pairs of ancient coins and the figures depicted on them are correctly matched? 1. Indo-Greek coins - Vasudeva-Krishna, 2. Samudragupta's coins - Playing Veena, 3. Kanishka's coins - Shiva and Nandi","options":[{"hi":"सभी 3 युग्म","en":"All 3 pairs"},{"hi":"कोई नहीं","en":"None"},{"hi":"केवल 2 युग्म","en":"Only 2 pairs"},{"hi":"केवल 1 युग्म","en":"Only 1 pair"}],"answer":0,"explanation_hi":"इंडो-ग्रीक ने कृष्ण, समुद्रगुप्त ने स्वयं को वीणा बजाते हुए, और कनिष्क ने शिव-नंदी को अपने सिक्कों पर उत्कीर्ण करवाया था।","explanation_en":"Indo-Greeks engraved Krishna, Samudragupta depicted himself playing the Veena, and Kanishka engraved Shiva-Nandi on their coins."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: दक्षिण भारत का पांड्य राज्य प्राचीन काल में मोतियों के व्यापार के लिए अत्यधिक प्रसिद्ध था।\nकथन 2: संगम साहित्य में केवल धार्मिक अनुष्ठानों का वर्णन मिलता है, व्यक्तिगत भावनाओं का नहीं।","question_en":"Question 44: Consider the following statements:\nStatement 1: The Pandya kingdom of South India was highly famous for the pearl trade in ancient times.\nStatement 2: Sangam literature only describes religious rituals, not personal emotions.","options":[{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"Neither"},{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"}],"answer":3,"explanation_hi":"पांड्य राज्य मोतियों के लिए प्रसिद्ध था, लेकिन संगम साहित्य धार्मिक अनुष्ठानों तक सीमित नहीं था; इसमें प्रेम जैसी व्यक्तिगत भावनाएँ भी थीं।","explanation_en":"The Pandya kingdom was famous for pearls, but Sangam literature was not limited to religious rituals; it also contained personal emotions like love."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"शिलालेखों के अनुसार, प्रकृति और वन्यजीव संरक्षण के लिए स्पष्ट निर्देश देने वाला भारतीय इतिहास का प्रथम राजा किसे माना जाता है?","question_en":"Question 45: According to inscriptions, who is considered the first king in Indian history to give clear instructions for the conservation of nature and wildlife?","options":[{"hi":"समुद्रगुप्त","en":"Samudragupta"},{"hi":"अशोक","en":"Ashoka"},{"hi":"कनिष्क","en":"Kanishka"},{"hi":"खारवेल","en":"Kharavela"}],"answer":1,"explanation_hi":"अशोक ने पशुओं के शिकार पर प्रतिबंध लगाया और उनके उपचार की व्यवस्था की, जो उन्हें वन्यजीव संरक्षण का प्रथम राजा बनाता है।","explanation_en":"Ashoka banned the hunting of animals and arranged for their treatment, making him the first king of wildlife conservation."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अधिकांश अभिलेखों और सिक्कों के अनुसार, गुप्त वंश के शासक मुख्य रूप से किस देवता के परम भक्त थे?","question_en":"Question 46: According to most inscriptions and coins, the rulers of the Gupta dynasty were primarily devoted to which deity?","options":[{"hi":"शिव","en":"Shiva"},{"hi":"ब्रह्मा","en":"Brahma"},{"hi":"विष्णु","en":"Vishnu"},{"hi":"सूर्य","en":"Surya"}],"answer":2,"explanation_hi":"यद्यपि उन्होंने अन्य धर्मों को संरक्षण दिया, परंतु गुप्तकालीन शासक मुख्य रूप से भगवान विष्णु के परम भक्त (वैष्णव) थे।","explanation_en":"Although they patronized other religions, the Gupta rulers were primarily ardent devotees of Lord Vishnu (Vaishnavas)."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन भारत में, विशेषकर गुप्त काल में 'ताम्रपत्रों' का सबसे प्रमुख उपयोग क्या था?","question_en":"Question 47: What was the most prominent use of 'copper plates' in ancient India, especially during the Gupta period?","options":[{"hi":"भूमि अनुदानों का दस्तावेजीकरण","en":"Documenting land grants"},{"hi":"धार्मिक ग्रंथ लिखना","en":"Writing religious texts"},{"hi":"विदेशी व्यापार का हिसाब रखना","en":"Keeping foreign trade accounts"},{"hi":"सैन्य आदेश जारी करना","en":"Issuing military orders"}],"answer":0,"explanation_hi":"गुप्त काल में ब्राह्मणों और अधिकारियों को दिए गए भूमि अनुदानों को सटीक और कानूनी प्रमाण के रूप में ताम्रपत्रों पर दर्ज किया जाता था।","explanation_en":"In the Gupta period, land grants given to Brahmins and officials were recorded on copper plates as accurate and legal proof."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चीनी यात्री फा-शिएन के विवरण के अनुसार, गुप्त काल में जो लोग राजकीय भूमि पर खेती करते थे, उन्हें कर (Tax) के रूप में क्या देना पड़ता था?","question_en":"Question 48: According to the account of Chinese traveler Fa-Xian, what did the people who cultivated royal land have to pay as tax during the Gupta period?","options":[{"hi":"सोने के सिक्के","en":"Gold coins"},{"hi":"रेशमी वस्त्र","en":"Silk clothes"},{"hi":"सैन्य सेवा","en":"Military service"},{"hi":"अनाज का एक भाग","en":"A portion of the grain"}],"answer":3,"explanation_hi":"फा-शिएन के वृत्तांत के अनुसार, राजा की भूमि पर खेती करने वाले कृषकों को अपनी उपज (अनाज) का एक भाग कर के रूप में देना होता था।","explanation_en":"According to Fa-Xian's account, cultivators farming the king's land had to give a portion of their produce (grain) as tax."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: गुप्त काल में भारत का भूमध्यसागरीय क्षेत्र, दक्षिण-पूर्व एशिया और चीन के साथ व्यापारिक संपर्क था।\nकथन 2: भूमध्यसागरीय बाजारों के मार्ग में 'सोकोट्रा द्वीप' एक महत्वपूर्ण पड़ाव नहीं था।","question_en":"Question 49: Consider the following statements:\nStatement 1: During the Gupta period, India had trade contacts with the Mediterranean region, South-East Asia, and China.\nStatement 2: 'Socotra Island' was not an important stopover on the route to Mediterranean markets.","options":[{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"Neither"},{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"}],"answer":3,"explanation_hi":"गुप्त काल में भारत का व्यापक अंतर्राष्ट्रीय व्यापार था और अरब सागर में स्थित सोकोट्रा द्वीप भूमध्यसागरीय मार्ग का एक रणनीतिक पड़ाव था।","explanation_en":"India had extensive international trade during the Gupta period, and Socotra Island in the Arabian Sea was a strategic stopover on the Mediterranean route."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दिल्ली का महरौली लौह-स्तंभ मुख्य रूप से प्राचीन भारत की किस वैज्ञानिक उपलब्धि का एक उत्कृष्ट प्रमाण है?","question_en":"Question 50: The Mehrauli Iron Pillar of Delhi is primarily an excellent proof of which scientific achievement of ancient India?","options":[{"hi":"खगोल विज्ञान","en":"Astronomy"},{"hi":"उन्नत धातुविज्ञान","en":"Advanced Metallurgy"},{"hi":"चिकित्सा विज्ञान","en":"Medical science"},{"hi":"वास्तुकला","en":"Architecture"}],"answer":1,"explanation_hi":"1600 वर्षों से अधिक समय तक बिना जंग लगे खड़ा यह लौह-स्तंभ प्राचीन भारतीयों के उन्नत धातुविज्ञान (Metallurgy) का बेजोड़ उदाहरण है।","explanation_en":"Standing rust-free for over 1600 years, this iron pillar is a matchless example of the advanced metallurgy of ancient Indians."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
