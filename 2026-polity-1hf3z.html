@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"LOWER • Polity","highlight":"Polity","shortTitle":"LOWER","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • Polity","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-lower-polity-polity-20260718-1hf3z","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-18","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान सभा के प्रथम अस्थायी अध्यक्ष कौन थे?","question_en":"Question 1: Who was the first temporary president of the Constituent Assembly?","options":[{"hi":"डॉ. सच्चिदानंद सिन्हा","en":"Dr. Sachchidananda Sinha"},{"hi":"डॉ. राजेंद्र प्रसाद","en":"Dr. Rajendra Prasad"},{"hi":"एच. सी. मुखर्जी","en":"H. C. Mukherjee"},{"hi":"डॉ. बी. आर. अंबेडकर","en":"Dr. B. R. Ambedkar"}],"answer":0,"explanation_hi":"संविधान सभा की पहली बैठक 9 दिसंबर, 1946 को हुई थी, जिसमें डॉ. सच्चिदानंद सिन्हा को अस्थायी अध्यक्ष चुना गया था।","explanation_en":"The first meeting of the Constituent Assembly was held on December 9, 1946, in which Dr. Sachchidananda Sinha was elected as the temporary president."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान में 'समवर्ती सूची' का प्रावधान किस देश के संविधान से लिया गया है?","question_en":"Question 2: In the Indian Constitution, the provision of 'Concurrent List' is taken from the constitution of which country?","options":[{"hi":"कनाडा","en":"Canada"},{"hi":"ऑस्ट्रेलिया","en":"Australia"},{"hi":"फ्रांस","en":"France"},{"hi":"दक्षिण अफ्रीका","en":"South Africa"}],"answer":1,"explanation_hi":"समवर्ती सूची, व्यापार, वाणिज्य और समागम की स्वतंत्रता तथा संसद के दोनों सदनों की संयुक्त बैठक का प्रावधान ऑस्ट्रेलिया के संविधान से लिया गया है।","explanation_en":"The provision of Concurrent List, freedom of trade, commerce and intercourse, and joint sitting of both houses of Parliament is taken from the Australian Constitution."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस अधिनियम के अंतर्गत 'भारतीय रिजर्व बैंक' की स्थापना का प्रावधान किया गया था?","question_en":"Question 3: Under which act was the provision for the establishment of the 'Reserve Bank of India' made?","options":[{"hi":"भारतीय परिषद अधिनियम, 1909","en":"Indian Councils Act, 1909"},{"hi":"भारत सरकार अधिनियम, 1858","en":"Government of India Act, 1858"},{"hi":"भारतीय रिज़र्व बैंक अधिनियम, 1934","en":"Reserve Bank of India Act, 1934"},{"hi":"भारतीय स्वतंत्रता अधिनियम, 1947","en":"Indian Independence Act, 1947"}],"answer":2,"explanation_hi":"भारतीय रिज़र्व बैंक की स्थापना भारतीय रिज़र्व बैंक अधिनियम, 1934 के प्रावधानों के अंतर्गत की गई थी और इसने 1 अप्रैल 1935 से कार्य करना प्रारंभ किया।","explanation_en":"The Reserve Bank of India was established under the provisions of the Reserve Bank of India Act, 1934, and it commenced operations from April 1, 1935."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान का भाग 15 किससे संबंधित है?","question_en":"Question 4: Part 15 of the Indian Constitution is related to what?","options":[{"hi":"राजभाषा","en":"Official Language"},{"hi":"आपात उपबंध","en":"Emergency Provisions"},{"hi":"संविधान संशोधन","en":"Constitutional Amendment"},{"hi":"निर्वाचन","en":"Elections"}],"answer":3,"explanation_hi":"संविधान का भाग 15 निर्वाचन से संबंधित है, जबकि राजभाषा भाग 17 में तथा आपात उपबंध भाग 18 में दिए गए हैं।","explanation_en":"Part 15 of the Constitution is related to Elections, whereas Official Language is in Part 17 and Emergency Provisions in Part 18."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुजरात राज्य का गठन किस वर्ष हुआ था?","question_en":"Question 5: In which year was the state of Gujarat formed?","options":[{"hi":"1 मई, 1960","en":"1 May, 1960"},{"hi":"1 दिसंबर, 1963","en":"1 December, 1963"},{"hi":"1 नवंबर, 1966","en":"1 November, 1966"},{"hi":"25 जनवरी, 1971","en":"25 January, 1971"}],"answer":0,"explanation_hi":"गुजरात राज्य का गठन 1 मई, 1960 को हुआ था, जबकि हरियाणा का 1 नवंबर, 1966 को हुआ था।","explanation_en":"The state of Gujarat was formed on May 1, 1960, whereas Haryana was formed on November 1, 1966."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान का कौन सा अनुच्छेद यह प्रावधान करता है कि स्वेच्छा से विदेशी राज्य की नागरिकता प्राप्त करने वाले व्यक्ति भारत के नागरिक नहीं होंगे?","question_en":"Question 6: Which Article of the Constitution provides that persons voluntarily acquiring the citizenship of a foreign state shall not be citizens of India?","options":[{"hi":"अनुच्छेद 7","en":"Article 7"},{"hi":"अनुच्छेद 9","en":"Article 9"},{"hi":"अनुच्छेद 10","en":"Article 10"},{"hi":"अनुच्छेद 11","en":"Article 11"}],"answer":1,"explanation_hi":"अनुच्छेद 9 के तहत यदि कोई व्यक्ति स्वेच्छा से किसी विदेशी राज्य की नागरिकता प्राप्त कर लेता है, तो उसकी भारतीय नागरिकता समाप्त हो जाती है।","explanation_en":"Under Article 9, if a person voluntarily acquires the citizenship of a foreign state, his Indian citizenship is terminated."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कारखानों आदि में बालकों के नियोजन का प्रतिषेध किस अनुच्छेद के अंतर्गत किया गया है?","question_en":"Question 7: The prohibition of employment of children in factories etc. is done under which article?","options":[{"hi":"अनुच्छेद 22","en":"Article 22"},{"hi":"अनुच्छेद 23","en":"Article 23"},{"hi":"अनुच्छेद 24","en":"Article 24"},{"hi":"अनुच्छेद 25","en":"Article 25"}],"answer":2,"explanation_hi":"शोषण के विरुद्ध अधिकार के अंतर्गत अनुच्छेद 24 कारखानों में बालकों के नियोजन का प्रतिषेध करता है।","explanation_en":"Under the Right against Exploitation, Article 24 prohibits the employment of children in factories."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नीति निदेशक तत्वों के अंतर्गत 'ग्राम पंचायतों का गठन' किस प्रकार का सिद्धांत है?","question_en":"Question 8: Under the Directive Principles of State Policy, 'Organization of village panchayats' is what type of principle?","options":[{"hi":"समाजवादी सिद्धांत","en":"Socialist principle"},{"hi":"उदार बौद्धिक सिद्धांत","en":"Liberal-intellectual principle"},{"hi":"अंतर्राष्ट्रीय सिद्धांत","en":"International principle"},{"hi":"गांधीवादी सिद्धांत","en":"Gandhian principle"}],"answer":3,"explanation_hi":"अनुच्छेद 40 में वर्णित 'ग्राम पंचायतों का गठन' एक गांधीवादी सिद्धांत है जो स्व-सरकार की इकाई के रूप में कार्य करने की शक्ति प्रदान करता है।","explanation_en":"'Organization of village panchayats' mentioned in Article 40 is a Gandhian principle that endows them with power to function as units of self-government."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान का अनुच्छेद 61 किससे संबंधित है?","question_en":"Question 9: Article 61 of the Indian Constitution is related to what?","options":[{"hi":"राष्ट्रपति पर महाभियोग की प्रक्रिया","en":"Procedure for impeachment of the President"},{"hi":"राष्ट्रपति की क्षमादान की शक्ति","en":"Pardoning power of the President"},{"hi":"राष्ट्रपति का अध्यादेश जारी करना","en":"Promulgation of ordinances by the President"},{"hi":"राष्ट्रपति पद के लिए शर्तें","en":"Conditions of President's office"}],"answer":0,"explanation_hi":"अनुच्छेद 61 राष्ट्रपति पर महाभियोग की प्रक्रिया का प्रावधान करता है, जबकि क्षमादान की शक्ति अनुच्छेद 72 में है।","explanation_en":"Article 61 provides for the procedure of impeachment of the President, while the pardoning power is in Article 72."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लाल बहादुर शास्त्री का भारत के प्रधानमंत्री के रूप में कार्यकाल क्या था?","question_en":"Question 10: What was the tenure of Lal Bahadur Shastri as the Prime Minister of India?","options":[{"hi":"15-8-1947 से 27-05-1964","en":"15-8-1947 to 27-05-1964"},{"hi":"09-06-1964 से 11-01-1966","en":"09-06-1964 to 11-01-1966"},{"hi":"24-01-1966 से 24-03-1977","en":"24-01-1966 to 24-03-1977"},{"hi":"24-03-1977 से 28-07-1979","en":"24-03-1977 to 28-07-1979"}],"answer":1,"explanation_hi":"लाल बहादुर शास्त्री भारत के दूसरे प्रधानमंत्री थे, जिनका कार्यकाल 9 जून 1964 से उनके निधन (11 जनवरी 1966) तक रहा।","explanation_en":"Lal Bahadur Shastri was the second Prime Minister of India, whose tenure was from 9 June 1964 until his death on 11 January 1966."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लोकसभा की बैठक के लिए कोरम (गणपूर्ति) कुल सदस्यों का कितना भाग होता है?","question_en":"Question 11: What fraction of the total members is the quorum required for a meeting of the Lok Sabha?","options":[{"hi":"1/3","en":"1/3"},{"hi":"1/5","en":"1/5"},{"hi":"1/10","en":"1/10"},{"hi":"1/15","en":"1/15"}],"answer":2,"explanation_hi":"लोकसभा की बैठक के संचालन के लिए आवश्यक कोरम या गणपूर्ति सदन के कुल सदस्यों का 1/10 भाग होती है।","explanation_en":"The necessary quorum for conducting a meeting of the Lok Sabha is 1/10 of the total members of the House."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बिहार राज्य में लोकसभा सदस्यों की संख्या कितनी है?","question_en":"Question 12: What is the number of Lok Sabha members in the state of Bihar?","options":[{"hi":"48","en":"48"},{"hi":"42","en":"42"},{"hi":"39","en":"39"},{"hi":"40","en":"40"}],"answer":3,"explanation_hi":"लोकसभा में बिहार राज्य से सदस्यों की संख्या 40 है, जबकि महाराष्ट्र से 48 और पश्चिम बंगाल से 42 सदस्य हैं।","explanation_en":"The number of Lok Sabha members from the state of Bihar is 40, while Maharashtra has 48 and West Bengal has 42 members."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राक्कलन समिति में कुल कितने सदस्य होते हैं?","question_en":"Question 13: How many total members are there in the Estimates Committee?","options":[{"hi":"30 (सभी लोकसभा से)","en":"30 (All from Lok Sabha)"},{"hi":"22 (15 लोकसभा एवं 7 राज्यसभा से)","en":"22 (15 from Lok Sabha and 7 from Rajya Sabha)"},{"hi":"15 (सभी लोकसभा से)","en":"15 (All from Lok Sabha)"},{"hi":"30 (15 लोकसभा एवं 15 राज्यसभा से)","en":"30 (15 from Lok Sabha and 15 from Rajya Sabha)"}],"answer":0,"explanation_hi":"प्राक्कलन समिति सबसे बड़ी संसदीय समिति है, जिसमें 30 सदस्य होते हैं और सभी सदस्य लोकसभा से चुने जाते हैं।","explanation_en":"The Estimates Committee is the largest parliamentary committee, which has 30 members and all members are elected from the Lok Sabha."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नियंत्रक एवं महालेखा परीक्षक (CAG) के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: इनका कार्यकाल 6 वर्ष या 65 वर्ष की आयु तक होता है।\nकथन 2: इनकी नियुक्ति राष्ट्रपति द्वारा की जाती है।","question_en":"Question 14: Consider the following statements regarding the Comptroller and Auditor General (CAG):\nStatement 1: Their term is 6 years or up to 65 years of age.\nStatement 2: They are appointed by the President.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"Neither"}],"answer":2,"explanation_hi":"भारत के नियंत्रक एवं महालेखा परीक्षक की नियुक्ति राष्ट्रपति द्वारा की जाती है और इनका कार्यकाल 6 वर्ष या 65 वर्ष की आयु (जो भी पहले हो) तक होता है।","explanation_en":"The Comptroller and Auditor General of India is appointed by the President and their term is up to 6 years or 65 years of age (whichever is earlier)."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कलकत्ता उच्च न्यायालय की स्थापना किस वर्ष हुई थी?","question_en":"Question 15: In which year was the Calcutta High Court established?","options":[{"hi":"1866","en":"1866"},{"hi":"1862","en":"1862"},{"hi":"1884","en":"1884"},{"hi":"1916","en":"1916"}],"answer":1,"explanation_hi":"कलकत्ता, बॉम्बे और मद्रास उच्च न्यायालयों की स्थापना वर्ष 1862 में की गई थी।","explanation_en":"The Calcutta, Bombay and Madras High Courts were established in the year 1862."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'लोक स्वास्थ्य और स्वच्छता' सातवीं अनुसूची की किस सूची का विषय है?","question_en":"Question 16: 'Public health and sanitation' is a subject of which list of the Seventh Schedule?","options":[{"hi":"राज्य सूची","en":"State List"},{"hi":"संघ सूची","en":"Union List"},{"hi":"समवर्ती सूची","en":"Concurrent List"},{"hi":"अवशिष्ट सूची","en":"Residuary List"}],"answer":0,"explanation_hi":"'लोक स्वास्थ्य और स्वच्छता' राज्य सूची का विषय है, जिस पर कानून बनाने का अधिकार राज्य विधानमंडल को है।","explanation_en":"'Public health and sanitation' is a subject of the State List, on which the state legislature has the right to make laws."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वित्तीय आपातकाल का प्रावधान संविधान के किस अनुच्छेद में किया गया है?","question_en":"Question 17: The provision for Financial Emergency is made in which Article of the Constitution?","options":[{"hi":"अनुच्छेद 352","en":"Article 352"},{"hi":"अनुच्छेद 356","en":"Article 356"},{"hi":"अनुच्छेद 360","en":"Article 360"},{"hi":"अनुच्छेद 365","en":"Article 365"}],"answer":2,"explanation_hi":"वित्तीय आपातकाल (वित्तीय साख, वित्तीय स्थिरता को खतरा) का प्रावधान संविधान के अनुच्छेद 360 में किया गया है।","explanation_en":"The provision for Financial Emergency (threat to financial credit, financial stability) is made in Article 360 of the Constitution."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"15वें वित्त आयोग के अध्यक्ष कौन थे?","question_en":"Question 18: Who was the chairman of the 15th Finance Commission?","options":[{"hi":"वाई. वी. रेड्डी","en":"Y. V. Reddy"},{"hi":"डॉ. विजय केलकर","en":"Dr. Vijay Kelkar"},{"hi":"सी. रंगराजन","en":"C. Rangarajan"},{"hi":"एन के सिंह","en":"N. K. Singh"}],"answer":3,"explanation_hi":"15वें वित्त आयोग (2017) के अध्यक्ष एन के सिंह थे, जबकि 16वें (2023) के अध्यक्ष अरविंद पनगढ़िया हैं।","explanation_en":"The chairman of the 15th Finance Commission (2017) was N. K. Singh, while the chairman of the 16th (2023) is Arvind Panagariya."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस संविधान संशोधन द्वारा नागरिकों के मतदान करने की न्यूनतम आयु 21 वर्ष से घटाकर 18 वर्ष कर दी गई?","question_en":"Question 19: By which constitutional amendment was the minimum voting age for citizens reduced from 21 years to 18 years?","options":[{"hi":"52वां संशोधन अधिनियम","en":"52nd Amendment Act"},{"hi":"61वां संशोधन अधिनियम","en":"61st Amendment Act"},{"hi":"73वां संशोधन अधिनियम","en":"73rd Amendment Act"},{"hi":"86वां संशोधन अधिनियम","en":"86th Amendment Act"}],"answer":1,"explanation_hi":"61वें संविधान संशोधन अधिनियम (1988) द्वारा मतदान की न्यूनतम आयु 21 वर्ष से घटाकर 18 वर्ष की गई।","explanation_en":"By the 61st Constitutional Amendment Act (1988), the minimum voting age was reduced from 21 years to 18 years."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पंचायतों से संबंधित अनुच्छेदों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: अनुच्छेद 243D स्थानों के आरक्षण से संबंधित है।\nकथन 2: अनुच्छेद 243I पंचायतों के लिए निर्वाचन से संबंधित है।","question_en":"Question 20: Consider the following statements regarding the articles related to Panchayats:\nStatement 1: Article 243D is related to the reservation of seats.\nStatement 2: Article 243I is related to elections to the Panchayats.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"अनुच्छेद 243D स्थानों के आरक्षण से संबंधित है, लेकिन अनुच्छेद 243I राज्य वित्त आयोग के गठन से संबंधित है, जबकि निर्वाचन अनुच्छेद 243K में है।","explanation_en":"Article 243D is related to the reservation of seats, but Article 243I is related to the constitution of the State Finance Commission, whereas elections are in Article 243K."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रथम पंचवर्षीय योजना किस मॉडल पर आधारित थी?","question_en":"Question 21: The First Five Year Plan was based on which model?","options":[{"hi":"हेराल्ड-डोमर मॉडल","en":"Harrod-Domar model"},{"hi":"पी. सी. महालनोबिस मॉडल","en":"P. C. Mahalanobis model"},{"hi":"डी. आर. गाडगिल मॉडल","en":"D. R. Gadgil model"},{"hi":"डब्ल्यू. वी. मिलर मॉडल","en":"W. V. Miller model"}],"answer":0,"explanation_hi":"प्रथम पंचवर्षीय योजना (1951-56) हेराल्ड-डोमर मॉडल पर आधारित थी, जिसमें कृषि को प्राथमिकता दी गई थी।","explanation_en":"The First Five Year Plan (1951-56) was based on the Harrod-Domar model, in which priority was given to agriculture."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय कृषि और ग्रामीण विकास बैंक (NABARD) की स्थापना किस वर्ष हुई थी?","question_en":"Question 22: In which year was the National Bank for Agriculture and Rural Development (NABARD) established?","options":[{"hi":"1964 ई.","en":"1964 AD"},{"hi":"1971 ई.","en":"1971 AD"},{"hi":"1982 ई.","en":"1982 AD"},{"hi":"1990 ई.","en":"1990 AD"}],"answer":2,"explanation_hi":"राष्ट्रीय कृषि और ग्रामीण विकास बैंक (NABARD) की स्थापना वर्ष 1982 में की गई थी।","explanation_en":"The National Bank for Agriculture and Rural Development (NABARD) was established in the year 1982."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय रबर बोर्ड का मुख्यालय कहाँ स्थित है?","question_en":"Question 23: Where is the headquarters of the Indian Rubber Board located?","options":[{"hi":"बेंगलुरु (कर्नाटक)","en":"Bengaluru (Karnataka)"},{"hi":"गुंटूर (आंध्र प्रदेश)","en":"Guntur (Andhra Pradesh)"},{"hi":"कोच्चि (केरल)","en":"Kochi (Kerala)"},{"hi":"कोट्टायम (केरल)","en":"Kottayam (Kerala)"}],"answer":3,"explanation_hi":"भारतीय रबर बोर्ड का मुख्यालय कोट्टायम (केरल) में स्थित है, जबकि कॉफी बोर्ड बेंगलुरु में है।","explanation_en":"The headquarters of the Indian Rubber Board is located in Kottayam (Kerala), whereas the Coffee Board is in Bengaluru."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बैंक दर में वृद्धि का अर्थव्यवस्था पर क्या प्रभाव पड़ता है?","question_en":"Question 24: What is the impact of an increase in the Bank Rate on the economy?","options":[{"hi":"बैंकों द्वारा ब्याज दरों में कमी होती है","en":"Interest rates by banks decrease"},{"hi":"समग्र मांग में कमी आती है","en":"Aggregate demand decreases"},{"hi":"अर्थव्यवस्था में तरलता में वृद्धि होती है","en":"Liquidity in the economy increases"},{"hi":"वस्तुओं और सेवाओं की कीमतों में वृद्धि होती है","en":"Prices of goods and services increase"}],"answer":1,"explanation_hi":"बैंक दर में वृद्धि से ब्याज दरें बढ़ती हैं, तरलता में कमी आती है, समग्र मांग घटती है और कीमतों में कमी होती है।","explanation_en":"An increase in the Bank Rate raises interest rates, reduces liquidity, decreases aggregate demand and lowers prices."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपभोक्ता मूल्य सूचकांक-औद्योगिक श्रमिकों के लिए (CPI-IW) का आधार वर्ष क्या है?","question_en":"Question 25: What is the base year for the Consumer Price Index for Industrial Workers (CPI-IW)?","options":[{"hi":"2011","en":"2011"},{"hi":"2012","en":"2012"},{"hi":"2016","en":"2016"},{"hi":"1986-87","en":"1986-87"}],"answer":2,"explanation_hi":"औद्योगिक श्रमिकों के लिए उपभोक्ता मूल्य सूचकांक (CPI-IW) का आधार वर्ष 2016 है।","explanation_en":"The base year for the Consumer Price Index for Industrial Workers (CPI-IW) is 2016."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मुद्रास्फीति के दौरान ऋणी (Debtor) वर्ग पर क्या प्रभाव पड़ता है?","question_en":"Question 26: What is the impact on the debtor class during inflation?","options":[{"hi":"लाभ होता है","en":"Gains"},{"hi":"हानि होती है","en":"Loses"},{"hi":"कोई प्रभाव नहीं पड़ता","en":"No impact"},{"hi":"पहले लाभ, फिर हानि होती है","en":"First gains, then loses"}],"answer":0,"explanation_hi":"मुद्रास्फीति के प्रभाव से उत्पादक और ऋणी वर्ग को लाभ होता है, जबकि उपभोक्ता और ऋणदाता को हानि होती है।","explanation_en":"Due to the impact of inflation, the producer and debtor classes gain, while the consumer and creditor lose."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'स्मार्ट सिटी मिशन' किस वर्ष प्रारंभ किया गया था?","question_en":"Question 27: In which year was the 'Smart City Mission' launched?","options":[{"hi":"2014","en":"2014"},{"hi":"2016","en":"2016"},{"hi":"2021","en":"2021"},{"hi":"2015","en":"2015"}],"answer":3,"explanation_hi":"स्मार्ट सिटी मिशन, डिजिटल इंडिया मिशन और अमृत (AMRUT) योजना वर्ष 2015 में शुरू की गई थीं।","explanation_en":"The Smart City Mission, Digital India Mission and AMRUT scheme were launched in the year 2015."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2011 की जनगणना के अनुसार भारत में न्यूनतम जनसंख्या वाला राज्य कौन सा है?","question_en":"Question 28: According to the 2011 census, which is the state with the lowest population in India?","options":[{"hi":"मिजोरम","en":"Mizoram"},{"hi":"सिक्किम","en":"Sikkim"},{"hi":"अरुणाचल प्रदेश","en":"Arunachal Pradesh"},{"hi":"गोवा","en":"Goa"}],"answer":1,"explanation_hi":"2011 की जनगणना के अनुसार न्यूनतम जनसंख्या वाले राज्यों का क्रम सिक्किम, मिजोरम और अरुणाचल प्रदेश है।","explanation_en":"According to the 2011 census, the order of states with the lowest population is Sikkim, Mizoram and Arunachal Pradesh."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2011 की जनगणना के अनुसार सर्वाधिक दशकीय वृद्धि दर वाला राज्य कौन सा है?","question_en":"Question 29: According to the 2011 census, which state has the highest decadal growth rate?","options":[{"hi":"बिहार","en":"Bihar"},{"hi":"अरुणाचल प्रदेश","en":"Arunachal Pradesh"},{"hi":"मेघालय","en":"Meghalaya"},{"hi":"मणिपुर","en":"Manipur"}],"answer":2,"explanation_hi":"2011 की जनगणना के अनुसार सर्वाधिक दशकीय वृद्धि दर मेघालय (27.9%) में दर्ज की गई थी।","explanation_en":"According to the 2011 census, the highest decadal growth rate was recorded in Meghalaya (27.9%)."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2011 की जनगणना के अनुसार भारत में सर्वाधिक जनघनत्व वाला राज्य कौन सा है?","question_en":"Question 30: According to the 2011 census, which is the state with the highest population density in India?","options":[{"hi":"बिहार","en":"Bihar"},{"hi":"पश्चिम बंगाल","en":"West Bengal"},{"hi":"केरल","en":"Kerala"},{"hi":"उत्तर प्रदेश","en":"Uttar Pradesh"}],"answer":0,"explanation_hi":"सर्वाधिक जनघनत्व वाले राज्यों में बिहार (1106) पहले स्थान पर है, जिसके बाद पश्चिम बंगाल (1028) का स्थान है।","explanation_en":"Among the states with the highest population density, Bihar (1106) ranks first, followed by West Bengal (1028)."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान सभा की प्रारूप समिति में अध्यक्ष सहित कुल कितने सदस्य थे?","question_en":"Question 31: How many total members, including the chairman, were there in the Drafting Committee of the Constituent Assembly?","options":[{"hi":"5","en":"5"},{"hi":"7","en":"7"},{"hi":"9","en":"9"},{"hi":"11","en":"11"}],"answer":1,"explanation_hi":"प्रारूप समिति का गठन 29 अगस्त 1947 को हुआ था, जिसमें अध्यक्ष (डॉ. भीमराव अंबेडकर) सहित कुल 7 सदस्य थे।","explanation_en":"The Drafting Committee was formed on 29 August 1947, which had a total of 7 members including the chairman (Dr. Bhimrao Ambedkar)."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान में 'मूल कर्तव्य' का प्रावधान किस देश के संविधान से लिया गया है?","question_en":"Question 32: The provision of 'Fundamental Duties' in the Indian Constitution is taken from the constitution of which country?","options":[{"hi":"अमेरिका","en":"America"},{"hi":"आयरलैंड","en":"Ireland"},{"hi":"जर्मनी","en":"Germany"},{"hi":"सोवियत संघ (रूस)","en":"Soviet Union (Russia)"}],"answer":3,"explanation_hi":"भारतीय संविधान में मूल कर्तव्य और प्रस्तावना में न्याय का आदर्श सोवियत संघ (रूस) के संविधान से लिया गया है।","explanation_en":"The Fundamental Duties and the ideal of justice in the Preamble in the Indian Constitution are taken from the constitution of the Soviet Union (Russia)."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस अधिनियम द्वारा 'नियंत्रण बोर्ड' (Board of Control) का गठन किया गया था?","question_en":"Question 33: By which act was the 'Board of Control' formed?","options":[{"hi":"रेगुलेटिंग एक्ट, 1773","en":"Regulating Act, 1773"},{"hi":"चार्टर एक्ट, 1813","en":"Charter Act, 1813"},{"hi":"पिट्स इंडिया एक्ट, 1784","en":"Pitt's India Act, 1784"},{"hi":"चार्टर एक्ट, 1833","en":"Charter Act, 1833"}],"answer":2,"explanation_hi":"कंपनी के राजनीतिक मामलों के लिए 'नियंत्रण बोर्ड' (Board of Control) का गठन पिट्स इंडिया एक्ट, 1784 के तहत किया गया था।","explanation_en":"The 'Board of Control' for the political affairs of the company was formed under Pitt's India Act, 1784."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के मुख्य चुनाव आयुक्त की नियुक्ति किसके द्वारा की जाती है?","question_en":"Question 34: By whom is the Chief Election Commissioner of India appointed?","options":[{"hi":"राष्ट्रपति","en":"President"},{"hi":"प्रधानमंत्री","en":"Prime Minister"},{"hi":"संसद","en":"Parliament"},{"hi":"भारत के मुख्य न्यायाधीश","en":"Chief Justice of India"}],"answer":0,"explanation_hi":"मुख्य चुनाव आयुक्त और अन्य चुनाव आयुक्तों की नियुक्ति भारत के राष्ट्रपति द्वारा की जाती है।","explanation_en":"The Chief Election Commissioner and other Election Commissioners are appointed by the President of India."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मध्यवर्ती क्षेत्रीय परिषद का मुख्यालय कहाँ स्थित है?","question_en":"Question 35: Where is the headquarters of the Central Zonal Council located?","options":[{"hi":"नई दिल्ली","en":"New Delhi"},{"hi":"कोलकाता","en":"Kolkata"},{"hi":"मुंबई","en":"Mumbai"},{"hi":"प्रयागराज","en":"Prayagraj"}],"answer":3,"explanation_hi":"मध्यवर्ती क्षेत्रीय परिषद का मुख्यालय प्रयागराज में स्थित है, जबकि उत्तरी का नई दिल्ली में है।","explanation_en":"The headquarters of the Central Zonal Council is located in Prayagraj, while that of the Northern is in New Delhi."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नागरिकता अधिनियम 1955 के अनुसार नागरिकता प्राप्त करने के कितने आधार दिए गए हैं?","question_en":"Question 36: According to the Citizenship Act 1955, how many bases are given for acquiring citizenship?","options":[{"hi":"4","en":"4"},{"hi":"5","en":"5"},{"hi":"6","en":"6"},{"hi":"7","en":"7"}],"answer":1,"explanation_hi":"नागरिकता अधिनियम 1955 के अनुसार नागरिकता के पांच आधार हैं: जन्म से, वंश परंपरा द्वारा, पंजीकरण द्वारा, देशीयकरण द्वारा और भूमि विस्तार द्वारा।","explanation_en":"According to the Citizenship Act 1955, there are five bases of citizenship: by birth, by descent, by registration, by naturalization, and by incorporation of territory."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संवैधानिक उपचारों के अधिकार (अनुच्छेद 32) के तहत सुप्रीम कोर्ट कितने प्रकार के रिट जारी कर सकता है?","question_en":"Question 37: Under the Right to Constitutional Remedies (Article 32), how many types of writs can the Supreme Court issue?","options":[{"hi":"3","en":"3"},{"hi":"4","en":"4"},{"hi":"5","en":"5"},{"hi":"6","en":"6"}],"answer":2,"explanation_hi":"अनुच्छेद 32 के तहत सुप्रीम कोर्ट 5 तरह के रिट जारी कर सकता है: बंदी प्रत्यक्षीकरण, परमादेश, प्रतिषेध लेख, उत्प्रेषण और अधिकार पृच्छा लेख।","explanation_en":"Under Article 32, the Supreme Court can issue 5 types of writs: Habeas Corpus, Mandamus, Prohibition, Certiorari, and Quo-Warranto."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के राष्ट्रपति के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: संविधान के अनुच्छेद 52 के अंतर्गत भारत का एक राष्ट्रपति होगा।\nकथन 2: राष्ट्रपति पद के लिए उम्मीदवार की न्यूनतम आयु 35 वर्ष होनी चाहिए।","question_en":"Question 38: Consider the following statements regarding the President of India:\nStatement 1: Under Article 52 of the Constitution, there shall be a President of India.\nStatement 2: The minimum age for a presidential candidate should be 35 years.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"Neither"}],"answer":2,"explanation_hi":"अनुच्छेद 52 कहता है कि भारत का एक राष्ट्रपति होगा, और राष्ट्रपति चुनाव लड़ने के लिए न्यूनतम आयु 35 वर्ष पूर्ण होनी आवश्यक है।","explanation_en":"Article 52 states that there shall be a President of India, and the minimum age required to contest the presidential election is 35 years."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपराष्ट्रपति का निर्वाचन किस पद्धति के अनुसार होता है?","question_en":"Question 39: The election of the Vice-President takes place according to which system?","options":[{"hi":"आनुपातिक प्रतिनिधित्व पद्धति के अनुसार एकल संक्रमणीय मत द्वारा","en":"By single transferable vote according to the system of proportional representation"},{"hi":"फर्स्ट पास्ट द पोस्ट सिस्टम द्वारा","en":"By first past the post system"},{"hi":"प्रत्यक्ष निर्वाचन द्वारा","en":"By direct election"},{"hi":"केवल लोकसभा सदस्यों के मतदान द्वारा","en":"By voting of Lok Sabha members only"}],"answer":0,"explanation_hi":"उपराष्ट्रपति का निर्वाचन परोक्ष रूप से संसद के दोनों सदनों के सदस्यों द्वारा आनुपातिक प्रतिनिधित्व पद्धति के अनुसार एकल संक्रमणीय मत द्वारा होता है।","explanation_en":"The election of the Vice-President is done indirectly by members of both houses of Parliament by single transferable vote according to the system of proportional representation."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संसद की संयुक्त बैठक (अनुच्छेद 108) की अध्यक्षता कौन करता है?","question_en":"Question 40: Who presides over the joint sitting of Parliament (Article 108)?","options":[{"hi":"राष्ट्रपति","en":"President"},{"hi":"लोकसभा अध्यक्ष","en":"Speaker of Lok Sabha"},{"hi":"उपराष्ट्रपति","en":"Vice-President"},{"hi":"प्रधानमंत्री","en":"Prime Minister"}],"answer":1,"explanation_hi":"संसद की संयुक्त बैठक को राष्ट्रपति द्वारा आहूत (बुलाया) जाता है, लेकिन इसकी अध्यक्षता लोकसभा अध्यक्ष करता है।","explanation_en":"The joint sitting of Parliament is summoned by the President, but it is presided over by the Speaker of the Lok Sabha."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लोकलेखा समिति में राज्यसभा से कितने सदस्य होते हैं?","question_en":"Question 41: How many members are there from the Rajya Sabha in the Public Accounts Committee?","options":[{"hi":"15","en":"15"},{"hi":"22","en":"22"},{"hi":"30","en":"30"},{"hi":"7","en":"7"}],"answer":3,"explanation_hi":"लोकलेखा समिति में कुल 22 सदस्य होते हैं, जिनमें से 15 लोकसभा से और 7 राज्यसभा से चुने जाते हैं।","explanation_en":"The Public Accounts Committee has a total of 22 members, out of which 15 are elected from the Lok Sabha and 7 from the Rajya Sabha."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राज्यपाल को अध्यादेश जारी करने की शक्ति किस अनुच्छेद के तहत प्राप्त है?","question_en":"Question 42: Under which article does the Governor have the power to promulgate ordinances?","options":[{"hi":"अनुच्छेद 123","en":"Article 123"},{"hi":"अनुच्छेद 161","en":"Article 161"},{"hi":"अनुच्छेद 213","en":"Article 213"},{"hi":"अनुच्छेद 233","en":"Article 233"}],"answer":2,"explanation_hi":"संविधान के अनुच्छेद 213 के तहत राज्यपाल को अध्यादेश जारी करने की शक्ति प्राप्त है, जबकि राष्ट्रपति को यह शक्ति अनुच्छेद 123 में है।","explanation_en":"Under Article 213 of the Constitution, the Governor has the power to promulgate ordinances, while the President has this power under Article 123."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुवाहाटी उच्च न्यायालय के अधिकारिता क्षेत्र में निम्नलिखित में से कौन सा राज्य शामिल नहीं है?","question_en":"Question 43: Which of the following states is not included in the jurisdiction of the Guwahati High Court?","options":[{"hi":"त्रिपुरा","en":"Tripura"},{"hi":"असम","en":"Assam"},{"hi":"नागालैंड","en":"Nagaland"},{"hi":"मिजोरम","en":"Mizoram"}],"answer":0,"explanation_hi":"गुवाहाटी उच्च न्यायालय के अधिकार क्षेत्र में असम, नागालैंड, मिजोरम और अरुणाचल प्रदेश शामिल हैं; त्रिपुरा का अपना अलग उच्च न्यायालय 2013 में बना।","explanation_en":"The jurisdiction of Guwahati High Court includes Assam, Nagaland, Mizoram and Arunachal Pradesh; Tripura got its own separate High Court in 2013."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सातवीं अनुसूची के अनुसार 'कारागार' किस सूची का विषय है?","question_en":"Question 44: According to the Seventh Schedule, 'Prisons' is a subject of which list?","options":[{"hi":"संघ सूची","en":"Union List"},{"hi":"राज्य सूची","en":"State List"},{"hi":"समवर्ती सूची","en":"Concurrent List"},{"hi":"अवशिष्ट शक्तियाँ","en":"Residuary Powers"}],"answer":1,"explanation_hi":"सातवीं अनुसूची में 'कारागार' (Prisons), लोक व्यवस्था और पुलिस राज्य सूची के विषय हैं।","explanation_en":"In the Seventh Schedule, 'Prisons', public order and police are subjects of the State List."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय आपातकाल (अनुच्छेद 352) की उद्घोषणा को संसद द्वारा कितने समय के भीतर अनुमोदित किया जाना आवश्यक है?","question_en":"Question 45: Within what time must the proclamation of National Emergency (Article 352) be approved by the Parliament?","options":[{"hi":"14 दिन","en":"14 days"},{"hi":"2 माह","en":"2 months"},{"hi":"1 माह (30 दिन)","en":"1 month (30 days)"},{"hi":"6 माह","en":"6 months"}],"answer":2,"explanation_hi":"राष्ट्रीय आपातकाल की उद्घोषणा को पहली बार में 30 दिन या 1 माह के भीतर संसद (विशेष बहुमत) द्वारा अनुमोदित किया जाना आवश्यक है।","explanation_en":"The proclamation of National Emergency must be approved by the Parliament (by special majority) within 30 days or 1 month in the first instance."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रथम वित्त आयोग की स्थापना किस वर्ष की गई थी?","question_en":"Question 46: In which year was the First Finance Commission established?","options":[{"hi":"1950","en":"1950"},{"hi":"1952","en":"1952"},{"hi":"1956","en":"1956"},{"hi":"1951","en":"1951"}],"answer":3,"explanation_hi":"प्रथम वित्त आयोग की स्थापना वर्ष 1951 में की गई थी, जिसके अध्यक्ष के सी नियोगी थे।","explanation_en":"The First Finance Commission was established in the year 1951, whose chairman was K. C. Neogy."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस संविधान संशोधन द्वारा प्रस्तावना में 'समाजवादी, पंथनिरपेक्ष और अखंडता' शब्द जोड़े गए?","question_en":"Question 47: By which constitutional amendment were the words 'Socialist, Secular and Integrity' added to the Preamble?","options":[{"hi":"42वां संशोधन अधिनियम","en":"42nd Amendment Act"},{"hi":"44वां संशोधन अधिनियम","en":"44th Amendment Act"},{"hi":"52वां संशोधन अधिनियम","en":"52nd Amendment Act"},{"hi":"61वां संशोधन अधिनियम","en":"61st Amendment Act"}],"answer":0,"explanation_hi":"42वें संविधान संशोधन अधिनियम (1976) द्वारा प्रस्तावना में संशोधन कर समाजवादी, पंथनिरपेक्ष और अखंडता शब्द जोड़े गए थे।","explanation_en":"By the 42nd Constitutional Amendment Act (1976), the words socialist, secular and integrity were added to the preamble by amending it."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पांचवीं पंचवर्षीय योजना की अवधि क्या थी?","question_en":"Question 48: What was the duration of the Fifth Five Year Plan?","options":[{"hi":"1969-74","en":"1969-74"},{"hi":"1974-78","en":"1974-78"},{"hi":"1980-85","en":"1980-85"},{"hi":"1985-90","en":"1985-90"}],"answer":1,"explanation_hi":"पांचवीं पंचवर्षीय योजना की अवधि 1974-78 थी, जिसमें गरीबी उन्मूलन और आत्मनिर्भरता पर जोर दिया गया था।","explanation_en":"The duration of the Fifth Five Year Plan was 1974-78, which focused on poverty eradication and self-reliance."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2011 की जनगणना के अनुसार भारत में सर्वाधिक लिंगानुपात वाला राज्य कौन सा है?","question_en":"Question 49: According to the 2011 census, which is the state with the highest sex ratio in India?","options":[{"hi":"तमिलनाडु","en":"Tamil Nadu"},{"hi":"आंध्र प्रदेश","en":"Andhra Pradesh"},{"hi":"केरल","en":"Kerala"},{"hi":"छत्तीसगढ़","en":"Chhattisgarh"}],"answer":2,"explanation_hi":"2011 की जनगणना के अनुसार भारत में सर्वाधिक लिंगानुपात वाला राज्य केरल (1084) है, जिसके बाद तमिलनाडु (996) का स्थान है।","explanation_en":"According to the 2011 census, Kerala (1084) is the state with the highest sex ratio in India, followed by Tamil Nadu (996)."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौद्रिक नीति के उपकरणों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: नकद आरक्षित अनुपात (CRR) में वृद्धि से बैंकों की साख सृजन क्षमता में वृद्धि होती है।\nकथन 2: वैधानिक तरलता अनुपात (SLR) में कमी से अर्थव्यवस्था में तरलता में कमी आती है।","question_en":"Question 50: Consider the following statements regarding the instruments of monetary policy:\nStatement 1: An increase in Cash Reserve Ratio (CRR) increases the credit creation capacity of banks.\nStatement 2: A decrease in Statutory Liquidity Ratio (SLR) decreases liquidity in the economy.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों","en":"Both"},{"hi":"कोई नहीं","en":"Neither"}],"answer":3,"explanation_hi":"CRR में वृद्धि से बैंकों की साख सृजन क्षमता में कमी आती है, और SLR में कमी से अर्थव्यवस्था में तरलता में वृद्धि होती है।","explanation_en":"An increase in CRR decreases the credit creation capacity of banks, and a decrease in SLR increases liquidity in the economy."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
