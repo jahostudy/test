@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"PCS • Class 8","highlight":"Class 8","shortTitle":"PCS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • Class 8","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-pcs-class-8-class-8-20260722-7usgl","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-22","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस वर्ष सिक्किम भारत का सौ प्रतिशत जैविक राज्य बन गया था?","question_en":"Question 1: In which year did Sikkim become a hundred percent organic state in India?","options":[{"hi":"2014","en":"2014"},{"hi":"2015","en":"2015"},{"hi":"2016","en":"2016"},{"hi":"2017","en":"2017"}],"answer":2,"explanation_hi":"2016 में सिक्किम सौ प्रतिशत जैविक राज्य बन गया, जिससे कृषि आय में औसतन 20 प्रतिशत की वृद्धि हुई।","explanation_en":"Sikkim became a hundred percent organic state in 2016, leading to a 20 percent average increase in farmers' income."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में कोयले के भंडार अगले 150 वर्षों तक चलने का अनुमान है।\nकथन 2: प्रचुरता का विरोधाभास का अर्थ है कि प्राकृतिक संसाधनों का प्रचुर होना स्वतः ही आर्थिक समृद्धि की गारंटी देता है।","question_en":"Question 2: Consider the following statements:\nStatement 1: India's coal reserves are estimated to last for the next 150 years.\nStatement 2: The Paradox of Plenty implies that an abundance of natural resources automatically guarantees economic prosperity.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"कथन 2 निश्चित रूप से गलत है क्योंकि प्रचुरता का विरोधाभास इसके विपरीत—संसाधन-संपन्नता के बावजूद मन्द आर्थिक विकास—को दर्शाता है, न कि समृद्धि की गारंटी। स्रोत-पाठ्यपुस्तक के अनुसार कथन 1 भी गलत माना गया है, अतः उत्तर 'कोई नहीं' है। [सत्यापन आवश्यक: कोयला-भंडार की अनुमानित अवधि (50 बनाम 150 वर्ष) पाठ्यपुस्तक-स्रोत पर निर्भर है; आधिकारिक अनुमान लगभग 100+ वर्ष दर्शाते हैं—यदि स्रोत में कथन 1 सत्य ठहरता है तो उत्तर (A) 'केवल 1' होगा।]","explanation_en":"Statement 2 is definitely false because the Paradox of Plenty indicates the opposite—sluggish economic growth despite resource abundance, not a guarantee of prosperity. As per the source textbook, Statement 1 is also treated as false, hence the answer is 'Neither'. [Verification needed: the estimated life of coal reserves (50 vs 150 years) is source-dependent; official estimates suggest roughly 100+ years—if Statement 1 holds true in the source, the answer would be (A) 'Only 1'.]"},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भूजल के अत्यधिक दोहन के कारण पंजाब के कितने प्रतिशत क्षेत्र को अति-दोहित के रूप में वर्गीकृत किया गया है?","question_en":"Question 3: What percentage of area in Punjab has been classified as over-exploited due to excessive groundwater extraction?","options":[{"hi":"60 प्रतिशत","en":"60 percent"},{"hi":"70 प्रतिशत","en":"70 percent"},{"hi":"80 प्रतिशत","en":"80 percent"},{"hi":"90 प्रतिशत","en":"90 percent"}],"answer":2,"explanation_hi":"पंजाब के लगभग 80 प्रतिशत क्षेत्र को भूजल के अत्यधिक उपयोग के कारण अति-दोहित के रूप में वर्गीकृत किया गया है।","explanation_en":"Approximately 80 percent of the area in Punjab has been classified as over-exploited due to the excessive use of groundwater."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राजस्थान में स्थित सौर पार्क राज्य की वर्तमान विद्युत आवश्यकताओं के लगभग कितने प्रतिशत को पूरा करने में सक्षम है?","question_en":"Question 4: The solar park located in Rajasthan is capable of fulfilling approximately what percentage of the state's current electricity needs?","options":[{"hi":"10 प्रतिशत","en":"10 percent"},{"hi":"15 प्रतिशत","en":"15 percent"},{"hi":"20 प्रतिशत","en":"20 percent"},{"hi":"25 प्रतिशत","en":"25 percent"}],"answer":1,"explanation_hi":"राजस्थान का विशाल सौर पार्क राज्य की वर्तमान आवश्यकताओं के लगभग 15 प्रतिशत को पूरा करने के लिए पर्याप्त विद्युत उत्पन्न कर सकता है।","explanation_en":"The vast solar park in Rajasthan can generate enough electricity to meet approximately 15 percent of the state's current needs."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस पुर्तगाली यात्री ने विजयनगर साम्राज्य की राजधानी और उसकी विशालता का विस्तृत विवरण लिखा था?","question_en":"Question 5: Which Portuguese traveler wrote a detailed description of the capital and vastness of the Vijayanagara Empire?","options":[{"hi":"डुआर्टे बारबोसा","en":"Duarte Barbosa"},{"hi":"फर्नाओ नूनिज","en":"Fernao Nuniz"},{"hi":"डोमिंगो पेस","en":"Domingo Paes"},{"hi":"वास्को डी गामा","en":"Vasco da Gama"}],"answer":2,"explanation_hi":"डोमिंगो पेस एक पुर्तगाली यात्री था जिसने विजयनगर की राजधानी में अपने प्रवास और उसके सुंदर उद्यानों तथा जलधाराओं का विस्तृत विवरण लिखा था।","explanation_en":"Domingo Paes was a Portuguese traveler who wrote a detailed account of his stay in the Vijayanagara capital, noting its beautiful gardens and water streams."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मध्यकालीन भारतीय प्रशासन के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: उच्च स्तर के प्रशासन में गैर-मुस्लिम अधिकारियों का प्रतिशत सामान्यतः आधे से अधिक होता था।\nकथन 2: मुस्लिम अधिकारियों में भारतीय मूल के अधिकारियों को हमेशा विदेशी मूल के अधिकारियों पर प्राथमिकता दी जाती थी।","question_en":"Question 6: Consider the following statements regarding medieval Indian administration:\nStatement 1: The percentage of non-Muslim officials at higher administrative levels generally exceeded half.\nStatement 2: Among Muslim officials, those of Indian origin were always preferred over those of foreign origin.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"गैर-मुस्लिम अधिकारियों का प्रतिशत शायद ही कभी एक-तिहाई से अधिक था, और प्रायः विदेशी मूल के मुस्लिम अधिकारियों को प्राथमिकता दी जाती थी।","explanation_en":"The percentage of non-Muslim officials rarely exceeded one-third, and foreign-origin Muslim officials were often preferred over Indian-origin ones."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मध्यकालीन भारत में व्यापारिक लेनदेन के संदर्भ में हुंडी क्या थी?","question_en":"Question 7: In the context of commercial transactions in medieval India, what was a Hundi?","options":[{"hi":"एक प्रकार का कर","en":"A type of tax"},{"hi":"भुगतान करने का एक लिखित निर्देश","en":"A written order to make a payment"},{"hi":"समुद्र पार व्यापार करने वाला जहाज","en":"A sea-faring trade vessel"},{"hi":"विदेशियों के लिए एक पहचान पत्र","en":"An identity document for foreigners"}],"answer":1,"explanation_hi":"हुंडी किसी व्यक्ति को भुगतान करने का एक लिखित निर्देश था जो राजनीतिक सीमाओं के पार वित्तीय लेनदेन को संभव बनाता था।","explanation_en":"A Hundi was a written instruction to pay a person, enabling financial transactions across political boundaries."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"19वीं शताब्दी के आरंभ में किस शासक के प्रयासों से पंजाब क्षेत्र के कई सिख संघों को एक सशक्त साम्राज्य में एकीकृत किया गया?","question_en":"Question 8: Through the efforts of which ruler were several Sikh confederacies in the Punjab region integrated into a powerful empire at the beginning of the 19th century?","options":[{"hi":"गुरु गोबिंद सिंह","en":"Guru Gobind Singh"},{"hi":"बंदा सिंह बहादुर","en":"Banda Singh Bahadur"},{"hi":"गुरु तेग बहादुर","en":"Guru Tegh Bahadur"},{"hi":"महाराजा रणजीत सिंह","en":"Maharaja Ranjit Singh"}],"answer":3,"explanation_hi":"महाराजा रणजीत सिंह ने अपनी सैन्य और कूटनीतिक कुशलता से कई सिख संघों को एक केंद्रीकृत साम्राज्य में एकीकृत किया था।","explanation_en":"Maharaja Ranjit Singh integrated several Sikh confederacies into a centralized empire through his military and diplomatic acumen."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस मुगल सेनापति ने अहोम योद्धाओं की बहुमुखी प्रतिभा और युद्ध कौशल की अत्यधिक प्रशंसा की थी?","question_en":"Question 9: Which Mughal general highly praised the multifaceted talents and combat skills of the Ahom warriors?","options":[{"hi":"मीर जुमला","en":"Mir Jumla"},{"hi":"शाइस्ता खान","en":"Shaista Khan"},{"hi":"राम सिंह","en":"Ram Singh"},{"hi":"जय सिंह","en":"Jai Singh"}],"answer":2,"explanation_hi":"मुगल सेनापति राम सिंह ने अहोम योद्धाओं की नाव चलाने, तीरंदाजी करने, खाई खोदने और बंदूकें चलाने की बहुमुखी प्रतिभा की प्रशंसा की थी।","explanation_en":"The Mughal general Ram Singh praised the multifaceted talents of Ahom warriors in rowing, archery, trench digging, and using firearms."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1715 में आज्ञापत्र किसने लिखा था जिसमें यूरोपीय व्यापारियों के आगमन और उनके द्वारा मजबूत किलों के निर्माण के विरुद्ध चेतावनी दी गई थी?","question_en":"Question 10: Who wrote the Ajnapatra in 1715, warning against the arrival of European traders and their construction of strong forts?","options":[{"hi":"छत्रपति शिवाजी","en":"Chhatrapati Shivaji"},{"hi":"रामचंद्र पंत अमात्य","en":"Ramchandra Pant Amatya"},{"hi":"बालाजी बाजीराव","en":"Baji Rao I"},{"hi":"नाना फड़नवीस","en":"Nana Phadnavis"}],"answer":1,"explanation_hi":"रामचंद्र पंत अमात्य ने 1715 में आज्ञापत्र लिखा था जिसमें कहा गया था कि यूरोपीय व्यापारियों को मजबूत भवन बनाने की अनुमति नहीं दी जानी चाहिए।","explanation_en":"Ramchandra Pant Amatya wrote the Ajnapatra in 1715, stating that European traders should not be permitted to build strong forts."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"छत्रपति शिवाजी ने निकट युद्ध में अफजल खान को मारने के लिए किस छोटे अस्त्र का उपयोग किया था?","question_en":"Question 11: Which small weapon was used by Chhatrapati Shivaji to kill Afzal Khan in close combat?","options":[{"hi":"कटार","en":"Katar"},{"hi":"खंडा","en":"Khanda"},{"hi":"वाघ-नख","en":"Wagh-nakh"},{"hi":"उरुमी","en":"Urumi"}],"answer":2,"explanation_hi":"छत्रपति शिवाजी ने अफजल खान को मारने के लिए वाघ-नख या बाघ का पंजा नामक एक छोटे अस्त्र का उपयोग किया था।","explanation_en":"Chhatrapati Shivaji used a small weapon called Wagh-nakh or tiger claws to kill Afzal Khan."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. प्रथम भारतीय मतदाता, B. आज्ञापत्र के लेखक, C. बाघ का पंजा अस्त्र;\nसूची-II: 1. रामचंद्र पंत अमात्य, 2. श्याम शरण नेगी, 3. छत्रपति शिवाजी","question_en":"Question 12: Match List-I with List-II:\nList-I: A. First Indian voter, B. Author of Ajnapatra, C. Tiger claws weapon;\nList-II: 1. Ramchandra Pant Amatya, 2. Shyam Saran Negi, 3. Chhatrapati Shivaji","options":[{"hi":"A-2, B-1, C-3","en":""},{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-3, B-1, C-2","en":""},{"hi":"A-2, B-3, C-1","en":""}],"answer":0,"explanation_hi":"श्याम शरण नेगी स्वतंत्र भारत के पहले मतदाता थे, रामचंद्र पंत ने आज्ञापत्र लिखा था, और शिवाजी ने वाघ-नख का उपयोग किया था।","explanation_en":"Shyam Saran Negi was independent India's first voter, Ramchandra Pant wrote the Ajnapatra, and Shivaji used the Wagh-nakh."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दादाभाई नौरोजी ने पावर्टी एंड अन-ब्रिटिश रूल इन इंडिया नामक अपनी प्रसिद्ध पुस्तक किस वर्ष प्रकाशित की थी?","question_en":"Question 13: In which year did Dadabhai Naoroji publish his famous book Poverty and Un-British Rule in India?","options":[{"hi":"1892","en":"1892"},{"hi":"1899","en":"1899"},{"hi":"1905","en":"1905"},{"hi":"1901","en":"1901"}],"answer":3,"explanation_hi":"दादाभाई नौरोजी ने वर्ष 1901 में यह पुस्तक लिखी थी, जिसमें उन्होंने भारत से निष्कासित धन का अनुमान प्रस्तुत किया था।","explanation_en":"Dadabhai Naoroji wrote this book in the year 1901, presenting an estimate of the wealth drained from India."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 1770 से 1772 के मध्य बंगाल में एक भयावह अकाल पड़ा जिसमें लगभग एक-तिहाई जनसंख्या मारी गई।\nकथन 2: इस अकाल के दौरान ईस्ट इंडिया कंपनी ने किसानों को राहत देने के लिए करों को पूरी तरह से माफ कर दिया था।","question_en":"Question 14: Consider the following statements:\nStatement 1: A devastating famine occurred in Bengal between 1770 and 1772, killing about one-third of the population.\nStatement 2: During this famine, the East India Company completely waived taxes to provide relief to the farmers.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"अकाल के दौरान कंपनी ने कर माफ नहीं किए, बल्कि कठोर कर लक्ष्य बनाए रखे और भूमि-कर को और भी बढ़ा दिया था।","explanation_en":"During the famine, the company did not waive taxes but maintained strict tax targets and even increased the land tax."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. मैकाले का विवरण (मिनट), B. प्लासी का युद्ध, C. ईस्ट इंडिया कंपनी के शासन का अंत;\nसूची-II: 1. 1858, 2. 1835, 3. 1757","question_en":"Question 15: Match List-I with List-II:\nList-I: A. Macaulay's Minute, B. Battle of Plassey, C. End of East India Company rule;\nList-II: 1. 1858, 2. 1835, 3. 1757","options":[{"hi":"A-2, B-3, C-1","en":""},{"hi":"A-3, B-2, C-1","en":""},{"hi":"A-1, B-3, C-2","en":""},{"hi":"A-2, B-1, C-3","en":""}],"answer":0,"explanation_hi":"मैकाले ने अपना विवरण 1835 में प्रस्तुत किया, प्लासी का युद्ध 1757 में हुआ, और 1858 में कंपनी शासन का अंत हुआ।","explanation_en":"Macaulay presented his minute in 1835, the Battle of Plassey occurred in 1757, and Company rule ended in 1858."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इकोनॉमिक हिस्ट्री ऑफ इंडिया नामक पुस्तक के लेखक कौन थे, जिन्होंने भारत से धन के निष्कासन का अध्ययन किया था?","question_en":"Question 16: Who was the author of the book Economic History of India, who studied the drain of wealth from India?","options":[{"hi":"विलियम डिग्बी","en":"William Digby"},{"hi":"रोमेश चंद्र दत्त","en":"Romesh Chunder Dutt"},{"hi":"थॉमस बी. मैकाले","en":"Thomas B. Macaulay"},{"hi":"चार्ल्स मेटकाफ","en":"Charles Metcalfe"}],"answer":1,"explanation_hi":"इतिहासकार रोमेश चंद्र दत्त ने इकोनॉमिक हिस्ट्री ऑफ इंडिया लिखी थी, जिसमें उन्होंने भारत से संपत्ति के निष्कासन का अध्ययन प्रस्तुत किया था।","explanation_en":"Historian Romesh Chunder Dutt wrote the Economic History of India, presenting a study on the drain of wealth from India."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में डच ईस्ट इंडिया कंपनी का प्राथमिक लक्ष्य मसालों के व्यापार पर नियंत्रण स्थापित करना था।\nकथन 2: डचों ने केरल के मालाबार क्षेत्र में फ्रांसीसियों को विस्थापित कर अपनी उपस्थिति स्थापित की थी।","question_en":"Question 17: Consider the following statements:\nStatement 1: The primary goal of the Dutch East India Company in India was to establish control over the spice trade.\nStatement 2: The Dutch established their presence in the Malabar region of Kerala by displacing the French.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"डचों ने मालाबार क्षेत्र में पुर्तगालियों को विस्थापित किया था, न कि फ्रांसीसियों को।","explanation_en":"The Dutch displaced the Portuguese in the Malabar region, not the French."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित घटनाओं को उनके कालक्रम में व्यवस्थित कीजिए: 1. मेघालय में खासी जनजाति का विद्रोह, 2. भारतीय शिक्षा पर मैकाले का प्रतिवेदन, 3. ब्रिटिश राज द्वारा ईस्ट इंडिया कंपनी के शासन का अंत।","question_en":"Question 18: Arrange the following events in chronological order: 1. Khasi rebellion in Meghalaya, 2. Macaulay's report on Indian education, 3. End of East India Company rule by the British Crown.","options":[{"hi":"1, 3, 2","en":""},{"hi":"1, 2, 3","en":""},{"hi":"2, 1, 3","en":""},{"hi":"3, 1, 2","en":""}],"answer":1,"explanation_hi":"खासी विद्रोह 1829-1833 में हुआ, मैकाले का प्रतिवेदन 1835 में आया, और कंपनी शासन का अंत 1858 में हुआ।","explanation_en":"The Khasi rebellion occurred in 1829-1833, Macaulay's report came in 1835, and Company rule ended in 1858."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1830 के दशक में किस कार्यवाहक गवर्नर-जनरल ने भारतीय ग्रामीण शिक्षा प्रणाली को सरल और प्रभावी बताया था?","question_en":"Question 19: Which acting Governor-General in the 1830s described the Indian village education system as simple and effective?","options":[{"hi":"रॉबर्ट क्लाइव","en":"Robert Clive"},{"hi":"डब्ल्यू.डब्ल्यू. हंटर","en":"W.W. Hunter"},{"hi":"थॉमस बी. मैकाले","en":"Thomas B. Macaulay"},{"hi":"चार्ल्स मेटकाफ","en":"Charles Metcalfe"}],"answer":3,"explanation_hi":"चार्ल्स मेटकाफ ने कहा था कि भारतीय प्रणाली अत्यंत कम व्यय में पढ़ना, लिखना तथा अंकगणित सिखाने में अत्यंत सरल और प्रभावी थी।","explanation_en":"Charles Metcalfe stated that the Indian system was extremely simple and effective in teaching reading, writing, and arithmetic at a very low cost."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लोकसभा में अनुसूचित जाति (एससी) और अनुसूचित जनजाति (एसटी) के लिए क्रमशः कितनी सीटें आरक्षित हैं?","question_en":"Question 20: How many seats are reserved in the Lok Sabha for Scheduled Castes (SC) and Scheduled Tribes (ST) respectively?","options":[{"hi":"84 और 47","en":"84 and 47"},{"hi":"47 और 84","en":"47 and 84"},{"hi":"79 और 41","en":"79 and 41"},{"hi":"84 और 51","en":"84 and 51"}],"answer":0,"explanation_hi":"लोकसभा में अनुसूचित जाति के लिए 84 निर्वाचन क्षेत्र और अनुसूचित जनजाति के लिए 47 निर्वाचन क्षेत्र आरक्षित हैं।","explanation_en":"In the Lok Sabha, 84 constituencies are reserved for Scheduled Castes and 47 for Scheduled Tribes."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में लोकसभा चुनाव जीतने के लिए किस निर्वाचन प्रणाली का उपयोग किया जाता है?","question_en":"Question 21: Which electoral system is used in India to win Lok Sabha elections?","options":[{"hi":"आनुपातिक प्रतिनिधित्व","en":"Proportional Representation"},{"hi":"एकल संक्रमणीय मत","en":"Single Transferable Vote"},{"hi":"जो सबसे आगे वही जीता (फर्स्ट पास्ट द पोस्ट)","en":"First Past the Post"},{"hi":"सूची प्रणाली","en":"List System"}],"answer":2,"explanation_hi":"भारत फर्स्ट पास्ट द पोस्ट प्रणाली का उपयोग करता है, जिसमें सर्वाधिक मत प्राप्त करने वाला प्रत्याशी विजयी होता है।","explanation_en":"India uses the First Past the Post system, in which the candidate securing the maximum number of votes wins."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मतदान अधिकारियों और उनके कार्यों के संबंध में कितने सही सुमेलित हैं? 1. प्रथम मतदान अधिकारी: मतदाता सूची में नाम की जाँच, 2. द्वितीय मतदान अधिकारी: अँगुली पर स्याही लगाना, 3. तृतीय मतदान अधिकारी: पर्ची लेना और अँगुली की जाँच करना।","question_en":"Question 22: How many pairs are correctly matched regarding polling officers and their duties? 1. First Polling Officer: Checks the name in the electoral roll, 2. Second Polling Officer: Applies ink on the finger, 3. Third Polling Officer: Takes the slip and checks the finger.","options":[{"hi":"कोई युग्म नहीं","en":"None of the pairs"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीनों युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"सभी तीनों कथन सही सुमेलित हैं, जो मतदान केंद्र पर अधिकारियों की क्रमबद्ध प्रक्रिया को दर्शाते हैं।","explanation_en":"All three statements are correctly matched, depicting the sequential process of officers at a polling station."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हिमाचल प्रदेश के किस सेवानिवृत्त शिक्षक को 1951 के प्रथम आम चुनाव में मतदान करने वाले पहले मतदाता के रूप में जाना जाता है?","question_en":"Question 23: Which retired teacher from Himachal Pradesh is known as the first voter to cast a vote in the 1951 first general election?","options":[{"hi":"सुकुमार सेन","en":"Sukumar Sen"},{"hi":"श्याम शरण नेगी","en":"Shyam Saran Negi"},{"hi":"टी.एन. शेषन","en":"T.N. Seshan"},{"hi":"अल्लदी कृष्णास्वामी अय्यर","en":"Alladi Krishnaswamy Iyer"}],"answer":1,"explanation_hi":"श्याम शरण नेगी 1951 के आम चुनाव में मतदान करने वाले भारत के पहले मतदाता थे, और उन्होंने 2017 में 100 वर्ष की आयु में भी मतदान किया था।","explanation_en":"Shyam Saran Negi was India's first voter in the 1951 general election, and he also cast his vote at the age of 100 in 2017."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में चुनाव जीतने के लिए प्रत्याशी को कुल मतों का कम से कम 50 प्रतिशत प्राप्त करना आवश्यक है।\nकथन 2: भारत निर्वाचन आयोग देश में लोकसभा तथा राज्य विधान सभाओं के चुनाव आयोजित करवाता है।","question_en":"Question 24: Consider the following statements:\nStatement 1: In India, a candidate must secure at least 50 percent of the total votes to win an election.\nStatement 2: The Election Commission of India conducts the elections for the Lok Sabha and State Legislative Assemblies in the country.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"फर्स्ट पास्ट द पोस्ट प्रणाली के तहत प्रत्याशी 50 प्रतिशत मत प्राप्त किए बिना भी जीत सकता है, इसलिए कथन 1 गलत है।","explanation_en":"Under the First Past the Post system, a candidate can win even without securing 50 percent of the votes, making Statement 1 false."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. संघ सूची, B. राज्य सूची, C. समवर्ती सूची;\nसूची-II: 1. संसद कानून बनाती है, 2. राज्य विधान सभा कानून बनाती है, 3. संसद और राज्य विधान सभा दोनों कानून बनाते हैं","question_en":"Question 25: Match List-I with List-II:\nList-I: A. Union List, B. State List, C. Concurrent List;\nList-II: 1. Parliament makes laws, 2. State Legislature makes laws, 3. Both Parliament and State Legislature make laws","options":[{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-2, B-1, C-3","en":""},{"hi":"A-3, B-1, C-2","en":""},{"hi":"A-1, B-3, C-2","en":""}],"answer":0,"explanation_hi":"संघ सूची के विषयों पर संसद, राज्य सूची पर राज्य विधान सभा, और समवर्ती सूची पर दोनों कानून बना सकते हैं।","explanation_en":"The Parliament legislates on the Union List, State Legislature on the State List, and both can legislate on the Concurrent List."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2025-26 का केंद्रीय बजट प्रस्तुत करते समय वित्त मंत्री निर्मला सीतारमण ने किस प्राचीन भारतीय ग्रंथ का श्लोक पढ़ा था?","question_en":"Question 26: Which ancient Indian text's verse was recited by Finance Minister Nirmala Sitharaman while presenting the Union Budget for 2025-26?","options":[{"hi":"अर्थशास्त्र","en":"Arthashastra"},{"hi":"नीतिसार","en":"Nitisara"},{"hi":"तिरुक्कुरल","en":"Tirukkural"},{"hi":"मुद्राराक्षस","en":"Mudrarakshasa"}],"answer":2,"explanation_hi":"वित्त मंत्री ने नैतिकता और सदाचार पर आधारित प्राचीन तमिल ग्रंथ तिरुक्कुरल से एक श्लोक का वाचन किया था।","explanation_en":"The Finance Minister recited a verse from Tirukkural, an ancient Tamil text based on ethics and morality."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में वित्तीय बजट संसद के दोनों सदनों में से किसी में भी प्रस्तुत किया जा सकता है।\nकथन 2: संसद वार्षिक बजट के माध्यम से सरकारी व्यय को स्वीकृत करती है और उसकी निगरानी करती है।","question_en":"Question 27: Consider the following statements:\nStatement 1: In India, the financial budget can be introduced in either house of the Parliament.\nStatement 2: The Parliament approves government expenditure through the annual budget and monitors it.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"वित्तीय बजट केवल लोकसभा (निम्न सदन) में ही प्रस्तुत किया जा सकता है, न कि राज्यसभा में।","explanation_en":"The financial budget can only be introduced in the Lok Sabha (Lower House), not in the Rajya Sabha."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संसद में स्थायी समिति का मुख्य कार्य क्या है?","question_en":"Question 28: What is the main function of a Standing Committee in the Indian Parliament?","options":[{"hi":"यह सरकार की गतिविधियों की जाँच-पड़ताल करती है और सुझाव देती है।","en":"It scrutinizes government activities and provides suggestions."},{"hi":"यह केवल आपातकाल में राष्ट्रपति को सलाह देती है।","en":"It advises the President only during emergencies."},{"hi":"यह राज्यों के बीच जल विवादों को सुलझाती है।","en":"It resolves water disputes between states."},{"hi":"यह सीधे करों की दरों को निर्धारित करती है।","en":"It directly sets the rates of taxes."}],"answer":0,"explanation_hi":"स्थायी समिति सांसदों से बनी होती है जो सरकार के कार्यों की जाँच करती है और नीतियों पर प्रश्न पूछती है।","explanation_en":"A Standing Committee is comprised of MPs who scrutinize government actions and ask questions on policies."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"केंद्र और राज्य सरकार की संरचना के संबंध में कितने युग्म सही सुमेलित हैं? 1. केंद्र का संवैधानिक प्रमुख: राष्ट्रपति, 2. केंद्र का वास्तविक कार्यकारी प्रमुख: प्रधानमंत्री, 3. राज्य का संवैधानिक प्रमुख: राज्यपाल।","question_en":"Question 29: How many pairs are correctly matched regarding the structure of the Central and State government? 1. Constitutional head at Centre: President, 2. Real executive head at Centre: Prime Minister, 3. Constitutional head in State: Governor.","options":[{"hi":"कोई युग्म नहीं","en":"None of the pairs"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीनों युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"दी गई तालिका के अनुसार, केंद्र में राष्ट्रपति संवैधानिक प्रमुख और प्रधानमंत्री वास्तविक प्रमुख होता है, जबकि राज्य में राज्यपाल संवैधानिक प्रमुख होता है।","explanation_en":"As per the table, the President is the constitutional head and PM the real head at the Centre, while the Governor is the constitutional head in a State."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विद्यार्थियों को कक्षा 9 और उससे आगे के लिए निशुल्क ऑनलाइन पाठ्यक्रम (MOOCs) प्रदान करने वाले सरकारी मंच का क्या नाम है?","question_en":"Question 30: What is the name of the government portal providing free MOOCs (Massive Open Online Courses) for students in class 9 and above?","options":[{"hi":"स्वयं (SWAYAM)","en":"SWAYAM"},{"hi":"निष्ठा (NISHTHA)","en":"NISHTHA"},{"hi":"दीक्षा (DIKSHA)","en":"DIKSHA"},{"hi":"ई-पाठशाला (e-Pathshala)","en":"e-Pathshala"}],"answer":0,"explanation_hi":"स्वयं (SWAYAM) एक सरकारी ऑनलाइन मंच है जो रोबोटिक्स और टेक्सटाइल प्रिंटिंग जैसे विषयों में निशुल्क पाठ्यक्रम उपलब्ध कराता है।","explanation_en":"SWAYAM is a government online portal providing free courses in subjects like robotics and textile printing."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अर्थशास्त्र में सेमीकंडक्टर चिप्स और उपग्रह (सैटेलाइट) के निर्माण को किस श्रेणी में रखा जाता है?","question_en":"Question 31: In economics, the production of semiconductor chips and satellites is classified under which category?","options":[{"hi":"भूमि-प्रधान क्षेत्र","en":"Land-intensive sector"},{"hi":"श्रम-प्रधान क्षेत्र","en":"Labour-intensive sector"},{"hi":"कौशल-विहीन क्षेत्र","en":"Unskilled sector"},{"hi":"पूँजी-प्रधान क्षेत्र","en":"Capital-intensive sector"}],"answer":3,"explanation_hi":"इन उत्पादों के लिए अधिक पूँजी और विशेषीकृत उपकरणों की आवश्यकता होती है, इसलिए ये पूँजी-प्रधान क्षेत्र कहलाते हैं।","explanation_en":"These products require heavy capital and specialized equipment, making them capital-intensive sectors."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: वस्तुओं और सेवाओं के उत्पादन में चार कारक होते हैं: भूमि, श्रम, पूँजी और उद्यमिता।\nकथन 2: अर्थशास्त्र में मशीनें, औजार, वाहन और कारखाने 'भूमि' के अंतर्गत वर्गीकृत किए जाते हैं।","question_en":"Question 32: Consider the following statements:\nStatement 1: The production of goods and services involves four factors: land, labour, capital, and entrepreneurship.\nStatement 2: In economics, machines, tools, vehicles, and factories are classified under 'Land'.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"मशीनें, औजार, वाहन और कारखाने भौतिक संपत्तियां हैं जिन्हें उत्पादन के कारकों में 'पूँजी' कहा जाता है, भूमि नहीं।","explanation_en":"Machines, tools, vehicles, and factories are physical assets known as 'Capital' among the factors of production, not land."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्लंबिंग से लेकर अकाउंटिंग तक के विविध क्षेत्रों में व्यक्तियों को रोजगार के अवसर ढूँढ़ने में सहायता करने वाले सरकारी पोर्टल का क्या नाम है?","question_en":"Question 33: What is the name of the government portal that helps individuals find employment opportunities in diverse fields from plumbing to accounting?","options":[{"hi":"राष्ट्रीय रोजगार सेवा","en":"National Employment Service"},{"hi":"स्किल इंडिया पोर्टल","en":"Skill India Portal"},{"hi":"नेशनल करियर सर्विस","en":"National Career Service"},{"hi":"ई-श्रम पोर्टल","en":"e-Shram Portal"}],"answer":2,"explanation_hi":"नेशनल करियर सर्विस सरकार का एक ऑनलाइन पोर्टल है जो विभिन्न क्षेत्रों में रोजगार के अवसर प्रदान करने में सहायता करता है।","explanation_en":"National Career Service is a government online portal that assists in finding employment opportunities across various sectors."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के औपनिवेशिक काल के निम्नलिखित ऐतिहासिक व्यक्तियों को उनके द्वारा किए गए कार्यों के कालक्रम के अनुसार व्यवस्थित कीजिए: 1. रॉबर्ट क्लाइव, 2. चार्ल्स मेटकाफ, 3. थॉमस बी. मैकाले।","question_en":"Question 34: Arrange the following historical figures of India's colonial period in chronological order of their actions: 1. Robert Clive, 2. Charles Metcalfe, 3. Thomas B. Macaulay.","options":[{"hi":"1, 2, 3","en":""},{"hi":"2, 1, 3","en":""},{"hi":"3, 1, 2","en":""},{"hi":"1, 3, 2","en":""}],"answer":0,"explanation_hi":"क्लाइव प्लासी युद्ध (1757) से जुड़े हैं, मेटकाफ ने अपने भारतीय ग्राम-व्यवस्था संबंधी विवरण (लगभग 1830) में टिप्पणी की, और मैकाले का विवरण 1835 में आया।","explanation_en":"Clive is associated with Plassey (1757), Metcalfe commented in his minute on the Indian village system (around 1830), and Macaulay's minute came in 1835."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व के सबसे बड़े सौर पार्कों में से एक भारत के किस राज्य में स्थित है?","question_en":"Question 35: One of the world's largest solar parks is located in which Indian state?","options":[{"hi":"गुजरात","en":"Gujarat"},{"hi":"मध्य प्रदेश","en":"Madhya Pradesh"},{"hi":"कर्नाटक","en":"Karnataka"},{"hi":"राजस्थान","en":"Rajasthan"}],"answer":3,"explanation_hi":"राजस्थान में विश्व के सबसे बड़े सौर पार्कों में से एक स्थित है जो राज्य की लगभग 15 प्रतिशत बिजली आवश्यकताओं को पूरा करता है।","explanation_en":"Rajasthan hosts one of the world's largest solar parks, fulfilling about 15 percent of the state's electricity needs."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: सिक्किम के किसान पेमा के परिवार ने नीम और लहसुन का उपयोग करके प्राकृतिक कीटनाशक तैयार किया।\nकथन 2: जैविक खेती अपनाने के बाद सिक्किम में स्थानीय जैव-विविधता फली-फूली और लाभदायक कीड़े वापस लौट आए।","question_en":"Question 36: Consider the following statements:\nStatement 1: Pema's family, a farmer in Sikkim, prepared natural pesticides using neem and garlic.\nStatement 2: After adopting organic farming, local biodiversity flourished in Sikkim and beneficial insects returned.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं; पेमा के परिवार ने प्राकृतिक कीटनाशकों का प्रयोग किया जिससे सिक्किम में पर्यावरण और कृषि दोनों में सुधार हुआ।","explanation_en":"Both statements are true; Pema's family used natural pesticides, leading to improvements in both the environment and agriculture in Sikkim."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आज्ञापत्र के अनुसार, नौसेना के लिए आवश्यक होने के कारण किन पेड़ों को काटने की अनुमति लेने की कड़ी हिदायत दी गई थी?","question_en":"Question 37: According to the Ajnapatra, which trees were strictly required to have permission before being cut, as they were essential for the navy?","options":[{"hi":"सागौन, आम और कटहल","en":"Teak, Mango, and Jackfruit"},{"hi":"शीशम और बरगद","en":"Rosewood and Banyan"},{"hi":"देवदार और साल","en":"Cedar and Sal"},{"hi":"चंदन और बांस","en":"Sandalwood and Bamboo"}],"answer":0,"explanation_hi":"आज्ञापत्र में स्पष्ट लिखा था कि नौसेना के लिए आवश्यक सागौन जैसे बड़े पेड़ और आम व कटहल जैसे उपयोगी पेड़ों को बिना अनुमति नहीं काटना चाहिए।","explanation_en":"The Ajnapatra clearly stated that large trees like teak, and useful trees like mango and jackfruit, should not be cut without permission."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस मुगल सम्राट ने अपने पुत्रों को पत्र में लिखा था कि \"मैं अकेला आया था और अकेला जा रहा हूँ\" और \"मैं जीवनभर निराश रहा\"?","question_en":"Question 38: Which Mughal emperor wrote in a letter to his sons that \"I came alone and I am going alone\" and \"I have lived my whole life in despair\"?","options":[{"hi":"बाबर","en":"Babur"},{"hi":"अकबर","en":"Akbar"},{"hi":"शाहजहाँ","en":"Shah Jahan"},{"hi":"औरंगजेब","en":"Aurangzeb"}],"answer":3,"explanation_hi":"औरंगजेब ने अपने अंतिम समय में अपने पुत्रों को पत्र लिखकर अपनी निराशा और अकेलेपन को व्यक्त किया था।","explanation_en":"In his final days, Aurangzeb wrote a letter to his sons expressing his despair and loneliness."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. मीर जाफर, B. राम सिंह, C. बेगम हजरत महल;\nसूची-II: 1. 1857 की प्रतिघोषणा, 2. प्लासी का युद्ध, 3. अहोम योद्धाओं की प्रशंसा","question_en":"Question 39: Match List-I with List-II:\nList-I: A. Mir Jafar, B. Ram Singh, C. Begum Hazrat Mahal;\nList-II: 1. Counter-proclamation of 1857, 2. Battle of Plassey, 3. Praise of Ahom warriors","options":[{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-2, B-1, C-3","en":""},{"hi":"A-2, B-3, C-1","en":""},{"hi":"A-3, B-2, C-1","en":""}],"answer":2,"explanation_hi":"मीर जाफर प्लासी युद्ध से संबंधित था, राम सिंह ने अहोम योद्धाओं की प्रशंसा की, और बेगम हजरत महल ने 1857 में प्रतिघोषणा जारी की।","explanation_en":"Mir Jafar was related to Plassey, Ram Singh praised Ahom warriors, and Begum Hazrat Mahal issued a counter-proclamation in 1857."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अकबर की बढ़ती सहिष्णुता के बावजूद, प्रशासन के उच्च स्तरों पर गैर-मुस्लिम अधिकारियों का प्रतिशत आमतौर पर कितना रहता था?","question_en":"Question 40: Despite Akbar's growing tolerance, what was the typical percentage of non-Muslim officials at the higher levels of administration?","options":[{"hi":"आधे से अधिक","en":"More than half"},{"hi":"लगभग दो-तिहाई","en":"About two-thirds"},{"hi":"शायद ही कभी एक-तिहाई से अधिक","en":"Rarely more than one-third"},{"hi":"केवल दस प्रतिशत","en":"Only ten percent"}],"answer":2,"explanation_hi":"प्रशासन में गैर-मुस्लिम अधिकारियों का प्रतिशत शायद ही कभी एक-तिहाई से अधिक था, और प्रायः इससे भी कम रहता था।","explanation_en":"The percentage of non-Muslim officials in the administration rarely exceeded one-third, and was often even lower."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्रिटिश शासन द्वारा भारत में विशाल रेल नेटवर्क के निर्माण का वास्तविक आर्थिक उद्देश्य क्या था?","question_en":"Question 41: What was the real economic objective behind the construction of a vast railway network in India by the British rule?","options":[{"hi":"भारतीयों के लिए सस्ती सार्वजनिक परिवहन व्यवस्था उपलब्ध कराना","en":"To provide affordable public transport for Indians"},{"hi":"कच्चे माल को बंदरगाहों तक पहुँचाना और ब्रिटिश वस्तुओं को वितरित करना","en":"To transport raw materials to ports and distribute British goods"},{"hi":"अकाल के दौरान तीव्र खाद्य सहायता सुनिश्चित करना","en":"To ensure rapid food relief during famines"},{"hi":"भारतीय हस्तशिल्प और स्वदेशी उद्योगों को बढ़ावा देना","en":"To promote Indian handicrafts and indigenous industries"}],"answer":1,"explanation_hi":"रेलमार्गों का निर्माण मुख्य रूप से कच्चे माल को बंदरगाहों तक ले जाने और ब्रिटिश निर्मित वस्तुओं को भारत में बेचने के लिए किया गया था।","explanation_en":"Railways were built primarily to transport raw materials to ports and to sell British manufactured goods in India."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बंगाल के 1770-1772 के अकाल के दौरान कंपनी की कठोर कर वसूली नीति की आलोचना किस ब्रिटिश अधिकारी ने की थी?","question_en":"Question 42: Which British official criticized the company's harsh tax collection policy during the Bengal famine of 1770-1772?","options":[{"hi":"रॉबर्ट क्लाइव","en":"Robert Clive"},{"hi":"चार्ल्स मेटकाफ","en":"Charles Metcalfe"},{"hi":"वारेन हेस्टिंग्स","en":"Warren Hastings"},{"hi":"डब्ल्यू.डब्ल्यू. हंटर","en":"W.W. Hunter"}],"answer":3,"explanation_hi":"डब्ल्यू.डब्ल्यू. हंटर ने लिखा था कि अकाल के बावजूद कंपनी ने न केवल कठोर कर लक्ष्य बनाए रखे बल्कि भूमि-कर को और भी बढ़ा दिया था।","explanation_en":"W.W. Hunter wrote that despite the famine, the company not only maintained strict tax targets but even increased the land tax."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत निर्वाचन आयोग इलेक्ट्रॉनिक वोटिंग मशीनों (EVM) और VVPAT प्रणाली का उपयोग करता है।\nकथन 2: भारत की सहायता से नामीबिया और भूटान जैसे देशों ने भी इस मतदान तकनीक को अपनाया है।","question_en":"Question 43: Consider the following statements:\nStatement 1: The Election Commission of India uses Electronic Voting Machines (EVM) and the VVPAT system.\nStatement 2: With India's assistance, countries like Namibia and Bhutan have also adopted this voting technology.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"भारत चुनाव में EVM और VVPAT का उपयोग करता है, और नामीबिया तथा भूटान जैसे अन्य देशों ने भारत से प्रशिक्षण प्राप्त कर इसे अपनाया है।","explanation_en":"India uses EVM and VVPATs in elections, and other countries like Namibia and Bhutan have adopted this after receiving training from India."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्पादन के कारकों के संबंध में सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. भूमि, B. श्रम, C. पूँजी;\nसूची-II: 1. प्राकृतिक संसाधन, 2. मानवीय प्रयास और कौशल, 3. मशीनें और उपकरण","question_en":"Question 44: Match List-I with List-II regarding factors of production:\nList-I: A. Land, B. Labour, C. Capital;\nList-II: 1. Natural resources, 2. Human effort and skill, 3. Machines and tools","options":[{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-2, B-1, C-3","en":""},{"hi":"A-3, B-2, C-1","en":""},{"hi":"A-1, B-3, C-2","en":""}],"answer":0,"explanation_hi":"अर्थशास्त्र में प्राकृतिक संसाधनों को भूमि, मानवीय प्रयासों को श्रम और उपकरणों व मशीनों को पूँजी माना जाता है।","explanation_en":"In economics, natural resources are considered land, human efforts are labour, and tools and machines are capital."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'प्रचुरता का विरोधाभास' (Paradox of Plenty) का अर्थ क्या है?","question_en":"Question 45: What is the meaning of the Paradox of Plenty?","options":[{"hi":"प्राकृतिक संसाधनों की कमी के बावजूद उच्च आर्थिक विकास","en":"High economic growth despite a lack of natural resources"},{"hi":"प्राकृतिक संसाधनों से समृद्ध होने के बावजूद आर्थिक वृद्धि और विकास का मंद होना","en":"Slow economic growth and development despite being rich in natural resources"},{"hi":"संसाधनों के अधिक उपयोग से पर्यावरण का विनाश","en":"Environmental destruction due to overuse of resources"},{"hi":"उच्च आय वाले देशों में संसाधनों का असमान वितरण","en":"Unequal distribution of resources in high-income countries"}],"answer":1,"explanation_hi":"यह स्थिति तब उत्पन्न होती है जब संसाधन-संपन्न देश अपनी अर्थव्यवस्था को विकसित करने और उच्च मूल्य वाले उत्पाद बनाने में असमर्थ रहते हैं।","explanation_en":"This situation occurs when resource-rich countries fail to develop their economies and create high-value products."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
