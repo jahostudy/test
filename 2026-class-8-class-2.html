@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"PCS • Class 8","highlight":"Class 8","shortTitle":"PCS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • Class 8","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-pcs-class-8-class-8-20260723-84s2a","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-23","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत निर्वाचन आयोग की सहायता से इलेक्ट्रॉनिक वोटिंग मशीनों (EVM) और वीवीपीएटी (VVPAT) प्रणाली का उपयोग किन देशों ने किया है?","question_en":"With the assistance of the Election Commission of India, which countries have used Electronic Voting Machines (EVMs) and VVPAT systems?","options":[{"hi":"नामीबिया और भूटान","en":"Namibia and Bhutan"},{"hi":"नेपाल और श्रीलंका","en":"Nepal and Sri Lanka"},{"hi":"मालदीव और मॉरीशस","en":"Maldives and Mauritius"},{"hi":"म्यांमार और बांग्लादेश","en":"Myanmar and Bangladesh"}],"answer":0,"explanation_hi":"भारत निर्वाचन आयोग की सहायता से नामीबिया और भूटान जैसे देशों ने भी इस इलेक्ट्रॉनिक मतदान तकनीक को अपनाया है।","explanation_en":"With the assistance of the Election Commission of India, countries like Namibia and Bhutan have also adopted this electronic voting technology."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 'सेंगोल' को नई लोकसभा में अध्यक्ष की कुर्सी के पास स्थापित किया गया है।\nकथन 2: यह चोल काल से जुड़ी एक परंपरा है जिसके शीर्ष पर नंदी स्थापित है।","question_en":"Consider the following statements:\nStatement 1: 'Sengol' has been installed near the Speaker's chair in the new Lok Sabha.\nStatement 2: It is a tradition rooted in the Chola period, with a Nandi placed on top.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"सेंगोल (राजदंड) चोल काल की परंपरा से जुड़ा है, जिसके शीर्ष पर न्याय का प्रतीक नंदी है, और इसे नई लोकसभा में अध्यक्ष के आसन के पास स्थापित किया गया है।","explanation_en":"Sengol (sceptre) is rooted in Chola tradition, topped by Nandi symbolizing justice, and is installed near the Speaker's chair in the new Lok Sabha."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I (उत्पादन के कारक) को सूची-II (विशेषता) से सुमेलित कीजिए:\nसूची-I: A. भूमि, B. श्रम, C. पूँजी;\nसूची-II: 1. मशीनें और उपकरण, 2. प्राकृतिक संसाधन, 3. शारीरिक और मानसिक योगदान","question_en":"Match List-I (Factors of Production) with List-II (Characteristic):\nList-I: A. Land, B. Labour, C. Capital;\nList-II: 1. Machines and tools, 2. Natural resources, 3. Physical and mental contribution","options":[{"hi":"A-2, B-1, C-3","en":""},{"hi":"A-2, B-3, C-1","en":""},{"hi":"A-3, B-2, C-1","en":""},{"hi":"A-1, B-2, C-3","en":""}],"answer":1,"explanation_hi":"अर्थशास्त्र में भूमि प्राकृतिक संसाधन है, श्रम शारीरिक और मानसिक योगदान है, तथा पूँजी में मशीनें, औजार और वाहन शामिल होते हैं।","explanation_en":"In economics, land is a natural resource, labour is physical/mental contribution, and capital includes machines, tools, and vehicles."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में लोकसभा निर्वाचन क्षेत्रों में अनुसूचित जनजातियों (ST) के लिए कितनी सीटें आरक्षित हैं?","question_en":"How many seats are reserved for Scheduled Tribes (ST) in the Lok Sabha constituencies in India?","options":[{"hi":"84","en":""},{"hi":"543","en":""},{"hi":"412","en":""},{"hi":"47","en":""}],"answer":3,"explanation_hi":"भारत की लोकसभा में अनुसूचित जाति (SC) के लिए 84 और अनुसूचित जनजाति (ST) के लिए 47 सीटें आरक्षित हैं।","explanation_en":"In the Lok Sabha of India, 84 seats are reserved for SCs and 47 seats are reserved for Scheduled Tribes (ST)."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संसद में कानून निर्माण की प्रक्रिया के निम्नलिखित चरणों को सही कालक्रम में व्यवस्थित कीजिए: 1. किसी सदन में विधेयक का प्रस्तुतीकरण, 2. खंड-दर-खंड चर्चा, 3. दूसरे सदन में प्रक्रिया का दोहराव, 4. राष्ट्रपति की स्वीकृति।","question_en":"Arrange the following stages of the law-making process in Parliament in correct chronological order: 1. Introduction of Bill in a House, 2. Clause-by-clause discussion, 3. Repetition of process in the second House, 4. Presidential Assent.","options":[{"hi":"1, 2, 3, 4","en":""},{"hi":"1, 3, 2, 4","en":""},{"hi":"2, 1, 3, 4","en":""},{"hi":"1, 2, 4, 3","en":""}],"answer":0,"explanation_hi":"कानून निर्माण की प्रक्रिया में विधेयक पहले प्रस्तुत होता है, फिर खंडों पर चर्चा व मतदान, फिर दूसरे सदन में दोहराव, और अंततः राष्ट्रपति की स्वीकृति होती है।","explanation_en":"In law-making, a bill is first introduced, followed by clause-wise discussion/voting, repetition in the second house, and finally Presidential assent."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कॉर्पोरेट सामाजिक उत्तरदायित्व (CSR) के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत 2014 में CSR कानून बनाने वाला विश्व का दूसरा देश था।\nकथन 2: कंपनियों को अपने पिछले तीन वर्षों के औसत लाभ का 5 प्रतिशत CSR पर व्यय करना अनिवार्य है।","question_en":"Consider the following statements regarding Corporate Social Responsibility (CSR):\nStatement 1: India was the second country in the world to enact a CSR law in 2014.\nStatement 2: Companies are mandated to spend 5 percent of their average profit of the last three years on CSR.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"दोनों कथन गलत हैं क्योंकि भारत 2014 में CSR को वैधानिक रूप से अनिवार्य बनाने वाला विश्व का 'प्रथम' देश था, और कंपनी अधिनियम 2013 की धारा 135 के अनुसार पिछले तीन वर्षों के औसत शुद्ध लाभ का 2 प्रतिशत (न कि 5%) व्यय करना अनिवार्य है।","explanation_en":"Both statements are false as India was the 'first' country to make CSR statutorily mandatory in 2014, and as per Section 135 of the Companies Act 2013, the mandate is to spend 2 percent (not 5%) of the average net profit of the last three years."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संसद में कार्यपालिका को उत्तरदायी बनाने के लिए प्रायः किस प्रक्रिया का उपयोग किया जाता है, जो सामान्यतः संसद सत्र का पहला घंटा होता है?","question_en":"In the Indian Parliament, which process is often used to hold the executive accountable, typically being the first hour of the parliamentary session?","options":[{"hi":"शून्य काल","en":"Zero Hour"},{"hi":"ध्यानाकर्षण प्रस्ताव","en":"Calling Attention Motion"},{"hi":"प्रश्नकाल","en":"Question Hour"},{"hi":"अविश्वास प्रस्ताव","en":"No-Confidence Motion"}],"answer":2,"explanation_hi":"प्रश्नकाल सामान्यतः संसद सत्र का पहला घंटा होता है जिसमें सांसद मंत्रियों से सरकारी नीतियों और गतिविधियों पर प्रश्न पूछकर उन्हें उत्तरदायी बनाते हैं।","explanation_en":"Question Hour is generally the first hour of a parliamentary session where MPs hold ministers accountable by asking questions on government policies."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"स्वतंत्र भारत में प्रथम आम चुनाव किस वर्ष आयोजित किए गए थे?","question_en":"In which year were the first general elections held in independent India?","options":[{"hi":"1949-1950","en":""},{"hi":"1951-1952","en":""},{"hi":"1952-1953","en":""},{"hi":"1950-1951","en":""}],"answer":1,"explanation_hi":"स्वतंत्र भारत में प्रथम आम चुनाव अक्टूबर 1951 से फरवरी 1952 के बीच आयोजित किए गए थे।","explanation_en":"The first general elections in independent India were held between October 1951 and February 1952."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय विधायिका के संबंध में कितने युग्म सही सुमेलित हैं? 1. लोकसभा की अधिकतम सदस्य संख्या: 550, 2. राज्यसभा में राष्ट्रपति द्वारा मनोनीत सदस्य: 12, 3. राज्यसभा सदस्यों का कार्यकाल: 6 वर्ष।","question_en":"How many pairs are correctly matched regarding the Indian Legislature? 1. Maximum number of Lok Sabha members: 550, 2. Members nominated by President in Rajya Sabha: 12, 3. Term of Rajya Sabha members: 6 years.","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"कोई युग्म नहीं","en":"None of the pairs"},{"hi":"सभी तीनों युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"104वें संविधान संशोधन के बाद लोकसभा की अधिकतम संख्या 550 है, राज्यसभा में राष्ट्रपति द्वारा 12 सदस्य मनोनीत होते हैं और उनका कार्यकाल 6 वर्ष होता है।","explanation_en":"After the 104th Constitutional Amendment, the maximum strength of the Lok Sabha is 550, 12 members are nominated by the President in the Rajya Sabha, and their term is 6 years."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कौन सी जापानी अवधारणा, जिसका अर्थ 'सतत सुधार' है, 1940 के दशक के मध्य से उपयोग में लाई जा रही है?","question_en":"Which Japanese concept, meaning 'continuous improvement', has been in use since the mid-1940s?","options":[{"hi":"काइजेन","en":"Kaizen"},{"hi":"जाइबात्सु","en":"Zaibatsu"},{"hi":"इकिगई","en":"Ikigai"},{"hi":"कानबान","en":"Kanban"}],"answer":0,"explanation_hi":"'काइजेन' एक जापानी अवधारणा है जिसका अर्थ सतत सुधार है, जिसने जापान को उच्च जीवन-गुणवत्ता प्राप्त करने में सहायता की है।","explanation_en":"'Kaizen' is a Japanese concept meaning continuous improvement, which helped Japan achieve a high quality of life."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के राष्ट्रपति के निर्वाचन के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: राज्यसभा के मनोनीत सदस्य इस निर्वाचन में मतदान करते हैं।\nकथन 2: राज्यों की विधान परिषदों के सदस्य (निर्वाचित और मनोनीत दोनों) राष्ट्रपति चुनाव में सम्मिलित होते हैं।","question_en":"Consider the following statements regarding the election of the President of India:\nStatement 1: Nominated members of the Rajya Sabha vote in this election.\nStatement 2: Members of the State Legislative Councils (both elected and nominated) are included in the presidential election.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"दोनों कथन गलत हैं। अनुच्छेद 54 के अनुसार राष्ट्रपति के निर्वाचक मंडल में संसद के दोनों सदनों तथा राज्य विधानसभाओं के केवल निर्वाचित सदस्य होते हैं; मनोनीत सदस्य तथा विधान परिषदों के सदस्य इसमें सम्मिलित नहीं होते।","explanation_en":"Both statements are false. As per Article 54, the electoral college for the President consists only of the elected members of both Houses of Parliament and of the State Legislative Assemblies; nominated members and members of Legislative Councils are not included."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1956 में किस तत्कालीन रेल मंत्री ने एक रेल दुर्घटना के बाद नैतिक उत्तरदायित्व लेते हुए अपना त्यागपत्र दे दिया था?","question_en":"Which then Railway Minister resigned in 1956 taking moral responsibility after a train accident?","options":[{"hi":"जवाहरलाल नेहरू","en":"Jawaharlal Nehru"},{"hi":"गुलज़ारीलाल नंदा","en":"Gulzarilal Nanda"},{"hi":"लाल बहादुर शास्त्री","en":"Lal Bahadur Shastri"},{"hi":"जॉन मथाई","en":"John Mathai"}],"answer":2,"explanation_hi":"1956 में अरियालूर रेल दुर्घटना के बाद रेल मंत्री लाल बहादुर शास्त्री ने नैतिक उत्तरदायित्व स्वीकार करते हुए अपना त्यागपत्र प्रधानमंत्री जवाहरलाल नेहरू को सौंपा था।","explanation_en":"In 1956, after the Ariyalur train accident, Railway Minister Lal Bahadur Shastri accepted moral responsibility and submitted his resignation to PM Jawaharlal Nehru."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चुनाव में मतदान अधिकारियों के कार्यों के संबंध में सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. प्रथम मतदान अधिकारी, B. द्वितीय मतदान अधिकारी, C. तृतीय मतदान अधिकारी;\nसूची-II: 1. पर्ची लेना और अँगुली की जाँच करना, 2. मतदाता सूची में नाम की जाँच, 3. अँगुली पर स्याही लगाना और पर्ची देना","question_en":"Match List-I with List-II regarding the duties of polling officers in an election:\nList-I: A. First Polling Officer, B. Second Polling Officer, C. Third Polling Officer;\nList-II: 1. Takes the slip and checks the finger, 2. Checks the name in the electoral roll, 3. Applies ink on the finger and gives a slip","options":[{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-2, B-3, C-1","en":""},{"hi":"A-3, B-1, C-2","en":""},{"hi":"A-2, B-1, C-3","en":""}],"answer":1,"explanation_hi":"प्रथम मतदान अधिकारी मतदाता सूची में नाम की जाँच करता है, द्वितीय अधिकारी अँगुली पर स्याही लगाकर पर्ची देता है, तथा तृतीय अधिकारी पर्ची लेकर अँगुली की जाँच करता है और मतदान की अनुमति देता है।","explanation_en":"The first polling officer checks the name in the electoral roll, the second applies ink on the finger and issues a slip, and the third takes the slip, checks the finger and permits voting."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मानव पूँजी और कौशल के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: विश्व बैंक के 2023 के अनुमान के अनुसार भारत में पुरुषों की वयस्क साक्षरता दर 85 प्रतिशत है।\nकथन 2: भारत में महिलाओं की वयस्क साक्षरता दर 70 प्रतिशत है।","question_en":"Consider the following statements in the context of human capital and skills:\nStatement 1: According to the World Bank's 2023 estimate, the adult literacy rate for men in India is 85 percent.\nStatement 2: The adult literacy rate for women in India is 70 percent.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"विश्व बैंक के आँकड़ों पर आधारित अनुमानों के अनुसार भारत में वयस्क (15 वर्ष व अधिक) साक्षरता दर पुरुषों के लिए लगभग 85% और महिलाओं के लिए लगभग 70% रही है, जो लैंगिक अंतर को दर्शाती है। [सत्यापन आवश्यक: साक्षरता के आँकड़े स्रोत (विश्व बैंक/UNESCO/NSO) और वर्ष के अनुसार कुछ प्रतिशत भिन्न मिलते हैं]","explanation_en":"According to estimates based on World Bank data, the adult (15+) literacy rate in India has been about 85% for men and about 70% for women, reflecting the gender gap. [Verification required: literacy figures vary by a few percentage points across sources (World Bank/UNESCO/NSO) and reference years]"},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में 'आदर्श आचार संहिता' (Model Code of Conduct) को सर्वप्रथम 1960 में किस राज्य में अपनाया गया था?","question_en":"In which state was the 'Model Code of Conduct' first adopted in India in 1960?","options":[{"hi":"तमिलनाडु","en":"Tamil Nadu"},{"hi":"केरल","en":"Kerala"},{"hi":"महाराष्ट्र","en":"Maharashtra"},{"hi":"पश्चिम बंगाल","en":"West Bengal"}],"answer":1,"explanation_hi":"आदर्श आचार संहिता का प्रारंभ 1960 में केरल विधानसभा चुनाव के दौरान हुआ था, जिसे राजनीतिक दलों ने स्वेच्छा से स्वीकार किया था।","explanation_en":"The Model Code of Conduct originated during the 1960 Kerala Assembly elections, and was voluntarily accepted by political parties."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वित्तीय मामलों से संबंधित 'धन विधेयक' (Money Bill) को संसद के किस सदन में प्रस्तुत किया जा सकता है?","question_en":"In which house of the Parliament can a 'Money Bill' related to financial matters be introduced?","options":[{"hi":"केवल राज्यसभा में","en":"Only in Rajya Sabha"},{"hi":"लोकसभा और राज्यसभा दोनों में","en":"In both Lok Sabha and Rajya Sabha"},{"hi":"संसद के संयुक्त सत्र में","en":"In a joint session of Parliament"},{"hi":"केवल लोकसभा में","en":"Only in Lok Sabha"}],"answer":3,"explanation_hi":"अनुच्छेद 110 के अंतर्गत परिभाषित धन विधेयक राष्ट्रपति की पूर्व सिफारिश से केवल लोकसभा में ही प्रस्तुत किया जा सकता है।","explanation_en":"A Money Bill, as defined under Article 110, can be introduced only in the Lok Sabha on the prior recommendation of the President."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय आर्थिक सर्वेक्षण 2024 के अनुसार भारत की कितनी प्रतिशत जनसंख्या 35 वर्ष से कम आयु की है, जो जनसांख्यिकीय लाभांश दर्शाती है?","question_en":"According to the Indian Economic Survey 2024, what percentage of India's population is under 35 years of age, indicating a demographic dividend?","options":[{"hi":"65 प्रतिशत","en":"65 percent"},{"hi":"50 प्रतिशत","en":"50 percent"},{"hi":"75 प्रतिशत","en":"75 percent"},{"hi":"45 प्रतिशत","en":"45 percent"}],"answer":0,"explanation_hi":"आर्थिक सर्वेक्षण 2024 के अनुसार भारत की लगभग 65 प्रतिशत जनसंख्या 35 वर्ष से कम आयु की है, किंतु सर्वेक्षण यह भी रेखांकित करता है कि इनमें से बड़ी संख्या में युवाओं के पास आधुनिक अर्थव्यवस्था के अनुरूप कौशल नहीं है।","explanation_en":"According to the Economic Survey 2024, about 65 percent of India's population is under 35 years of age, though the Survey also underlines that a large share of these youth lack the skills required by a modern economy."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राज्यसभा के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: यह एक स्थायी सदन है जिसे कभी विघटित नहीं किया जाता।\nकथन 2: इसके एक-तिहाई सदस्य प्रत्येक तीन वर्षों में सेवानिवृत्त होते हैं।","question_en":"Consider the following statements regarding the Rajya Sabha:\nStatement 1: It is a permanent house and is never dissolved.\nStatement 2: One-third of its members retire every three years.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"कथन 1 सही है, लेकिन कथन 2 गलत है क्योंकि राज्यसभा के एक-तिहाई सदस्य प्रत्येक 'दो' वर्षों में सेवानिवृत्त होते हैं।","explanation_en":"Statement 1 is true, but Statement 2 is false because one-third of Rajya Sabha members retire every 'two' years."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूचना और कौशल विकास के सरकारी पोर्टलों के संबंध में सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. SWAYAM, B. नेशनल करियर सर्विस;\nसूची-II: 1. रोजगार के अवसर ढूँढ़ने में सहायता, 2. मुफ्त ऑनलाइन पाठ्यक्रम (MOOCs) प्रदान करना","question_en":"Match List-I with List-II regarding government portals for information and skill development:\nList-I: A. SWAYAM, B. National Career Service;\nList-II: 1. Assistance in finding employment opportunities, 2. Providing free online courses (MOOCs)","options":[{"hi":"A-1, B-2","en":""},{"hi":"A-2, B-1","en":""},{"hi":"A-1, B-1","en":""},{"hi":"A-2, B-2","en":""}],"answer":1,"explanation_hi":"SWAYAM पोर्टल मुफ्त ऑनलाइन पाठ्यक्रम (MOOCs) प्रदान करता है जबकि नेशनल करियर सर्विस रोजगार ढूँढ़ने में सहायक है।","explanation_en":"The SWAYAM portal offers free online courses (MOOCs) while the National Career Service assists in finding employment."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"फरवरी 2025 में भारतीय संसद में समकालिक अनुवाद के लिए 6 और भाषाएँ जोड़ी गई थीं। निम्नलिखित में से कौन सी भाषा उन 6 भाषाओं में सम्मिलित नहीं थी?","question_en":"In February 2025, 6 more languages were added for simultaneous translation in the Indian Parliament. Which of the following was NOT among those 6 languages?","options":[{"hi":"डोगरी","en":"Dogri"},{"hi":"बोडो","en":"Bodo"},{"hi":"संथाली","en":"Santhali"},{"hi":"मैथिली","en":"Maithili"}],"answer":2,"explanation_hi":"फरवरी 2025 में जोड़ी गई 6 भाषाएँ बोडो, डोगरी, मैथिली, मणिपुरी, उर्दू और संस्कृत थीं, जिससे कुल संख्या 16 हो गई; संथाली इनमें सम्मिलित नहीं थी और उसे बाद में कश्मीरी व कोंकणी के साथ जोड़ा गया।","explanation_en":"The 6 languages added in February 2025 were Bodo, Dogri, Maithili, Manipuri, Urdu and Sanskrit, taking the total to 16; Santhali was not among them and was added later along with Kashmiri and Konkani."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निर्वाचन प्रणाली के संबंध में कितने युग्म सही सुमेलित हैं? 1. लोकसभा: प्रत्यक्ष चुनाव, 2. राज्यसभा: अप्रत्यक्ष चुनाव, 3. उपराष्ट्रपति का चुनाव: एकल संक्रमणीय मत प्रणाली।","question_en":"How many pairs are correctly matched regarding the electoral system? 1. Lok Sabha: Direct election, 2. Rajya Sabha: Indirect election, 3. Election of Vice President: Single transferable vote system.","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"कोई युग्म नहीं","en":"None of the pairs"},{"hi":"सभी तीनों युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"लोकसभा में जनता प्रत्यक्ष चुनाव करती है, राज्यसभा में विधायक अप्रत्यक्ष चुनाव करते हैं, और उपराष्ट्रपति का चुनाव आनुपातिक प्रतिनिधित्व की एकल संक्रमणीय मत प्रणाली से गुप्त मतदान द्वारा होता है।","explanation_en":"Lok Sabha uses direct elections by the public, Rajya Sabha uses indirect elections by MLAs, and the Vice President is elected by proportional representation through the single transferable vote by secret ballot."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन भारतीय नौवहन तकनीक के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारतीय 2000 वर्ष पूर्व से जहाज बनाने के लिए सिलाई तकनीक का प्रयोग करते रहे हैं।\nकथन 2: इस तकनीक में लकड़ी के पट्टों को कीलों के स्थान पर डोरियों से सिला जाता था।","question_en":"Consider the following statements regarding ancient Indian navigation technology:\nStatement 1: Indians have been using stitching techniques for shipbuilding since 2000 years ago.\nStatement 2: In this technique, wooden planks were stitched with ropes instead of nails.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं; यह सिले हुए जहाजों की तकनीक थी जो उन्हें हिंद महासागर के आवागमन के लिए लचीला बनाती थी।","explanation_en":"Both statements are true; it was a stitched-ship technology that made them flexible for Indian Ocean navigation."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1951 के प्रथम आम चुनाव में मतदान करने वाले पहले मतदाता श्याम शरण नेगी का संबंध किस पेशे से था?","question_en":"Shyam Saran Negi, the first voter to cast a vote in the 1951 first general election, belonged to which profession?","options":[{"hi":"चिकित्सक","en":"Doctor"},{"hi":"शिक्षक","en":"Teacher"},{"hi":"किसान","en":"Farmer"},{"hi":"सैन्य अधिकारी","en":"Military Officer"}],"answer":1,"explanation_hi":"हिमाचल प्रदेश के किन्नौर जिले के श्याम शरण नेगी एक विद्यालय शिक्षक थे, जिन्होंने 1951 में देश का पहला मत डाला था।","explanation_en":"Shyam Saran Negi from Kinnaur district of Himachal Pradesh was a school teacher who cast the nation's first vote in 1951."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान द्वारा लोकसभा के सदस्यों की अधिकतम संख्या कितनी निर्धारित की गई है?","question_en":"What is the maximum number of members of the Lok Sabha fixed by the Indian Constitution?","options":[{"hi":"550","en":""},{"hi":"545","en":""},{"hi":"543","en":""},{"hi":"552","en":""}],"answer":0,"explanation_hi":"104वें संविधान संशोधन द्वारा आंग्ल-भारतीय समुदाय के मनोनयन की व्यवस्था समाप्त होने के बाद लोकसभा की अधिकतम सदस्य संख्या 550 है — 530 राज्यों से और 20 संघ राज्यक्षेत्रों से।","explanation_en":"After the 104th Constitutional Amendment ended the nomination of the Anglo-Indian community, the maximum strength of the Lok Sabha is 550 — 530 from states and 20 from union territories."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय विधायी व्यवस्था के संदर्भ में, राज्य विधानमंडल के उच्च सदन को क्या कहा जाता है?","question_en":"In the context of the Indian legislative system, what is the upper house of the State Legislature called?","options":[{"hi":"विधान सभा","en":"Vidhan Sabha"},{"hi":"लोक सभा","en":"Lok Sabha"},{"hi":"राज्य सभा","en":"Rajya Sabha"},{"hi":"विधान परिषद","en":"Vidhan Parishad"}],"answer":3,"explanation_hi":"राज्य स्तर पर निम्न सदन को विधान सभा और उच्च सदन को विधान परिषद कहा जाता है।","explanation_en":"At the state level, the lower house is called Vidhan Sabha and the upper house is called Vidhan Parishad."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संघीय कार्यपालिका और मंत्रिपरिषद के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: मंत्री सामूहिक रूप से राज्यसभा के प्रति उत्तरदायी होते हैं।\nकथन 2: मंत्रिपरिषद का चुनाव संसद के दोनों सदनों के सांसदों में से किया जाता है।","question_en":"Consider the following statements regarding the Union Executive and the Council of Ministers:\nStatement 1: Ministers are collectively responsible to the Rajya Sabha.\nStatement 2: The Council of Ministers is selected from the MPs of both houses of Parliament.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"कथन 1 गलत है क्योंकि अनुच्छेद 75(3) के अनुसार मंत्री सामूहिक रूप से लोकसभा के प्रति उत्तरदायी होते हैं, न कि राज्यसभा के प्रति। कथन 2 सही है क्योंकि मंत्री सामान्यतः दोनों सदनों के सदस्यों में से लिए जाते हैं।","explanation_en":"Statement 1 is false because, as per Article 75(3), ministers are collectively responsible to the Lok Sabha, not the Rajya Sabha. Statement 2 is correct as ministers are normally drawn from members of both Houses."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अर्थशास्त्र में 'मानव पूँजी' (Human Capital) का तात्पर्य मुख्य रूप से किससे है?","question_en":"In economics, what does 'Human Capital' primarily refer to?","options":[{"hi":"केवल मनुष्यों की संख्या से","en":"Only the number of humans"},{"hi":"भौतिक संपत्ति और मशीनों से","en":"Physical assets and machines"},{"hi":"व्यक्तियों के ज्ञान, कौशल, अनुभव और कार्यक्षमता से","en":"Knowledge, skills, experience, and working capacity of individuals"},{"hi":"श्रमिकों को दिए जाने वाले वेतन से","en":"Wages paid to the labourers"}],"answer":2,"explanation_hi":"मानव पूँजी उन विशिष्ट कौशलों, ज्ञान और क्षमता का परिचायक है जो श्रम को अधिक उत्पादक बनाते हैं।","explanation_en":"Human capital represents the specific skills, knowledge, and abilities that make labour more productive."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत निर्वाचन आयोग के महत्वपूर्ण कार्यों के संदर्भ में, निम्नलिखित में से कौन सा कार्य आयोग द्वारा नहीं किया जाता है?","question_en":"In the context of the important functions of the Election Commission of India, which of the following tasks is NOT performed by the Commission?","options":[{"hi":"स्थानीय निकायों (ग्राम पंचायत/शहरी) के चुनाव कराना","en":"Conducting elections for local bodies (Gram Panchayat/Urban)"},{"hi":"आदर्श आचार संहिता लागू करना","en":"Enforcing the Model Code of Conduct"},{"hi":"राजनीतिक दलों का पंजीकरण करना","en":"Registering political parties"},{"hi":"चुनाव की तिथियों का निर्धारण करना","en":"Fixing election dates"}],"answer":0,"explanation_hi":"अनुच्छेद 243क तथा 243यक के अंतर्गत ग्राम पंचायतों और शहरी स्थानीय निकायों के चुनाव का प्रबंधन राज्य निर्वाचन आयोग द्वारा किया जाता है, भारत निर्वाचन आयोग द्वारा नहीं।","explanation_en":"Under Articles 243K and 243ZA, elections for Gram Panchayats and urban local bodies are managed by the State Election Commission, not the Election Commission of India."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय चुनाव प्रणाली में 'नोटा' (NOTA) के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: यदि नोटा को सर्वाधिक मत मिलते हैं, तो चुनाव परिणाम बदल जाते हैं और नए प्रत्याशी चुने जाते हैं।\nकथन 2: नोटा का पूर्ण रूप 'None of the Target Audience' है।","question_en":"Consider the following statements regarding 'NOTA' in the Indian electoral system:\nStatement 1: If NOTA gets the maximum votes, the election results change and new candidates are chosen.\nStatement 2: The full form of NOTA is 'None of the Target Audience'.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"दोनों कथन गलत हैं; नोटा का पूर्ण रूप 'None of the Above' है और सर्वाधिक नोटा मत मिलने पर भी सर्वाधिक मत पाने वाला वैध प्रत्याशी ही विजयी घोषित होता है — यह केवल असंतोष व्यक्त करने का साधन है।","explanation_en":"Both statements are false; the full form of NOTA is 'None of the Above', and even if NOTA polls the highest, the valid candidate with the most votes is declared elected — it is merely a means of expressing dissatisfaction."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'पूँजी-प्रधान' (Capital-intensive) क्षेत्र का एक उत्कृष्ट उदाहरण निम्नलिखित में से कौन सा है?","question_en":"Which of the following is an excellent example of a 'Capital-intensive' sector?","options":[{"hi":"हस्तशिल्प निर्माण","en":"Handicraft manufacturing"},{"hi":"साधारण कृषि","en":"Basic agriculture"},{"hi":"वस्त्र छपाई","en":"Textile printing"},{"hi":"सेमीकंडक्टर चिप्स और उपग्रह निर्माण","en":"Semiconductor chips and satellite manufacturing"}],"answer":3,"explanation_hi":"सेमीकंडक्टर और उपग्रहों के निर्माण के लिए भारी पूँजी और विशेषीकृत उपकरणों की आवश्यकता होती है, इसलिए ये पूँजी-प्रधान हैं।","explanation_en":"Manufacturing semiconductors and satellites requires heavy capital and specialized equipment, making them capital-intensive."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अर्थशास्त्र में एक नया व्यवसाय आरंभ करने और समस्या का समाधान प्रस्तुत करने के लिए जोखिम उठाने वाले व्यक्ति को क्या कहा जाता है?","question_en":"In economics, what is a person called who takes risks to start a new business and provide a solution to a problem?","options":[{"hi":"श्रमिक","en":"Labourer"},{"hi":"प्रशासक","en":"Administrator"},{"hi":"उद्यमी","en":"Entrepreneur"},{"hi":"निवेशक","en":"Investor"}],"answer":2,"explanation_hi":"एक उद्यमी वह व्यक्ति होता है जो जोखिम उठाता है, संसाधनों को संयोजित करता है और नए उत्पाद या सेवा से समस्या का समाधान करता है।","explanation_en":"An entrepreneur is a person who takes risks, combines resources, and solves a problem with a new product or service."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय चुनाव आयोग (ECI) के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: इसकी स्थापना वर्ष 1950 में की गई थी।\nकथन 2: यह भारत के राष्ट्रपति और उपराष्ट्रपति पदों के चुनाव आयोजित नहीं कराता है।","question_en":"Consider the following statements regarding the Election Commission of India (ECI):\nStatement 1: It was established in the year 1950.\nStatement 2: It does not conduct elections for the posts of President and Vice-President of India.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"कथन 1 सही है — निर्वाचन आयोग की स्थापना 25 जनवरी 1950 को हुई। कथन 2 गलत है क्योंकि अनुच्छेद 324 के अंतर्गत आयोग संसद और राज्य विधानमंडलों के साथ-साथ राष्ट्रपति और उपराष्ट्रपति के पदों के चुनाव भी कराता है।","explanation_en":"Statement 1 is correct — the Election Commission was established on 25 January 1950. Statement 2 is false as, under Article 324, the Commission also conducts elections to the offices of President and Vice-President along with Parliament and State Legislatures."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संसद की शब्दावली के संबंध में सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. राजपत्र (Gazette), B. विधेयक (Bill), C. अधिनियम (Act);\nसूची-II: 1. कानून बनने से पूर्व प्रस्तावित प्रारूप, 2. आधिकारिक सरकारी प्रकाशन, 3. संसद द्वारा पारित और राष्ट्रपति द्वारा स्वीकृत कानून","question_en":"Match List-I with List-II regarding parliamentary terminology:\nList-I: A. Gazette, B. Bill, C. Act;\nList-II: 1. Proposed draft before becoming a law, 2. Official government publication, 3. Law passed by Parliament and assented by the President","options":[{"hi":"A-2, B-3, C-1","en":""},{"hi":"A-2, B-1, C-3","en":""},{"hi":"A-1, B-2, C-3","en":""},{"hi":"A-3, B-1, C-2","en":""}],"answer":1,"explanation_hi":"राजपत्र एक आधिकारिक प्रकाशन है, विधेयक एक प्रस्तावित कानून का प्रारूप है, और अधिनियम पारित व स्वीकृत कानून है।","explanation_en":"Gazette is an official publication, a Bill is a proposed law draft, and an Act is a passed and approved law."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस वर्ष 86वाँ संविधान संशोधन अधिनियम पारित किया गया, जिसने शिक्षा को मौलिक अधिकारों के अंतर्गत सम्मिलित किया?","question_en":"In which year was the 86th Constitutional Amendment Act passed, which included education under fundamental rights?","options":[{"hi":"2000","en":""},{"hi":"2009","en":""},{"hi":"2002","en":""},{"hi":"2014","en":""}],"answer":2,"explanation_hi":"वर्ष 2002 में 86वाँ संविधान संशोधन पारित किया गया, जिसने अनुच्छेद 21(क) के तहत 6 से 14 वर्ष के बच्चों के लिए निःशुल्क और अनिवार्य शिक्षा का प्रावधान किया।","explanation_en":"The 86th Amendment was passed in 2002, providing for free and compulsory education for children aged 6 to 14 under Article 21(A)."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में लोकसभा निर्वाचन क्षेत्रों की कुल संख्या कितनी है जिसके लिए चुनाव होते हैं?","question_en":"What is the total number of Lok Sabha constituencies in India for which elections are held?","options":[{"hi":"550","en":""},{"hi":"545","en":""},{"hi":"543","en":""},{"hi":"412","en":""}],"answer":2,"explanation_hi":"भारत को 543 लोकसभा निर्वाचन क्षेत्रों में विभाजित किया गया है, जहाँ मतदाता प्रत्यक्ष रूप से अपने प्रतिनिधियों को चुनते हैं।","explanation_en":"India is divided into 543 Lok Sabha constituencies where voters directly elect their representatives."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संसदीय व्यवस्था में प्रधानमंत्री की नियुक्ति किसके द्वारा की जाती है?","question_en":"In the Indian parliamentary system, who appoints the Prime Minister?","options":[{"hi":"भारत के राष्ट्रपति द्वारा","en":"By the President of India"},{"hi":"लोकसभा अध्यक्ष द्वारा","en":"By the Speaker of Lok Sabha"},{"hi":"सर्वोच्च न्यायालय के मुख्य न्यायाधीश द्वारा","en":"By the Chief Justice of the Supreme Court"},{"hi":"चुनाव आयोग द्वारा","en":"By the Election Commission"}],"answer":0,"explanation_hi":"अनुच्छेद 75(1) के अनुसार राष्ट्रपति लोकसभा में बहुमत प्राप्त दल या गठबंधन के नेता को प्रधानमंत्री नियुक्त करते हैं।","explanation_en":"As per Article 75(1), the President appoints the leader of the majority party or coalition in the Lok Sabha as the Prime Minister."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में 'राइट टू एजुकेशन' (RTE) अधिनियम, 2009 के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: यह 6 से 14 वर्ष की आयु के बच्चों के लिए निःशुल्क और अनिवार्य शिक्षा का प्रावधान करता है।\nकथन 2: इस विधेयक को सबसे पहले लोकसभा में प्रस्तुत किया गया था।","question_en":"Consider the following statements regarding the Right to Education (RTE) Act, 2009 in India:\nStatement 1: It provides for free and compulsory education for children aged 6 to 14 years.\nStatement 2: This bill was first introduced in the Lok Sabha.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"कथन 1 सही है, लेकिन कथन 2 गलत है क्योंकि 2008 में इस विधेयक को सबसे पहले राज्यसभा में प्रस्तुत किया गया था, और बाद में 2009 में लोकसभा में पारित हुआ।","explanation_en":"Statement 1 is correct, but Statement 2 is false as the bill was first introduced in the Rajya Sabha in 2008, and later passed in Lok Sabha in 2009."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2024 के लोकसभा चुनावों के दौरान लगभग कितने मतदान केंद्र स्थापित किए गए थे?","question_en":"Approximately how many polling stations were set up during the 2024 Lok Sabha elections?","options":[{"hi":"5 लाख से अधिक","en":"Over 5 lakh"},{"hi":"10 लाख से अधिक","en":"Over 10 lakh"},{"hi":"20 लाख से अधिक","en":"Over 20 lakh"},{"hi":"15 लाख से अधिक","en":"Over 15 lakh"}],"answer":1,"explanation_hi":"2024 के लोकसभा चुनावों के लिए भारत में 10 लाख से अधिक मतदान केंद्र स्थापित किए गए थे, जो इसे विश्व का सबसे बड़ा निर्वाचन अभ्यास बनाता है।","explanation_en":"Over 10 lakh polling stations were set up in India for the 2024 Lok Sabha elections, making it the largest electoral exercise in the world."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के राज्यों में द्विसदनीय विधानमंडल के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत के सभी 28 राज्यों में द्विसदनीय विधानमंडल व्यवस्था है।\nकथन 2: आंध्र प्रदेश, बिहार और कर्नाटक उन राज्यों में शामिल हैं जहाँ द्विसदनीय व्यवस्था है।","question_en":"Consider the following statements regarding bicameral legislatures in Indian states:\nStatement 1: All 28 states of India have a bicameral legislative system.\nStatement 2: Andhra Pradesh, Bihar, and Karnataka are among the states that have a bicameral system.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"कथन 1 गलत है क्योंकि केवल कुछ ही राज्यों में द्विसदनीय व्यवस्था है (आंध्र प्रदेश, बिहार, कर्नाटक, महाराष्ट्र, तेलंगाना, उत्तर प्रदेश), शेष राज्यों में एकसदनीय व्यवस्था है।","explanation_en":"Statement 1 is false because only a few states have a bicameral system (Andhra Pradesh, Bihar, Karnataka, Maharashtra, Telangana, Uttar Pradesh); the rest have a unicameral system."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से किस महामारी ने वैश्विक स्तर पर यह दर्शाया कि आपूर्ति शृंखला (Supply Chain) के दूरस्थ संसाधनों पर निर्भर होने से उत्पादन प्रक्रिया गंभीर रूप से अवरुद्ध हो सकती है?","question_en":"Which of the following pandemics globally demonstrated that dependence on distant resources in the Supply Chain can severely disrupt the production process?","options":[{"hi":"सार्स 2003","en":"SARS 2003"},{"hi":"इबोला","en":"Ebola"},{"hi":"स्पैनिश फ्लू","en":"Spanish Flu"},{"hi":"कोविड-19","en":"COVID-19"}],"answer":3,"explanation_hi":"कोविड-19 महामारी के दौरान जब आपूर्ति शृंखला दूरस्थ संसाधनों पर निर्भर थी, तो उत्पादन प्रक्रिया बुरी तरह अवरुद्ध हो गई थी।","explanation_en":"During the COVID-19 pandemic, when the supply chain relied on distant resources, the production process was severely disrupted."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की संसदीय व्यवस्था में कार्यकारी और संवैधानिक प्रमुखों के संदर्भ में कितने युग्म सही सुमेलित हैं? 1. केंद्र का वास्तविक कार्यकारी प्रमुख: प्रधानमंत्री, 2. राज्य का औपचारिक/संवैधानिक प्रमुख: राज्यपाल, 3. केंद्र का औपचारिक/संवैधानिक प्रमुख: राष्ट्रपति।","question_en":"How many pairs are correctly matched regarding the executive and constitutional heads in India's parliamentary system? 1. Real executive head at Centre: Prime Minister, 2. Formal/Constitutional head of State: Governor, 3. Formal/Constitutional head at Centre: President.","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीनों युग्म","en":"All three pairs"},{"hi":"कोई युग्म नहीं","en":"None of the pairs"}],"answer":2,"explanation_hi":"केंद्र में राष्ट्रपति औपचारिक और प्रधानमंत्री वास्तविक प्रमुख होता है; राज्य में राज्यपाल औपचारिक और मुख्यमंत्री वास्तविक प्रमुख होता है।","explanation_en":"At the Centre, the President is formal and the PM is the real head; in a State, the Governor is formal and the CM is the real head."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किसी वस्तु या सेवा के निर्माण में प्रयुक्त 'आपूर्ति शृंखला' (Supply Chain) का मुख्य तात्पर्य किससे है?","question_en":"What is the primary meaning of 'Supply Chain' used in the creation of a good or service?","options":[{"hi":"उत्पादन और बिक्री में सम्मिलित व्यक्तियों, संगठनों, संसाधनों और प्रौद्योगिकियों का अंतर्जाल","en":"The network of individuals, organizations, resources, and technologies involved in production and sales"},{"hi":"केवल कारखाने के भीतर मशीनों की शृंखला","en":"Only the chain of machines inside a factory"},{"hi":"सरकार द्वारा कर वसूलने की प्रक्रिया","en":"The process of tax collection by the government"},{"hi":"बैंकों द्वारा दिया जाने वाला ऋण","en":"The loans provided by banks"}],"answer":0,"explanation_hi":"आपूर्ति शृंखला (सप्लाई चेन) उन सभी व्यक्तियों, संसाधनों, संगठनों और प्रौद्योगिकियों का एक जाल है जो उत्पाद को बनाने और बेचने में शामिल होते हैं।","explanation_en":"A supply chain is a network of all individuals, resources, organizations, and technologies involved in creating and selling a product."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सरकारी नीतियों और कानूनों को लागू करने में मंत्रियों के निर्देशन में कार्य करने वाले स्थायी अधिकारियों के समूह को क्या कहा जाता है?","question_en":"What is the group of permanent officials called who work under the direction of ministers to implement government policies and laws?","options":[{"hi":"सांसद","en":"MPs"},{"hi":"स्थायी समिति के सदस्य","en":"Members of Standing Committee"},{"hi":"सिविल सेवक या नौकरशाह","en":"Civil Servants or Bureaucrats"},{"hi":"निर्वाचन अधिकारी","en":"Polling Officers"}],"answer":2,"explanation_hi":"सरकारी नीतियों को लागू करने वाले अधिकारियों का यह स्थायी समूह 'सिविल सेवक' (प्रशासक या नौकरशाह) कहलाता है जो मंत्रियों के निर्देशन में कार्य करता है।","explanation_en":"This permanent group of officials implementing government policies is called 'civil servants' (administrators or bureaucrats) who work under ministers' directions."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कौन सी संस्था भारत में ग्राम पंचायतों और शहरी स्थानीय निकायों का चुनाव करवाती है?","question_en":"Which of the following institutions conducts elections for Gram Panchayats and urban local bodies in India?","options":[{"hi":"भारत निर्वाचन आयोग","en":"Election Commission of India"},{"hi":"राज्य निर्वाचन आयोग","en":"State Election Commission"},{"hi":"परिसीमन आयोग","en":"Delimitation Commission"},{"hi":"नीति आयोग","en":"NITI Aayog"}],"answer":1,"explanation_hi":"भारत में ग्राम पंचायतों और शहरी स्थानीय निकायों के चुनाव का प्रबंधन राज्य निर्वाचन आयोग द्वारा किया जाता है।","explanation_en":"The management of elections for Gram Panchayats and urban local bodies in India is done by the State Election Commission."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संसद की शक्तियों के संदर्भ में 'समवर्ती सूची' (Concurrent List) का क्या अर्थ है?","question_en":"In the context of the powers of the Indian Parliament, what does the 'Concurrent List' mean?","options":[{"hi":"जिस पर केवल केंद्र सरकार कानून बना सकती है","en":"On which only the Central Government can make laws"},{"hi":"जिस पर केवल राज्य सरकारें कानून बना सकती हैं","en":"On which only State Governments can make laws"},{"hi":"जिस पर राष्ट्रपति सीधे आदेश जारी करते हैं","en":"On which the President directly issues orders"},{"hi":"जिस पर संघ और राज्य सरकारें दोनों कानून बना सकती हैं","en":"On which both Union and State Governments can make laws"}],"answer":3,"explanation_hi":"सातवीं अनुसूची की समवर्ती सूची में वे विषय सम्मिलित हैं जिन पर संघ और राज्य दोनों कानून बना सकते हैं; अनुच्छेद 254 के अनुसार टकराव की स्थिति में संघ का कानून मान्य होता है।","explanation_en":"The Concurrent List in the Seventh Schedule includes subjects on which both the Union and States can legislate; as per Article 254, the Union law prevails in case of a conflict."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'फर्स्ट पास्ट द पोस्ट' (जो सबसे आगे वही जीता) प्रणाली के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में लोकसभा और विधानसभा चुनावों के लिए इसी प्रणाली का उपयोग किया जाता है।\nकथन 2: इस प्रणाली में विजयी होने के लिए प्रत्याशी को अनिवार्यतः 50 प्रतिशत से अधिक मत प्राप्त करने होते हैं।","question_en":"Consider the following statements regarding the 'First Past the Post' system:\nStatement 1: This system is used for Lok Sabha and Vidhan Sabha elections in India.\nStatement 2: To win in this system, a candidate must compulsorily secure more than 50 percent of the votes.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"कोई नहीं","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"कथन 1 सही है। कथन 2 गलत है क्योंकि 'फर्स्ट पास्ट द पोस्ट' में 50 प्रतिशत से अधिक मत पाना आवश्यक नहीं है; केवल अन्य सभी प्रत्याशियों से अधिक मत प्राप्त करने वाला विजयी होता है।","explanation_en":"Statement 1 is correct. Statement 2 is false because in 'First Past the Post', securing more than 50 percent is not necessary; the candidate who simply gets more votes than all others wins."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के उपराष्ट्रपति का चुनाव किस प्रकार के निर्वाचक मंडल द्वारा किया जाता है?","question_en":"By what kind of electoral college is the Vice President of India elected?","options":[{"hi":"केवल राज्यसभा के निर्वाचित सदस्यों द्वारा","en":"Only by the elected members of Rajya Sabha"},{"hi":"संसद के दोनों सदनों के निर्वाचित और मनोनीत सदस्यों द्वारा","en":"By the elected and nominated members of both houses of Parliament"},{"hi":"राज्यों की विधानसभाओं के सभी सदस्यों द्वारा","en":"By all members of State Legislative Assemblies"},{"hi":"सीधे जनता द्वारा","en":"Directly by the public"}],"answer":1,"explanation_hi":"अनुच्छेद 66(1) के अनुसार उपराष्ट्रपति का चुनाव संसद के दोनों सदनों के सभी सदस्यों (निर्वाचित तथा मनोनीत दोनों) से बने निर्वाचक मंडल द्वारा होता है; राष्ट्रपति चुनाव के विपरीत इसमें राज्य विधानसभाएँ सम्मिलित नहीं होतीं।","explanation_en":"As per Article 66(1), the Vice President is elected by an electoral college consisting of all members (both elected and nominated) of both Houses of Parliament; unlike the presidential election, State Legislative Assemblies are not included."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2024 के आम चुनावों में, भारत के चुनाव आयोग ने पहली बार किन मतदाताओं के लिए \"घर से मतदान\" (Home Voting) का विकल्प प्रस्तुत किया?","question_en":"In the 2024 general elections, for which voters did the Election Commission of India introduce the \"Home Voting\" option for the first time?","options":[{"hi":"केवल सैन्य कर्मियों के लिए","en":"Only for military personnel"},{"hi":"प्रवासी भारतीयों (NRI) के लिए","en":"For Non-Resident Indians (NRIs)"},{"hi":"वरिष्ठ नागरिकों और दिव्यांग व्यक्तियों के लिए","en":"For senior citizens and Persons with Disabilities"},{"hi":"मतदान अधिकारियों के लिए","en":"For polling officers"}],"answer":2,"explanation_hi":"2024 के आम चुनावों में निर्वाचन आयोग ने पहली बार पूरे देश में 85 वर्ष से अधिक आयु के वरिष्ठ नागरिकों तथा दिव्यांग मतदाताओं के लिए घर से मतदान की सुविधा उपलब्ध कराई।","explanation_en":"In the 2024 general elections, the Election Commission extended home voting pan-India for the first time for senior citizens above 85 years of age and voters with disabilities."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में 'राज्यसभा' के सदस्यों का चुनाव कैसे होता है?","question_en":"How are the members of 'Rajya Sabha' elected in India?","options":[{"hi":"राज्य विधान सभाओं के निर्वाचित विधायकों द्वारा (अप्रत्यक्ष रूप से)","en":"By the elected MLAs of the State Legislative Assemblies (indirectly)"},{"hi":"भारत की आम जनता द्वारा (प्रत्यक्ष रूप से)","en":"By the general public of India (directly)"},{"hi":"केवल लोकसभा के सदस्यों द्वारा","en":"Only by the members of Lok Sabha"},{"hi":"राज्यपालों द्वारा मनोनीत किए जाते हैं","en":"Nominated by the Governors"}],"answer":0,"explanation_hi":"राज्यसभा के अधिकतम 238 निर्वाचित सदस्य राज्यों और संघ राज्यक्षेत्रों के प्रतिनिधि होते हैं, जिनमें राज्यों के प्रतिनिधि विधानसभाओं के निर्वाचित विधायकों द्वारा एकल संक्रमणीय मत प्रणाली से अप्रत्यक्ष रूप से चुने जाते हैं।","explanation_en":"The Rajya Sabha has a maximum of 238 elected members representing states and union territories, with state representatives being indirectly elected by the elected MLAs of the Assemblies through the single transferable vote system."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में महिलाओं को मतदान का अधिकार कब से प्राप्त है?","question_en":"Since when have women in India had the right to vote?","options":[{"hi":"1971 से (स्विट्ज़रलैंड के समान)","en":"Since 1971 (similar to Switzerland)"},{"hi":"21वीं सदी के प्रारंभ से","en":"Since the beginning of the 21st century"},{"hi":"1990 के दशक से","en":"Since the 1990s"},{"hi":"स्वतंत्र भारत के आरंभ से ही","en":"From the very beginning of independent India"}],"answer":3,"explanation_hi":"संविधान के अनुच्छेद 326 के अंतर्गत सार्वभौम वयस्क मताधिकार की व्यवस्था की गई, जिसके तहत स्वतंत्र भारत में महिलाओं को आरंभ से ही पुरुषों के समान मताधिकार प्राप्त था।","explanation_en":"Article 326 of the Constitution provided for universal adult franchise, under which women in independent India had the right to vote on equal terms with men from the very beginning."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
