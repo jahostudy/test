@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"Class 9","highlight":"Class 9","shortTitle":"Class 9","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-class-9-20260727-16v49","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-27","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कौटिल्य का अर्थशास्त्र लगभग कितने वर्ष पूर्व रचा गया था?","question_en":"Question 1: About how many years ago was Kautilya's Arthashastra composed?","options":[{"hi":"2000 वर्ष पूर्व","en":"2000 years ago"},{"hi":"2300 वर्ष पूर्व","en":"2300 years ago"},{"hi":"2500 वर्ष पूर्व","en":"2500 years ago"},{"hi":"3000 वर्ष पूर्व","en":"3000 years ago"}],"answer":1,"explanation_hi":"स्रोत के अनुसार कौटिल्य का अर्थशास्त्र लगभग 2300 वर्ष पूर्व रचा गया था।","explanation_en":"According to the source, Kautilya's Arthashastra was composed about 2300 years ago."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: क्रस्ट और मेंटल का ऊपरी भाग मिलकर स्थलमंडल बनाते हैं।\nकथन 2: एस्थेनोस्फीयर अर्ध-पिघला हुआ है और टेक्टोनिक प्लेटों को हिलने देता है। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 2: Consider the following statements:\nStatement 1: The crust along with the upper part of the mantle forms the lithosphere.\nStatement 2: The asthenosphere is semi-molten and allows the tectonic plates to move. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"स्थलमंडल क्रस्ट और ऊपरी मेंटल से बनता है, और इसके नीचे एस्थेनोस्फीयर अर्ध-पिघली अवस्था में प्लेटों को हिलने देता है।","explanation_en":"The lithosphere is formed by the crust and upper mantle, and the semi-molten asthenosphere beneath allows plate movement."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वराहमिहिर की बृहत्संहिता के अनुसार, भूकंपों का श्रेय चार मौलिक ताकतों को दिया गया है। निम्नलिखित में से कौन उनमें से एक नहीं है?","question_en":"Question 3: According to Varahamihira's Brihatsamhita, earthquakes are attributed to four elemental forces. Which of the following is NOT one of them?","options":[{"hi":"वायु","en":"Vayu"},{"hi":"अग्नि","en":"Agni"},{"hi":"इन्द्र","en":"Indra"},{"hi":"पृथ्वी","en":"Prithvi"}],"answer":3,"explanation_hi":"बृहत्संहिता के अनुसार भूकंप के चार कारण वायु, अग्नि, इन्द्र और वरुण हैं, पृथ्वी नहीं।","explanation_en":"According to Brihatsamhita, the four elemental forces are Vayu, Agni, Indra, and Varuna, not Prithvi."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का एकमात्र मिट्टी का ज्वालामुखी (मड वोल्केनो) कहाँ स्थित है?","question_en":"Question 4: Where is India's only mud volcano located?","options":[{"hi":"बाराटांग द्वीप","en":"Baratang Island"},{"hi":"माजुली द्वीप","en":"Majuli Island"},{"hi":"पंबन द्वीप","en":"Pamban Island"},{"hi":"हैवलॉक द्वीप","en":"Havelock Island"}],"answer":0,"explanation_hi":"भारत का एकमात्र मिट्टी का ज्वालामुखी अंडमान और निकोबार द्वीप समूह के बाराटांग द्वीप में स्थित है।","explanation_en":"India's only mud volcano is located in Baratang Island in the Andaman and Nicobar Islands."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित करें:\nसूची-I: A. यार्डंग, B. वेंटिफैक्ट, C. हिमोढ़;\nसूची-II: 1. सैंडब्लास्टिंग द्वारा पॉलिश की गई चट्टानें, 2. हिमनदों द्वारा लाई गई चट्टानों का जमाव, 3. हवा द्वारा उकेरी गई सुव्यवस्थित चट्टानें। सही विकल्प चुनें:","question_en":"Question 5: Match List-I with List-II:\nList-I: A. Yardang, B. Ventifact, C. Moraine;\nList-II: 1. Rocks polished by sandblasting, 2. Deposition of rocks carried by glaciers, 3. Streamlined rock ridges carved by wind. Choose the correct option:","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":2,"explanation_hi":"यार्डंग हवा द्वारा उकेरी गई चट्टानें हैं, वेंटिफैक्ट पॉलिश की गई चट्टानें हैं और हिमोढ़ (मोराइन) हिमनद द्वारा जमा किया गया मलबा है।","explanation_en":"Yardangs are wind-carved ridges, ventifacts are polished rocks, and moraines are glacial deposits."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वायुमंडल की कौन सी परत क्षोभसीमा (ट्रोपोपॉज़) नामक संक्रमण क्षेत्र द्वारा समतापमंडल से अलग होती है?","question_en":"Question 6: Which layer of the atmosphere is separated from the stratosphere by a transition zone known as the tropopause?","options":[{"hi":"मध्यमंडल","en":"Mesosphere"},{"hi":"क्षोभमंडल","en":"Troposphere"},{"hi":"बाह्य वायुमंडल","en":"Thermosphere"},{"hi":"आयनमंडल","en":"Ionosphere"}],"answer":1,"explanation_hi":"क्षोभमंडल को समतापमंडल से अलग करने वाले संक्रमण क्षेत्र को क्षोभसीमा (ट्रोपोपॉज़) कहा जाता है।","explanation_en":"The transition zone separating the troposphere from the stratosphere is known as the tropopause."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कितने युग्म सही सुमेलित हैं? 1. वसंत - चैत्र से वैशाख, 2. ग्रीष्म - ज्येष्ठ से आषाढ़, 3. शरद - आश्विन से कार्तिक।","question_en":"Question 7: How many of the following pairs are correctly matched? 1. Vasanta - Chaitra to Vaishakha, 2. Grishma - Jyeshtha to Ashadha, 3. Sharad - Ashvina to Kartika.","options":[{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"},{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"केवल दो युग्म","en":"Only two pairs"}],"answer":2,"explanation_hi":"भारतीय कैलेंडर के अनुसार वसंत (चैत्र-वैशाख), ग्रीष्म (ज्येष्ठ-आषाढ़) और शरद (आश्विन-कार्तिक) बिल्कुल सही सुमेलित हैं।","explanation_en":"According to the Indian calendar, Vasanta (Chaitra-Vaishakha), Grishma (Jyeshtha-Ashadha), and Sharad (Ashvina-Kartika) are all correctly matched."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: कृषिराशर की वर्षा की भविष्यवाणी की मुख्य तकनीक चंद्र नक्षत्रों पर आधारित थी।\nकथन 2: वराहमिहिर की बृहत्संहिता सूर्य और चंद्रमा की स्थिति पर आधारित थी। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 8: Consider the following statements:\nStatement 1: Krishiparashara's main technique for predicting rainfall was based on lunar mansions.\nStatement 2: Varahamihira's Brihatsamhita was based on the positions of the Sun and the Moon. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"यह दोनों तथ्य उल्टे दिए गए हैं; कृषिराशर सूर्य और चंद्रमा की स्थिति पर आधारित है, जबकि बृहत्संहिता चंद्र नक्षत्रों पर।","explanation_en":"The facts are inverted; Krishiparashara is based on the Sun and Moon's positions, while Brihatsamhita uses lunar mansions."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पांचवीं शताब्दी ईस्वी के आसपास लिखे गए किस ग्रंथ में मध्य भारत में मानसून की शुरुआत की तारीख का उल्लेख है?","question_en":"Question 9: Which text written around the 5th century CE mentions the date of the onset of the monsoon over central India?","options":[{"hi":"मेघदूतम्","en":"Meghadutam"},{"hi":"अर्थशास्त्र","en":"Arthashastra"},{"hi":"शुक्रनीति","en":"Shukraniti"},{"hi":"कृषिराशर","en":"Krishiparashara"}],"answer":0,"explanation_hi":"कालिदास द्वारा रचित मेघदूतम् में मध्य भारत में मानसून के आगमन और मानसून के बादलों के मार्ग का उल्लेख है।","explanation_en":"Kalidasa's Meghadutam mentions the onset of the monsoon over central India and traces the path of monsoon clouds."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित करें:\nसूची-I: A. अत्तिरम्पक्कम, B. इसामपुर, C. मेहरगढ़;\nसूची-II: 1. 1.2 मिलियन वर्ष पूर्व, 2. 7000 ईसा पूर्व, 3. 1.5 से 1.7 मिलियन वर्ष पूर्व। सही विकल्प चुनें:","question_en":"Question 10: Match List-I with List-II:\nList-I: A. Attirampakkam, B. Isampur, C. Mehrgarh;\nList-II: 1. 1.2 million years ago, 2. 7000 BCE, 3. 1.5 to 1.7 million years ago. Choose the correct option:","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":1,"explanation_hi":"अत्तिरम्पक्कम 1.5-1.7 मिलियन वर्ष, इसामपुर 1.2 मिलियन वर्ष, और मेहरगढ़ 7000 ईसा पूर्व से संबंधित हैं।","explanation_en":"Attirampakkam dates to 1.5-1.7 million years ago, Isampur to 1.2 million years ago, and Mehrgarh to 7000 BCE."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: सुमेरियनों की क्यूनिफॉर्म लिपि को सफलतापूर्वक समझ लिया गया है।\nकथन 2: हड़प्पा सभ्यता की लिपि को हाल ही में सफलतापूर्वक समझ लिया गया है। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 11: Consider the following statements:\nStatement 1: The cuneiform script of the Sumerians has been successfully deciphered.\nStatement 2: The script of the Harappan civilisation has been successfully deciphered recently. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"सुमेरियन क्यूनिफॉर्म लिपि को समझ लिया गया है, लेकिन हड़प्पा लिपि को अभी तक नहीं समझा जा सका है।","explanation_en":"The Sumerian cuneiform script has been deciphered, but the Harappan script has not yet been deciphered."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पेपिरस एबर्स, जिसमें 700 से अधिक चिकित्सा उपचारों की सूची है, किस प्राचीन सभ्यता से संबंधित है?","question_en":"Question 12: The Papyrus Ebers, which lists more than 700 medical remedies, belongs to which ancient civilisation?","options":[{"hi":"मेसोपोटामिया की सभ्यता","en":"Mesopotamian civilisation"},{"hi":"चीनी सभ्यता","en":"Chinese civilisation"},{"hi":"सिंधु-सरस्वती सभ्यता","en":"Sindhu-Sarasvati civilisation"},{"hi":"मिस्र की सभ्यता","en":"Egyptian civilisation"}],"answer":3,"explanation_hi":"पेपिरस एबर्स का संबंध मिस्र की सभ्यता से है, जहाँ पेपिरस के पन्नों पर रिकॉर्ड रखे जाते थे।","explanation_en":"The Papyrus Ebers belongs to the Egyptian civilisation, where records were kept on papyrus sheets."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दुनिया में कागजी मुद्रा पेश करने वाला और सार्वजनिक परीक्षा के माध्यम से सिविल सेवा विकसित करने वाला पहला देश कौन सा था?","question_en":"Question 13: Which was the first country to introduce paper currency to the world and develop civil services through public examination?","options":[{"hi":"भारत","en":"India"},{"hi":"चीन","en":"China"},{"hi":"मिस्र","en":"Egypt"},{"hi":"मेसोपोटामिया","en":"Mesopotamia"}],"answer":1,"explanation_hi":"चीन दुनिया का पहला देश था जिसने कागजी मुद्रा की शुरुआत की और सिविल सेवा परीक्षा प्रणाली विकसित की।","explanation_en":"China was the first country to introduce paper currency and develop a civil services examination system."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित चीनी राजवंशों को कालक्रम में व्यवस्थित कीजिए: 1. शांग राजवंश, 2. झोउ राजवंश, 3. छिन और हान राजवंश।","question_en":"Question 14: Arrange the following Chinese dynasties in chronological order: 1. Shang dynasty, 2. Zhou dynasty, 3. Qin and Han dynasties.","options":[{"hi":"2, 1, 3","en":"2, 1, 3"},{"hi":"3, 2, 1","en":"3, 2, 1"},{"hi":"1, 3, 2","en":"1, 3, 2"},{"hi":"1, 2, 3","en":"1, 2, 3"}],"answer":3,"explanation_hi":"कालक्रम के अनुसार शांग राजवंश सबसे पहले (लगभग 1600 ईसा पूर्व), फिर झोउ (1046 ईसा पूर्व), और अंत में छिन (221 ईसा पूर्व) एवं हान राजवंश (206 ईसा पूर्व) आते हैं।","explanation_en":"Chronologically, the Shang dynasty came first (c. 1600 BCE), followed by Zhou (1046 BCE), and then Qin (221 BCE) and Han (206 BCE)."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अक्कादियन राजा सरगोन के क्यूनिफॉर्म टैबलेट के अनुसार व्यापार के संदर्भ में कितने युग्म सही सुमेलित हैं? 1. मेलुहा - सिंधु-सरस्वती सभ्यता, 2. दिलमुन - बहरीन, 3. मगन - ओमान प्रायद्वीप।","question_en":"Question 15: Based on the Akkadian king Sargon's cuneiform tablets, how many pairs regarding trade are correctly matched? 1. Meluhha - Sindhu-Sarasvati civilisation, 2. Dilmun - Bahrain, 3. Magan - Oman peninsula.","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":2,"explanation_hi":"मेसोपोटामिया के क्यूनिफॉर्म टैबलेट में उल्लिखित मेलुहा (सिंधु-सरस्वती), दिलमुन (बहरीन) और मगन (ओमान) तीनों सही सुमेलित हैं।","explanation_en":"Meluhha (Sindhu-Sarasvati), Dilmun (Bahrain), and Magan (Oman) mentioned in Mesopotamian tablets are all correctly matched."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इतिहास के अध्ययन के संदर्भ में 'एपिग्राफिक स्रोत' का क्या अर्थ है?","question_en":"Question 16: In the context of studying history, what does 'Epigraphic source' mean?","options":[{"hi":"पत्थर या धातु की प्लेटों पर उत्कीर्ण लेख","en":"Records inscribed on stone or metal plates"},{"hi":"प्राचीन सिक्कों का अध्ययन","en":"Study of ancient coins"},{"hi":"पांडुलिपियों का संग्रह","en":"Collection of manuscripts"},{"hi":"मिट्टी के बर्तनों का विश्लेषण","en":"Analysis of pottery"}],"answer":0,"explanation_hi":"एपिग्राफिक स्रोत पत्थर, धातु की प्लेटों या चट्टानों जैसी टिकाऊ सामग्रियों पर उकेरे गए ऐतिहासिक रिकॉर्ड होते हैं।","explanation_en":"Epigraphic sources consist of historical records inscribed on durable materials such as stone, metal plates, or rocks."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जब दो हिमनद मिलते हैं और उनके पार्श्व हिमोढ़ बीच में जुड़ जाते हैं, तो किस प्रकार का हिमोढ़ बनता है?","question_en":"Question 17: What type of moraine is formed when two glaciers meet and their lateral moraines join in the middle?","options":[{"hi":"पार्श्व हिमोढ़","en":"Lateral moraine"},{"hi":"मध्य हिमोढ़","en":"Medial moraine"},{"hi":"अंत्य हिमोढ़","en":"Terminal moraine"},{"hi":"ग्राउंड हिमोढ़","en":"Ground moraine"}],"answer":1,"explanation_hi":"मध्य हिमोढ़ तब बनता है जब दो हिमनद मिलते हैं और उनके पार्श्व हिमोढ़ बीच में जुड़ जाते हैं।","explanation_en":"A medial moraine is formed when two glaciers meet and their lateral moraines join in the middle."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: डेल्टा एक नदी के मुहाने पर बनता है जहाँ वह अपना तलछट जमा करती है।\nकथन 2: डेल्टा की मिट्टी अत्यधिक बंजर होती है और यह सघन मानव बस्तियों का समर्थन नहीं करती। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 18: Consider the following statements:\nStatement 1: A delta is formed at the mouth of a river where it deposits its sediments.\nStatement 2: Deltas are highly infertile and do not support dense human settlements. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"डेल्टा का निर्माण मुहाने पर तलछट जमा होने से होता है, और यह कृषि और मानव बस्तियों के लिए अत्यधिक उपजाऊ होता है।","explanation_en":"A delta is formed by sediment deposition at the mouth, and it is highly fertile, supporting agriculture and dense human settlements."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सिंकहोल और भूमिगत नदियाँ मुख्य रूप से निम्नीकरण के किस कारक की क्रिया द्वारा बनती हैं?","question_en":"Question 19: Sinkholes and underground rivers are primarily created by the action of which agent of gradation?","options":[{"hi":"हिमनद","en":"Glaciers"},{"hi":"समुद्री लहरें","en":"Sea waves"},{"hi":"भूजल","en":"Groundwater"},{"hi":"हवा","en":"Wind"}],"answer":2,"explanation_hi":"भूजल चूना पत्थर जैसी चट्टानों को घोल देता है, जिससे गुफाएँ, सिंकहोल और भूमिगत नदियाँ बनती हैं।","explanation_en":"Groundwater dissolves rocks like limestone, creating caves, sinkholes, and underground rivers."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित करें:\nसूची-I: A. आपः, B. वायु, C. आकाश;\nसूची-II: 1. अंतरिक्ष, 2. हवा, 3. जल। सही विकल्प चुनें:","question_en":"Question 20: Match List-I with List-II:\nList-I: A. Apah, B. Vayu, C. Akasha;\nList-II: 1. Space, 2. Air, 3. Water. Choose the correct option:","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":3,"explanation_hi":"पंचमहाभूतों में आपः का अर्थ जल, वायु का अर्थ हवा, और आकाश का अर्थ अंतरिक्ष है।","explanation_en":"In the Panchamahabhutas, Apah means water, Vayu means air, and Akasha means space."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पृथ्वी की आंतरिक संरचना के अनुसार, पृथ्वी के आंतरिक भाग का कितना प्रतिशत 'निचला मेंटल' (लोअर मेंटल) है?","question_en":"Question 21: According to the internal structure of the Earth, what percentage of the Earth's interior is composed of the 'Lower mantle'?","options":[{"hi":"22 प्रतिशत","en":"22 percent"},{"hi":"24 प्रतिशत","en":"24 percent"},{"hi":"32 प्रतिशत","en":"32 percent"},{"hi":"42 प्रतिशत","en":"42 percent"}],"answer":2,"explanation_hi":"पृथ्वी के आंतरिक भाग में क्रस्ट 24 प्रतिशत, ऊपरी मेंटल 22 प्रतिशत, निचला मेंटल 32 प्रतिशत और कोर 22 प्रतिशत है। [सत्यापन आवश्यक: स्रोत-आरेख के ये प्रतिशत मानक भूविज्ञान से मेल नहीं खाते — वास्तव में क्रस्ट पृथ्वी के आयतन का 1 प्रतिशत से भी कम है; उत्तर स्रोत के आरेख पर आधारित है, अतः मूल स्रोत से पुष्टि कर लें।]","explanation_en":"The Earth's interior comprises Crust 24 percent, Upper mantle 22 percent, Lower mantle 32 percent, and Core 22 percent. [Verification needed: these source-diagram percentages do not match standard geology — the crust is actually less than 1 percent of Earth's volume; the answer follows the source diagram, so confirm against the original source.]"},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कालों को कालक्रम में व्यवस्थित कीजिए: 1. पुरापाषाण काल, 2. मध्यपाषाण काल, 3. ताम्रपाषाण काल, 4. लौह युग।","question_en":"Question 22: Arrange the following periods in chronological order: 1. Palaeolithic, 2. Mesolithic, 3. Chalcolithic, 4. Iron Age.","options":[{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"1, 3, 2, 4","en":"1, 3, 2, 4"},{"hi":"2, 3, 1, 4","en":"2, 3, 1, 4"}],"answer":0,"explanation_hi":"कालक्रम के अनुसार पहले पुरापाषाण, फिर मध्यपाषाण, उसके बाद ताम्रपाषाण और अंत में लौह युग आता है।","explanation_en":"Chronologically, it begins with Palaeolithic, followed by Mesolithic, Chalcolithic, and finally the Iron Age."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: शीतकालीन मानसून को दक्षिण-पश्चिम मानसून के रूप में भी जाना जाता है।\nकथन 2: शीतकालीन मानसून की हवाएं बंगाल की खाड़ी से नमी उठाती हैं और तमिलनाडु में बारिश का कारण बनती हैं। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 23: Consider the following statements:\nStatement 1: The winter monsoon is also known as the south-west monsoon.\nStatement 2: The winter monsoon winds pick up moisture from the Bay of Bengal and cause rainfall in Tamil Nadu. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"शीतकालीन मानसून को उत्तर-पूर्व मानसून कहा जाता है, न कि दक्षिण-पश्चिम मानसून; यह तमिलनाडु में बारिश का कारण बनता है।","explanation_en":"The winter monsoon is known as the north-east monsoon, not the south-west monsoon; it causes rainfall in Tamil Nadu."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"रेडियो-कार्बन डेटिंग के अनुसार 7000 और 5500 ईसा पूर्व के बीच पूर्व-हड़प्पा चरण की शुरुआत किन स्थलों पर हुई थी?","question_en":"Question 24: According to radio-carbon dates, at which of the following sites did the Pre-Harappan phase begin between 7000 and 5500 BCE?","options":[{"hi":"लोथल और धौलावीरा","en":"Lothal and Dholavira"},{"hi":"मोहनजोदड़ो और हड़प्पा","en":"Mohenjo-Daro and Harappa"},{"hi":"राखीगढ़ी और कालीबंगा","en":"Rakhigarhi and Kalibangan"},{"hi":"भिर्राना और कुनाल","en":"Bhirrana and Kunal"}],"answer":3,"explanation_hi":"रेडियो-कार्बन तिथियों से पता चलता है कि सरस्वती नदी क्षेत्र में भिर्राना और कुनाल जैसे स्थलों पर पूर्व-हड़प्पा चरण 7000 से 5500 ईसा पूर्व के बीच शुरू हुआ था।","explanation_en":"Radio-carbon dates suggest that the Pre-Harappan phase began between 7000 and 5500 BCE at sites like Bhirrana and Kunal in the Sarasvati river belt."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"तटीय भू-आकृतियों के संबंध में कितने युग्म सही सुमेलित हैं? 1. क्लिफ - चट्टान के आधार को लहरों द्वारा काटने से बने खड़ी चट्टान के चेहरे, 2. मेहराब - क्लिफ के पीछे हटने के बाद छूटे हुए सपाट क्षेत्र, 3. स्टैक - मेहराब के ढहने के बाद खड़े चट्टान के पृथक स्तंभ।","question_en":"Question 25: How many pairs regarding coastal landforms are correctly matched? 1. Cliffs - Steep rock faces formed as waves undercut the base, 2. Arches - Flat areas left behind as cliffs retreat, 3. Stacks - Isolated pillars of rock left standing after arches collapse.","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":1,"explanation_hi":"क्लिफ और स्टैक सही हैं; क्लिफ के पीछे हटने के बाद छूटे हुए सपाट क्षेत्र 'वेव-कट प्लेटफॉर्म' होते हैं, मेहराब नहीं।","explanation_en":"Cliffs and stacks are correct; the flat areas left behind as cliffs retreat are wave-cut platforms, not arches."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लगभग 400 ईसा पूर्व से, ब्राह्मी लिपि का उपयोग दक्षिणी भारत के कुछ हिस्सों और अन्य किस क्षेत्र में किया जाता था?","question_en":"Question 26: From about 400 BCE, the Brahmi script was used in parts of southern India and in which other region?","options":[{"hi":"गंगा घाटी","en":"Ganga Valley"},{"hi":"सिंधु घाटी","en":"Indus Valley"},{"hi":"नर्मदा घाटी","en":"Narmada Valley"},{"hi":"ब्रह्मपुत्र घाटी","en":"Brahmaputra Valley"}],"answer":0,"explanation_hi":"400 ईसा पूर्व के आसपास ब्राह्मी लिपि का उपयोग दक्षिणी भारत और गंगा घाटी (उत्तरी भारत) में किया जाने लगा था।","explanation_en":"From about 400 BCE, the Brahmi script was used in parts of southern India and in the Ganga Valley (northern India)."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पार्श्व क्षरण और निक्षेपण के कारण नदी के मध्य या निचले मार्ग में बने घुमावदार मोड़ को क्या कहा जाता है?","question_en":"Question 27: What is the winding curve or bend in the middle or lower course of a river formed due to lateral erosion and deposition called?","options":[{"hi":"डेल्टा","en":"Delta"},{"hi":"जलोढ़ पंख","en":"Alluvial fan"},{"hi":"विसर्प","en":"Meander"},{"hi":"यू-आकार की घाटी","en":"U-shaped valley"}],"answer":2,"explanation_hi":"नदी के मध्य या निचले मार्ग में क्षरण और निक्षेपण के कारण बने घुमावदार मोड़ को विसर्प (Meander) कहा जाता है।","explanation_en":"A winding curve or bend in the middle or lower course of a river formed by lateral erosion and deposition is called a meander."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अपक्षय में टूटी हुई सामग्री का एक स्थान से दूसरे स्थान पर जाना शामिल है।\nकथन 2: रासायनिक अपक्षय पौधों, जानवरों या सूक्ष्मजीवों के कारण होता है। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 28: Consider the following statements:\nStatement 1: Weathering involves the movement of broken material from one place to another.\nStatement 2: Chemical weathering is caused by plants, animals, or micro-organisms. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"अपक्षय में सामग्री का संचलन (movement) शामिल नहीं है; पौधों और जानवरों से होने वाला अपक्षय जैविक (Biological) कहलाता है, रासायनिक नहीं।","explanation_en":"Weathering does not involve the movement of material; weathering caused by plants and animals is biological, not chemical."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पवन गति पैमाने के अनुसार, 'तेज हवा' (Strong breeze) की गति सीमा क्या है जिसमें छाते का उपयोग करना मुश्किल हो जाता है?","question_en":"Question 29: According to the wind speed scale, what is the speed range for a 'Strong breeze' that makes umbrellas difficult to use?","options":[{"hi":"6-11 किलोमीटर प्रति घंटा","en":"6-11 km per hour"},{"hi":"39-49 किलोमीटर प्रति घंटा","en":"39-49 km per hour"},{"hi":"103-117 किलोमीटर प्रति घंटा","en":"103-117 km per hour"},{"hi":"0-1 किलोमीटर प्रति घंटा","en":"0-1 km per hour"}],"answer":1,"explanation_hi":"पैमाने के अनुसार तेज हवा की गति 39-49 किलोमीटर प्रति घंटा होती है, जिसमें छाते का उपयोग कठिन हो जाता है।","explanation_en":"According to the scale, a strong breeze is 39-49 km per hour, making umbrellas difficult to use."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित करें: भारतीय मौसम विज्ञान विभाग (IMD) की ऋतुएँ:\nसूची-I: A. शीत ऋतु, B. मानसून-पूर्व, C. मानसून-पश्चात;\nसूची-II: 1. अप्रैल से जून, 2. अक्टूबर से दिसंबर, 3. दिसंबर से अप्रैल की शुरुआत। सही विकल्प चुनें:","question_en":"Question 30: Match List-I with\nList-II: IMD Seasons:\nList-I: A. Winter, B. Pre-monsoon, C. Post-monsoon;\nList-II: 1. April to June, 2. October to December, 3. December to early April. Choose the correct option:","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"}],"answer":2,"explanation_hi":"शीत ऋतु दिसंबर से अप्रैल तक, मानसून-पूर्व अप्रैल से जून तक और मानसून-पश्चात अक्टूबर से दिसंबर तक होता है।","explanation_en":"Winter lasts from December to early April, Pre-monsoon from April to June, and Post-monsoon from October to December."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पारंपरिक भारतीय ऋतुओं को चैत्र महीने से शुरू करके कालक्रम में व्यवस्थित कीजिए: 1. वसंत, 2. ग्रीष्म, 3. वर्षा, 4. शरद।","question_en":"Question 31: Arrange the following traditional Indian seasons in chronological order starting from the Chaitra month: 1. Vasanta, 2. Grishma, 3. Varsha, 4. Sharad.","options":[{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"2, 3, 4, 1","en":"2, 3, 4, 1"},{"hi":"1, 3, 2, 4","en":"1, 3, 2, 4"},{"hi":"4, 1, 2, 3","en":"4, 1, 2, 3"}],"answer":0,"explanation_hi":"कैलेंडर के अनुसार ऋतुओं का क्रम वसंत (चैत्र-वैशाख), ग्रीष्म (ज्येष्ठ-आषाढ़), वर्षा (श्रावण-भाद्रपद) और शरद (आश्विन-कार्तिक) है।","explanation_en":"The chronological order of seasons is Vasanta, Grishma, Varsha, and Sharad."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अफ्रीका से बाहर निकलने वाला पहला होमिनिन कौन था, जो हैंड एक्स और क्लीवर जैसे पत्थर के औजारों से जुड़ा था?","question_en":"Question 32: Who was the first hominin to exit Africa, associated with stone tools such as hand axes and cleavers?","options":[{"hi":"होमो सेपियंस","en":"Homo sapiens"},{"hi":"ऑस्ट्रेलोपिथेकस","en":"Australopithecines"},{"hi":"होमो निएंडरथेलेंसिस","en":"Homo neanderthalensis"},{"hi":"होमो इरेक्टस","en":"Homo erectus"}],"answer":3,"explanation_hi":"होमो इरेक्टस अफ्रीका से बाहर निकलने वाला पहला होमिनिन था, जो बड़े पत्थर के औजारों का उपयोग करता था।","explanation_en":"Homo erectus was the first hominin to exit Africa, associated with large stone tools."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कितने युग्म सही सुमेलित हैं? 1. मेसोपोटामिया की सभ्यता - नील नदी, 2. हड़प्पा सभ्यता - सिंधु और सरस्वती नदी, 3. चीनी सभ्यता - ह्वांग हो नदी।","question_en":"Question 33: How many of the following pairs are correctly matched? 1. Mesopotamian civilisation - Nile River, 2. Harappan civilisation - Sindhu and Sarasvati River, 3. Chinese civilisation - Huang He River.","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":1,"explanation_hi":"हड़प्पा और चीनी सभ्यता सही सुमेलित हैं, जबकि मेसोपोटामिया की सभ्यता युफ्रेट्स और टाइग्रिस नदियों के आसपास विकसित हुई, नील नदी के पास नहीं।","explanation_en":"Harappan and Chinese civilisations are correctly matched, while Mesopotamia developed around the Euphrates and Tigris, not the Nile."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: नागालैंड की जाबो प्रणाली ढलानों पर मिट्टी के बांधों का उपयोग करने वाला एक एकीकृत कृषि दृष्टिकोण है।\nकथन 2: यह प्रणाली मुख्य रूप से राजस्थान राज्य में प्रचलित है। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 34: Consider the following statements:\nStatement 1: The Zabo system in Nagaland represents an integrated farming approach using earthen bunds on hillslopes.\nStatement 2: This system is primarily practised in the state of Rajasthan. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"जाबो प्रणाली ढलानों पर पानी के संरक्षण का एक तरीका है जो मुख्य रूप से नागालैंड में प्रचलित है, न कि राजस्थान में।","explanation_en":"The Zabo system is a method of water conservation on hillslopes practiced primarily in Nagaland, not Rajasthan."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित करें:\nसूची-I: A. पुरापाषाण काल, B. मध्यपाषाण काल, C. ताम्रपाषाण काल;\nसूची-II: 1. तांबे का निष्कर्षण, 2. हैंड एक्स जैसे बड़े काटने वाले औजार, 3. माइक्रोलिथिक (छोटे पत्थर) औजार। सही विकल्प चुनें:","question_en":"Question 35: Match List-I with List-II:\nList-I: A. Palaeolithic, B. Mesolithic, C. Chalcolithic;\nList-II: 1. Extraction of copper from its ores, 2. Large cutting tools like handaxes, 3. Microlithic (tiny stone) tools. Choose the correct option:","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"}],"answer":2,"explanation_hi":"पुरापाषाण में बड़े औजार, मध्यपाषाण में माइक्रोलिथिक औजार और ताम्रपाषाण काल में तांबे का उपयोग शुरू हुआ।","explanation_en":"Palaeolithic had large tools, Mesolithic used microlithic tools, and Chalcolithic saw the extraction of copper."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन मिस्रवासियों ने अपनी भूमि को किस नाम से पुकारा था, जिसका अर्थ काली नदी घाटी की मिट्टी से आने वाली 'काली भूमि' है?","question_en":"Question 36: By what name did the ancient Egyptians refer to their land, which means 'the black' coming from the black river valley soil?","options":[{"hi":"लाल भूमि","en":"Red Land"},{"hi":"पीली भूमि","en":"Yellow Land"},{"hi":"सफेद भूमि","en":"White Land"},{"hi":"काली भूमि (केमेट)","en":"Kemet"}],"answer":3,"explanation_hi":"मिस्रवासियों ने नदी घाटी की काली मिट्टी के कारण अपनी भूमि को 'केमेट' कहा था, जिसका अर्थ 'काली' होता है।","explanation_en":"Egyptians referred to their land as 'Kemet', meaning 'the black', due to the black river valley soil."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में सांस्कृतिक स्मृति को संरक्षित करने की इतिहास-पुराण परंपरा मुख्य रूप से कार्बन-14 डेटिंग पर निर्भर करती है।\nकथन 2: आधुनिक इतिहासलेखन तेजी से अनुभवजन्य साक्ष्यों पर निर्भर करता है और पुरातत्व जैसे उपकरणों का उपयोग करता है। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 37: Consider the following statements:\nStatement 1: The itihasa-purana tradition of preserving cultural memory in Bharat primarily relies on carbon-14 dating.\nStatement 2: Modern historiography increasingly relies on empirical evidence and uses tools like archaeology. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"इतिहास-पुराण परंपरा कहानियों के माध्यम से जानकारी साझा करती है, जबकि आधुनिक इतिहासलेखन कार्बन-14 और पुरातत्व पर निर्भर करता है।","explanation_en":"The itihasa-purana tradition shares information through stories, while modern historiography relies on carbon-14 and archaeology."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चीन में झोउ राजवंश के दौरान, यदि शासकों के अधीन जनता समृद्ध नहीं होती थी, तो उनके साथ क्या किया जा सकता था?","question_en":"Question 38: During the Zhou dynasty in China, what could happen to rulers if their people did not prosper?","options":[{"hi":"उन्हें उनके पद से हटाया जा सकता था","en":"They could be dismissed"},{"hi":"उन्हें देवताओं का दर्जा दिया जाता था","en":"They were elevated to gods"},{"hi":"वे अपना राज्य छोड़कर चले जाते थे","en":"They abandoned their kingdom"},{"hi":"वे अपने पड़ोसियों पर आक्रमण करते थे","en":"They attacked their neighbours"}],"answer":0,"explanation_hi":"झोउ शासकों को स्वर्ग का नियुक्त माना जाता था, लेकिन जनता के समृद्ध न होने पर उन्हें बर्खास्त किया जा सकता था।","explanation_en":"Zhou rulers were believed to be appointees of heaven but could be dismissed if their people did not prosper."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पृथ्वी की परतों को सबसे बाहरी से सबसे भीतरी तक कालक्रम में व्यवस्थित कीजिए: 1. मेंटल, 2. क्रस्ट, 3. आंतरिक कोर, 4. बाहरी कोर।","question_en":"Question 39: Arrange the following layers of the Earth from outermost to innermost: 1. Mantle, 2. Crust, 3. Inner Core, 4. Outer Core.","options":[{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"2, 1, 3, 4","en":"2, 1, 3, 4"},{"hi":"4, 3, 1, 2","en":"4, 3, 1, 2"},{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"}],"answer":3,"explanation_hi":"पृथ्वी की सबसे बाहरी परत क्रस्ट है, फिर मेंटल, उसके बाद बाहरी कोर और सबसे अंदर आंतरिक कोर स्थित है।","explanation_en":"The outermost layer is the crust, followed by the mantle, outer core, and finally the inner core."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: कालीबंगा में जुते हुए खेत में क्षैतिज और ऊर्ध्वाधर खांचे (furrows) दिखाई देते हैं।\nकथन 2: ये क्षैतिज और ऊर्ध्वाधर खांचे दोहरी फसल की खेती का संकेत देते हैं। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 40: Consider the following statements:\nStatement 1: The ploughed fields at Kalibangan show horizontal and vertical furrows.\nStatement 2: These horizontal and vertical furrows indicate double crop cultivation. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"कालीबंगा के साक्ष्य बताते हैं कि प्रारंभिक हड़प्पावासियों ने क्षैतिज और ऊर्ध्वाधर खांचों के साथ दोहरी फसल की खेती की थी।","explanation_en":"Evidence from Kalibangan shows that early Harappans practiced double crop cultivation with horizontal and vertical furrows."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस प्राचीन ग्रंथ में वर्षा के वैज्ञानिक माप और राजस्व तथा राहत कार्यों के प्रबंधन में उनके व्यावहारिक अनुप्रयोग का रिकॉर्ड है?","question_en":"Question 41: Which ancient text contains records of scientific measurements of rainfall and their practical application in managing the country's revenue and relief efforts?","options":[{"hi":"अर्थशास्त्र","en":"Arthashastra"},{"hi":"बृहत्संहिता","en":"Brihatsamhita"},{"hi":"कृषिराशर","en":"Krishiparashara"},{"hi":"मेघदूतम्","en":"Meghadutam"}],"answer":0,"explanation_hi":"कौटिल्य के अर्थशास्त्र में वर्षा के वैज्ञानिक माप और राजस्व एवं राहत प्रबंधन में इसके उपयोग का विवरण है।","explanation_en":"Kautilya's Arthashastra contains records of scientific measurements of rainfall and their use in revenue and relief management."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नीकरण के कारकों (Agents of gradation) के संबंध में कितने युग्म सही सुमेलित हैं? 1. हवा - यार्डंग, 2. हिमनद - गुफाएं, 3. भूजल - सिंकहोल।","question_en":"Question 42: How many pairs regarding agents of gradation are correctly matched? 1. Wind - Yardangs, 2. Glaciers - Caves, 3. Groundwater - Sinkholes.","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":1,"explanation_hi":"हवा यार्डंग बनाती है और भूजल सिंकहोल बनाता है, लेकिन गुफाएं मुख्य रूप से लहरों या भूजल द्वारा बनती हैं, हिमनद यू-आकार की घाटी बनाते हैं।","explanation_en":"Wind forms yardangs and groundwater forms sinkholes, but caves are primarily formed by waves or groundwater, while glaciers form U-shaped valleys."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय उपमहाद्वीप के उत्तर-पश्चिम में बोलन नदी पर स्थित कौन सा स्थल सबसे पुराना नवपाषाण स्थल और सबसे प्रारंभिक कृषि गांव माना जाता है?","question_en":"Question 43: Which site on the Bolan River is considered the oldest Neolithic site and the earliest agricultural village in the north-west of the Indian subcontinent?","options":[{"hi":"संगनकल्लू","en":"Sanganakallu"},{"hi":"इनामगाँव","en":"Inamgaon"},{"hi":"बुर्जहोम","en":"Burzahom"},{"hi":"मेहरगढ़","en":"Mehrgarh"}],"answer":3,"explanation_hi":"बोलन नदी पर मेहरगढ़ सबसे पुराना नवपाषाण स्थल है, जो लगभग 7000 ईसा पूर्व का सबसे पहला कृषि गांव था।","explanation_en":"Mehrgarh on the Bolan River is the oldest Neolithic site and the earliest agricultural village dating to about 7000 BCE."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हिमस्खलन (Avalanche) का प्राथमिक कारण क्या है?","question_en":"Question 44: What is the primary cause of an avalanche?","options":[{"hi":"खड़ी पहाड़ी ढलानों पर बर्फ की अचानक अस्थिरता","en":"Sudden instability of snow on steep mountain slopes"},{"hi":"ज्वालामुखी का फटना","en":"Eruption of a volcano"},{"hi":"हवा के कारण मिट्टी का कटाव","en":"Wind erosion of soil"},{"hi":"नदियों में जल स्तर का बढ़ना","en":"Rise in river water levels"}],"answer":0,"explanation_hi":"खड़ी ढलानों पर बर्फ की अचानक अस्थिरता के कारण हिमस्खलन होता है, जो अक्सर भारी बर्फबारी या बढ़ते तापमान से प्रेरित होता है।","explanation_en":"Avalanches are caused by the sudden instability of snow on steep mountain slopes, often triggered by heavy snowfall or rising temperatures."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित करें:\nसूची-I: A. पुरातात्विक स्रोत, B. साहित्यिक स्रोत, C. एपिग्राफिक स्रोत;\nसूची-II: 1. यात्रा वृत्तांत और संस्मरण, 2. पत्थर पर शिलालेख, 3. स्मारक और कलाकृतियाँ। सही विकल्प चुनें:","question_en":"Question 45: Match List-I with List-II:\nList-I: A. Archaeological sources, B. Literary sources, C. Epigraphic sources;\nList-II: 1. Travelogues and memoirs, 2. Inscriptions on stone, 3. Monuments and artefacts. Choose the correct option:","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":2,"explanation_hi":"पुरातात्विक स्रोत भौतिक अवशेष हैं, साहित्यिक स्रोत लिखित ग्रंथ हैं, और एपिग्राफिक स्रोत पत्थर या धातु पर खुदे लेख हैं।","explanation_en":"Archaeological sources are material remains, literary sources are written texts, and epigraphic sources are inscriptions on stone or metal."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: होमो इरेक्टस लगभग 125,000 साल पहले अफ्रीका से बाहर निकलने वाला अंतिम होमिनिन था।\nकथन 2: अफ्रीका से बाहर प्रवासन की एक और बड़ी लहर लगभग 125,000 साल पहले हुई थी। उपर्युक्त कथनों में से कौन सा सही है?","question_en":"Question 46: Consider the following statements:\nStatement 1: Homo erectus was the last hominin to exit Africa around 125,000 years ago.\nStatement 2: Another major wave of movement out of Africa took place around 125,000 years ago. Which of the above statements is correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"होमो इरेक्टस अफ्रीका छोड़ने वाला 'पहला' होमिनिन था (2 मिलियन वर्ष पूर्व), जबकि 125,000 वर्ष पूर्व एक अन्य बड़ी लहर बाहर आई थी।","explanation_en":"Homo erectus was the 'first' hominin to leave Africa (2 million years ago), while another major wave occurred 125,000 years ago."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2025 में पंजाब में आई भीषण बाढ़ के दौरान स्रोत में निम्नलिखित में से किस नदी के उफान पर होने का उल्लेख नहीं किया गया है?","question_en":"Question 47: Which of the following rivers was NOT mentioned as swelling during the severe floods in Punjab in 2025 in the source?","options":[{"hi":"रावी","en":"Ravi"},{"hi":"ब्यास","en":"Beas"},{"hi":"सतलुज","en":"Satluj"},{"hi":"चिनाब","en":"Chenab"}],"answer":3,"explanation_hi":"स्रोत में विशेष रूप से सतलुज, ब्यास और रावी नदियों के उफान के कारण बाढ़ का उल्लेख है, चिनाब का नहीं।","explanation_en":"The source specifically mentions the swelling of the rivers Satluj, Beas, and Ravi causing the floods, not Chenab."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"स्रोत के अनुसार, कौन सा विषय यह बताता है कि समाज अपनी जरूरतों को पूरा करने के लिए संसाधनों का उत्पादन, वितरण और उपयोग कैसे करता है?","question_en":"Question 48: According to the source, which discipline explores how societies produce, distribute, and utilise resources to meet their needs?","options":[{"hi":"इतिहास","en":"History"},{"hi":"राजनीति विज्ञान","en":"Political Science"},{"hi":"अर्थशास्त्र","en":"Economics"},{"hi":"भूगोल","en":"Geography"}],"answer":2,"explanation_hi":"अर्थशास्त्र यह अध्ययन करता है कि व्यक्ति और समाज अपनी जरूरतों को पूरा करने के लिए सीमित संसाधनों का उत्पादन, विनिमय और वितरण कैसे करते हैं।","explanation_en":"Economics studies how individuals and societies produce, exchange, and distribute limited resources to meet their needs."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कितने युग्म सही सुमेलित हैं? 1. होमो इरेक्टस - दक्षिणी प्राइमेट, 2. ऑस्ट्रेलोपिथेकस - आज जीवित एकमात्र मानव प्रजाति, 3. होमो सेपियंस - आधुनिक मानव।","question_en":"Question 49: How many of the following pairs are correctly matched? 1. Homo erectus - Southern primates, 2. Australopithecines - Only human species living today, 3. Homo sapiens - Modern humans.","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":0,"explanation_hi":"केवल होमो सेपियंस (आधुनिक मानव) सही है; ऑस्ट्रेलोपिथेकस का अर्थ दक्षिणी प्राइमेट है, और होमो इरेक्टस एक सीधा चलने वाला पूर्वज है।","explanation_en":"Only Homo sapiens (modern humans) is correct; Australopithecines means southern primates, and Homo erectus is an upright-walking ancestor."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस चीनी राजवंश के दौरान रेशम बाहरी व्यापार का एक प्रमुख अंग बन गया, जिसके कारण 'सिल्क रूट' (रेशम मार्ग) का नाम पड़ा?","question_en":"Question 50: During which Chinese dynasty did silk become a major item of external trade, leading to the name 'Silk Route'?","options":[{"hi":"शांग राजवंश","en":"Shang dynasty"},{"hi":"हान राजवंश","en":"Han dynasty"},{"hi":"झोउ राजवंश","en":"Zhou dynasty"},{"hi":"छिंग राजवंश","en":"Qing dynasty"}],"answer":1,"explanation_hi":"दूसरी शताब्दी ईसा पूर्व के आसपास, हान राजवंश के समय, रेशम बाहरी व्यापार का एक प्रमुख अंग बन गया था।","explanation_en":"Around the 2nd century BCE, during the Han dynasty, silk became a major item of external trade."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
