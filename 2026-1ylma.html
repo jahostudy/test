@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"LOWER","highlight":"LOWER","shortTitle":"LOWER","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-lower-20260728-1ylma","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-28","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कौन सी भारत की स्वदेशी 'दृश्य-सीमा से परे' (BVR) वायु-से-वायु मिसाइल है?","question_en":"Question 1: Which of the following is India's indigenous 'Beyond Visual Range' (BVR) air-to-air missile?","options":[{"hi":"पृथ्वी","en":"Prithvi"},{"hi":"ब्रह्मोस","en":"BrahMos"},{"hi":"अस्त्र","en":"Astra"},{"hi":"प्रलय","en":"Pralay"}],"answer":2,"explanation_hi":"अस्त्र एक वायु-से-वायु मिसाइल है, जबकि पृथ्वी और प्रलय सतह-से-सतह मिसाइलें हैं तथा ब्रह्मोस एक क्रूज़ मिसाइल है।","explanation_en":"Astra is an air-to-air missile, whereas Prithvi and Pralay are surface-to-surface missiles and BrahMos is a cruise missile."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अंतरिक्ष में L1 बिंदु पृथ्वी से लगभग 15 लाख किलोमीटर दूर है जहाँ सूर्य और पृथ्वी का गुरुत्वाकर्षण संतुलित रहता है।\nकथन 2: सूर्य-तुल्यकालिक कक्षा (SSO) यह सुनिश्चित करती है कि उपग्रह किसी स्थान के ऊपर हमेशा एक ही स्थानीय सौर समय पर गुज़रे।","question_en":"Question 2: Consider the following statements:\nStatement 1: The L1 point in space is about 1.5 million kilometers from Earth where solar and terrestrial gravity balance.\nStatement 2: A Sun-Synchronous Orbit (SSO) ensures that a satellite always passes over a location at the same local solar time.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन पूरी तरह सत्य हैं। L1 बिंदु संतुलन का वह स्थान है जहाँ आदित्य-एल1 स्थापित है और SSO कक्षा का उपयोग कृषि तथा मानचित्रीकरण के लिए समान रोशनी पाने हेतु किया जाता है।","explanation_en":"Both statements are perfectly true. The L1 point is the balance area where Aditya-L1 is placed, and the SSO orbit is used to get consistent lighting for agriculture and mapping."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1955 में आयातित HEC-2M के विपरीत, भारत में विकसित किया गया पहला स्वदेशी इलेक्ट्रॉनिक कंप्यूटर कौन सा था?","question_en":"Question 3: In contrast to the imported HEC-2M in 1955, which was the first indigenous electronic computer developed in India?","options":[{"hi":"टिफ्रेक","en":"TIFRAC"},{"hi":"परम 8000","en":"PARAM 8000"},{"hi":"ऐरावत","en":"AIRAWAT"},{"hi":"सिद्धार्थ","en":"Siddharth"}],"answer":0,"explanation_hi":"टिफ्रेक (TIFRAC) मुंबई के टाटा मूलभूत अनुसंधान संस्थान द्वारा बनाया गया भारत का पहला स्वदेशी कंप्यूटर था, जबकि परम पहला सुपरकंप्यूटर था।","explanation_en":"TIFRAC was India's first indigenous computer built by the Tata Institute of Fundamental Research in Mumbai, whereas PARAM was the first supercomputer."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर और उसके बुनियादी घटकों के विकास को ऐतिहासिक कालक्रम में व्यवस्थित कीजिए: 1. एनालिटिकल इंजन, 2. पास्कलाइन, 3. इंटेल 4004 माइक्रोप्रोसेसर, 4. ENIAC (एनीएक)।","question_en":"Question 4: Arrange the development of computers and their basic components in historical chronological order: 1. Analytical Engine, 2. Pascaline, 3. Intel 4004 Microprocessor, 4. ENIAC.","options":[{"hi":"1, 2, 4, 3","en":"1, 2, 4, 3"},{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"2, 4, 1, 3","en":"2, 4, 1, 3"},{"hi":"4, 2, 1, 3","en":"4, 2, 1, 3"}],"answer":1,"explanation_hi":"सबसे पहले 1642 में पास्कलाइन आई, फिर 1837 में बैबेज का एनालिटिकल इंजन, 1946 में ENIAC और अंततः 1971 में इंटेल का पहला माइक्रोप्रोसेसर आया।","explanation_en":"First came Pascaline in 1642, then Babbage's Analytical Engine in 1837, ENIAC in 1946, and finally Intel's first microprocessor in 1971."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त युग्मों में से कितने सही सुमेलित हैं: 1. आरएजी (RAG) - सटीक उत्तर के लिए बाहरी दस्तावेजों का उपयोग, 2. फाइन-ट्यूनिंग - मॉडल को किसी विशेष कार्य के लिए प्रशिक्षित करना, 3. डीपफेक - एआई आधारित भारतीय भाषा अनुवादक?","question_en":"Question 5: How many of the following pairs are correctly matched: 1. RAG - Using external documents for accurate answers, 2. Fine-tuning - Training a model for a specific task, 3. Deepfake - AI based Indian language translator?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":1,"explanation_hi":"डीपफेक एक कृत्रिम बुद्धिमत्ता द्वारा बनाया गया नकली मीडिया है अनुवादक नहीं (अनुवाद के लिए भाषिनी है)। आरएजी और फाइन-ट्यूनिंग सही सुमेलित हैं।","explanation_en":"Deepfake is AI-generated fake media, not a translator (Bhashini is for translation). RAG and Fine-tuning are correctly matched."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जीवाश्म ईंधन से उत्पादित उस हाइड्रोजन को किस रंग कोड से जाना जाता है जिसके निर्माण के दौरान उत्सर्जित कार्बन को वायुमंडल में जाने से पहले ही पकड़कर (CCS) जमा कर लिया जाता है?","question_en":"Question 6: What color code is used for hydrogen produced from fossil fuels where the emitted carbon is captured and stored (CCS) before reaching the atmosphere?","options":[{"hi":"हरा हाइड्रोजन","en":"Green Hydrogen"},{"hi":"गुलाबी हाइड्रोजन","en":"Pink Hydrogen"},{"hi":"ग्रे हाइड्रोजन","en":"Grey Hydrogen"},{"hi":"नीला हाइड्रोजन","en":"Blue Hydrogen"}],"answer":3,"explanation_hi":"हरा हाइड्रोजन नवीकरणीय ऊर्जा से बनता है, गुलाबी परमाणु ऊर्जा से, ग्रे सीधे जीवाश्म ईंधन से, और नीला तब कहलाता है जब जीवाश्म ईंधन के कार्बन को पकड़ लिया जाए।","explanation_en":"Green hydrogen is made from renewables, pink from nuclear, grey directly from fossil fuels, and blue is when the fossil fuel's carbon is captured."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: वेब 2.0 उपयोगकर्ताओं को केवल पढ़ने के बजाय सामग्री बनाने और साझा करने की सुविधा देता है।\nकथन 2: वेब 3.0 एक प्रस्तावित मॉडल है जो ब्लॉकचेन और कृत्रिम बुद्धिमत्ता पर आधारित विकेंद्रीकृत इंटरनेट होगा।","question_en":"Question 7: Consider the following statements:\nStatement 1: Web 2.0 allows users to create and share content instead of just reading.\nStatement 2: Web 3.0 is a proposed model that will be a decentralized internet based on blockchain and AI.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"वेब 1.0 एकतरफ़ा था, वेब 2.0 सोशल मीडिया का युग है जहाँ लोग जुड़ते हैं, और वेब 3.0 भविष्य का सुरक्षित और बिना किसी केंद्रीय नियंत्रण वाला इंटरनेट है।","explanation_en":"Web 1.0 was one-way, Web 2.0 is the social media era where people connect, and Web 3.0 is the future secure and decentralized internet."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इंजीनियरों और वास्तुकारों द्वारा बड़े नक्शे, इंजीनियरिंग चित्र और उच्च गुणवत्ता वाले बैनर छापने के लिए मुख्य रूप से किस विशेष आउटपुट डिवाइस का उपयोग किया जाता है?","question_en":"Question 8: Which specific output device is primarily used by engineers and architects to print large maps, engineering drawings, and high-quality banners?","options":[{"hi":"लेज़र प्रिंटर","en":"Laser Printer"},{"hi":"प्लॉटर","en":"Plotter"},{"hi":"इंकजेट प्रिंटर","en":"Inkjet Printer"},{"hi":"3डी प्रिंटर","en":"3D Printer"}],"answer":1,"explanation_hi":"प्लॉटर एक विशेष प्रकार का आउटपुट डिवाइस है जो बहुत बड़े कागज़ों पर सटीक रेखाचित्र (वेक्टर ग्राफ़िक्स) बनाने के लिए पेन या ब्लेड का उपयोग करता है।","explanation_en":"A plotter is a special output device that uses pens or blades to create precise line drawings (vector graphics) on very large papers."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ईमेल प्रोटोकॉल के संदर्भ में कौन सा प्रोटोकॉल ईमेल सर्वर से प्राप्तकर्ता के उपकरण पर संदेशों को डाउनलोड करने या सिंक करने के लिए उपयोग किया जाता है?","question_en":"Question 9: In the context of email protocols, which protocol is used to download or sync messages from the email server to the recipient's device?","options":[{"hi":"पीओपी3 तथा आईएमएपी","en":"POP3 and IMAP"},{"hi":"एसएमटीपी","en":"SMTP"},{"hi":"एफ़टीपी","en":"FTP"},{"hi":"टीसीपी","en":"TCP"}],"answer":0,"explanation_hi":"एसएमटीपी (SMTP) ईमेल को भेजने के लिए होता है, जबकि पीओपी3 और आईएमएपी (POP3/IMAP) मेल प्राप्त करने और उसे देखने के लिए होते हैं।","explanation_en":"SMTP is for sending emails, whereas POP3 and IMAP are used for receiving and viewing mail."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त युग्मों में से कितने सही सुमेलित हैं: 1. व्हेलिंग - किसी कंपनी के शीर्ष अधिकारियों को निशाना बनाकर की जाने वाली फिशिंग, 2. एसक्यूएल इंजेक्शन - डेटाबेस पर किया जाने वाला हमला, 3. स्मिशिंग - आवाज़ या फोन कॉल के माध्यम से की जाने वाली साइबर ठगी?","question_en":"Question 10: How many of the following pairs are correctly matched: 1. Whaling - Phishing attack targeting top executives of a company, 2. SQL Injection - Attack carried out on databases, 3. Smishing - Cyber fraud conducted through voice or phone calls?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":1,"explanation_hi":"स्मिशिंग एसएमएस (SMS) के माध्यम से होती है, जबकि फोन कॉल वाली ठगी को विशिंग (Vishing) कहा जाता है। व्हेलिंग और एसक्यूएल इंजेक्शन सही हैं।","explanation_en":"Smishing happens via SMS, while phone call-based fraud is called Vishing. Whaling and SQL Injection are correct."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: कैसगेवी (Casgevy) सिकल सेल रोग के लिए स्वीकृत दुनिया की पहली क्रिस्पर-आधारित चिकित्सा है।\nकथन 2: शरलॉक (SHERLOCK) और डिटेक्टर (DETECTR) क्रिस्पर तकनीक पर आधारित रोग-निदान उपकरण हैं।","question_en":"Question 11: Consider the following statements:\nStatement 1: Casgevy is the world's first approved CRISPR-based therapy for sickle cell disease.\nStatement 2: SHERLOCK and DETECTR are disease-diagnostic tools based on CRISPR technology.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"क्रिस्पर तकनीक अब केवल जीन संपादन तक सीमित नहीं है; कैसगेवी इसका पहला सफल उपचार है और शरलॉक जैसे उपकरण रोगों को पकड़ने का काम करते हैं।","explanation_en":"CRISPR technology is no longer limited to gene editing; Casgevy is its first successful treatment and tools like SHERLOCK work to detect diseases."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कौन सी भौतिक घटना एक अतिचालक (Superconductor) की उस विशेषता को दर्शाती है जिसमें वह अपने भीतर से बाहरी चुंबकीय क्षेत्र को पूरी तरह से बाहर धकेल देता है, जिसका उपयोग मैगलेव ट्रेनों में होता है?","question_en":"Question 12: Which physical phenomenon represents the characteristic of a superconductor where it completely expels an external magnetic field from its interior, used in maglev trains?","options":[{"hi":"रमन प्रभाव","en":"Raman Effect"},{"hi":"सीबेक प्रभाव","en":"Seebeck Effect"},{"hi":"फोटोइलेक्ट्रिक प्रभाव","en":"Photoelectric Effect"},{"hi":"माइस्नर प्रभाव","en":"Meissner Effect"}],"answer":3,"explanation_hi":"माइस्नर प्रभाव के कारण अतिचालक पदार्थ चुंबकीय क्षेत्र को पूरी तरह विकर्षित करते हैं, जिससे ट्रेनें पटरियों के ऊपर बिना छुए तैरती (levitate) हैं।","explanation_en":"Due to the Meissner effect, superconducting materials completely repel the magnetic field, causing trains to float (levitate) above the tracks without touching."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व के प्रमुख अंतरिक्ष मिशनों को उनके प्रक्षेपण के ऐतिहासिक कालक्रम में व्यवस्थित कीजिए: 1. अपोलो 11, 2. स्पुतनिक-1, 3. आर्टेमिस-I, 4. हबल स्पेस टेलीस्कोप।","question_en":"Question 13: Arrange the world's major space missions in historical chronological order of their launch: 1. Apollo 11, 2. Sputnik-1, 3. Artemis-I, 4. Hubble Space Telescope.","options":[{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"2, 4, 1, 3","en":"2, 4, 1, 3"},{"hi":"1, 4, 2, 3","en":"1, 4, 2, 3"}],"answer":0,"explanation_hi":"स्पुतनिक 1957 में, अपोलो 11 चाँद पर 1969 में, हबल दूरबीन 1990 में और आर्टेमिस-I (चंद्रमा पर वापसी मिशन) 2022 में भेजा गया।","explanation_en":"Sputnik in 1957, Apollo 11 to the moon in 1969, Hubble telescope in 1990, and Artemis-I (return to moon mission) was launched in 2022."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"माइक्रोसॉफ्ट एक्सेल में सूत्र =SUM(A1:A5) और =SUM(A1,A5) के बीच वास्तविक परिचालन अंतर क्या है?","question_en":"Question 14: In Microsoft Excel, what is the actual operational difference between the formulas =SUM(A1:A5) and =SUM(A1,A5)?","options":[{"hi":"दोनों का परिणाम हमेशा बिल्कुल समान होता है","en":"Both always yield the exact same result"},{"hi":"पहला सूत्र पूरी श्रेणी (पाँच सेल) जोड़ता है, जबकि दूसरा सूत्र केवल दो विशिष्ट सेल जोड़ता है","en":"The first formula sums the whole range (five cells), while the second sums only two specific cells"},{"hi":"पहला सूत्र केवल दो सेल जोड़ता है, जबकि दूसरा सूत्र पूरी श्रेणी जोड़ता है","en":"The first formula sums two cells, while the second sums the whole range"},{"hi":"कोलन का उपयोग गुणा के लिए और अल्पविराम का उपयोग भाग के लिए होता है","en":"Colon is used for multiplication and comma for division"}],"answer":1,"explanation_hi":"एक्सेल में कोलन (:) का अर्थ 'से तक' की निरंतर श्रेणी है, जबकि अल्पविराम (,) का अर्थ केवल चुने हुए अलग-अलग सेल होता है।","explanation_en":"In Excel, a colon (:) implies a continuous range 'from to', whereas a comma (,) means only the individually selected cells."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. इन-स्पेस (IN-SPACe), B. एनसिल (NSIL), C. एएनआरएफ (ANRF);\nसूची-II: 1. इसरो की व्यावसायिक शाखा, 2. निजी अंतरिक्ष गतिविधियों का प्राधिकरण, 3. राष्ट्रीय अनुसंधान अनुदान संस्था को सुमेलित करें।","question_en":"Question 15: Match\nList-I: A. IN-SPACe, B. NSIL, C. ANRF;\nList-II: 1. Commercial arm of ISRO, 2. Authorization of private space activities, 3. National research funding body.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"}],"answer":2,"explanation_hi":"IN-SPACe निजी क्षेत्र को मंज़ूरी देता है, NSIL इसरो की तकनीक बेचता है, और ANRF ने पुराने SERB की जगह लेकर विज्ञान-शोध को वित्त पोषित किया है।","explanation_en":"IN-SPACe authorizes the private sector, NSIL commercializes ISRO's tech, and ANRF replaced the old SERB to fund science research."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: नागरिकों को ऑनलाइन जाति प्रमाणपत्र या पेंशन देना G2B (सरकार से व्यापार) मॉडल का उदाहरण है।\nकथन 2: जीएसटी पोर्टल और सरकारी ई-मार्केटप्लेस (GeM) G2C (सरकार से नागरिक) मॉडल के उदाहरण हैं।","question_en":"Question 16: Consider the following statements:\nStatement 1: Providing online caste certificates or pensions to citizens is an example of the G2B (Government to Business) model.\nStatement 2: The GST portal and Government e-Marketplace (GeM) are examples of the G2C (Government to Citizen) model.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"दोनों मॉडल आपस में बदल दिए गए हैं। नागरिक सेवाएँ G2C (नागरिक) में आती हैं, जबकि जीएसटी और व्यापारिक खरीद G2B (व्यापार) में आती हैं।","explanation_en":"Both models are swapped. Citizen services fall under G2C (Citizen), while GST and business procurement fall under G2B (Business)."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ई-गवर्नेंस प्लेटफार्मों के उपर्युक्त युग्मों में से कितने सही सुमेलित हैं: 1. दीक्षा (DIKSHA) - डिजिटल शिक्षा मंच, 2. ई-संजीवनी (e-Sanjeevani) - राष्ट्रीय टेलीमेडिसिन सेवा, 3. जीईएम (GeM) - सरकारी खरीद पोर्टल?","question_en":"Question 17: How many of the following pairs of e-Governance platforms are correctly matched: 1. DIKSHA - Digital education platform, 2. e-Sanjeevani - National telemedicine service, 3. GeM - Government procurement portal?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":2,"explanation_hi":"ये तीनों भारत सरकार के प्रमुख पोर्टल हैं। दीक्षा छात्रों-शिक्षकों के लिए है, ई-संजीवनी दूरस्थ इलाज के लिए है, और GeM सरकारी विभागों की खरीदारी का बाज़ार है।","explanation_en":"All three are key GoI portals. DIKSHA is for students-teachers, e-Sanjeevani for remote treatment, and GeM is the market for govt department purchases."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय रक्षा बलों में हाल ही में शामिल की गई 'आकाशतीर' (Akashteer) प्रणाली का प्राथमिक कार्य क्या है?","question_en":"Question 18: What is the primary function of the 'Akashteer' system recently inducted into the Indian defense forces?","options":[{"hi":"यह थल सेना के लिए एक उन्नत वायु-रक्षा नियंत्रण और रिपोर्टिंग नेटवर्क है","en":"It is an advanced air-defense control and reporting network for the Army"},{"hi":"यह नौसेना का एक पनडुब्बी-रोधी टॉरपीडो है","en":"It is an anti-submarine torpedo of the Navy"},{"hi":"यह भारत की नई हाइपरसोनिक बैलिस्टिक मिसाइल है","en":"It is India's new hypersonic ballistic missile"},{"hi":"यह शत्रु के रडार को नष्ट करने वाला लेज़र हथियार है","en":"It is a laser weapon that destroys enemy radars"}],"answer":0,"explanation_hi":"आकाशतीर स्वयं कोई मिसाइल या हथियार नहीं है, बल्कि यह वह तकनीकी मस्तिष्क है जो सभी रडार और हथियारों को जोड़कर सुरक्षित आसमान सुनिश्चित करता है।","explanation_en":"Akashteer itself is not a missile or weapon, rather it is the technical brain that integrates all radars and weapons to ensure safe skies."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विकिरण सुरक्षा और मापन के संदर्भ में, इकाई 'सीवर्ट' (Sievert) विशेष रूप से क्या मापती है?","question_en":"Question 19: In the context of radiation safety and measurement, what does the unit 'Sievert' specifically measure?","options":[{"hi":"पदार्थ द्वारा सोखी गई विकिरण की शुद्ध भौतिक मात्रा","en":"The pure physical amount of radiation absorbed by a material"},{"hi":"मानव शरीर पर विकिरण के कारण होने वाला जैविक प्रभाव","en":"The biological effect caused by radiation on the human body"},{"hi":"रेडियोधर्मी पदार्थ से प्रति सेकंड निकलने वाले कणों की संख्या","en":"The number of particles emitted per second from a radioactive substance"},{"hi":"एक्स-रे मशीन द्वारा उपयोग की जाने वाली विद्युत शक्ति","en":"The electrical power used by an X-ray machine"}],"answer":1,"explanation_hi":"'ग्रे' (Gray) मापता है कि कितनी ऊर्जा टकराई, जबकि 'सीवर्ट' (Sievert) मापता है कि उस ऊर्जा ने शरीर की कोशिकाओं को कितना नुकसान पहुँचाया (जैविक प्रभाव)।","explanation_en":"'Gray' measures how much energy hit, whereas 'Sievert' measures how much damage that energy caused to body cells (biological effect)."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. इरिडियम-192, B. टेक्नेटियम-99m, C. कोबाल्ट-60;\nसूची-II: 1. चिकित्सा इमेजिंग, 2. जीवाश्म आयु-निर्धारण, 3. औद्योगिक रेडियोग्राफी, 4. कैंसर रेडियोथेरेपी को सुमेलित करें।","question_en":"Question 20: Match\nList-I: A. Iridium-192, B. Technetium-99m, C. Cobalt-60;\nList-II: 1. Medical imaging, 2. Fossil dating, 3. Industrial radiography, 4. Cancer radiotherapy.","options":[{"hi":"A-2, B-1, C-4","en":"A-2, B-1, C-4"},{"hi":"A-3, B-4, C-1","en":"A-3, B-4, C-1"},{"hi":"A-3, B-1, C-4","en":"A-3, B-1, C-4"},{"hi":"A-4, B-1, C-3","en":"A-4, B-1, C-3"}],"answer":2,"explanation_hi":"इरिडियम मशीनों की दरारें (radiography) देखता है, टेक्नेटियम शरीर के भीतर के चित्र लेता है, और कोबाल्ट-60 ट्यूमर कोशिकाओं को नष्ट करता है।","explanation_en":"Iridium checks machine cracks (radiography), Technetium images inside the body, and Cobalt-60 destroys tumor cells."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: नेटवर्क 'हब' (Hub) एक समझदार उपकरण है जो डेटा को केवल प्राप्तकर्ता के विशिष्ट मैक (MAC) पते पर भेजता है।\nकथन 2: 'स्विच' (Switch) नेटवर्क से जुड़े सभी उपकरणों को बिना सोचे-समझे डेटा प्रसारित (broadcast) कर देता है।","question_en":"Question 21: Consider the following statements:\nStatement 1: A network 'Hub' is a smart device that sends data only to the specific MAC address of the recipient.\nStatement 2: A 'Switch' blindly broadcasts data to all devices connected to the network.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"दोनों की परिभाषाएं आपस में बदल दी गई हैं। 'हब' एक मूर्ख डाकिया है जो सबको संदेश बाँटता है, जबकि 'स्विच' मैक पता देखकर केवल सही घर में डिलीवरी करता है।","explanation_en":"The definitions are swapped. A 'Hub' is a dumb postman that distributes messages to everyone, whereas a 'Switch' reads the MAC address and delivers only to the correct house."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत सरकार द्वारा लॉन्च किए गए 'ई-रुपी' (e-RUPI) की विशिष्ट प्रकृति क्या है?","question_en":"Question 22: What is the specific nature of 'e-RUPI' launched by the Government of India?","options":[{"hi":"यह एसएमएस या क्यूआर कोड पर आधारित एक उद्देश्य-विशिष्ट डिजिटल वाउचर है","en":"It is a purpose-specific digital voucher based on SMS or QR code"},{"hi":"यह भारतीय रिज़र्व बैंक द्वारा जारी डिजिटल रुपया (CBDC) है","en":"It is the Digital Rupee (CBDC) issued by the Reserve Bank of India"},{"hi":"यह सरकार द्वारा मान्यता प्राप्त एक क्रिप्टोकरेंसी है","en":"It is a cryptocurrency recognized by the government"},{"hi":"यह यूपीआई की तरह एक नया मोबाइल भुगतान ऐप है","en":"It is a new mobile payment app like UPI"}],"answer":0,"explanation_hi":"ई-रुपी एक वाउचर है जो सुनिश्चित करता है कि पैसा केवल उसी काम (जैसे वैक्सीन या खाद) पर खर्च हो जिसके लिए वह दिया गया है; यह CBDC (e₹) नहीं है।","explanation_en":"e-RUPI is a voucher ensuring money is spent only on the purpose (like vaccine or fertilizer) it was given for; it is not CBDC (e₹)."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के ड्रोन नियम 2021 के तहत, किसी ड्रोन को 'नैनो ड्रोन' के रूप में वर्गीकृत करने के लिए अधिकतम अनुमेय वजन सीमा क्या है?","question_en":"Question 23: Under India's Drone Rules 2021, what is the maximum permissible weight limit for a drone to be classified as a 'Nano drone'?","options":[{"hi":"2 किलोग्राम तक","en":"Up to 2 kilograms"},{"hi":"250 ग्राम तक","en":"Up to 250 grams"},{"hi":"150 किलोग्राम तक","en":"Up to 150 kilograms"},{"hi":"500 ग्राम तक","en":"Up to 500 grams"}],"answer":1,"explanation_hi":"250 ग्राम या उससे कम वजन वाले ड्रोन नैनो कहलाते हैं और इन्हें उड़ाने के लिए भारी लाइसेंसिंग की आवश्यकता नहीं होती; 2 किलो तक माइक्रो कहलाते हैं।","explanation_en":"Drones weighing 250 grams or less are Nano and do not require heavy licensing to fly; up to 2 kg is called Micro."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डिजिटल पहलों की शुरुआत को उनके ऐतिहासिक कालक्रम में व्यवस्थित कीजिए: 1. आधार (Aadhaar), 2. यूपीआई (UPI), 3. प्रत्यक्ष लाभ अंतरण (DBT)।","question_en":"Question 24: Arrange the launch of digital initiatives in their historical chronological order: 1. Aadhaar, 2. UPI, 3. Direct Benefit Transfer (DBT).","options":[{"hi":"3, 1, 2","en":"3, 1, 2"},{"hi":"1, 2, 3","en":"1, 2, 3"},{"hi":"2, 1, 3","en":"2, 1, 3"},{"hi":"1, 3, 2","en":"1, 3, 2"}],"answer":3,"explanation_hi":"आधार का जन्म 2009 में हुआ, इसके बाद 2013 में बैंक खातों में सीधे पैसे भेजने के लिए DBT शुरू हुआ, और 2016 में त्वरित भुगतान के लिए UPI आया।","explanation_en":"Aadhaar was born in 2009, followed by DBT in 2013 to send money directly to bank accounts, and UPI arrived in 2016 for instant payments."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त युग्मों में से कितने प्रदूषण-नियंत्रण तकनीकों के सही सुमेलित हैं: 1. इलेक्ट्रोस्टैटिक प्रेसिपिटेटर (ESP) - सूक्ष्म कणों को पकड़ना, 2. फ्लू गैस डीसल्फराइजेशन (FGD) - सल्फर डाइऑक्साइड को हटाना, 3. सेलेक्टिव कैटेलिटिक रिडक्शन (SCR) - नाइट्रोजन ऑक्साइड (NOx) को हटाना?","question_en":"Question 25: How many of the following pollution-control technology pairs are correctly matched: 1. Electrostatic Precipitator (ESP) - Capturing particulate matter, 2. Flue Gas Desulfurization (FGD) - Removing Sulphur dioxide, 3. Selective Catalytic Reduction (SCR) - Removing Nitrogen oxides (NOx)?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":2,"explanation_hi":"ये तीनों उद्योगों की चिमनियों में लगने वाले आवश्यक उपकरण हैं। ESP धूल कणों को, FGD सल्फर को, और SCR नाइट्रोजन के हानिकारक धुएं को रोकता है।","explanation_en":"All three are essential devices installed in industrial chimneys. ESP traps dust particles, FGD stops Sulphur, and SCR prevents harmful Nitrogen fumes."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जीन संपादन (Gene Editing) शब्दावली में, वह कौन सी श्रेणी है जिसमें किसी बाहरी या विदेशी डीएनए (DNA) को जीव में डाला जाता है, जिससे वह पारंपरिक आनुवंशिक रूप से संशोधित जीवों (GMO) के समान हो जाता है?","question_en":"Question 26: In gene editing nomenclature, which category involves the insertion of foreign DNA into an organism, making it similar to traditional Genetically Modified Organisms (GMOs)?","options":[{"hi":"एसडीएन-1 (SDN-1)","en":"SDN-1"},{"hi":"एसडीएन-3 (SDN-3)","en":"SDN-3"},{"hi":"पीसीआर (PCR)","en":"PCR"},{"hi":"आरएनए-आई (RNAi)","en":"RNAi"}],"answer":1,"explanation_hi":"SDN-1 और SDN-2 केवल जीव के अपने डीएनए में छोटा सुधार करते हैं और इन्हें जीएमओ नियमों से छूट है, लेकिन SDN-3 बाहरी जीन डालता है जो सख्त नियमन के अधीन है।","explanation_en":"SDN-1 and 2 only make minor corrections in the organism's own DNA and are exempt from GMO rules, but SDN-3 inserts foreign genes which face strict regulation."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 5G में URLLC सेवा अत्यंत विश्वसनीय और कम-देरी वाला संचार सुनिश्चित करती है जो दूरस्थ सर्जरी के लिए आवश्यक है।\nकथन 2: mMTC सेवा को एक छोटे से क्षेत्र में बड़ी संख्या में इंटरनेट ऑफ थिंग्स (IoT) उपकरणों को जोड़ने के लिए डिज़ाइन किया गया है।","question_en":"Question 27: Consider the following statements:\nStatement 1: The URLLC service in 5G ensures ultra-reliable low-latency communication required for remote surgeries.\nStatement 2: The mMTC service is designed to connect a massive number of Internet of Things (IoT) devices in a small area.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"5G केवल स्पीड (eMBB) नहीं है; इसमें बिना रुके तात्कालिक आदेश देने के लिए URLLC और स्मार्ट सिटी के लाखों सेंसर जोड़ने के लिए mMTC (Massive IoT) शामिल है।","explanation_en":"5G is not just speed (eMBB); it includes URLLC for non-stop instant commands and mMTC (Massive IoT) for connecting millions of sensors in a smart city."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. Ctrl+Y, B. F12, C. Shift+Delete;\nसूची-II: 1. किसी फ़ाइल को नए नाम से सहेजना (Save As), 2. रीसायकल बिन को पार करके स्थायी रूप से मिटाना, 3. पिछले पलटे गए काम को वापस लाना (Redo) को सुमेलित करें।","question_en":"Question 28: Match\nList-I: A. Ctrl+Y, B. F12, C. Shift+Delete;\nList-II: 1. Saving a file with a new name (Save As), 2. Deleting permanently bypassing the Recycle Bin, 3. Bringing back the previously undone action (Redo).","options":[{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":0,"explanation_hi":"Ctrl+Z गलती सुधारता है, Ctrl+Y उसे वापस लाता है। F12 एक नई फाइल बनाता है, और Shift के साथ Delete दबाने पर फाइल कूड़ेदान (Recycle bin) में नहीं जाती।","explanation_en":"Ctrl+Z undoes a mistake, Ctrl+Y brings it back. F12 creates a new file, and pressing Delete with Shift ensures the file bypasses the Recycle bin."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत सरकार द्वारा संचालित 'साइबर स्वच्छता केंद्र' (Cyber Swachhta Kendra) का प्राथमिक कार्य क्या है?","question_en":"Question 29: What is the primary function of the 'Cyber Swachhta Kendra' operated by the Government of India?","options":[{"hi":"ऑनलाइन ठगी के पैसे वापस दिलाना","en":"Refunding money from online frauds"},{"hi":"महत्वपूर्ण बुनियादी ढांचे के सर्वर की सुरक्षा करना","en":"Protecting critical infrastructure servers"},{"hi":"सोशल मीडिया पर नकली खातों को हटाना","en":"Removing fake accounts on social media"},{"hi":"नागरिकों को बॉटनेट और मैलवेयर सफाई के लिए मुफ्त उपकरण देना","en":"Providing free tools to citizens for botnet and malware cleaning"}],"answer":3,"explanation_hi":"जिस तरह भौतिक स्वच्छता अभियान कचरा हटाता है, यह साइबर केंद्र कंप्यूटरों में छिपे अदृश्य वायरस और 'गुलाम सेना' (बॉटनेट) को साफ़ करने के उपकरण देता है।","explanation_en":"Just as physical cleanliness drives remove garbage, this cyber center provides tools to clean hidden viruses and 'slave armies' (botnets) from computers."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: एआई (AI) में 'व्याख्यात्मकता' (Explainability) का सिद्धांत यह सुनिश्चित करता है कि एआई के निर्णय के पीछे के तर्क को मनुष्य समझ सकें।\nकथन 2: 'निष्पक्षता' (Fairness) का सिद्धांत एआई के आउटपुट में पूर्वाग्रह और भेदभाव को कम करने का प्रयास करता है।","question_en":"Question 30: Consider the following statements:\nStatement 1: The principle of 'Explainability' in AI ensures that the reasoning behind an AI's decision can be understood by humans.\nStatement 2: The principle of 'Fairness' aims to minimize bias and discrimination in AI outputs.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"एआई को 'ब्लैक बॉक्स' नहीं होना चाहिए; उसे कारण बताना चाहिए (व्याख्यात्मकता) और वह जाति या लिंग के आधार पर गलत न हो (निष्पक्षता)।","explanation_en":"AI shouldn't be a 'black box'; it must state its reasons (Explainability) and must not be prejudiced based on race or gender (Fairness)."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जब किसी कंप्यूटर की बिजली पूरी तरह से काटे बिना उसे Ctrl+Alt+Del कुंजियों या रीस्टार्ट बटन के माध्यम से पुनः प्रारंभ किया जाता है, तो इस प्रक्रिया को क्या कहा जाता है?","question_en":"Question 31: What is the process called when a computer is restarted using Ctrl+Alt+Del keys or the restart button without completely cutting off the power?","options":[{"hi":"कोल्ड बूटिंग","en":"Cold Booting"},{"hi":"वार्म बूटिंग","en":"Warm Booting"},{"hi":"हाइबरनेशन","en":"Hibernation"},{"hi":"सुरक्षित मोड","en":"Safe Mode"}],"answer":1,"explanation_hi":"बंद पड़े ठंडे मशीन को चालू करना कोल्ड बूट है, लेकिन चलते हुए गर्म (warm) कंप्यूटर को फिर से शुरू करना वार्म बूटिंग कहलाता है।","explanation_en":"Starting a dead cold machine is a cold boot, but restarting an already running hot (warm) computer is called warm booting."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संचार तकनीकों के उपर्युक्त युग्मों में से कितने सही सुमेलित हैं: 1. लाइ-फाई (Li-Fi) - रेडियो तरंग के बजाय प्रकाश-आधारित संचार, 2. 26 गीगाहर्ट्ज मिमीवेव (mmWave) - 5G में सबसे व्यापक भौगोलिक कवरेज देने वाला बैंड, 3. ब्लूटूथ - व्यक्तिगत क्षेत्र नेटवर्क (PAN)?","question_en":"Question 32: How many of the following communication technology pairs are correctly matched: 1. Li-Fi - Light-based communication instead of radio waves, 2. 26 GHz mmWave - Band providing the widest geographical coverage in 5G, 3. Bluetooth - Personal Area Network (PAN)?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":1,"explanation_hi":"26 गीगाहर्ट्ज 5G का सबसे उच्च-आवृत्ति बैंड है जो विशाल डेटा देता है लेकिन इसका कवरेज सबसे कम होता है। लाइ-फाई और ब्लूटूथ दोनों सही सुमेलित हैं।","explanation_en":"26 GHz is the highest frequency band of 5G giving massive data but has the shortest coverage. Both Li-Fi and Bluetooth are correctly matched."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इसरो (ISRO) के राष्ट्रीय सुदूर संवेदन केंद्र (NRSC) द्वारा विकसित 'भुवन' (Bhuvan) वास्तव में क्या है?","question_en":"Question 33: What exactly is 'Bhuvan', developed by the National Remote Sensing Centre (NRSC) of ISRO?","options":[{"hi":"उपग्रह चित्र और विषयगत मानचित्र प्रदान करने वाला एक राष्ट्रीय जियोपोर्टल","en":"A national geoportal providing satellite imagery and thematic maps"},{"hi":"अंतरिक्ष मलबे को ट्रैक करने वाली प्रणाली","en":"A system to track space debris"},{"hi":"गगनयान मिशन का एक संचार उपग्रह","en":"A communication satellite of the Gaganyaan mission"},{"hi":"चंद्रयान-3 का रोवर","en":"The rover of Chandrayaan-3"}],"answer":0,"explanation_hi":"भुवन भारत का अपना 'Google Earth' जैसा मंच है, जो अंतरिक्ष से लिए गए डेटा का उपयोग करके आपदा, कृषि और प्रशासन के लिए मानचित्र और सुविधाएँ देता है।","explanation_en":"Bhuvan is India's own platform similar to 'Google Earth', providing maps and features for disaster, agriculture, and governance using data from space."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के निम्नलिखित अंतरिक्ष मिशनों को उनके प्रक्षेपण के कालक्रम में व्यवस्थित कीजिए: 1. आदित्य-एल1 (Aditya-L1), 2. चंद्रयान-1, 3. मंगलयान (MOM)।","question_en":"Question 34: Arrange the following Indian space missions in chronological order of their launch: 1. Aditya-L1, 2. Chandrayaan-1, 3. Mangalyaan (MOM).","options":[{"hi":"3, 2, 1","en":"3, 2, 1"},{"hi":"1, 2, 3","en":"1, 2, 3"},{"hi":"2, 1, 3","en":"2, 1, 3"},{"hi":"2, 3, 1","en":"2, 3, 1"}],"answer":2,"explanation_hi":"भारत ने 2008 में चाँद पर (चंद्रयान-1), 2013 में मंगल पर (मंगलयान) और हाल ही में 2023 में सूर्य की कक्षा में (आदित्य-एल1) अपना सफर तय किया। इसलिए सही क्रम है: चंद्रयान-1 (2), मंगलयान (3), आदित्य-एल1 (1)।","explanation_en":"India travelled to the Moon in 2008 (Chandrayaan-1), Mars in 2013 (Mangalyaan), and recently to the Sun's orbit in 2023 (Aditya-L1). Hence the correct order is: Chandrayaan-1 (2), Mangalyaan (3), Aditya-L1 (1)."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. आरटी-पीसीआर (RT-PCR), B. रैपिड एंटीजन, C. एंटीबॉडी (IgM/IgG);\nसूची-II: 1. मानव प्रतिरक्षा-प्रतिक्रिया की पहचान, 2. रोगाणु के प्रोटीन की पहचान, 3. वायरस के आनुवंशिक आरएनए (RNA) की पहचान को सुमेलित करें।","question_en":"Question 35: Match\nList-I: A. RT-PCR, B. Rapid Antigen, C. Antibody (IgM/IgG);\nList-II: 1. Detection of human immune response, 2. Detection of pathogen's protein, 3. Detection of virus's genetic RNA.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":3,"explanation_hi":"आरटी-पीसीआर वायरस की आणविक जड़ पकड़ता है, एंटीजन वायरस के बाहरी कोट को देखता है, और एंटीबॉडी यह देखती है कि शरीर ने लड़ने के लिए क्या हथियार बनाए हैं।","explanation_en":"RT-PCR catches the molecular root of the virus, antigen looks at the virus's outer coat, and antibody checks what weapons the body made to fight."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: एलएफपी (LFP) बैटरियों का जीवन-चक्र लंबा होता है और वे सुरक्षित होती हैं, लेकिन उनका ऊर्जा-घनत्व कम होता है।\nकथन 2: एनएमसी (NMC) बैटरियों का ऊर्जा-घनत्व उच्च होता है, लेकिन उनमें थर्मल जोखिम (आग लगने का खतरा) अधिक होता है।","question_en":"Question 36: Consider the following statements:\nStatement 1: LFP batteries have a longer lifecycle and are safer, but have lower energy density.\nStatement 2: NMC batteries have high energy density, but present a higher thermal risk (fire hazard).","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"इलेक्ट्रिक वाहनों में ये दो मुख्य विकल्प हैं। एनएमसी तेज़ी और दूरी देती है लेकिन अस्थिर है, जबकि एलएफपी भारी और सुरक्षित है जो लंबी रेस का घोड़ा है।","explanation_en":"These are the two main options in EVs. NMC gives speed and range but is volatile, while LFP is heavier and safer, making it a long-term reliable choice."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के त्रि-चरणीय कार्यक्रम में प्रयुक्त किस विशेष प्रकार का परमाणु रिएक्टर अपने संचालन के दौरान खपत किए गए ईंधन की तुलना में अधिक विखंडनीय सामग्री (ईंधन) का उत्पादन करता है?","question_en":"Question 37: In India's three-stage program, which special type of nuclear reactor produces more fissile material (fuel) than it consumes during its operation?","options":[{"hi":"दाबित भारी जल रिएक्टर (PHWR)","en":"Pressurised Heavy Water Reactor (PHWR)"},{"hi":"फास्ट ब्रीडर रिएक्टर (FBR)","en":"Fast Breeder Reactor (FBR)"},{"hi":"उन्नत भारी जल रिएक्टर (AHWR)","en":"Advanced Heavy Water Reactor (AHWR)"},{"hi":"उबलते जल रिएक्टर (BWR)","en":"Boiling Water Reactor (BWR)"}],"answer":1,"explanation_hi":"'ब्रीडर' (Breeder) का अर्थ ही है जन्म देने वाला। यह रिएक्टर बिजली बनाने के साथ-साथ बेकार प्लूटोनियम/थोरियम को पकाकर नया उपयोगी ईंधन भी बनाता है।","explanation_en":"'Breeder' literally means one who gives birth. This reactor, while generating electricity, also cooks waste plutonium/thorium into new useful fuel."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपर्युक्त युग्मों में से कितने साइबर इतिहास के सही सुमेलित हैं: 1. क्रीपर (1971) - दुनिया का पहला कंप्यूटर वायरस, 2. ब्रेन (1986) - पाकिस्तान में बना पहला पीसी (PC) वायरस, 3. वानाक्राई (2017) - फिरौती मांगने वाला एक वैश्विक रैनसमवेयर हमला?","question_en":"Question 38: How many of the following pairs of cyber history are correctly matched: 1. Creeper (1971) - World's first computer virus, 2. Brain (1986) - First PC virus created in Pakistan, 3. WannaCry (2017) - A global ransomware attack demanding ransom?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":2,"explanation_hi":"ये तीनों साइबर खतरों के ऐतिहासिक मील के पत्थर हैं। क्रीपर ने शुरुआत की, ब्रेन ने व्यक्तिगत कंप्यूटरों को संक्रमित किया, और वानाक्राई ने फ़ाइलों पर ताला जड़ दिया।","explanation_en":"All three are historical milestones of cyber threats. Creeper started it, Brain infected personal computers, and WannaCry locked down files."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इसरो (ISRO) और भारतीय विमानपत्तन प्राधिकरण द्वारा नागरिक उड्डयन के लिए विकसित उस स्वदेशी प्रणाली का नाम क्या है जो विमानों को सटीक जीपीएस (GPS) मार्गदर्शन प्रदान करती है?","question_en":"Question 39: What is the name of the indigenous system developed by ISRO and Airports Authority of India for civil aviation that provides accurate GPS guidance to aircraft?","options":[{"hi":"गगन (GAGAN)","en":"GAGAN"},{"hi":"नाविक (NavIC)","en":"NavIC"},{"hi":"भुवन (Bhuvan)","en":"Bhuvan"},{"hi":"सारथी (Sarthi)","en":"Sarthi"}],"answer":0,"explanation_hi":"गगन का अर्थ 'जीपीएस एडेड जियो ऑगमेंटेड नेविगेशन' है, जो आसमान में उड़ते हवाई जहाजों को रास्ता दिखाने के लिए जीपीएस के सिग्नल में सुधार करता है।","explanation_en":"GAGAN stands for 'GPS Aided GEO Augmented Navigation', which corrects GPS signals to guide airplanes flying in the sky."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आधुनिक कृत्रिम बुद्धिमत्ता (AI) प्रशिक्षण सर्वरों और ग्राफिक्स प्रोसेसिंग यूनिट (GPU) में मुख्य रूप से किस उन्नत मेमोरी प्रकार का उपयोग किया जाता है, जो अत्यधिक उच्च डेटा ट्रांसफर दर प्रदान करती है?","question_en":"Question 40: Which advanced memory type, primarily used in modern Artificial Intelligence (AI) training servers and GPUs, provides extremely high data transfer rates?","options":[{"hi":"एसडीडी (SSD)","en":"SSD"},{"hi":"ईईपीरोम (EEPROM)","en":"EEPROM"},{"hi":"ऑप्टिकल ड्राइव","en":"Optical Drive"},{"hi":"एचबीएम (HBM)","en":"HBM"}],"answer":3,"explanation_hi":"एचबीएम (High Bandwidth Memory) पारंपरिक रैम की तुलना में बहुत तेजी से विशाल एआई डेटा को प्रोसेस करने के लिए प्रोसेसर के ठीक बगल में लगाई जाती है।","explanation_en":"HBM (High Bandwidth Memory) is placed right next to the processor to handle massive AI data much faster than traditional RAM."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 'विश्वास्य' (Vishvasya) इलेक्ट्रॉनिक्स और आईटी मंत्रालय द्वारा शुरू किया गया एक राष्ट्रीय ब्लॉकचेन ढांचा है।\nकथन 2: बिटकॉइन (Bitcoin) भारतीय रिज़र्व बैंक (RBI) द्वारा जारी और नियंत्रित की जाने वाली एक संप्रभु डिजिटल मुद्रा है।","question_en":"Question 41: Consider the following statements:\nStatement 1: 'Vishvasya' is a National Blockchain Framework launched by the Ministry of Electronics and IT.\nStatement 2: Bitcoin is a sovereign digital currency issued and regulated by the Reserve Bank of India (RBI).","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"'विश्वास्य' भारत का ब्लॉकचेन मंच है, लेकिन बिटकॉइन एक निजी और अनियंत्रित क्रिप्टोकरेंसी है। रिज़र्व बैंक द्वारा जारी की गई संप्रभु मुद्रा डिजिटल रुपया (e₹) है।","explanation_en":"'Vishvasya' is India's blockchain platform, but Bitcoin is a private and unregulated cryptocurrency. The sovereign currency issued by RBI is the Digital Rupee (e₹)."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. सेमीकॉन इंडिया, B. राष्ट्रीय हरित हाइड्रोजन मिशन, C. राष्ट्रीय क्वांटम मिशन;\nसूची-II: 1. लगभग ₹19,744 करोड़, 2. लगभग ₹6,003 करोड़, 3. लगभग ₹76,000 करोड़ को सुमेलित करें।","question_en":"Question 42: Match\nList-I: A. Semicon India, B. National Green Hydrogen Mission, C. National Quantum Mission;\nList-II: 1. ~₹19,744 crore, 2. ~₹6,003 crore, 3. ~₹76,000 crore.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":1,"explanation_hi":"चिप बनाने (Semicon) का काम सबसे महंगा है इसलिए 76 हजार करोड़; ईंधन (हाइड्रोजन) के लिए 19 हज़ार करोड़, और क्वांटम शोध के लिए 6 हज़ार करोड़ का बजट है।","explanation_en":"Making chips (Semicon) is the most expensive hence 76k cr; fuel (hydrogen) has 19k cr, and quantum research has a 6k cr budget."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जैव-विनिर्माण को बढ़ावा देने के लिए भारत सरकार द्वारा हाल ही में स्वीकृत 'BioE3' नीति में तीन 'E' का क्या अर्थ है?","question_en":"Question 43: What do the three 'E's stand for in the recently approved 'BioE3' policy by the Government of India to promote biomanufacturing?","options":[{"hi":"ऊर्जा, शिक्षा, और समानता","en":"Energy, Education, and Equality"},{"hi":"पारिस्थितिकी, विकास, और उद्यम","en":"Ecology, Evolution, and Enterprise"},{"hi":"अर्थव्यवस्था, पर्यावरण, और रोज़गार","en":"Economy, Environment, and Employment"},{"hi":"दक्षता, निर्यात, और उत्कृष्टता","en":"Efficiency, Export, and Excellence"}],"answer":2,"explanation_hi":"यह नीति जैविक कचरे और तकनीक का उपयोग करके भारत की 'अर्थव्यवस्था' को बढ़ाने, 'पर्यावरण' को बचाने और 'रोज़गार' पैदा करने का एक त्रिकोणीय विजन है।","explanation_en":"This policy is a triangular vision to boost India's 'Economy', save the 'Environment', and generate 'Employment' using biological waste and tech."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ई-कॉमर्स और नेटवर्क के उपर्युक्त युग्मों में से कितने सही सुमेलित हैं: 1. ओएनडीसी (ONDC) - एकाधिकार तोड़ने वाला खुला ई-कॉमर्स नेटवर्क, 2. जीईएम (GeM) - सरकारी विभागों का ऑनलाइन खरीद पोर्टल, 3. मैक (MAC) एड्रेस - 128-बिट का तार्किक इंटरनेट पता?","question_en":"Question 44: How many of the following e-Commerce and network pairs are correctly matched: 1. ONDC - Open e-commerce network breaking monopolies, 2. GeM - Online procurement portal for government departments, 3. MAC Address - 128-bit logical internet address?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":1,"explanation_hi":"मैक एड्रेस डिवाइस का एक स्थायी भौतिक (Physical) पता है जो 48-बिट का होता है, 128-बिट का नहीं (वह IPv6 है)। ONDC और GeM दोनों सही हैं।","explanation_en":"The MAC address is a permanent physical address of a device which is 48-bit, not 128-bit (which is IPv6). Both ONDC and GeM are correct."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"एयरोस्पेस और मेडिकल स्टेंट में उपयोग किए जाने वाले उन्नत 'आकार-स्मृति मिश्रधातुओं' (Shape-Memory Alloys) की मुख्य विशेषता क्या है?","question_en":"Question 45: What is the key characteristic of advanced 'Shape-Memory Alloys' used in aerospace and medical stents?","options":[{"hi":"वे असीमित मात्रा में डेटा स्टोर कर सकते हैं","en":"They can store an unlimited amount of data"},{"hi":"वे रात के अंधेरे में प्रकाश उत्सर्जित करते हैं","en":"They emit light in the dark of night"},{"hi":"वे चुंबकीय क्षेत्र के संपर्क में आने पर तरल हो जाते हैं","en":"They become liquid when exposed to a magnetic field"},{"hi":"विरूपित (टेढ़े-मेढ़े) होने के बाद गर्मी पाने पर वे अपने मूल आकार में लौट आते हैं","en":"They return to their original shape upon heating after being deformed"}],"answer":3,"explanation_hi":"इन धातुओं के पास एक 'याददाश्त' होती है। जैसे ही इन्हें शरीर की गर्मी या बाहरी तापमान मिलता है, ये अपने पुराने सेट किए गए आकार में स्प्रिंग की तरह खुल जाते हैं।","explanation_en":"These metals have a 'memory'. As soon as they get body heat or external temperature, they spring back to their old set shape."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित बैलिस्टिक मिसाइलों को उनकी मारक-क्षमता (रेंज) के बढ़ते क्रम में (सबसे कम से सबसे अधिक) व्यवस्थित कीजिए: 1. आईसीबीएम (ICBM), 2. एसआरबीएम (SRBM), 3. आईआरबीएम (IRBM), 4. एमआरबीएम (MRBM)।","question_en":"Question 46: Arrange the following ballistic missiles in increasing order of their range (from shortest to longest): 1. ICBM, 2. SRBM, 3. IRBM, 4. MRBM.","options":[{"hi":"2, 4, 3, 1","en":"2, 4, 3, 1"},{"hi":"2, 3, 4, 1","en":"2, 3, 4, 1"},{"hi":"4, 2, 3, 1","en":"4, 2, 3, 1"},{"hi":"1, 3, 4, 2","en":"1, 3, 4, 2"}],"answer":0,"explanation_hi":"नाम ही क्रम बताता है: Short (SRBM), Medium (MRBM), Intermediate (IRBM), और अंत में महाद्वीपों को पार करने वाली Inter-Continental (ICBM)।","explanation_en":"The name dictates the order: Short (SRBM), Medium (MRBM), Intermediate (IRBM), and finally the continent-crossing Inter-Continental (ICBM)."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: वर्ष 2024 में पृथ्वी विज्ञान मंत्रालय द्वारा ~₹2000 करोड़ के बजट के साथ 'मिशन मौसम' लॉन्च किया गया।\nकथन 2: डॉपलर वेदर रडार (DWR) का उपयोग भूकंप के झटकों का सटीक समय और स्थान बताने के लिए किया जाता है।","question_en":"Question 47: Consider the following statements:\nStatement 1: 'Mission Mausam' was launched by the Ministry of Earth Sciences in 2024 with a budget of ~₹2000 crore.\nStatement 2: A Doppler Weather Radar (DWR) is used to predict the exact time and location of earthquake tremors.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"डॉपलर रडार हवा में बादलों और बारिश की गति नापता है, जिससे चक्रवात और तूफ़ान का पता चलता है; यह जमीन के भीतर के भूकंप को नहीं पकड़ सकता।","explanation_en":"A Doppler radar measures the movement of clouds and rain in the air to track cyclones and storms; it cannot detect earthquakes deep underground."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कौन सी विशेष रडार तकनीक अलग-अलग समय पर लिए गए दो उपग्रह चित्रों की तुलना करके जमीन के धंसने (subsidence) या भूकंप के बाद भूमि खिसकने के अति-सूक्ष्म बदलावों को मापती है?","question_en":"Question 48: Which specialized radar technique measures minute changes like land subsidence or post-earthquake ground shifts by comparing two satellite images taken at different times?","options":[{"hi":"ऑप्टिकल टेलीस्कोप","en":"Optical Telescope"},{"hi":"इनसार (InSAR)","en":"InSAR"},{"hi":"लिडार (LiDAR)","en":"LiDAR"},{"hi":"सोनार (Sonar)","en":"Sonar"}],"answer":1,"explanation_hi":"इनसार (Interferometric Synthetic Aperture Radar) दो रडार तरंगों के टकराने (व्यतिकरण) का उपयोग करके मिलीमीटर स्तर के ज़मीनी बदलाव को पकड़ लेता है।","explanation_en":"InSAR (Interferometric Synthetic Aperture Radar) uses the interference of two radar waves to detect ground changes down to the millimeter level."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I: A. निम्न पृथ्वी कक्षा (LEO), B. मध्य पृथ्वी कक्षा (MEO), C. भूस्थिर कक्षा (GEO);\nसूची-II: 1. जीपीएस और नेविगेशन (NavIC), 2. उच्च-विलंबता वाला डीटीएच (DTH) प्रसारण, 3. पृथ्वी अवलोकन और स्टारलिंक इंटरनेट को सुमेलित करें।","question_en":"Question 49: Match\nList-I: A. Low Earth Orbit (LEO), B. Medium Earth Orbit (MEO), C. Geostationary Orbit (GEO);\nList-II: 1. GPS and Navigation (NavIC), 2. High-latency DTH broadcasting, 3. Earth observation and Starlink internet.","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":2,"explanation_hi":"नीचे की कक्षा (LEO) में निगरानी और तेज़ इंटरनेट है, मध्य में दिशा-निर्देशन (MEO) है, और सबसे ऊपर (GEO) दूरदर्शन तथा धीमा संचार है।","explanation_en":"The bottom orbit (LEO) has observation and fast internet, the middle (MEO) has navigation, and the top (GEO) has television and slower comms."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बैंकिंग प्रणाली में बैंक चेक के निचले हिस्से पर मुद्रित विशेष 9-अंकीय कोड को पढ़ने और प्रमाणित करने के लिए विशेष रूप से किस इनपुट तकनीक का उपयोग किया जाता है?","question_en":"Question 50: Which input technology is specifically used in the banking system to read and authenticate the special 9-digit code printed at the bottom of bank cheques?","options":[{"hi":"ओसीआर (OCR)","en":"OCR"},{"hi":"ओएमआर (OMR)","en":"OMR"},{"hi":"बारकोड रीडर","en":"Barcode Reader"},{"hi":"एमआईसीआर (MICR)","en":"MICR"}],"answer":3,"explanation_hi":"एमआईसीआर (Magnetic Ink Character Recognition) में 'M' का अर्थ मैग्नेटिक (चुंबकीय) है। चेक पर वह विशेष कोड चुंबकीय स्याही से छपा होता है जिसे यह मशीन पढ़ती है।","explanation_en":"In MICR (Magnetic Ink Character Recognition), 'M' stands for Magnetic. That special code on the cheque is printed with magnetic ink which this machine reads."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
