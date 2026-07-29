@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"LOWER • Environment","highlight":"Environment","shortTitle":"LOWER","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • Environment","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-lower-environment-environment-20260729-xilcn","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-29","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दो बायोम या पारितंत्रों के बीच के संक्रमणकालीन क्षेत्र को क्या कहा जाता है?","question_en":"Question 1: What is the transitional zone between two biomes or ecosystems called?","options":[{"hi":"निकेत","en":"Niche"},{"hi":"इकोटोन","en":"Ecotone"},{"hi":"बायोस्फीयर","en":"Biosphere"},{"hi":"हैबिटेट","en":"Habitat"}],"answer":1,"explanation_hi":"इकोटोन दो पारितंत्रों के बीच का संक्रमणकालीन क्षेत्र है जहाँ दोनों प्रणालियों के सम्मिलित गुण पाए जाते हैं।","explanation_en":"Ecotone is the transitional zone between two ecosystems where characteristics of both systems are found."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: की-स्टोन प्रजाति का प्रभाव केवल उसकी अधिक संख्या के कारण होता है।\nकथन 2: की-स्टोन प्रजाति पारितंत्र के कार्यों और ऊर्जा प्रवाह को प्रभावित करती है।","question_en":"Question 2: Consider the following statements:\nStatement 1: The impact of a keystone species is solely due to its high numbers.\nStatement 2: A keystone species affects the functions and energy flow of the ecosystem.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"की-स्टोन प्रजाति की पहचान जनसंख्या-आकार से नहीं, बल्कि पारिस्थितिक प्रभाव और कार्यों से होती है।","explanation_en":"A keystone species is identified by its ecological impact and functions, not by its population size."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पारितंत्र में ऊर्जा के प्रवाह के संबंध में कौन-सा कथन सत्य है?","question_en":"Question 3: Which statement is true regarding the flow of energy in an ecosystem?","options":[{"hi":"यह एक दिशीय होता है।","en":"It is unidirectional."},{"hi":"यह चक्रीय होता है।","en":"It is cyclical."},{"hi":"यह बहु-दिशीय होता है।","en":"It is multidirectional."},{"hi":"यह उपभोक्ता से उत्पादक की ओर होता है।","en":"It flows from consumer to producer."}],"answer":0,"explanation_hi":"पारितंत्र में ऊर्जा का प्रवाह एक दिशीय होता है, जबकि पदार्थों का गमन चक्रीय रूप में होता है।","explanation_en":"Energy flow in an ecosystem is unidirectional, whereas the movement of materials occurs in a cyclical manner."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रवाल विरंजन की घटना मुख्य रूप से किस कारण से होती है?","question_en":"Question 4: What is the primary cause of the coral bleaching phenomenon?","options":[{"hi":"प्रवालों का अत्यधिक प्रजनन","en":"Excessive reproduction of corals"},{"hi":"मीठे पानी की अत्यधिक उपलब्धता","en":"Excessive availability of fresh water"},{"hi":"समुद्र के पानी का अत्यधिक ठंडा होना","en":"Excessive cooling of seawater"},{"hi":"तापमान तनाव के कारण जूजैन्थिली का निष्कासन","en":"Expulsion of Zooxanthellae due to temperature stress"}],"answer":3,"explanation_hi":"तापमान या प्रकाश-तीव्रता बढ़ने पर प्रवाल जूजैन्थिली शैवाल को बाहर निकाल देते हैं, जिससे वे सफेद हो जाते हैं।","explanation_en":"When temperature or light intensity increases, corals expel the Zooxanthellae algae, turning white."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आर्द्रभूमियों के संरक्षण के लिए रामसर कन्वेंशन किस वर्ष संपन्न हुआ था?","question_en":"Question 5: In which year was the Ramsar Convention for the conservation of wetlands concluded?","options":[{"hi":"1969","en":"1969"},{"hi":"1971","en":"1971"},{"hi":"1975","en":"1975"},{"hi":"1982","en":"1982"}],"answer":1,"explanation_hi":"रामसर सम्मेलन 1971 में ईरान के रामसर शहर में संपन्न हुआ और 1975 में लागू हुआ।","explanation_en":"The Ramsar Convention was concluded in 1971 in Ramsar, Iran, and came into force in 1975."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मॉन्ट्रेक्स रिकॉर्ड के अंतर्गत भारत की कौन-सी आर्द्रभूमियाँ शामिल हैं?","question_en":"Question 6: Which Indian wetlands are included in the Montreux Record?","options":[{"hi":"चिल्का झील और वूलर झील","en":"Chilika Lake and Wular Lake"},{"hi":"सुंदरबन और भितरकनिका","en":"Sundarbans and Bhitarkanika"},{"hi":"लोकतक झील और केवलादेव राष्ट्रीय उद्यान","en":"Loktak Lake and Keoladeo National Park"},{"hi":"अष्टमुदी आर्द्रभूमि और सांभर झील","en":"Ashtamudi Wetland and Sambhar Lake"}],"answer":2,"explanation_hi":"भारत से लोकतक झील, मणिपुर और केवलादेव राष्ट्रीय उद्यान, राजस्थान मॉन्ट्रेक्स रिकॉर्ड में शामिल हैं।","explanation_en":"Loktak Lake in Manipur and Keoladeo National Park in Rajasthan are included in the Montreux Record from India."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मैंग्रोव वनस्पतियों में पाई जाने वाली न्यूमेटोफोर जड़ों का मुख्य कार्य क्या है?","question_en":"Question 7: What is the main function of the pneumatophore roots found in mangrove vegetation?","options":[{"hi":"कीचड़ में ऑक्सीजन का आदान-प्रदान करना","en":"Exchanging oxygen in the mud"},{"hi":"ताजे जल को अवशोषित करना","en":"Absorbing fresh water"},{"hi":"प्रकाश संश्लेषण में सहायता करना","en":"Assisting in photosynthesis"},{"hi":"कीड़ों से रक्षा करना","en":"Protecting from insects"}],"answer":0,"explanation_hi":"न्यूमेटोफोर विशेष श्वसन जड़ें हैं जो हवा से संपर्क कर कीचड़ में ऑक्सीजन और कार्बन डाइऑक्साइड के आदान-प्रदान में सहायता करती हैं।","explanation_en":"Pneumatophores are special respiratory roots that contact the air to help exchange oxygen and carbon dioxide in the mud."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पारिस्थितिकी पिरामिड के संदर्भ में, ऊर्जा का पिरामिड कैसा होता है?","question_en":"Question 8: In the context of ecological pyramids, how is the pyramid of energy shaped?","options":[{"hi":"सदैव उल्टा","en":"Always inverted"},{"hi":"सीधा और उल्टा दोनों","en":"Both upright and inverted"},{"hi":"क्षैतिज","en":"Horizontal"},{"hi":"सदैव सीधा","en":"Always upright"}],"answer":3,"explanation_hi":"ऊर्जा का पिरामिड सदैव सीधा होता है क्योंकि ऊर्जा उत्पादक स्तर पर सबसे अधिक होती है और अगले हर स्तर में घटती जाती है।","explanation_en":"The pyramid of energy is always upright because energy is highest at the producer level and decreases at each subsequent level."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"फॉस्फोरस का प्रमुख प्राकृतिक भंडार कहाँ होता है?","question_en":"Question 9: Where is the major natural reservoir of phosphorus located?","options":[{"hi":"वायुमंडल","en":"Atmosphere"},{"hi":"चट्टानें","en":"Rocks"},{"hi":"महासागर","en":"Oceans"},{"hi":"हिमनद","en":"Glaciers"}],"answer":1,"explanation_hi":"फॉस्फोरस का प्राकृतिक भंडार चट्टानों में होता है, जहाँ यह फॉस्फेट के रूप में संचित रहता है।","explanation_en":"The natural reservoir of phosphorus is in rocks, where it is stored in the form of phosphates."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लाइकेन किस प्रकार के जैविक संबंध का एक उत्कृष्ट उदाहरण है?","question_en":"Question 10: Lichen is an excellent example of which type of biotic relationship?","options":[{"hi":"सहोपकारिता","en":"Mutualism"},{"hi":"परजीविता","en":"Parasitism"},{"hi":"प्रतिस्पर्धा","en":"Competition"},{"hi":"सहभोजिता","en":"Commensalism"}],"answer":0,"explanation_hi":"लाइकेन में कवक और शैवाल दोनों एक-दूसरे को भोजन और जल देकर समान रूप से लाभान्वित होते हैं, जो सहोपकारिता है।","explanation_en":"In lichen, both fungi and algae benefit equally by providing food and water to each other, which is mutualism."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वृद्धि-रोधक या विषाक्त रसायनों के स्राव द्वारा एक जीव द्वारा दूसरे की वृद्धि को रोकने की प्रक्रिया क्या कहलाती है?","question_en":"Question 11: What is the process called where one organism inhibits the growth of another by secreting growth-inhibiting or toxic chemicals?","options":[{"hi":"सहजीविता","en":"Symbiosis"},{"hi":"एलिलोपैथी","en":"Allelopathy"},{"hi":"प्रतिजीविता","en":"Amensalism"},{"hi":"परजीविता","en":"Parasitism"}],"answer":2,"explanation_hi":"प्रतिजीविता (एमेन्सलिज़्म) में एक जीव (जैसे पेनिसिलियम) रासायनिक स्राव द्वारा दूसरे जीव की वृद्धि को रोकता है जबकि स्वयं अप्रभावित रहता है; यह प्रतिजैविता (antibiosis) रूप है।","explanation_en":"In amensalism, one organism (like Penicillium) inhibits the growth of another through chemical secretion while remaining unaffected itself; this is the antibiosis form."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पारिस्थितिक अनुक्रमण में नवीन समुदाय के आगमन के लिए खाली स्थान प्रदान करने की प्रक्रिया क्या कहलाती है?","question_en":"Question 12: In ecological succession, what is the process of providing empty space for the arrival of a new community called?","options":[{"hi":"चरम अवस्था","en":"Climax stage"},{"hi":"आक्रमण","en":"Invasion"},{"hi":"प्रतिक्रिया","en":"Reaction"},{"hi":"न्यूडेशन","en":"Nudation"}],"answer":3,"explanation_hi":"अनुक्रमण की शुरुआत में किसी नए समुदाय के बसने के लिए जगह तैयार होने की प्रक्रिया न्यूडेशन कहलाती है।","explanation_en":"At the beginning of succession, the process of preparing a space for a new community to settle is called nudation."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आवास बदलने पर प्रजातियों की संरचनात्मक विविधता को किस प्रकार मापा जाता है?","question_en":"Question 13: How is the structural diversity of species measured upon changing habitats?","options":[{"hi":"अल्फा विविधता","en":"Alpha diversity"},{"hi":"बीटा विविधता","en":"Beta diversity"},{"hi":"गामा विविधता","en":"Gamma diversity"},{"hi":"डेल्टा विविधता","en":"Delta diversity"}],"answer":1,"explanation_hi":"एक आवास से दूसरे आवास में जाने पर प्रजातियों के प्रवेश और निकास की दर बीटा विविधता दिखाती है।","explanation_en":"The rate of entry and exit of species when moving from one habitat to another reflects beta diversity."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: जैव विविधता हॉटस्पॉट में कम से कम 1500 स्थानीय संवहनी पौधे होने चाहिए।\nकथन 2: हॉटस्पॉट क्षेत्र की मूल वनस्पति का 70% हिस्सा नष्ट हो चुका होना चाहिए।","question_en":"Question 14: Consider the following statements:\nStatement 1: A biodiversity hotspot must have at least 1500 endemic vascular plants.\nStatement 2: 70% of the original vegetation of the hotspot region must have been destroyed.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"किसी क्षेत्र को हॉटस्पॉट का दर्जा पाने के लिए 1500 स्थानिक पौधों की उपस्थिति और 70% प्राथमिक वनस्पति का विनाश आवश्यक शर्तें हैं।","explanation_en":"The presence of 1500 endemic plants and the destruction of 70% of primary vegetation are required conditions for a region to be designated a hotspot."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का सबसे बड़ा जैव-भौगोलिक क्षेत्र कौन-सा है?","question_en":"Question 15: Which is the largest biogeographic region of India?","options":[{"hi":"हिमालय क्षेत्र","en":"Himalayan region"},{"hi":"गंगा का मैदान","en":"Ganges plain"},{"hi":"मरुस्थल","en":"Desert"},{"hi":"दक्कन प्रायद्वीपीय क्षेत्र","en":"Deccan Peninsular region"}],"answer":3,"explanation_hi":"दक्कन प्रायद्वीपीय क्षेत्र भारत का सबसे बड़ा जैव-भौगोलिक क्षेत्र है, जो संपूर्ण भू-भाग के लगभग 42% पर फैला है।","explanation_en":"The Deccan Peninsular region is the largest biogeographic region in India, covering about 42% of the total landmass."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संकटग्रस्त जीवों को बीज बैंक या जीन बैंक में सुरक्षित रखना किस प्रकार का संरक्षण है?","question_en":"Question 16: Protecting endangered organisms in seed banks or gene banks is what type of conservation?","options":[{"hi":"बाह्य-स्थाने संरक्षण","en":"Ex-situ conservation"},{"hi":"स्व-स्थाने संरक्षण","en":"In-situ conservation"},{"hi":"प्राकृतिक संरक्षण","en":"Natural conservation"},{"hi":"राष्ट्रीय उद्यान संरक्षण","en":"National park conservation"}],"answer":0,"explanation_hi":"जब किसी जीव या सामग्री को उसके प्राकृतिक आवास से बाहर सुरक्षित रखा जाता है, तो उसे बाह्य-स्थाने (Ex-situ) संरक्षण कहते हैं।","explanation_en":"When an organism or material is protected outside its natural habitat, it is called Ex-situ conservation."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का पहला राष्ट्रीय उद्यान कौन-सा है?","question_en":"Question 17: Which is the first National Park of India?","options":[{"hi":"काजीरंगा राष्ट्रीय उद्यान","en":"Kaziranga National Park"},{"hi":"जिम कॉर्बेट राष्ट्रीय उद्यान","en":"Jim Corbett National Park"},{"hi":"दुधवा राष्ट्रीय उद्यान","en":"Dudhwa National Park"},{"hi":"हेमिस राष्ट्रीय उद्यान","en":"Hemis National Park"}],"answer":1,"explanation_hi":"जिम कॉर्बेट राष्ट्रीय उद्यान (उत्तराखंड) भारत का पहला राष्ट्रीय उद्यान है, जिसे पहले हैली राष्ट्रीय उद्यान कहा जाता था।","explanation_en":"Jim Corbett National Park (Uttarakhand) is the first National Park of India, formerly known as Hailey National Park."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व का एकमात्र तैरता राष्ट्रीय उद्यान कहाँ स्थित है?","question_en":"Question 18: Where is the world's only floating national park located?","options":[{"hi":"असम","en":"Assam"},{"hi":"मेघालय","en":"Meghalaya"},{"hi":"मणिपुर","en":"Manipur"},{"hi":"त्रिपुरा","en":"Tripura"}],"answer":2,"explanation_hi":"मणिपुर का केबुल लामजाओ राष्ट्रीय उद्यान विश्व का एकमात्र तैरता राष्ट्रीय उद्यान है।","explanation_en":"The Keibul Lamjao National Park in Manipur is the world's only floating national park."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जैवमंडल रिजर्व के किस क्षेत्र में मानवीय गतिविधि की अनुमति नहीं होती है?","question_en":"Question 19: In which zone of a Biosphere Reserve is human activity not permitted?","options":[{"hi":"क्रोड़ क्षेत्र","en":"Core zone"},{"hi":"मध्यवर्ती क्षेत्र","en":"Buffer zone"},{"hi":"संक्रमण क्षेत्र","en":"Transition zone"},{"hi":"विकास क्षेत्र","en":"Development zone"}],"answer":0,"explanation_hi":"क्रोड़ क्षेत्र सबसे महत्वपूर्ण आंतरिक क्षेत्र होता है जहाँ सामान्य मानवीय गतिविधि निषिद्ध होती है।","explanation_en":"The core zone is the most important internal area where general human activity is prohibited."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में हाथी परियोजना (Project Elephant) किस वर्ष शुरू की गई थी?","question_en":"Question 20: In which year was Project Elephant started in India?","options":[{"hi":"1972","en":"1972"},{"hi":"1973","en":"1973"},{"hi":"1987","en":"1987"},{"hi":"1992","en":"1992"}],"answer":3,"explanation_hi":"हाथी परियोजना 1992 में शुरू की गई थी।","explanation_en":"Project Elephant was started in 1992."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्लू-बेबी सिंड्रोम मुख्य रूप से जल में किस प्रदूषक की अधिकता के कारण होता है?","question_en":"Question 21: Blue-baby syndrome is primarily caused by an excess of which pollutant in water?","options":[{"hi":"फ्लोराइड","en":"Fluoride"},{"hi":"नाइट्रेट","en":"Nitrate"},{"hi":"कैडमियम","en":"Cadmium"},{"hi":"आर्सेनिक","en":"Arsenic"}],"answer":1,"explanation_hi":"ब्लू-बेबी सिंड्रोम नाइट्रेट प्रदूषण से जुड़ा है, जो शरीर में ऑक्सीजन वहन क्षमता को प्रभावित करता है।","explanation_en":"Blue-baby syndrome is linked to nitrate pollution, which affects the oxygen-carrying capacity in the body."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मिनामाता रोग किस तत्व के प्रदूषण से संबंधित है?","question_en":"Question 22: Minamata disease is related to the pollution of which element?","options":[{"hi":"सीसा","en":"Lead"},{"hi":"कैडमियम","en":"Cadmium"},{"hi":"पारा","en":"Mercury"},{"hi":"आर्सेनिक","en":"Arsenic"}],"answer":2,"explanation_hi":"मिनामाता रोग पारा (Mercury) प्रदूषण से होने वाली एक गंभीर स्वास्थ्य समस्या है।","explanation_en":"Minamata disease is a severe health issue caused by Mercury pollution."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत स्टेज-VI (BS-VI) उत्सर्जन मानक संपूर्ण भारत में कब से लागू किए गए?","question_en":"Question 23: When were the Bharat Stage-VI (BS-VI) emission norms implemented across all of India?","options":[{"hi":"अप्रैल 2020","en":"April 2020"},{"hi":"जनवरी 2019","en":"January 2019"},{"hi":"अप्रैल 2023","en":"April 2023"},{"hi":"अप्रैल 2018","en":"April 2018"}],"answer":0,"explanation_hi":"BS-VI ईंधन और अनुपालक वाहन संपूर्ण भारत में अप्रैल 2020 से लागू किए गए।","explanation_en":"BS-VI fuel and compliant vehicles were implemented across all of India from April 2020."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय पर्यावरण अभियान्त्रिकी अनुसंधान संस्थान (NEERI) कहाँ स्थित है?","question_en":"Question 24: Where is the National Environmental Engineering Research Institute (NEERI) located?","options":[{"hi":"नई दिल्ली","en":"New Delhi"},{"hi":"देहरादून","en":"Dehradun"},{"hi":"भोपाल","en":"Bhopal"},{"hi":"नागपुर","en":"Nagpur"}],"answer":3,"explanation_hi":"राष्ट्रीय पर्यावरण अभियान्त्रिकी अनुसंधान संस्थान (NEERI) नागपुर, महाराष्ट्र में स्थित है।","explanation_en":"The National Environmental Engineering Research Institute (NEERI) is located in Nagpur, Maharashtra."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1987 का मॉन्ट्रियल प्रोटोकॉल मुख्य रूप से किससे संबंधित है?","question_en":"Question 25: What is the 1987 Montreal Protocol primarily related to?","options":[{"hi":"आर्द्रभूमि संरक्षण","en":"Wetland conservation"},{"hi":"ओजोन-क्षयकारी पदार्थों का नियंत्रण","en":"Control of ozone-depleting substances"},{"hi":"ग्रीनहाउस गैस उत्सर्जन में कमी","en":"Reduction of greenhouse gas emissions"},{"hi":"खतरनाक रसायनों का व्यापार","en":"Trade of hazardous chemicals"}],"answer":1,"explanation_hi":"मॉन्ट्रियल प्रोटोकॉल ओजोन-क्षयकारी पदार्थों (CFCs आदि) को चरणबद्ध तरीके से हटाने का प्रमुख समझौता है।","explanation_en":"The Montreal Protocol is a major agreement for the phase-out of ozone-depleting substances (like CFCs)."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जलवायु परिवर्तन पर COP-29 सम्मेलन 2024 में कहाँ आयोजित किया गया?","question_en":"Question 26: Where was the COP-29 conference on climate change held in 2024?","options":[{"hi":"पेरिस","en":"Paris"},{"hi":"बेलेम","en":"Belem"},{"hi":"बाकू","en":"Baku"},{"hi":"अंताल्या","en":"Antalya"}],"answer":2,"explanation_hi":"COP-29 सम्मेलन 2024 में बाकू में आयोजित किया गया, जहाँ 300 अरब डॉलर के नए जलवायु-वित्त लक्ष्य पर बल दिया गया।","explanation_en":"The COP-29 conference was held in 2024 in Baku, focusing on a new climate-finance target of 300 billion dollars."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में पर्यावरण संरक्षण अधिनियम किस वर्ष पारित किया गया था?","question_en":"Question 27: In which year was the Environment Protection Act passed in India?","options":[{"hi":"1986","en":"1986"},{"hi":"1980","en":"1980"},{"hi":"1972","en":"1972"},{"hi":"1974","en":"1974"}],"answer":0,"explanation_hi":"पर्यावरण संरक्षण अधिनियम 1986 में पारित किया गया था।","explanation_en":"The Environment Protection Act was passed in 1986."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वन्यजीव संरक्षण अधिनियम 1972 के तहत सबसे उच्च सुरक्षा प्राप्त पशु प्रजातियों को किस अनुसूची में रखा गया है?","question_en":"Question 28: Under the Wildlife Protection Act 1972, which schedule contains the animal species with the highest protection?","options":[{"hi":"अनुसूची III","en":"Schedule III"},{"hi":"अनुसूची IV","en":"Schedule IV"},{"hi":"अनुसूची II","en":"Schedule II"},{"hi":"अनुसूची I","en":"Schedule I"}],"answer":3,"explanation_hi":"अनुसूची I में सबसे उच्च सुरक्षा प्राप्त पशु प्रजातियाँ होती हैं, और इनके अवैध शिकार पर कठोर दंड का प्रावधान है।","explanation_en":"Schedule I contains animal species with the highest protection, and illegal hunting carries strict penalties."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'इकोलॉजी' (Ecology) शब्द का प्रयोग सबसे पहले किसने किया था?","question_en":"Question 29: Who first used the term 'Ecology'?","options":[{"hi":"टांसले","en":"Tansley"},{"hi":"अर्नेस्ट हैकल","en":"Ernst Haeckel"},{"hi":"ओडम","en":"Odum"},{"hi":"वाल्टर जी. रोजेन","en":"Walter G. Rosen"}],"answer":1,"explanation_hi":"इकोलॉजी शब्द का सर्वप्रथम प्रयोग अर्नेस्ट हैकल ने किया था।","explanation_en":"The term Ecology was first used by Ernst Haeckel."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गहन पारिस्थितिकी (Deep Ecology) की संकल्पना का प्रतिपादन 1973 में किसने किया था?","question_en":"Question 30: Who propounded the concept of Deep Ecology in 1973?","options":[{"hi":"नॉर्मन मायर्स","en":"Norman Myers"},{"hi":"ग्रीनेल","en":"Grinnell"},{"hi":"अर्नीज नेस","en":"Arne Naess"},{"hi":"चार्ल्स एल्टन","en":"Charles Elton"}],"answer":2,"explanation_hi":"गहन पारिस्थितिकी की अवधारणा अर्नीज नेस द्वारा 1973 में दी गई थी।","explanation_en":"The concept of Deep Ecology was proposed by Arne Naess in 1973."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पृथ्वी के वायुमंडल में आर्गन गैस का लगभग प्रतिशत कितना है?","question_en":"Question 31: What is the approximate percentage of Argon gas in Earth's atmosphere?","options":[{"hi":"0.93%","en":"0.93%"},{"hi":"21%","en":"21%"},{"hi":"0.03%","en":"0.03%"},{"hi":"0.001%","en":"0.001%"}],"answer":0,"explanation_hi":"वायुमंडल में आर्गन की मात्रा लगभग 0.93% होती है।","explanation_en":"The amount of Argon in the atmosphere is approximately 0.93%."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व ओजोन दिवस कब मनाया जाता है?","question_en":"Question 32: When is World Ozone Day celebrated?","options":[{"hi":"5 जून","en":"5 June"},{"hi":"22 अप्रैल","en":"22 April"},{"hi":"22 मई","en":"22 May"},{"hi":"16 सितंबर","en":"16 September"}],"answer":3,"explanation_hi":"ओजोन परत के संरक्षण के प्रति जागरूकता के लिए 16 सितंबर को विश्व ओजोन दिवस मनाया जाता है।","explanation_en":"World Ozone Day is celebrated on 16 September to raise awareness about the preservation of the ozone layer."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उष्णकटिबंधीय घासभूमि 'लानोस' किस क्षेत्र में पाई जाती है?","question_en":"Question 33: In which region is the tropical grassland 'Llanos' found?","options":[{"hi":"दक्षिण अफ्रीका","en":"South Africa"},{"hi":"वेनेजुएला","en":"Venezuela"},{"hi":"ब्राजील","en":"Brazil"},{"hi":"अर्जेंटीना","en":"Argentina"}],"answer":1,"explanation_hi":"लानोस उष्णकटिबंधीय घास के मैदान हैं जो वेनेजुएला में पाए जाते हैं।","explanation_en":"Llanos are tropical grasslands found in Venezuela."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"शीतोष्ण घास का मैदान 'पंपास' किन देशों से संबंधित है?","question_en":"Question 34: The temperate grassland 'Pampas' is related to which countries?","options":[{"hi":"ऑस्ट्रेलिया और न्यूजीलैंड","en":"Australia and New Zealand"},{"hi":"अमेरिका और कनाडा","en":"USA and Canada"},{"hi":"अर्जेंटीना और उरुग्वे","en":"Argentina and Uruguay"},{"hi":"दक्षिण अफ्रीका और नामीबिया","en":"South Africa and Namibia"}],"answer":2,"explanation_hi":"पंपास शीतोष्ण घासभूमियाँ हैं जो मुख्यतः अर्जेंटीना और उरुग्वे में विस्तृत हैं।","explanation_en":"Pampas are temperate grasslands primarily spread across Argentina and Uruguay."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"CITES के किस परिशिष्ट में सबसे अधिक लुप्तप्राय प्रजातियों को रखा जाता है?","question_en":"Question 35: In which Appendix of CITES are the most endangered species placed?","options":[{"hi":"परिशिष्ट I","en":"Appendix I"},{"hi":"परिशिष्ट II","en":"Appendix II"},{"hi":"परिशिष्ट III","en":"Appendix III"},{"hi":"परिशिष्ट IV","en":"Appendix IV"}],"answer":0,"explanation_hi":"CITES के परिशिष्ट I में सबसे अधिक लुप्तप्राय प्रजातियों को रखा जाता है जिनका व्यापार असाधारण मामलों में ही संभव है।","explanation_en":"The most endangered species are placed in Appendix I of CITES, whose trade is possible only in exceptional cases."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1983 में कर्नाटक में शुरू हुए अप्पिको आंदोलन के प्रणेता कौन थे?","question_en":"Question 36: Who was the pioneer of the Appiko movement started in Karnataka in 1983?","options":[{"hi":"सुंदरलाल बहुगुणा","en":"Sunderlal Bahuguna"},{"hi":"चंडी प्रसाद भट्ट","en":"Chandi Prasad Bhatt"},{"hi":"मेधा पाटेकर","en":"Medha Patkar"},{"hi":"श्री पांडुरंग हेगड़े","en":"Shri Pandurang Hegde"}],"answer":3,"explanation_hi":"पर्यावरण संरक्षण से जुड़े अप्पिको आंदोलन का नेतृत्व कर्नाटक में श्री पांडुरंग हेगड़े ने किया था।","explanation_en":"The Appiko movement related to environmental conservation was led by Shri Pandurang Hegde in Karnataka."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जल अधिनियम (Water Act) किस वर्ष लागू किया गया था?","question_en":"Question 37: In which year was the Water Act enacted?","options":[{"hi":"1972","en":"1972"},{"hi":"1974","en":"1974"},{"hi":"1981","en":"1981"},{"hi":"1986","en":"1986"}],"answer":1,"explanation_hi":"प्रदूषण की रोकथाम के लिए भारत में जल अधिनियम 1974 में पारित किया गया था।","explanation_en":"The Water Act in India was passed in 1974 for the prevention of pollution."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दलहनी पौधों में नाइट्रोजन स्थिरीकरण के लिए कौन-सा सूक्ष्म पोषक तत्व आवश्यक है?","question_en":"Question 38: Which micronutrient is essential for nitrogen fixation in leguminous plants?","options":[{"hi":"कैल्शियम (Ca)","en":"Calcium (Ca)"},{"hi":"कॉपर (Cu)","en":"Copper (Cu)"},{"hi":"मोलिब्डेनम (Mo)","en":"Molybdenum (Mo)"},{"hi":"जिंक (Zn)","en":"Zinc (Zn)"}],"answer":2,"explanation_hi":"मोलिब्डेनम (Mo) दलहनों में नाइट्रोजन स्थिरीकरण के कार्य में महत्वपूर्ण भूमिका निभाता है।","explanation_en":"Molybdenum (Mo) plays a crucial role in nitrogen fixation in legumes."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में सर्वाधिक जैव विविधता वाला क्षेत्र कौन-सा है?","question_en":"Question 39: Which is the region with the highest biodiversity in India?","options":[{"hi":"पश्चिमी घाट","en":"Western Ghats"},{"hi":"गंगा का मैदान","en":"Ganges plain"},{"hi":"मरुस्थल","en":"Desert"},{"hi":"ट्रांस हिमालय","en":"Trans-Himalaya"}],"answer":0,"explanation_hi":"पश्चिमी घाट भारत का सबसे बड़ा संरक्षित वन क्षेत्र है और यहाँ सर्वाधिक जैव विविधता पाई जाती है।","explanation_en":"The Western Ghats is India's largest protected forest area and holds the highest biodiversity."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"समुद्र में प्रकाशमंडल (Photic zone) सामान्यतः कितनी गहराई तक माना जाता है?","question_en":"Question 40: Up to what depth is the photic zone generally considered in the ocean?","options":[{"hi":"50 मीटर","en":"50 meters"},{"hi":"100 मीटर","en":"100 meters"},{"hi":"500 मीटर","en":"500 meters"},{"hi":"200 मीटर","en":"200 meters"}],"answer":3,"explanation_hi":"समुद्र में प्रकाशमंडल लगभग 200 मीटर की गहराई तक होता है जहाँ वनस्पति प्लवक पनपते हैं।","explanation_en":"The photic zone in the ocean extends up to about 200 meters deep where phytoplankton thrive."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सामान्य वर्षा का pH मान लगभग कितना होता है, जिससे कम होने पर इसे अम्ल वर्षा कहा जाता है?","question_en":"Question 41: What is the approximate pH value of normal rain, below which it is called acid rain?","options":[{"hi":"4.0","en":"4.0"},{"hi":"5.6","en":"5.6"},{"hi":"7.0","en":"7.0"},{"hi":"6.5","en":"6.5"}],"answer":1,"explanation_hi":"सामान्य वर्षा का pH लगभग 5.6 होता है; इससे कम pH अम्ल वर्षा की दिशा दिखाता है।","explanation_en":"Normal rain has a pH of about 5.6; a pH lower than this indicates acid rain."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कोयले के धूल-कणों से मानव शरीर में कौन-सा रोग होता है?","question_en":"Question 42: Which disease is caused in the human body by coal dust particles?","options":[{"hi":"सिलिकोसिस","en":"Silicosis"},{"hi":"बिसिनोसिस","en":"Byssinosis"},{"hi":"ऐन्थ्राकोसिस","en":"Anthracosis"},{"hi":"बेगासोसिस","en":"Bagassosis"}],"answer":2,"explanation_hi":"कोयले की धूल के संपर्क में आने से श्वसन तंत्र में ऐन्थ्राकोसिस रोग हो जाता है।","explanation_en":"Exposure to coal dust causes Anthracosis disease in the respiratory system."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ऊर्जा स्थानांतरण के '10% नियम' का प्रतिपादन 1942 में किसने किया था?","question_en":"Question 43: Who propounded the '10% rule' of energy transfer in 1942?","options":[{"hi":"लिंडेमान","en":"Lindeman"},{"hi":"चार्ल्स एल्टन","en":"Charles Elton"},{"hi":"ओडम","en":"Odum"},{"hi":"अर्नेस्ट हैकल","en":"Ernst Haeckel"}],"answer":0,"explanation_hi":"लिंडेमान ने बताया था कि एक पोषण स्तर से दूसरे में मात्र लगभग 10% ऊर्जा ही स्थानांतरित होती है।","explanation_en":"Lindeman stated that only about 10% of energy is transferred from one trophic level to another."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दाचीगाम राष्ट्रीय उद्यान विशेष रूप से किस पशु के संरक्षण के लिए प्रसिद्ध है?","question_en":"Question 44: Dachigam National Park is specifically famous for the conservation of which animal?","options":[{"hi":"एक-सींग वाला गैंडा","en":"One-horned rhinoceros"},{"hi":"एशियाई शेर","en":"Asiatic lion"},{"hi":"हिम तेंदुआ","en":"Snow leopard"},{"hi":"हंगुल / कश्मीरी मृग","en":"Hangul / Kashmiri Stag"}],"answer":3,"explanation_hi":"हंगुल यूरोपियन लाल हिरण समूह का जीव है, जो मुख्य रूप से दाचीगाम राष्ट्रीय उद्यान से जुड़ा है।","explanation_en":"Hangul is an animal of the European red deer group, primarily associated with Dachigam National Park."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अंतरराष्ट्रीय प्रकृति संरक्षण संघ (IUCN) का मुख्यालय कहाँ स्थित है?","question_en":"Question 45: Where is the headquarters of the International Union for Conservation of Nature (IUCN) located?","options":[{"hi":"नैरोबी, केन्या","en":"Nairobi, Kenya"},{"hi":"ग्लैंड, स्विट्जरलैंड","en":"Gland, Switzerland"},{"hi":"जेनेवा, स्विट्जरलैंड","en":"Geneva, Switzerland"},{"hi":"योकोहामा, जापान","en":"Yokohama, Japan"}],"answer":1,"explanation_hi":"IUCN की स्थापना 1948 में हुई थी और इसका मुख्यालय ग्लैंड, स्विट्जरलैंड में स्थित है।","explanation_en":"IUCN was established in 1948 and its headquarters is located in Gland, Switzerland."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सागर की तलहटी पर रहने वाले जीवों को क्या कहा जाता है?","question_en":"Question 46: What are the organisms living on the ocean floor called?","options":[{"hi":"नेक्टन","en":"Nekton"},{"hi":"प्लवक","en":"Plankton"},{"hi":"बेंथोस","en":"Benthos"},{"hi":"क्रस्टेशिया","en":"Crustacea"}],"answer":2,"explanation_hi":"बेंथोस वे जीव हैं जो गहरे समुद्र या सागर की तलहटी (bottom) पर निवास करते हैं।","explanation_en":"Benthos are organisms that live on the deep ocean floor or bottom of the sea."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में किस बाघ रिजर्व में बाघों का घनत्व सर्वाधिक है?","question_en":"Question 47: Which tiger reserve in India has the highest density of tigers?","options":[{"hi":"काजीरंगा","en":"Kaziranga"},{"hi":"नागार्जुनसागर-श्रीशैलम","en":"Nagarjunasagar-Srisailam"},{"hi":"जिम कॉर्बेट","en":"Jim Corbett"},{"hi":"पेंच","en":"Pench"}],"answer":2,"explanation_hi":"'भारत में बाघों की स्थिति 2022' (NTCA/WII) रिपोर्ट के अनुसार, दिए गए विकल्पों में जिम कॉर्बेट बाघ रिजर्व में बाघों का घनत्व सर्वाधिक है (लगभग 14 बाघ प्रति 100 वर्ग किमी), साथ ही यहाँ बाघों की कुल संख्या भी सर्वाधिक है।","explanation_en":"According to the 'Status of Tigers in India 2022' (NTCA/WII) report, among the given options Jim Corbett tiger reserve has the highest tiger density (about 14 tigers per 100 sq km) and also the highest total tiger count."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1986 में स्थापित भारत का पहला जैवमंडल आरक्षित क्षेत्र कौन-सा है?","question_en":"Question 48: Which is India's first biosphere reserve established in 1986?","options":[{"hi":"नंदा देवी","en":"Nanda Devi"},{"hi":"सुंदरबन","en":"Sundarbans"},{"hi":"मन्नार की खाड़ी","en":"Gulf of Mannar"},{"hi":"नीलगिरि","en":"Nilgiri"}],"answer":3,"explanation_hi":"भारत का पहला जैवमंडल आरक्षित क्षेत्र 1986 में नीलगिरि क्षेत्र (तमिलनाडु, केरल, कर्नाटक) में स्थापित हुआ था।","explanation_en":"India's first biosphere reserve was established in 1986 in the Nilgiri region (Tamil Nadu, Kerala, Karnataka)."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: खाद्य जाल तब बनता है जब कई खाद्य श्रृंखलाएँ आपस में जुड़ जाती हैं।\nकथन 2: ऊर्जा पिरामिड जलीय पारितंत्र में हमेशा उल्टा होता है।","question_en":"Question 49: Consider the following statements:\nStatement 1: A food web is formed when multiple food chains interconnect.\nStatement 2: The energy pyramid is always inverted in an aquatic ecosystem.","options":[{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"ऊर्जा पिरामिड ऊष्मागतिकी के कारण सदैव सीधा होता है; केवल जीव भार का पिरामिड जलीय पारितंत्र में उल्टा हो सकता है।","explanation_en":"The energy pyramid is always upright due to thermodynamics; only the biomass pyramid can be inverted in an aquatic ecosystem."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गंगा का मैदान जैव-भौगोलिक क्षेत्र भारत के संपूर्ण भू-भाग के कितने प्रतिशत भाग पर फैला है?","question_en":"Question 50: What percentage of India's total landmass does the Ganges plain biogeographic region cover?","options":[{"hi":"43%","en":"43%"},{"hi":"11%","en":"11%"},{"hi":"15.6%","en":"15.6%"},{"hi":"5.8%","en":"5.8%"}],"answer":1,"explanation_hi":"गंगा का मैदान सर्वाधिक उर्वर जैव-भौगोलिक क्षेत्र है, जो भारत के संपूर्ण भू-भाग के लगभग 11% (10.8%) पर विस्तृत है।","explanation_en":"The Ganges plain is the most fertile biogeographic region, covering about 11% (10.8%) of India's total landmass."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
