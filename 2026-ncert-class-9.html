@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"PCS • NCERT CLASS 9 • Book 2","highlight":"NCERT CLASS 9","shortTitle":"PCS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • NCERT CLASS 9 • Book 2","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-pcs-ncert-class-9-book-2-ncert-class-9-20260729-1k2y5","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-29","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय भ्रूणविज्ञान के जनक के रूप में किसे जाना जाता है और जिन्होंने 1950 में 'एन इंट्रोडक्शन टू द एम्ब्रियोलॉजी ऑफ एंजियोस्पर्म' पुस्तक लिखी थी?","question_en":"Question 1: Who is known as the 'Father of Indian Embryology' and authored 'An Introduction to the Embryology of Angiosperms' in 1950?","options":[{"hi":"पी. माहेश्वरी","en":"P. Maheshwari"},{"hi":"बीरबल साहनी","en":"Birbal Sahni"},{"hi":"मेघनाद साहा","en":"Meghnad Saha"},{"hi":"जे. क्रेग वेंटर","en":"J. Craig Venter"}],"answer":0,"explanation_hi":"पी. माहेश्वरी को भारतीय भ्रूणविज्ञान का जनक माना जाता है और उन्होंने 1950 में 'एन इंट्रोडक्शन टू द एम्ब्रियोलॉजी ऑफ एंजियोस्पर्म' नामक प्रसिद्ध पुस्तक लिखी थी।","explanation_en":"P. Maheshwari is the Father of Indian Embryology and wrote the classic book 'An Introduction to the Embryology of Angiosperms' in 1950."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1957 में राम बक्स सिंह द्वारा भारत का पहला वैज्ञानिक रूप से डिजाइन किया गया बायोगैस संयंत्र कहाँ स्थापित किया गया था?","question_en":"Question 2: Where was India's first scientifically designed biogas plant established in 1957 by Ram Bux Singh?","options":[{"hi":"ट्रॉम्बे","en":"Trombay"},{"hi":"पुणे","en":"Pune"},{"hi":"कोयंबटूर","en":"Coimbatore"},{"hi":"रामनगर","en":"Ramnagar"}],"answer":3,"explanation_hi":"राम बक्स सिंह ने 1957 में उत्तर प्रदेश के सीतापुर जिले के रामनगर में भारत का पहला वैज्ञानिक रूप से डिजाइन किया गया बायोगैस संयंत्र स्थापित किया था।","explanation_en":"Ram Bux Singh established India's first scientifically designed biogas plant at Ramnagar, Sitapur in Uttar Pradesh in 1957."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: पक्के टाइगर रिजर्व अरुणाचल प्रदेश में स्थित है।\nकथन 2: यह हॉर्नबिल की चार विशिष्ट प्रजातियों का समर्थन करने के लिए जाना जाता है।","question_en":"Question 3: Consider the following statements:\nStatement 1: Pakke Tiger Reserve is located in Arunachal Pradesh.\nStatement 2: It is known for supporting four distinct species of hornbills.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"पक्के टाइगर रिजर्व अरुणाचल प्रदेश में है और यह हॉर्नबिल की चार प्रजातियों को आश्रय देने के लिए प्रसिद्ध है।","explanation_en":"Pakke Tiger Reserve is in Arunachal Pradesh and supports four species of hornbills."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पश्चिमी घाट में पर्पल फ्रॉग (नासीकाबट्राचस सह्याद्रेंसिस) की खोज किस वर्ष की गई थी?","question_en":"Question 4: In which year was the Purple Frog (Nasikabatrachus sahyadrensis) discovered in the Western Ghats?","options":[{"hi":"1951","en":"1951"},{"hi":"1957","en":"1957"},{"hi":"2003","en":"2003"},{"hi":"2010","en":"2010"}],"answer":2,"explanation_hi":"पर्पल फ्रॉग (नासीकाबट्राचस सह्याद्रेंसिस) को औपचारिक रूप से 2003 में पश्चिमी घाट में खोजा एवं वर्णित किया गया था।","explanation_en":"The Purple Frog (Nasikabatrachus sahyadrensis) was formally discovered and described in 2003 in the Western Ghats."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मणिपुर के संगाई हिरण को फिर से खोजे जाने से पहले किस वर्ष विलुप्त घोषित किया गया था?","question_en":"Question 5: In which year was the Sangai deer of Manipur declared extinct before being rediscovered later?","options":[{"hi":"1951","en":"1951"},{"hi":"1953","en":"1953"},{"hi":"1957","en":"1957"},{"hi":"2003","en":"2003"}],"answer":0,"explanation_hi":"मणिपुर के संगाई हिरण को 1951 में विलुप्त घोषित कर दिया गया था, लेकिन प्रकृतिवादी ई.पी. गी के प्रयासों से 1953 में इसे फिर से खोज लिया गया।","explanation_en":"The Sangai deer of Manipur was declared extinct in 1951 but was rediscovered in 1953 through the efforts of naturalist E. P. Gee."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित खोजों को कालक्रम में व्यवस्थित कीजिए: 1. जे.जे. थॉमसन द्वारा इलेक्ट्रॉनों की खोज, 2. डाल्टन का परमाणु सिद्धांत, 3. चाडविक द्वारा न्यूट्रॉन की खोज, 4. रदरफोर्ड का स्वर्ण पन्नी प्रयोग।","question_en":"Question 6: Arrange the following discoveries in chronological order: 1. J.J. Thomson's discovery of electrons, 2. Dalton's atomic theory, 3. Chadwick's discovery of neutrons, 4. Rutherford's gold foil experiment.","options":[{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"2, 4, 1, 3","en":"2, 4, 1, 3"},{"hi":"1, 4, 3, 2","en":"1, 4, 3, 2"},{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"}],"answer":3,"explanation_hi":"डाल्टन (1808), थॉमसन (1897), रदरफोर्ड (1911) और चाडविक (1932)।","explanation_en":"Dalton (1808), Thomson (1897), Rutherford (1911), Chadwick (1932)."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. एसीटोन, B. क्लोरोफॉर्म, C. अल्कोहल;\nसूची-II: 1. 56 °C, 2. 61 °C, 3. 78 °C।","question_en":"Question 7: Match List-I with List-II:\nList-I: A. Acetone, B. Chloroform, C. Alcohol;\nList-II: 1. 56 °C, 2. 61 °C, 3. 78 °C.","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"}],"answer":2,"explanation_hi":"सही क्वथनांक हैं एसीटोन (56 °C), क्लोरोफॉर्म (61 °C) और अल्कोहल (78 °C)।","explanation_en":"The correct boiling points are Acetone (56 °C), Chloroform (61 °C), and Alcohol (78 °C)."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"खाद्य परिरक्षक के रूप में प्रयुक्त सफेद सिरके में एसिटिक अम्ल का प्रतिशत कितना होता है?","question_en":"Question 8: What is the percentage of acetic acid in white vinegar used as a food preservative?","options":[{"hi":"5% v/v","en":"5% v/v"},{"hi":"10% v/v","en":"10% v/v"},{"hi":"15% v/v","en":"15% v/v"},{"hi":"20% v/v","en":"20% v/v"}],"answer":0,"explanation_hi":"सिरका, जिसका उपयोग खाद्य परिरक्षक के रूप में किया जाता है, उसमें 5% v/v एसिटिक अम्ल होता है।","explanation_en":"Vinegar, used as a food preservative, contains 5% v/v acetic acid."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'क्रोमैटोग्राफी' शब्द किस भाषा से लिया गया है?","question_en":"Question 9: The term 'chromatography' is derived from which language?","options":[{"hi":"लैटिन","en":"Latin"},{"hi":"ग्रीक","en":"Greek"},{"hi":"अरबी","en":"Arabic"},{"hi":"फ्रेंच","en":"French"}],"answer":1,"explanation_hi":"क्रोमैटोग्राफी शब्द ग्रीक शब्द 'क्रोमा' (रंग) और 'ग्राफिन' (लिखना) से आया है।","explanation_en":"The word chromatography comes from the Greek words 'chroma' (colour) and 'graphein' (to write)."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1958 में किस वैज्ञानिक ने प्रदर्शित किया कि गाजर के संवहनी फ्लोएम की एकल कोशिकाएं पूरे पौधे में पुनर्जीवित हो सकती हैं?","question_en":"Question 10: Which scientist demonstrated in 1958 that single cells from the vascular phloem of a carrot can regenerate into whole plants?","options":[{"hi":"पी. माहेश्वरी","en":"P. Maheshwari"},{"hi":"बीरबल साहनी","en":"Birbal Sahni"},{"hi":"जे. क्रेग वेंटर","en":"J. Craig Venter"},{"hi":"एफ. सी. स्टीवार्ड","en":"F. C. Steward"}],"answer":3,"explanation_hi":"1958 में, एफ. सी. स्टीवार्ड ने प्रदर्शित किया कि गाजर के फ्लोएम से एकल कोशिकाओं में टोटीपोटेंसी की क्षमता होती है।","explanation_en":"In 1958, F. C. Steward demonstrated that single cells from carrot vascular phloem possess totipotency."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मेघनाद साहा ने तारों के प्रकाश का अध्ययन करने के लिए उनके पदार्थ को गर्म गैस के रूप में माना।\nकथन 2: उन्होंने तारे के अंदर होने वाली हर जटिल प्रतिक्रिया को मॉडल करने का प्रयास किया।","question_en":"Question 11: Consider the following statements:\nStatement 1: Meghnad Saha treated the matter in stars as a hot gas to study their light.\nStatement 2: He attempted to model every complex reaction inside a star.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"मेघनाद साहा ने तारों को गर्म गैस माना और तापमान तथा दबाव पर ध्यान केंद्रित करने के लिए जटिल प्रतिक्रियाओं को नजरअंदाज कर दिया।","explanation_en":"Meghnad Saha treated stars as hot gas and simplified the process by ignoring complex reactions to focus on temperature and pressure."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कितने युग्म सही सुमेलित हैं? 1. डाल्टन - तत्वों के लिए चित्रात्मक प्रतीक, 2. बर्जेलियस - तत्वों के लिए वर्णमाला प्रतीक, 3. जे.जे. थॉमसन - न्यूट्रॉन की खोज।","question_en":"Question 12: How many of the following pairs are correctly matched? 1. Dalton - Pictorial symbols for elements, 2. Berzelius - Alphabetic symbols for elements, 3. J.J. Thomson - Discovery of neutron.","options":[{"hi":"केवल 1 युग्म","en":"Only 1 pair"},{"hi":"केवल 2 युग्म","en":"Only 2 pairs"},{"hi":"सभी 3 युग्म","en":"All 3 pairs"},{"hi":"कोई नहीं","en":"None"}],"answer":1,"explanation_hi":"डाल्टन ने 1803 में चित्रात्मक प्रतीक दिए, बर्जेलियस ने 1813 में वर्णमाला प्रतीकों का सुझाव दिया, लेकिन जे.जे. थॉमसन ने इलेक्ट्रॉन की खोज की थी।","explanation_en":"Dalton introduced pictorial symbols in 1803, while Berzelius suggested alphabetic symbols in 1813. J.J. Thomson discovered the electron, not the neutron."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गणितीय ग्रंथ 'गणितकौमुदी', जिसमें गति और दूरी पर आधारित समस्याएं शामिल हैं, किस सदी का है?","question_en":"Question 13: The mathematical text 'Ganitakaumudi', which contains problems based on speed and distance, dates back to which century?","options":[{"hi":"दूसरी सदी ई.","en":"2nd century CE"},{"hi":"पांचवीं सदी ई.","en":"5th century CE"},{"hi":"आठवीं सदी ई.","en":"8th century CE"},{"hi":"14वीं सदी ई.","en":"14th century CE"}],"answer":3,"explanation_hi":"गणितकौमुदी एक व्यापक गणितीय ग्रंथ है जिसे 14वीं सदी ई. में लिखा गया था।","explanation_en":"The mathematical text Ganitakaumudi, which includes speed-related problems, was written in the 14th century CE."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"2010 में, जे. क्रेग वेंटर और उनकी टीम ने किस जीवाणु के पूर्ण डीएनए अनुक्रम को संश्लेषित किया?","question_en":"Question 14: In 2010, J. Craig Venter and his team synthesized the complete DNA sequence of which bacterium?","options":[{"hi":"एस्चेरिचिया कोलाई","en":"Escherichia coli"},{"hi":"माइकोप्लाज्मा माइकोइड्स","en":"Mycoplasma mycoides"},{"hi":"साल्मोनेला टाइफी","en":"Salmonella typhi"},{"hi":"बैसिलस सबटिलिस","en":"Bacillus subtilis"}],"answer":1,"explanation_hi":"2010 में, जे. क्रेग वेंटर की टीम ने माइकोप्लाज्मा माइकोइड्स जीवाणु के पूर्ण डीएनए अनुक्रम का सटीक संश्लेषण किया।","explanation_en":"In 2010, J. Craig Venter and his team synthesised the exact complete DNA sequence of the bacterium Mycoplasma mycoides."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. लोहा, B. पारा, C. टंगस्टन;\nसूची-II: 1. फेरम, 2. हाइड्रागाइरोस, 3. वोलफ्राम।","question_en":"Question 15: Match List-I with List-II:\nList-I: A. Iron, B. Mercury, C. Tungsten;\nList-II: 1. Ferrum, 2. Hydrargyros, 3. Wolfram.","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"}],"answer":1,"explanation_hi":"तत्वों के लैटिन नाम लोहे के लिए फेरम, पारे के लिए हाइड्रागाइरोस और टंगस्टन के लिए वोलफ्राम हैं।","explanation_en":"The Latin names are Ferrum for Iron, Hydrargyros for Mercury, and Wolfram for Tungsten."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: पारंपरिक पनचक्की या घराट गतिज ऊर्जा को स्थितिज ऊर्जा में परिवर्तित करके काम करती है।\nकथन 2: ऐसी पनचक्कियों का उपयोग मुख्य रूप से तटीय मैदानों में किया जाता है।","question_en":"Question 16: Consider the following statements:\nStatement 1: A traditional watermill or panchakki operates by converting kinetic energy into potential energy.\nStatement 2: Such watermills are primarily used in coastal plains.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"घराट पानी की स्थितिज ऊर्जा को गतिज ऊर्जा में परिवर्तित करता है और इसका उपयोग हिमालयी क्षेत्रों में किया जाता है।","explanation_en":"A gharat converts potential energy of downhill flowing water into kinetic energy and is used in the Himalayan region."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस भारतीय बाल रोग विशेषज्ञ ने ओरल रिहाइड्रेशन सॉल्यूशन का उपयोग करके निर्जलीकरण का उपचार विकसित किया?","question_en":"Question 17: Which Indian paediatrician developed the treatment for dehydration using Oral Rehydration Solution?","options":[{"hi":"बीरबल साहनी","en":"Birbal Sahni"},{"hi":"दिलीप महालनाबिस","en":"Dilip Mahalanabis"},{"hi":"राम बक्स सिंह","en":"Ram Bux Singh"},{"hi":"पी. माहेश्वरी","en":"P. Maheshwari"}],"answer":1,"explanation_hi":"भारतीय बाल रोग विशेषज्ञ दिलीप महालनाबिस ने ओआरएस तैयार किया जिसने रिहाइड्रेशन थेरेपी में क्रांति ला दी।","explanation_en":"Indian paediatrician Dilip Mahalanabis formulated the ORS which revolutionised rehydration therapy."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस संस्थान ने दुनिया की पहली गैर-स्टेरायडल और गैर-हार्मोनल ओरल गर्भनिरोधक गोली विकसित की?","question_en":"Question 18: Which institute developed the world's first non-steroidal and non-hormonal oral contraceptive pill?","options":[{"hi":"बार्क मुंबई","en":"BARC Mumbai"},{"hi":"सीडीआरआई लखनऊ","en":"CDRI Lucknow"},{"hi":"बीएसआईपी लखनऊ","en":"BSIP Lucknow"},{"hi":"आईआईटीएम पुणे","en":"IITM Pune"}],"answer":1,"explanation_hi":"सेंट्रल ड्रग रिसर्च इंस्टीट्यूट (सीडीआरआई), लखनऊ के वैज्ञानिकों ने सेंटक्रोमन (साहेली) के रूप में दुनिया की पहली गैर-स्टेरायडल एवं गैर-हार्मोनल ओरल गर्भनिरोधक गोली विकसित की।","explanation_en":"Scientists at the Central Drug Research Institute (CDRI), Lucknow developed Centchroman (Saheli), the world's first non-steroidal and non-hormonal oral contraceptive pill."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'वल्लम कली' के नाम से प्रसिद्ध पारंपरिक सर्प नौका दौड़ किस राज्य में आयोजित की जाती है?","question_en":"Question 19: The traditional snake boat race known as 'Vallum kalli' is organised in which state?","options":[{"hi":"केरल","en":"Kerala"},{"hi":"तमिलनाडु","en":"Tamil Nadu"},{"hi":"कर्नाटक","en":"Karnataka"},{"hi":"आंध्र प्रदेश","en":"Andhra Pradesh"}],"answer":0,"explanation_hi":"वल्लम कली केरल राज्य में आयोजित होने वाली पारंपरिक सर्प नौका दौड़ है।","explanation_en":"Vallum kalli is the traditional snake boat race held in the state of Kerala."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जे.जे. थॉमसन को गैसों की विद्युत चालकता पर उनके अध्ययन के लिए भौतिकी में नोबेल पुरस्कार किस वर्ष मिला था?","question_en":"Question 20: In which year did J.J. Thomson receive the Nobel Prize in Physics for his studies on the electrical conductivity of gases?","options":[{"hi":"1897","en":"1897"},{"hi":"1906","en":"1906"},{"hi":"1911","en":"1911"},{"hi":"1922","en":"1922"}],"answer":1,"explanation_hi":"जे.जे. थॉमसन को 1906 में गैसों द्वारा विद्युत के चालन पर उनके सैद्धांतिक और प्रायोगिक अन्वेषणों के लिए भौतिकी का नोबेल पुरस्कार मिला।","explanation_en":"J.J. Thomson received the Nobel Prize in Physics in 1906 for his theoretical and experimental investigations on the conduction of electricity by gases."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. कोबाल्ट-60, B. आयोडीन-131, C. कार्बन-14;\nसूची-II: 1. कैंसर का इलाज, 2. गोइटर का इलाज, 3. जीवाश्म की आयु।","question_en":"Question 21: Match List-I with List-II:\nList-I: A. Cobalt-60, B. Iodine-131, C. Carbon-14;\nList-II: 1. Cancer treatment, 2. Goitre treatment, 3. Age of fossils.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"}],"answer":0,"explanation_hi":"कोबाल्ट-60 कैंसर का इलाज करता है, आयोडीन-131 गोइटर का इलाज करता है और कार्बन-14 जीवाश्म की आयु निर्धारित करता है।","explanation_en":"Cobalt-60 treats cancer, Iodine-131 treats goitre, and Carbon-14 determines fossil age."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: वैशेषिक सूत्र उन सटीक अनुपातों को निर्दिष्ट करते हैं जिनमें परमाणु आपस में जुड़ते हैं।\nकथन 2: डेमोक्रिटस ने 'एटोमोस' की अवधारणा को प्रत्यक्ष प्रयोगात्मक अवलोकनों से प्राप्त किया था।","question_en":"Question 22: Consider the following statements:\nStatement 1: The Vaisesika Sutras specify the exact proportions in which parmanus combine.\nStatement 2: Democritus derived the concept of 'atomos' from direct experimental observations.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"आचार्य कणाद के वैशेषिक सूत्र सटीक संयोजनी अनुपातों को निर्दिष्ट नहीं करते हैं। इसके अलावा, एटोमोस की अवधारणा काल्पनिक थी, प्रयोगात्मक नहीं।","explanation_en":"Acharya Kanada's ideas are in the Vaisesika Sutras, but they do not specify exact combining proportions. The concept was imaginary, not experimental."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उन्नत न्यूट्रॉन-प्रकीर्णन प्रयोगों के लिए उपयोग किया जाने वाला ध्रुव रिएक्टर किस संस्थान में स्थित है?","question_en":"Question 23: The Dhruva reactor, used for advanced neutron-scattering experiments, is located at which institution?","options":[{"hi":"आईआईटीएम पुणे","en":"IITM Pune"},{"hi":"टीआईएफआर मुंबई","en":"TIFR Mumbai"},{"hi":"बीएसआईपी लखनऊ","en":"BSIP Lucknow"},{"hi":"बार्क मुंबई","en":"BARC Mumbai"}],"answer":3,"explanation_hi":"मुंबई में भाभा परमाणु अनुसंधान केंद्र ध्रुव रिएक्टर का उपयोग करके उन्नत न्यूट्रॉन-प्रकीर्णन प्रयोगों का नेतृत्व करता है।","explanation_en":"The Bhabha Atomic Research Centre (BARC) in Mumbai leads advanced neutron-scattering experiments using the Dhruva reactor."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नील्स बोर को उनके किस कार्य के लिए 1922 में भौतिकी का नोबेल पुरस्कार मिला था?","question_en":"Question 24: Niels Bohr received the Nobel Prize in Physics in 1922 for his work on which subject?","options":[{"hi":"न्यूट्रॉन की खोज","en":"Discovery of neutron"},{"hi":"परमाणु की संरचना","en":"Structure of the atom"},{"hi":"कृत्रिम रेडियोधर्मिता","en":"Artificial radioactivity"},{"hi":"गैसों की विद्युत चालकता","en":"Electrical conductivity of gases"}],"answer":1,"explanation_hi":"नील्स बोर को परमाणु संरचना में निश्चित ऊर्जा स्तरों का प्रस्ताव देने के लिए 1922 में नोबेल पुरस्कार से सम्मानित किया गया था।","explanation_en":"Niels Bohr was awarded the Nobel Prize in 1922 for proposing fixed energy levels in the atomic structure."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1932 में उपपरमाण्विक कण 'न्यूट्रॉन' की खोज किसने की थी?","question_en":"Question 25: Who discovered the subatomic particle 'neutron' in 1932?","options":[{"hi":"अर्नेस्ट रदरफोर्ड","en":"Ernest Rutherford"},{"hi":"नील्स बोर","en":"Niels Bohr"},{"hi":"जेम्स चाडविक","en":"James Chadwick"},{"hi":"जे.जे. थॉमसन","en":"J.J. Thomson"}],"answer":2,"explanation_hi":"जेम्स चाडविक ने 1932 में न्यूट्रॉन नामक तटस्थ उपपरमाण्विक कण की खोज की थी।","explanation_en":"James Chadwick discovered the neutron, a neutral subatomic particle, in 1932."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पक्के टाइगर रिजर्व में निम्नलिखित में से कितनी हॉर्नबिल प्रजातियाँ दर्ज की गई हैं? 1. रूफस-नेक्ड हॉर्नबिल, 2. ओरिएंटल पाइड हॉर्नबिल, 3. रीथेड हॉर्नबिल।","question_en":"Question 26: How many of the following hornbill species are recorded in the Pakke Tiger Reserve? 1. Rufous-necked Hornbill, 2. Oriental Pied Hornbill, 3. Wreathed Hornbill.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"सभी 3","en":"All 3"},{"hi":"कोई नहीं","en":"None"}],"answer":2,"explanation_hi":"पक्के टाइगर रिजर्व में हॉर्नबिल की चार प्रजातियाँ पाई जाती हैं: रूफस-नेक्ड, ओरिएंटल पाइड, ग्रेट और रीथेड।","explanation_en":"Pakke Tiger Reserve hosts four hornbill species: Rufous-necked, Oriental Pied, Great, and Wreathed."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस प्रख्यात वैज्ञानिक ने लखनऊ में जीवाश्म पौधों के अध्ययन के लिए समर्पित एक संस्थान की स्थापना की थी?","question_en":"Question 27: Which eminent scientist founded an institute in Lucknow dedicated to the study of fossil plants?","options":[{"hi":"मेघनाद साहा","en":"Meghnad Saha"},{"hi":"बीरबल साहनी","en":"Birbal Sahni"},{"hi":"राम बक्स सिंह","en":"Ram Bux Singh"},{"hi":"पी. माहेश्वरी","en":"P. Maheshwari"}],"answer":1,"explanation_hi":"बीरबल साहनी ने प्राचीन जीवाश्म पौधों का अध्ययन करने के लिए लखनऊ में बीरबल साहनी इंस्टीट्यूट ऑफ पेलियोसाइंसेज की स्थापना की।","explanation_en":"Birbal Sahni founded the Birbal Sahni Institute of Palaeosciences in Lucknow to study ancient fossil plants."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारतीय उष्णकटिबंधीय मौसम विज्ञान संस्थान पुणे में स्थित है।\nकथन 2: यह मानसून का अनुकरण करने के लिए विशेष रूप से भारतीय भूमि स्टेशनों के डेटा का उपयोग करता है।","question_en":"Question 28: Consider the following statements:\nStatement 1: The Indian Institute of Tropical Meteorology is located in Pune.\nStatement 2: It uses data exclusively from Indian land stations to simulate the monsoon.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"आईआईटीएम पुणे में है, लेकिन इसके मॉडल मानसून का अनुकरण करने के लिए उपग्रहों, हिंद महासागर के बुआ और अंटार्कटिका के डेटा का उपयोग करते हैं।","explanation_en":"IITM is in Pune, but its models use data from satellites, Indian Ocean buoys, and Antarctica to simulate the monsoon."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गणितीय और खगोलीय ग्रंथ 'आर्यभटीय' किस सदी में लिखा गया था?","question_en":"Question 29: The mathematical and astronomical treatise 'Aryabhatiya' was written in which century?","options":[{"hi":"दूसरी सदी ई.","en":"2nd century CE"},{"hi":"पांचवीं सदी ई.","en":"5th century CE"},{"hi":"आठवीं सदी ई.","en":"8th century CE"},{"hi":"14वीं सदी ई.","en":"14th century CE"}],"answer":1,"explanation_hi":"व्यापक गणितीय ग्रंथ आर्यभटीय 5वीं शताब्दी ईस्वी में लिखा गया था।","explanation_en":"The comprehensive mathematical text Aryabhatiya was authored in the 5th century CE."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित घटनाओं को कालक्रम में व्यवस्थित कीजिए: 1. रामनगर में पहला वैज्ञानिक रूप से डिजाइन किया गया बायोगैस संयंत्र, 2. संगाई हिरण को विलुप्त घोषित किया गया, 3. संगाई हिरण फिर से खोजा गया।","question_en":"Question 30: Arrange the following events in chronological order: 1. First scientifically designed biogas plant in Ramnagar, 2. Sangai deer declared extinct, 3. Sangai deer rediscovered.","options":[{"hi":"2, 3, 1","en":"2, 3, 1"},{"hi":"1, 2, 3","en":"1, 2, 3"},{"hi":"3, 2, 1","en":"3, 2, 1"},{"hi":"2, 1, 3","en":"2, 1, 3"}],"answer":0,"explanation_hi":"संगाई हिरण विलुप्त (1951), फिर से खोजा गया (1953), और रामनगर बायोगैस संयंत्र स्थापित हुआ (1957)।","explanation_en":"Sangai deer extinct (1951), rediscovered (1953), and first Ramnagar biogas plant established (1957)."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. बोरॉन, B. नाइट्रोजन, C. मैग्नीशियम;\nसूची-II: 1. परमाणु क्रमांक 12, 2. परमाणु क्रमांक 7, 3. परमाणु क्रमांक 5।","question_en":"Question 31: Match List-I with List-II:\nList-I: A. Boron, B. Nitrogen, C. Magnesium;\nList-II: 1. Atomic number 12, 2. Atomic number 7, 3. Atomic number 5.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":3,"explanation_hi":"परमाणु क्रमांक इस प्रकार हैं: बोरॉन (5), नाइट्रोजन (7), और मैग्नीशियम (12)।","explanation_en":"The atomic numbers are Boron (5), Nitrogen (7), and Magnesium (12)."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय परमाणु कार्यक्रम के जनक के रूप में किसे जाना जाता है?","question_en":"Question 32: Who is known as the father of the Indian nuclear programme?","options":[{"hi":"राजा रमन्ना","en":"Raja Ramanna"},{"hi":"होमी जहाँगीर भाभा","en":"Homi Jehangir Bhabha"},{"hi":"मेघनाद साहा","en":"Meghnad Saha"},{"hi":"बीरबल साहनी","en":"Birbal Sahni"}],"answer":1,"explanation_hi":"होमी जहाँगीर भाभा ने परमाणु ऊर्जा में अग्रणी योगदान दिया और उन्हें भारतीय परमाणु कार्यक्रम का जनक कहा जाता है।","explanation_en":"Homi Jehangir Bhabha made pioneering contributions to atomic energy and is known as the father of the Indian nuclear programme."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"टाटा इंस्टीट्यूट ऑफ फंडामेंटल रिसर्च की स्थापना किस भारतीय भौतिक विज्ञानी ने की थी?","question_en":"Question 33: Which Indian physicist established the Tata Institute of Fundamental Research?","options":[{"hi":"मेघनाद साहा","en":"Meghnad Saha"},{"hi":"होमी जहाँगीर भाभा","en":"Homi Jehangir Bhabha"},{"hi":"राजा रमन्ना","en":"Raja Ramanna"},{"hi":"सी. वी. रमन","en":"C. V. Raman"}],"answer":1,"explanation_hi":"होमी जहाँगीर भाभा ने टाटा इंस्टीट्यूट ऑफ फंडामेंटल रिसर्च और भाभा परमाणु अनुसंधान केंद्र की स्थापना की थी।","explanation_en":"Homi Jehangir Bhabha established the Tata Institute of Fundamental Research (TIFR) and the Bhabha Atomic Research Centre (BARC)."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"रदरफोर्ड के स्वर्ण पन्नी प्रयोग में, अल्फा कण वास्तव में क्या होता है?","question_en":"Question 34: In Rutherford's gold foil experiment, what exactly is an alpha particle?","options":[{"hi":"तेजी से चलने वाला इलेक्ट्रॉन","en":"A fast-moving electron"},{"hi":"हीलियम परमाणु का नाभिक","en":"A nucleus of a helium atom"},{"hi":"हाइड्रोजन परमाणु का नाभिक","en":"A nucleus of a hydrogen atom"},{"hi":"उच्च ऊर्जा वाला फोटॉन","en":"A high-energy photon"}],"answer":1,"explanation_hi":"अल्फा कण वास्तव में हीलियम परमाणु का नाभिक होता है, जिसमें ठीक दो प्रोटॉन और दो न्यूट्रॉन होते हैं।","explanation_en":"An alpha particle is actually the nucleus of a helium atom, containing exactly two protons and two neutrons."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: एम-शेल परमाणु नाभिक के सबसे निकट का ऊर्जा स्तर है।\nकथन 2: के-शेल में एक परमाणु में अधिकतम ऊर्जा होती है।","question_en":"Question 35: Consider the following statements:\nStatement 1: The M-shell is the energy level closest to the atomic nucleus.\nStatement 2: The K-shell possesses the maximum energy in an atom.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"के-शेल नाभिक के सबसे निकट है और इसमें सबसे कम ऊर्जा होती है, जो बाहर एम-शेल की ओर जाने पर बढ़ती है।","explanation_en":"The K-shell is closest to the nucleus and possesses the least energy, which increases as we move outward to the M-shell."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कितने तत्व अपनी संयोजकता के साथ सही ढंग से सुमेलित हैं? 1. सोडियम - 1, 2. कैल्शियम - 2, 3. एल्युमिनियम - 3।","question_en":"Question 36: How many of the following elements are correctly paired with their valency? 1. Sodium - 1, 2. Calcium - 2, 3. Aluminium - 3.","options":[{"hi":"केवल 1 युग्म","en":"Only 1 pair"},{"hi":"केवल 2 युग्म","en":"Only 2 pairs"},{"hi":"सभी 3 युग्म","en":"All 3 pairs"},{"hi":"कोई नहीं","en":"None"}],"answer":2,"explanation_hi":"संयोजक क्षमताएं (संयोजकता) सही ढंग से सुमेलित हैं: सोडियम 1 है, कैल्शियम 2 है, और एल्यूमीनियम 3 है।","explanation_en":"The combining capacities (valencies) are correctly matched: Sodium is 1, Calcium is 2, and Aluminium is 3."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस भौतिक विज्ञानी ने पहली बार देखी गई एक्स-रे लाइन का नाम 'K' रखा था, जिसके कारण परमाणु कोशों का नामकरण हुआ?","question_en":"Question 37: Which physicist named the first observed X-ray line 'K', which led to the naming of atomic shells?","options":[{"hi":"अर्नेस्ट रदरफोर्ड","en":"Ernest Rutherford"},{"hi":"चार्ल्स बार्कला","en":"Charles Barkla"},{"hi":"नील्स बोर","en":"Niels Bohr"},{"hi":"जे.जे. थॉमसन","en":"J.J. Thomson"}],"answer":1,"explanation_hi":"भौतिक विज्ञानी चार्ल्स बार्कला ने एक्स-रे लाइन को 'K' नाम दिया और इससे पहले के अक्षरों के लिए स्थान छोड़ दिया, जिससे बाद में K, L, M, N कोश संकेतन की शुरुआत हुई।","explanation_en":"Physicist Charles Barkla named an X-ray line 'K' and left room for earlier letters, which later led to the K, L, M, N shell notation."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"क्लोरीन समस्थानिकों Cl-35 और Cl-37 की प्राकृतिक रूप से उपलब्धता का अनुपात लगभग कितना है?","question_en":"Question 38: The natural occurrence of chlorine isotopes Cl-35 and Cl-37 is roughly in what ratio?","options":[{"hi":"1:1","en":"1:1"},{"hi":"2:1","en":"2:1"},{"hi":"3:1","en":"3:1"},{"hi":"4:1","en":"4:1"}],"answer":2,"explanation_hi":"दो क्लोरीन समस्थानिकों (Cl-35 और Cl-37) की प्राकृतिक प्रचुरता लगभग 75% और 25% है, जो 3:1 का अनुपात है।","explanation_en":"The natural relative abundance of the two chlorine isotopes (Cl-35 and Cl-37) is approximately 75% and 25%, a 3:1 ratio."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. कैल्शियम ऑक्साइड, B. फेरिक ऑक्साइड, C. मैग्नीशियम हाइड्रॉक्साइड;\nसूची-II: 1. CaO, 2. Fe2O3, 3. Mg(OH)2।","question_en":"Question 39: Match List-I with List-II:\nList-I: A. Calcium oxide, B. Ferric oxide, C. Magnesium hydroxide;\nList-II: 1. CaO, 2. Fe2O3, 3. Mg(OH)2.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"}],"answer":0,"explanation_hi":"रासायनिक सूत्र कैल्शियम ऑक्साइड के लिए CaO, फेरिक ऑक्साइड के लिए Fe2O3 और मैग्नीशियम हाइड्रॉक्साइड के लिए Mg(OH)2 हैं।","explanation_en":"The chemical formulae are CaO for calcium oxide, Fe2O3 for ferric oxide, and Mg(OH)2 for magnesium hydroxide."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: न्यूट्रॉन एक धनात्मक विद्युत आवेश ले जाते हैं।\nकथन 2: हाइड्रोजन परमाणु के नाभिक में दो न्यूट्रॉन होते हैं।","question_en":"Question 40: Consider the following statements:\nStatement 1: Neutrons carry a positive electrical charge.\nStatement 2: The nucleus of a hydrogen atom contains two neutrons.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"न्यूट्रॉन पर कोई विद्युत आवेश नहीं होता है और ये एक सामान्य हाइड्रोजन परमाणु (प्रोटियम) के नाभिक में अनुपस्थित होते हैं।","explanation_en":"Neutrons have no electrical charge and are absent in the nucleus of a normal hydrogen atom (protium)."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राकृतिक रूप से पाए जाने वाले हाइड्रोजन का लगभग 99.98% हिस्सा कौन सा समस्थानिक है?","question_en":"Question 41: Which isotope constitutes approximately 99.98% of naturally occurring hydrogen?","options":[{"hi":"प्रोटियम","en":"Protium"},{"hi":"ड्यूटेरियम","en":"Deuterium"},{"hi":"ट्रिटियम","en":"Tritium"},{"hi":"भारी हाइड्रोजन","en":"Heavy Hydrogen"}],"answer":0,"explanation_hi":"प्राकृतिक रूप से पाए जाने वाले हाइड्रोजन में लगभग 99.98% प्रोटियम होता है, जिसमें एक प्रोटॉन और शून्य न्यूट्रॉन होता है।","explanation_en":"Naturally occurring hydrogen consists of approximately 99.98% protium, which contains one proton and zero neutrons."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"रदरफोर्ड की गणना के अनुसार, परमाणु नाभिक का अनुमानित व्यास कितना है?","question_en":"Question 42: According to Rutherford's calculations, what is the approximate diameter of the atomic nucleus?","options":[{"hi":"10^-5 मीटर","en":"10^-5 m"},{"hi":"10^-10 मीटर","en":"10^-10 m"},{"hi":"10^-12 मीटर","en":"10^-12 m"},{"hi":"10^-15 मीटर","en":"10^-15 m"}],"answer":3,"explanation_hi":"रदरफोर्ड ने गणना की कि परमाणु का व्यास लगभग 10^-10 मीटर और घने नाभिक का व्यास लगभग 10^-15 मीटर होता है।","explanation_en":"Rutherford calculated the diameter of the atom to be around 10^-10 m and the dense nucleus to be around 10^-15 m."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. लोहे का नाभिक, B. यूरेनियम का नाभिक, C. कार्बन का नाभिक;\nसूची-II: 1. 26 प्रोटॉन, 2. 92 प्रोटॉन, 3. 6 प्रोटॉन।","question_en":"Question 43: Match List-I with List-II:\nList-I: A. Iron nucleus, B. Uranium nucleus, C. Carbon nucleus;\nList-II: 1. 26 protons, 2. 92 protons, 3. 6 protons.","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"}],"answer":0,"explanation_hi":"प्रोटॉन की संख्या तत्व को निर्धारित करती है: कार्बन में 6, आयरन में 26, और यूरेनियम में 92 प्रोटॉन होते हैं।","explanation_en":"The number of protons determines the element: Carbon has 6, Iron has 26, and Uranium has 92 protons."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: जे.जे. थॉमसन ने पदार्थ के अविभाज्य कणों को 'एटोमोस' कहा था।\nकथन 2: परमाणु की अवधारणा थॉमसन के 1897 के प्रयोगों से उत्पन्न हुई थी।","question_en":"Question 44: Consider the following statements:\nStatement 1: J.J. Thomson called the indivisible particles of matter 'atomos'.\nStatement 2: The concept of the atom originated from Thomson's 1897 experiments.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"यूनानी दार्शनिक ल्यूसिपस और डेमोक्रिटस ने थॉमसन के 1897 के प्रयोग से बहुत पहले एक काल्पनिक अवधारणा के रूप में 'एटोमोस' शब्द गढ़ा था।","explanation_en":"The Greek philosophers Leucippus and Democritus coined the term 'atomos' as an imaginary concept long before Thomson's 1897 experiment."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आइजैक न्यूटन ने गति के अपने तीन नियम किस वर्ष प्रस्तुत किए थे?","question_en":"Question 45: In which year did Isaac Newton present his three laws of motion?","options":[{"hi":"1687","en":"1687"},{"hi":"1787","en":"1787"},{"hi":"1808","en":"1808"},{"hi":"1813","en":"1813"}],"answer":0,"explanation_hi":"आइजैक न्यूटन ने 1687 में प्रकाशित अपने निर्णायक कार्य 'प्रिंसिपिया' में गति के तीन नियम प्रस्तुत किए।","explanation_en":"Isaac Newton presented the three laws of motion in his defining work 'Principia', published in the year 1687."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1813 में किस वैज्ञानिक ने सुझाव दिया था कि तत्वों के प्रतीक उनके लैटिन नामों से लिए जाने चाहिए?","question_en":"Question 46: Which scientist suggested in 1813 that the symbols of elements should be derived from their Latin names?","options":[{"hi":"जॉन डाल्टन","en":"John Dalton"},{"hi":"जे.जे. थॉमसन","en":"J.J. Thomson"},{"hi":"जोंस जैकब बर्जेलियस","en":"Jöns Jacob Berzelius"},{"hi":"अर्नेस्ट रदरफोर्ड","en":"Ernest Rutherford"}],"answer":2,"explanation_hi":"1813 में, जोंस जैकब बर्जेलियस ने लैटिन नामों से वर्णमाला रासायनिक प्रतीकों को प्राप्त करने की प्रणाली का प्रस्ताव रखा।","explanation_en":"In 1813, Jöns Jacob Berzelius proposed the system of deriving alphabetic chemical symbols from their Latin names."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कितने बहुपरमाण्विक आयन अपनी संयोजकता के साथ सही ढंग से सुमेलित हैं? 1. हाइड्रॉक्साइड - 1, 2. कार्बोनेट - 2, 3. फॉस्फेट - 3।","question_en":"Question 47: How many of the following polyatomic ions are correctly paired with their valency? 1. Hydroxide - 1, 2. Carbonate - 2, 3. Phosphate - 3.","options":[{"hi":"केवल 1 युग्म","en":"Only 1 pair"},{"hi":"केवल 2 युग्म","en":"Only 2 pairs"},{"hi":"सभी 3 युग्म","en":"All 3 pairs"},{"hi":"कोई नहीं","en":"None"}],"answer":2,"explanation_hi":"इन बहुपरमाण्विक आयनों के लिए संयोजकताएँ सही ढंग से सूचीबद्ध हैं: हाइड्रॉक्साइड 1 है, कार्बोनेट 2 है, और फॉस्फेट 3 है।","explanation_en":"The valencies for these polyatomic ions are correctly listed: Hydroxide is 1, Carbonate is 2, and Phosphate is 3."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: समभारिक अलग-अलग तत्वों के परमाणु होते हैं जिनकी द्रव्यमान संख्या समान लेकिन परमाणु क्रमांक अलग-अलग होते हैं।\nकथन 2: कैल्शियम और आर्गन समभारिक के उदाहरण हैं क्योंकि दोनों की द्रव्यमान संख्या 40 है।","question_en":"Question 48: Consider the following statements:\nStatement 1: Isobars are atoms of different elements with the same mass number but different atomic numbers.\nStatement 2: Calcium and Argon are examples of isobars as both have a mass number of 40.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"समभारिकों की द्रव्यमान संख्या समान लेकिन परमाणु संख्या भिन्न होती है, जैसे कैल्शियम (20) और आर्गन (18) दोनों की द्रव्यमान संख्या 40 है।","explanation_en":"Isobars have identical mass numbers but different atomic numbers, such as Calcium (20) and Argon (18) which both have a mass number of 40."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस परमाणु मॉडल ने सबसे पहले यह प्रस्तावित किया था कि परमाणु में ज्यादातर खाली स्थान होता है और इसके केंद्र में एक घना, धनात्मक रूप से आवेशित नाभिक होता है?","question_en":"Question 49: Which atomic model first proposed that an atom is mostly empty space with a dense, positively charged nucleus at its centre?","options":[{"hi":"डाल्टन का मॉडल","en":"Dalton's Model"},{"hi":"थॉमसन का मॉडल","en":"Thomson's Model"},{"hi":"रदरफोर्ड का मॉडल","en":"Rutherford's Model"},{"hi":"बोर का मॉडल","en":"Bohr's Model"}],"answer":2,"explanation_hi":"स्वर्ण पन्नी प्रयोग के आधार पर, रदरफोर्ड के मॉडल ने सबसे पहले यह स्थापित किया कि परमाणु का धनात्मक आवेश एक छोटे से केंद्रीय नाभिक में केंद्रित होता है।","explanation_en":"Based on the gold foil experiment, Rutherford's model first established that the atom's positive charge is concentrated in a tiny central nucleus."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
