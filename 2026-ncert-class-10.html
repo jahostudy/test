@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"UPSC/PCS • NCERT • CLASS 10, book 1","highlight":"NCERT","shortTitle":"UPSC/PCS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • NCERT • CLASS 10, book 1","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-upsc-pcs-ncert-class-10-book-1-ncert-class-10-20260730-1tmva","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-30","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रथम अंतर्राष्ट्रीय पृथ्वी सम्मेलन जून 1992 में ब्राजील के किस शहर में आयोजित किया गया था?","question_en":"Question 1: In which city of Brazil was the first International Earth Summit held in June 1992?","options":[{"hi":"साओ पाउलो","en":"Sao Paulo"},{"hi":"ब्रासीलिया","en":"Brasilia"},{"hi":"साल्वाडोर","en":"Salvador"},{"hi":"रियो डी जेनेरो","en":"Rio de Janeiro"}],"answer":3,"explanation_hi":"जून 1992 में 100 से अधिक देशों के अध्यक्ष ब्राजील के रियो डी जेनेरो में प्रथम अंतर्राष्ट्रीय पृथ्वी सम्मेलन के लिए मिले थे।","explanation_en":"In June 1992, more than 100 heads of states met in Rio de Janeiro in Brazil for the first International Earth Summit."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के कुल क्षेत्रफल में पठारी क्षेत्र का प्रतिशत कितना है?","question_en":"Question 2: What is the percentage of plateau region in the total area of India?","options":[{"hi":"43 प्रतिशत","en":"43 per cent"},{"hi":"30 प्रतिशत","en":"30 per cent"},{"hi":"27 प्रतिशत","en":"27 per cent"},{"hi":"54 प्रतिशत","en":"54 per cent"}],"answer":2,"explanation_hi":"भारत के क्षेत्रफल का लगभग 27 प्रतिशत हिस्सा पठारी क्षेत्र है, जबकि 43 प्रतिशत मैदानी और 30 प्रतिशत पर्वतीय क्षेत्र है।","explanation_en":"About 27 per cent of the area of India is the plateau region, while plains account for 43 per cent and mountains 30 per cent."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1974 में शुमाकर ने अपनी किस पुस्तक में गांधीवादी दर्शन की पुनरावृत्ति की थी?","question_en":"Question 3: In 1974, in which book did Schumacher present the Gandhian philosophy once again?","options":[{"hi":"अवर कॉमन फ्यूचर","en":"Our Common Future"},{"hi":"स्मॉल इज ब्यूटीफुल","en":"Small is Beautiful"},{"hi":"द लिमिट्स टू ग्रोथ","en":"The Limits to Growth"},{"hi":"साइलेंट स्प्रिंग","en":"Silent Spring"}],"answer":1,"explanation_hi":"1974 में शुमाकर ने अपनी पुस्तक 'स्मॉल इज ब्यूटीफुल' में गांधीवादी दर्शन की एक बार फिर से प्रस्तुति की थी।","explanation_en":"In 1974, Gandhian philosophy was once again presented by Schumacher in his book Small is Beautiful."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय वन्यजीव (संरक्षण) अधिनियम किस वर्ष लागू किया गया था?","question_en":"Question 4: In which year was the Indian Wildlife (Protection) Act implemented?","options":[{"hi":"1968","en":"1968"},{"hi":"1973","en":"1973"},{"hi":"1972","en":"1972"},{"hi":"1988","en":"1988"}],"answer":2,"explanation_hi":"भारतीय वन्यजीव (संरक्षण) अधिनियम वर्ष 1972 में लागू किया गया था, जिसमें रक्षित जातियों की सूची तथा आवास रक्षण के प्रावधान थे।","explanation_en":"The Indian Wildlife (Protection) Act was implemented in 1972 with various provisions for protecting habitats and species."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व की प्रसिद्ध वन्यजीव परियोजनाओं में से एक 'प्रोजेक्ट टाइगर' की शुरुआत किस वर्ष की गई थी?","question_en":"Question 5: In which year was 'Project Tiger', one of the well-publicised wildlife campaigns, launched?","options":[{"hi":"1970","en":"1970"},{"hi":"1973","en":"1973"},{"hi":"1972","en":"1972"},{"hi":"1980","en":"1980"}],"answer":1,"explanation_hi":"प्रोजेक्ट टाइगर की शुरुआत वर्ष 1973 में हुई थी, जब अधिकारियों ने पाया कि बाघों की संख्या घटकर 1,827 रह गई थी।","explanation_en":"Project Tiger was launched in 1973 after authorities realized the tiger population had dwindled to 1,827."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में किस राज्य में स्थायी वन क्षेत्र का सबसे अधिक क्षेत्रफल है, जो उसके कुल वन क्षेत्र का 75 प्रतिशत है?","question_en":"Question 6: Which state in India has the largest area under permanent forests, constituting 75 per cent of its total forest area?","options":[{"hi":"मध्य प्रदेश","en":"Madhya Pradesh"},{"hi":"उत्तराखंड","en":"Uttarakhand"},{"hi":"ओडिशा","en":"Odisha"},{"hi":"छत्तीसगढ़","en":"Chhattisgarh"}],"answer":0,"explanation_hi":"मध्य प्रदेश में स्थायी वनों के अंतर्गत सर्वाधिक क्षेत्रफल है, जो इसके कुल वन क्षेत्र का 75 प्रतिशत है।","explanation_en":"Madhya Pradesh has the largest area under permanent forests, constituting 75 per cent of its total forest area."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संयुक्त वन प्रबंधन (JFM) का पहला प्रस्ताव वर्ष 1988 में किस राज्य द्वारा पारित किया गया था?","question_en":"Question 7: Which state passed the first resolution for Joint Forest Management (JFM) in the year 1988?","options":[{"hi":"पश्चिम बंगाल","en":"West Bengal"},{"hi":"ओडिशा","en":"Odisha"},{"hi":"राजस्थान","en":"Rajasthan"},{"hi":"केरल","en":"Kerala"}],"answer":1,"explanation_hi":"संयुक्त वन प्रबंधन कार्यक्रम का औपचारिक रूप से अस्तित्व 1988 से हुआ जब ओडिशा राज्य ने पहला प्रस्ताव पास किया।","explanation_en":"The JFM programme has been in formal existence since 1988 when the state of Odisha passed the first resolution."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जल जीवन मिशन (JJM) के तहत प्रत्येक ग्रामीण परिवार को प्रति व्यक्ति प्रति दिन कितने लीटर जल आपूर्ति का लक्ष्य रखा गया है?","question_en":"Question 8: Under the Jal Jeevan Mission (JJM), what is the service level of potable piped water supply aimed per capita per day for every rural household?","options":[{"hi":"55 लीटर","en":"55 litres"},{"hi":"40 लीटर","en":"40 litres"},{"hi":"70 लीटर","en":"70 litres"},{"hi":"100 लीटर","en":"100 litres"}],"answer":0,"explanation_hi":"जल जीवन मिशन का लक्ष्य प्रत्येक ग्रामीण परिवार को नियमित रूप से 55 लीटर प्रति व्यक्ति प्रति दिन नल से जल उपलब्ध कराना है।","explanation_en":"The goal of JJM is to enable every rural household get assured supply of potable piped water at 55 litres per capita per day."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रथम शताब्दी ईसा पूर्व में इलाहाबाद (प्रयागराज) के पास किस स्थान पर गंगा नदी की बाढ़ के जल को बहने देने वाला जल संग्रहण तंत्र बनाया गया था?","question_en":"Question 9: In the first century B.C., at which place near Allahabad was an advanced water harvesting system built to channel flood waters of the Ganga?","options":[{"hi":"कौशांबी","en":"Kaushambi"},{"hi":"शृंगवेरपुर","en":"Sringaverapura"},{"hi":"झांसी","en":"Jhansi"},{"hi":"हौज खास","en":"Hauz Khas"}],"answer":1,"explanation_hi":"प्रथम शताब्दी ईसा पूर्व में इलाहाबाद के पास शृंगवेरपुर में गंगा नदी की बाढ़ के जल को संयोजित करने वाला उत्कृष्ट जल संग्रहण तंत्र था।","explanation_en":"In the first century B.C., Sringaverapura near Allahabad had a sophisticated water harvesting system for Ganga floodwaters."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का वह पहला राज्य कौन सा है जिसने राज्य के सभी घरों के लिए छत पर वर्षा जल संचयन अनिवार्य कर दिया है?","question_en":"Question 10: Which is the first state in India that has made rooftop rainwater harvesting compulsory for all houses across the state?","options":[{"hi":"तमिलनाडु","en":"Tamil Nadu"},{"hi":"राजस्थान","en":"Rajasthan"},{"hi":"मेघालय","en":"Meghalaya"},{"hi":"कर्नाटक","en":"Karnataka"}],"answer":0,"explanation_hi":"तमिलनाडु भारत का पहला राज्य है जिसने पूरे राज्य में सभी घरों के लिए छत पर वर्षा जल संचयन ढांचा अनिवार्य किया है।","explanation_en":"Tamil Nadu is the first state in India which has made rooftop rainwater harvesting structure compulsory to all houses."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अंतर्राष्ट्रीय स्तर पर किस वर्ष 'क्लब ऑफ रोम' ने व्यवस्थित तरीके से संसाधन संरक्षण की वकालत की थी?","question_en":"Question 11: In which year did the 'Club of Rome' advocate resource conservation for the first time in a systematic way at the international level?","options":[{"hi":"1972","en":"1972"},{"hi":"1968","en":"1968"},{"hi":"1987","en":"1987"},{"hi":"1992","en":"1992"}],"answer":1,"explanation_hi":"अंतर्राष्ट्रीय स्तर पर क्लब ऑफ रोम ने 1968 में सबसे पहले व्यवस्थित ढंग से संसाधन संरक्षण की वकालत की थी।","explanation_en":"At the international level, the Club of Rome advocated resource conservation for the first time in a systematic way in 1968."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्रांडटलैंड आयोग रिपोर्ट ने किस वर्ष सतत विकास की संकल्पना प्रस्तुत की, जिसे बाद में 'अवर कॉमन फ्यूचर' नाम से प्रकाशित किया गया?","question_en":"Question 12: In which year did the Brundtland Commission Report introduce the concept of 'Sustainable Development', subsequently published as 'Our Common Future'?","options":[{"hi":"1974","en":"1974"},{"hi":"1992","en":"1992"},{"hi":"1987","en":"1987"},{"hi":"1995","en":"1995"}],"answer":2,"explanation_hi":"ब्रांडटलैंड आयोग रिपोर्ट, 1987 ने सतत विकास की अवधारणा प्रस्तुत की जो 'अवर कॉमन फ्यूचर' शीर्षक से पुस्तक रूप में प्रकाशित हुई।","explanation_en":"The Brundtland Commission Report, 1987 introduced Sustainable Development, published in the book 'Our Common Future'."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पंजाब, हरियाणा और पश्चिमी उत्तर प्रदेश में भूमि निम्नीकरण का मुख्य कारण निम्नलिखित में से कौन सा है?","question_en":"Question 13: Which of the following is the main cause of land degradation in Punjab, Haryana and western Uttar Pradesh?","options":[{"hi":"अति पशुचारण","en":"Overgrazing"},{"hi":"खनन कार्य","en":"Mining activity"},{"hi":"अति सिंचन","en":"Over irrigation"},{"hi":"वनोन्मूलन","en":"Deforestation"}],"answer":2,"explanation_hi":"पंजाब, हरियाणा और पश्चिमी उत्तर प्रदेश में अति सिंचन जलक्रांतता उत्पन्न करता है जिससे मृदा में लवणीयता और क्षारीयता बढ़ती है।","explanation_en":"In Punjab, Haryana and western UP, over irrigation causes water logging leading to salinity and alkalinity in soil."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुजरात, राजस्थान, मध्य प्रदेश और महाराष्ट्र में भूमि निम्नीकरण का मुख्य कारण क्या है?","question_en":"Question 14: What is one of the main reasons for land degradation in Gujarat, Rajasthan, Madhya Pradesh and Maharashtra?","options":[{"hi":"अति सिंचन","en":"Over irrigation"},{"hi":"सीढ़ीदार खेती","en":"Terrace farming"},{"hi":"खनिज प्रसंस्करण","en":"Mineral processing"},{"hi":"अति पशुचारण","en":"Overgrazing"}],"answer":3,"explanation_hi":"गुजरात, राजस्थान, मध्य प्रदेश और महाराष्ट्र राज्यों में अति पशुचारण भूमि निम्नीकरण का मुख्य कारण है।","explanation_en":"In states like Gujarat, Rajasthan, MP and Maharashtra, overgrazing is one of the main reasons for land degradation."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"काली मृदाएं (रेगुर) पोषक तत्वों से समृद्ध होती हैं, परंतु इनमें सामान्यतः किस तत्व की कमी पाई जाती है?","question_en":"Question 15: Black soils (Regur) are rich in soil nutrients, but they are generally poor in which content?","options":[{"hi":"कैल्शियम कार्बोनेट","en":"Calcium carbonate"},{"hi":"मैग्नीशियम","en":"Magnesium"},{"hi":"फॉस्फोरस","en":"Phosphoric content"},{"hi":"पोटाश","en":"Potash"}],"answer":2,"explanation_hi":"काली मृदा में कैल्शियम कार्बोनेट, मैग्नीशियम, पोटाश और चूना प्रचुर होता है, परंतु फास्फोरस की मात्रा कम होती है।","explanation_en":"Black soils are rich in calcium carbonate, magnesium, potash and lime, but are generally poor in phosphoric contents."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लेटेराइट मृदा सामान्यतः अत्यधिक गहरी और अम्लीय होती है; इसका pH मान कितना होता है?","question_en":"Question 16: Laterite soil is generally deep to very deep and acidic; what is its typical pH value?","options":[{"hi":"7.0 से अधिक","en":"pH > 7.0"},{"hi":"8.5 से अधिक","en":"pH > 8.5"},{"hi":"9.0 से 10.0 के मध्य","en":"Between 9.0 and 10.0"},{"hi":"6.0 से कम","en":"pH \u003c 6.0"}],"answer":3,"explanation_hi":"लेटेराइट मृदाएं सामान्यतः गहरी, अम्लीय (pH \u003c 6.0) होती हैं और इनमें पौधों के पोषक तत्वों की कमी होती है।","explanation_en":"Lateritic soils are mostly deep to very deep, acidic (pH \u003c 6.0), and generally deficient in plant nutrients."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"तमिलनाडु, आंध्र प्रदेश और केरल की लाल लेटेराइट मृदाएं किस फसल की खेती के लिए अधिक उपयुक्त हैं?","question_en":"Question 17: Red laterite soils in Tamil Nadu, Andhra Pradesh and Kerala are more suitable for growing which crop?","options":[{"hi":"काजू","en":"Cashew nut"},{"hi":"गेहूं","en":"Wheat"},{"hi":"गन्ना","en":"Sugarcane"},{"hi":"चाय एवं कॉफी","en":"Tea and coffee"}],"answer":0,"explanation_hi":"तमिलनाडु, आंध्र प्रदेश और केरल की लाल लेटेराइट मृदाएं काजू की फसल के लिए अधिक उपयुक्त हैं।","explanation_en":"Red laterite soils in Tamil Nadu, Andhra Pradesh and Kerala are more suitable for crops like cashew nut."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बहता हुआ जल मृत्तिका युक्त मृदाओं को काटते हुए गहरी वाहिकाएं बनाता है जिन्हें अवनालिकाएं कहते हैं; किस बेसिन में ऐसी भूमि को खड्ड (रवाइन) कहा जाता है?","question_en":"Question 18: Running water cuts through clayey soils making deep channels called gullies; in which basin are such bad lands called ravines?","options":[{"hi":"गंगा बेसिन","en":"Ganga basin"},{"hi":"चंबल बेसिन","en":"Chambal basin"},{"hi":"कावेरी बेसिन","en":"Kaveri basin"},{"hi":"सिंधु बेसिन","en":"Indus basin"}],"answer":1,"explanation_hi":"अवनालिकाओं के कारण उत्खात भूमि (bad land) बनती है, जिसे चंबल बेसिन में खड्ड (ravine) कहा जाता है।","explanation_en":"Gully erosion makes land unfit for cultivation (bad land); in the Chambal basin such lands are called ravines."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वन्यजीव अधिनियम के तहत किस वर्ष पहली बार पौधों की छः जातियों को संरक्षित सूची में शामिल किया गया था?","question_en":"Question 19: In which year were plants (starting with six species) added to the list of protected species for the first time under the Wildlife Act?","options":[{"hi":"1991","en":"1991"},{"hi":"1980","en":"1980"},{"hi":"1986","en":"1986"},{"hi":"1995","en":"1995"}],"answer":0,"explanation_hi":"1991 में पहली बार पौधों को भी संरक्षित जातियों की सूची में रखा गया, जिसकी शुरुआत छः जातियों से हुई।","explanation_en":"In 1991, for the first time plants were added to the list of protected species, starting with six species."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राजस्थान के अलवर जिले के 5 गांवों के लोगों ने कितने हेक्टेयर वन भूमि को 'भैरोदेव डाकव सोंचुरी' घोषित किया है?","question_en":"Question 20: Inhabitants of five villages in Alwar district of Rajasthan declared how many hectares of forest as 'Bhairodev Dakav Sonchuri'?","options":[{"hi":"500 हेक्टेयर","en":"500 hectares"},{"hi":"2,500 हेक्टेयर","en":"2,500 hectares"},{"hi":"1,200 हेक्टेयर","en":"1,200 hectares"},{"hi":"5,000 हेक्टेयर","en":"5,000 hectares"}],"answer":2,"explanation_hi":"राजस्थान के अलवर जिले में 5 गांवों के निवासियों ने 1,200 हेक्टेयर वन भूमि को भैरोदेव डाकव सोंचुरी घोषित किया।","explanation_en":"The inhabitants of five villages in Alwar district declared 1,200 hectares of forest as Bhairodev Dakav 'Sonchuri'."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"छोटानागपुर क्षेत्र के मुंडा और संताल जनजातीय समूह किन वृक्षों की पूजा करते हैं?","question_en":"Question 21: Which trees are worshipped by the Munda and Santhal tribal groups of the Chota Nagpur region?","options":[{"hi":"इमली एवं आम","en":"Tamarind and Mango"},{"hi":"पीपल एवं बरगद","en":"Peepal and Banyan"},{"hi":"सागौन एवं साल","en":"Teak and Sal"},{"hi":"महुआ एवं कदंब","en":"Mahua and Kadamba"}],"answer":3,"explanation_hi":"छोटानागपुर क्षेत्र के मुंडा और संताल जनजातियां महुआ (Bassia latifolia) और कदंब (Anthocaphalus cadamba) के पेड़ों की पूजा करते हैं।","explanation_en":"Mundas and Santhals of Chota Nagpur worship mahua and kadamba trees."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"14वीं शताब्दी में दिल्ली में सीरी फोर्ट क्षेत्र में जल आपूर्ति के लिए हौज खास का निर्माण किसने करवाया था?","question_en":"Question 22: In the 14th century, who constructed the tank at Hauz Khas, Delhi for supplying water to the Siri Fort area?","options":[{"hi":"चंद्रगुप्त मौर्य","en":"Chandragupta Maurya"},{"hi":"अलाउद्दीन खिलजी","en":"Allauddin Khilji"},{"hi":"इल्तुतमिश","en":"Iltutmish"},{"hi":"फिरोज शाह तुगलक","en":"Firoz Shah Tughlaq"}],"answer":1,"explanation_hi":"14वीं शताब्दी में अलाउद्दीन खिलजी ने सीरी फोर्ट क्षेत्र में जल आपूर्ति के लिए हौज खास हौज (टैंक) बनवाया था। मूल रूप से यह 'हौज-ए-अलाई' कहलाता था।","explanation_en":"In the 14th century, the tank in Hauz Khas was constructed by Allauddin Khilji (originally called Hauz-i-Alai) for supplying water to Siri Fort area."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बहुउद्देशीय नदी घाटी परियोजनाओं को गर्व से 'आधुनिक भारत के मंदिर' किसने कहा था?","question_en":"Question 23: Who proudly proclaimed multi-purpose river projects as the 'temples of modern India'?","options":[{"hi":"महात्मा गांधी","en":"Mahatma Gandhi"},{"hi":"सरदार वल्लभभाई पटेल","en":"Sardar Vallabhbhai Patel"},{"hi":"जवाहरलाल नेहरू","en":"Jawaharlal Nehru"},{"hi":"डा. बी. आर. अम्बेडकर","en":"Dr. B. R. Ambedkar"}],"answer":2,"explanation_hi":"जवाहरलाल नेहरू गर्व से बांधों को 'आधुनिक भारत के मंदिर' कहा करते थे क्योंकि इनसे कृषि और उद्योग का एकीकृत विकास होता।","explanation_en":"Jawaharlal Nehru proudly proclaimed dams as the 'temples of modern India' to integrate agriculture and industry."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दामोदर घाटी क्षेत्र में लोकप्रिय 'भादू' लोकगीत किस नदी की बाढ़ से उत्पन्न दुखों का वर्णन करते हैं, जिसे 'शोक की नदी' कहा जाता था?","question_en":"Question 24: Popular Bhadu songs in the Damodar valley region narrate troubles owing to flooding of Damodar river, which was known as what?","options":[{"hi":"शोक की नदी","en":"River of sorrow"},{"hi":"संसार की नदी","en":"River of world"},{"hi":"वरदान की नदी","en":"River of blessing"},{"hi":"पवित्र नदी","en":"Sacred river"}],"answer":0,"explanation_hi":"भादू लोकगीत दामोदर नदी की भीषण बाढ़ से होने वाली तबाही का वर्णन करते हैं, जिसे 'शोक की नदी' कहा जाता था।","explanation_en":"Bhadu songs in Damodar valley narrate troubles caused by flooding of Damodar, known as the river of sorrow."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कृष्णा-गोदावरी विवाद महाराष्ट्र सरकार द्वारा कोयना पर बहुउद्देशीय परियोजना के लिए जल मोड़े जाने पर किन राज्यों की आपत्तियों से शुरू हुआ?","question_en":"Question 25: The Krishna-Godavari dispute arose due to objections raised by which state governments regarding diversion of more water at Koyna by Maharashtra?","options":[{"hi":"तमिलनाडु एवं केरल","en":"Tamil Nadu and Kerala"},{"hi":"गुजरात एवं मध्य प्रदेश","en":"Gujarat and Madhya Pradesh"},{"hi":"ओडिशा एवं छत्तीसगढ़","en":"Odisha and Chhattisgarh"},{"hi":"कर्नाटक एवं आंध्र प्रदेश","en":"Karnataka and Andhra Pradesh"}],"answer":3,"explanation_hi":"कृष्णा-गोदावरी विवाद कर्नाटक और आंध्र प्रदेश सरकारों की आपत्तियों के कारण हुआ, जब महाराष्ट्र ने कोयना पर अधिक जल मोड़ा।","explanation_en":"Krishna-Godavari dispute is due to objections raised by Karnataka and Andhra Pradesh governments regarding Koyna water diversion."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कर्नाटक के मैसूर जिले के गेंदाथूर गांव में वार्षिक वर्षा कितनी होती है, जहाँ लगभग 200 घरों ने छत पर जल संचयन स्थापित किया है?","question_en":"Question 26: What is the annual precipitation received in Gendathur village of Mysuru, Karnataka, where 200 households installed rooftop harvesting?","options":[{"hi":"500 मिमी","en":"500 mm"},{"hi":"1,500 मिमी","en":"1,500 mm"},{"hi":"2,000 मिमी","en":"2,000 mm"},{"hi":"1,000 मिमी","en":"1,000 mm"}],"answer":3,"explanation_hi":"गेंदाथूर में वार्षिक वर्षा 1,000 मिमी होती है और 80 प्रतिशत संग्रहण दक्षता से प्रत्येक घर प्रतिवर्ष लगभग 50,000 लीटर जल एकत्र करता है।","explanation_en":"Gendathur receives an annual precipitation of 1,000 mm and with 80 per cent efficiency, each house collects ~50,000 litres."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मेघालय की 200 वर्ष पुरानी बांस ड्रिप सिंचाई प्रणाली में पौधे के स्थान पर जल का प्रवाह घटकर कितना रह जाता है?","question_en":"Question 27: In Meghalaya's 200-year-old bamboo drip irrigation system, the water flow gets reduced to how many drops per minute at the plant site?","options":[{"hi":"5 से 10 बूंद प्रति मिनट","en":"5 to 10 drops per minute"},{"hi":"20 से 80 बूंद प्रति मिनट","en":"20 to 80 drops per minute"},{"hi":"100 से 150 बूंद प्रति मिनट","en":"100 to 150 drops per minute"},{"hi":"200 से 300 बूंद प्रति मिनट","en":"200 to 300 drops per minute"}],"answer":1,"explanation_hi":"मेघालय की बांस ड्रिप प्रणाली में प्रवेश करने वाला 18-20 लीटर जल पौधे तक पहुंचते-पहुंचते 20-80 बूंद प्रति मिनट हो जाता है।","explanation_en":"In Meghalaya's bamboo drip system, 18-20 litres water entering the pipe reduces to 20-80 drops per minute at plant site."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लद्दाख का शीत मरुस्थल सांस्कृतिक विरासत में धनी है, परंतु उसमें मुख्य रूप से किन संसाधनों की कमी है?","question_en":"Question 28: The cold desert of Ladakh has a rich cultural heritage, but it is acutely deficient in which resources?","options":[{"hi":"सौर ऊर्जा एवं पवन ऊर्जा","en":"Solar energy and wind energy"},{"hi":"कोयला एवं खनिज तेल","en":"Coal and mineral oil"},{"hi":"जल, अवसंरचना तथा खनिज","en":"Water, infrastructure and minerals"},{"hi":"वन तथा वन्यजीव","en":"Forests and wildlife"}],"answer":2,"explanation_hi":"लद्दाख का शीत मरुस्थल जल, आधारभूत अवसंरचना तथा कुछ महत्वपूर्ण खनिजों की कमी का सामना करता है।","explanation_en":"The cold desert of Ladakh is deficient in water, infrastructure and some vital minerals."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भाखड़ा-नांगल परियोजना का जल-उपयोग और सिंचाई किस नदी बेसिन में एकीकृत है?","question_en":"Question 29: In which river basin is the Bhakra-Nangal project water used for both hydel power production and irrigation?","options":[{"hi":"महानदी बेसिन","en":"Mahanadi basin"},{"hi":"नर्मदा बेसिन","en":"Narmada basin"},{"hi":"दामोदर बेसिन","en":"Damodar basin"},{"hi":"सतलुज-ब्यास बेसिन","en":"Sutluj-Beas basin"}],"answer":3,"explanation_hi":"सतलुज-ब्यास नदी बेसिन में भाखड़ा-नांगल परियोजना का जल जलविद्युत उत्पादन और सिंचाई दोनों के काम आता है।","explanation_en":"In the Sutluj-Beas river basin, Bhakra-Nangal project water is used for hydel power production and irrigation."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हीराकुड परियोजना किस नदी बेसिन में जल संरक्षण का बाढ़ नियंत्रण के साथ समाकलन करती है?","question_en":"Question 30: The Hirakud project in which river basin integrates conservation of water with flood control?","options":[{"hi":"महानदी बेसिन","en":"Mahanadi basin"},{"hi":"गंगा बेसिन","en":"Ganga basin"},{"hi":"गोदावरी बेसिन","en":"Godavari basin"},{"hi":"कृष्णा बेसिन","en":"Krishna basin"}],"answer":0,"explanation_hi":"महानदी बेसिन में स्थित हीराकुड परियोजना जल संरक्षण का बाढ़ नियंत्रण के साथ एकीकृत प्रबंधन करती है।","explanation_en":"The Hirakud project in the Mahanadi basin integrates water conservation with flood control."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: पंजाब और हरियाणा में शुद्ध बोए गए क्षेत्र का प्रतिशत कुल क्षेत्रफल का 80 प्रतिशत से अधिक है।\nकथन 2: अरुणाचल प्रदेश और मिजोरम में शुद्ध बोए गए क्षेत्र का प्रतिशत 10 प्रतिशत से कम है।","question_en":"Question 31: Consider the following statements:\nStatement 1: Net sown area is over 80 per cent of total area in Punjab and Haryana.\nStatement 2: Net sown area is less than 10 per cent in Arunachal Pradesh and Mizoram.","options":[{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"पंजाब और हरियाणा में शुद्ध बोया गया क्षेत्र 80 प्रतिशत से अधिक है, जबकि अरुणाचल प्रदेश, मिजोरम, मणिपुर में यह 10 प्रतिशत से कम है।","explanation_en":"Net sown area is over 80% in Punjab and Haryana, and less than 10% in Arunachal Pradesh, Mizoram, Manipur and A&N Islands."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: पुराना जलोढ़ (बांगर) मृदा में नए जलोढ़ (खादर) की तुलना में कंकड़ ग्रंथियों की सांद्रता अधिक होती है।\nकथन 2: खादर मृदा बांगर की तुलना में अधिक महीन कणों वाली और अधिक उपजाऊ होती है।","question_en":"Question 32: Consider the following statements:\nStatement 1: Old alluvial (Bangar) soil has higher concentration of kankar nodules than new alluvial (Khadar).\nStatement 2: Khadar soil has more fine particles and is more fertile than Bangar.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"बांगर मृदा में कंकड़ ग्रंथियों का संकेंद्रण अधिक होता है, जबकि खादर मृदा अधिक महीन कणों वाली तथा बांगर से अधिक उपजाऊ होती है।","explanation_en":"Bangar has higher concentration of kankar nodules, whereas Khadar has finer particles and higher fertility."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: लाल मृदा का लाल रंग क्रिस्टलीय और रूपांतरित चट्टानों में लोहे के प्रसार के कारण होता है।\nकथन 2: जब यह मृदा जलयोजित (जलभराव) रूप में होती है तो यह काली दिखाई देती है।","question_en":"Question 33: Consider the following statements:\nStatement 1: Red soil develops reddish colour due to diffusion of iron in crystalline and metamorphic rocks.\nStatement 2: This soil looks black when it occurs in a hydrated form.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"कथन 1 सत्य है। कथन 2 असत्य है क्योंकि जलयोजित (hydrated) रूप में यह मृदा पीली (yellow) दिखाई देती है, न कि काली।","explanation_en":"Statement 1 is true. Statement 2 is false because it looks yellow (not black) when occurring in hydrated form."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: देश के कुल वन क्षेत्र का एक-चौथाई से अधिक भाग आरक्षित वन घोषित किया गया है।\nकथन 2: देश का लगभग एक-तिहाई वन क्षेत्र रक्षित (संरक्षित) वन है।","question_en":"Question 34: Consider the following statements:\nStatement 1: More than one-fourth of total forest land has been declared reserved forests.\nStatement 2: Almost one-third of the total forest area is protected forest.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"},{"hi":"केवल 2","en":"Only 2"}],"answer":3,"explanation_hi":"कथन 1 असत्य है क्योंकि आधे से अधिक (more than half) वन क्षेत्र को आरक्षित वन घोषित किया गया है। कथन 2 सत्य है।","explanation_en":"Statement 1 is false because more than half (not one-fourth) is reserved forest. Statement 2 is true (almost one-third)."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: वर्ष 1980 और 1986 की अधिसूचनाओं के तहत सैकड़ों तितलियों, पतंगों और बीटलों को रक्षित जातियों में शामिल किया गया।\nकथन 2: वर्ष 1991 में पहली बार छह पौधों की जातियों को संरक्षित सूची में जोड़ा गया।","question_en":"Question 35: Consider the following statements:\nStatement 1: Under 1980 and 1986 notifications, several hundred butterflies, moths and beetles were added to protected list.\nStatement 2: In 1991, six plant species were added to protected list for the first time.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन सत्य हैं। 1980/1986 में कीटों को और 1991 में पहली बार पौधों (6 प्रजातियां) को संरक्षित सूची में शामिल किया गया था।","explanation_en":"Both statements are true. Insects were added in 1980/1986, and for the first time 6 plant species were added in 1991."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अटल भूजल योजना सात राज्यों के 80 जिलों के 229 प्रशासनिक खंडों में लागू की जा रही है।\nकथन 2: ये चयनित राज्य भारत में कुल जल-तनावग्रस्त खंडों का लगभग 37 प्रतिशत हैं।","question_en":"Question 36: Consider the following statements:\nStatement 1: Atal Bhujal Yojana is being implemented in 80 districts of seven states across 229 administrative blocks.\nStatement 2: The selected states account for about 37 per cent of total water-stressed blocks in India.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"}],"answer":3,"explanation_hi":"दोनों कथन सत्य हैं। अटल जल योजना 7 राज्यों के 80 जिलों (229 ब्लॉक, 8220 ग्राम पंचायत) में लागू है, जो 37% जल-तनावग्रस्त खंड हैं।","explanation_en":"Both statements are true. Atal Jal covers 80 districts in 7 states across 229 blocks, accounting for ~37% water stressed blocks."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: सरदार सरोवर बांध तापी नदी पर बनाया गया है।\nकथन 2: यह बहुउद्देशीय परियोजना चार राज्यों- महाराष्ट्र, मध्य प्रदेश, गुजरात और राजस्थान को कवर करती है।","question_en":"Question 37: Consider the following statements:\nStatement 1: Sardar Sarovar Dam has been built over the Tapi River.\nStatement 2: This multi-purpose project covers four states—Maharashtra, Madhya Pradesh, Gujarat and Rajasthan.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"},{"hi":"केवल 2","en":"Only 2"}],"answer":3,"explanation_hi":"कथन 1 असत्य है क्योंकि सरदार सरोवर बांध नर्मदा नदी (न कि तापी) पर बना है। कथन 2 सत्य है (4 राज्य)।","explanation_en":"Statement 1 is false as Sardar Sarovar is built on Narmada River (not Tapi). Statement 2 is true (covers 4 states)."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: शिलांग में छतों से वर्षा जल संचयन की प्रथा अत्यंत सामान्य है।\nकथन 2: शिलांग में प्रत्येक घर की कुल जल आवश्यकता का 15 से 25 प्रतिशत हिस्सा छत जल संचयन से आता है।","question_en":"Question 38: Consider the following statements:\nStatement 1: Rooftop rainwater harvesting is a very common practice in Shillong.\nStatement 2: Nearly 15-25 per cent of the total water requirement of households in Shillong comes from rooftop harvesting.","options":[{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"चेरापूंजी/मासिनराम से 55 किमी दूर होने के बावजूद शिलांग में पानी की कमी के कारण 15-25% जल आपूर्ति छत संचयन से होती है।","explanation_en":"Both statements are true. In Shillong, 15-25 per cent of household water requirement comes from rooftop water harvesting."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: ढाल वाली भूमि पर समोच्च रेखाओं के समानांतर हल चलाने से जल बहाव की गति घटती है, जिसे समोच्च जुताई कहते हैं।\nकथन 2: फसलों के बीच में घास की पट्टियां उगाने की पद्धति को पट्टी कृषि (स्ट्रिप क्रॉपिंग) कहते हैं।","question_en":"Question 39: Consider the following statements:\nStatement 1: Ploughing along contour lines decelerates water flow down slopes, known as contour ploughing.\nStatement 2: Growing strips of grass between crops is known as strip cropping.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन मृदा संरक्षण की विधियों के संबंध में सत्य हैं। समोच्च जुताई जल प्रवाह रोकती है और पट्टी कृषि पवन बल को तोड़ती है।","explanation_en":"Both statements are true regarding soil conservation methods: contour ploughing reduces water flow, strip cropping breaks wind force."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. काली मृदा, B. लेटेराइट मृदा, C. अरिड़ (शुष्क) मृदा, D. जलोढ़ मृदा;\nसूची-II: 1. कंकड़ परत द्वारा जल का अंतःस्यंदन बाधित, 2. तीव्र निक्षालन से निर्मित एवं अम्लीय (pH\u003c6.0), 3. कपास खेती हेतु उपयुक्त एवं नमी धारण क्षमता, 4. पोटाश, फास्फोरस एवं चूने से समृद्ध उपजाऊ मृदा","question_en":"Question 40: Match List-I with List-II:\nList-I: A. Black Soil, B. Laterite Soil, C. Arid Soil, D. Alluvial Soil;\nList-II: 1. Kankar layer restricts water infiltration, 2. Formed by intense leaching and acidic (pH\u003c6.0), 3. Ideal for cotton and high moisture capacity, 4. Fertile soil with potash, phosphoric acid and lime","options":[{"hi":"A-2, B-3, C-4, D-1","en":"A-2, B-3, C-4, D-1"},{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"},{"hi":"A-4, B-2, C-1, D-3","en":"A-4, B-2, C-1, D-3"},{"hi":"A-3, B-2, C-1, D-4","en":"A-3, B-2, C-1, D-4"}],"answer":3,"explanation_hi":"काली मृदा कपास हेतु (A-3), लेटेराइट तीव्रता से निक्षालित/अम्लीय (B-2), शुष्क मृदा में कंकड़ परत (C-1), तथा जलोढ़ उपजाऊ (D-4) है।","explanation_en":"Black soil=cotton (A-3), Laterite=leached/acidic (B-2), Arid=kankar restricts infiltration (C-1), Alluvial=fertile (D-4)."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. कॉर्बेट राष्ट्रीय उद्यान, B. बांधवगढ़ राष्ट्रीय उद्यान, C. सरिस्का वन्यजीव अभयारण्य, D. पेरियार बाघ आरक्षित;\nसूची-II: 1. मध्य प्रदेश, 2. उत्तराखंड, 3. केरल, 4. राजस्थान","question_en":"Question 41: Match List-I with List-II:\nList-I: A. Corbett National Park, B. Bandhavgarh National Park, C. Sariska Wildlife Sanctuary, D. Periyar Tiger Reserve;\nList-II: 1. Madhya Pradesh, 2. Uttarakhand, 3. Kerala, 4. Rajasthan","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-2, B-4, C-1, D-3","en":"A-2, B-4, C-1, D-3"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"}],"answer":1,"explanation_hi":"कॉर्बेट उत्तराखंड में (A-2), बांधवगढ़ मध्य प्रदेश में (B-1), सरिस्का राजस्थान में (C-4), तथा पेरियार केरल में (D-3) स्थित है।","explanation_en":"Corbett=Uttarakhand (A-2), Bandhavgarh=MP (B-1), Sariska=Rajasthan (C-4), Periyar=Kerala (D-3)."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. गुल अथवा कुल, B. खादीन एवं जोहाड़, C. टांका, D. बांस ड्रिप प्रणाली;\nसूची-II: 1. जैसलमेर एवं राजस्थान के शुष्क क्षेत्र, 2. पश्चिमी हिमालय, 3. मेघालय, 4. बीकानेर, फलोदी एवं बाड़मेर","question_en":"Question 42: Match List-I with List-II:\nList-I: A. Guls or Kuls, B. Khadins and Johads, C. Tanka, D. Bamboo Drip System;\nList-II: 1. Jaisalmer and arid Rajasthan, 2. Western Himalayas, 3. Meghalaya, 4. Bikaner, Phalodi and Barmer","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-4, C-1, D-3","en":"A-2, B-4, C-1, D-3"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"}],"answer":2,"explanation_hi":"गुल/कुल पश्चिमी हिमालय में (A-2), खादीन जैसलमेर में (B-1), टांका बीकानेर/फलोदी में (C-4), तथा बांस ड्रिप मेघालय में (D-3) प्रचलित है।","explanation_en":"Guls/Kuls=Western Himalayas (A-2), Khadins=Jaisalmer (B-1), Tanka=Bikaner/Phalodi (C-4), Bamboo drip=Meghalaya (D-3)."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. शृंगवेरपुर, B. भोपाल झील, C. हौज खास, D. बेन्नूर एवं कोलहापुर;\nसूची-II: 1. 11वीं शताब्दी में निर्मित विशाल कृत्रिम झील, 2. प्रथम शताब्दी ईसा पूर्व में गंगा बाढ़ जल तंत्र, 3. महाराष्ट्र एवं कर्नाटक में प्राचीन सिंचाई साक्ष्य, 4. 14वीं शताब्दी में अलाउद्दीन खिलजी द्वारा निर्मित जलकुंड","question_en":"Question 43: Match List-I with List-II:\nList-I: A. Sringaverapura, B. Bhopal Lake, C. Hauz Khas, D. Bennur and Kolhapur;\nList-II: 1. 11th century large artificial lake, 2. 1st century B.C. Ganga floodwater harvesting, 3. Ancient irrigation evidence in Maharashtra and Karnataka, 4. 14th century tank built by Allauddin Khilji","options":[{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-4, C-1, D-3","en":"A-2, B-4, C-1, D-3"},{"hi":"A-4, B-1, C-2, D-3","en":"A-4, B-1, C-2, D-3"}],"answer":0,"explanation_hi":"शृंगवेरपुर 1ली श. ई.पू. (A-2), भोपाल झील 11वीं शताब्दी (B-1), हौज खास अलाउद्दीन खिलजी (C-4), बेन्नूर/कोलहापुर प्राचीन सिंचाई (D-3) है।","explanation_en":"Sringaverapura=1st century BC (A-2), Bhopal Lake=11th century (B-1), Hauz Khas=Khilji (C-4), Bennur/Kolhapur=Ancient irrigation (D-3)."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. खनन के कारण वनों की कटाई, B. अति पशुचारण, C. जलाक्रांतता एवं अति सिंचन, D. सिमटते आवास एवं अवैध शिकार;\nसूची-II: 1. गुजरात, राजस्थान एवं महाराष्ट्र, 2. झारखंड, छत्तीसगढ़ एवं ओडिशा, 3. बाघों की संख्या में गिरावट के कारण, 4. पंजाब, हरियाणा एवं पश्चिमी उत्तर प्रदेश","question_en":"Question 44: Match List-I with List-II:\nList-I: A. Deforestation due to mining, B. Overgrazing, C. Water logging and over irrigation, D. Shrinking habitat and poaching;\nList-II: 1. Gujarat, Rajasthan and Maharashtra, 2. Jharkhand, Chhattisgarh and Odisha, 3. Causes of tiger population depletion, 4. Punjab, Haryana and western Uttar Pradesh","options":[{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-4, B-1, C-2, D-3","en":"A-4, B-1, C-2, D-3"},{"hi":"A-2, B-4, C-1, D-3","en":"A-2, B-4, C-1, D-3"}],"answer":0,"explanation_hi":"खनन वनों की कटाई झारखंड/ओडिशा (A-2), अति पशुचारण गुजरात/राजस्थान (B-1), अति सिंचन पंजाब/हरियाणा (C-4), तथा शिकार बाघ ह्रास (D-3) का कारण है।","explanation_en":"Mining deforestation=Jharkhand/Odisha (A-2), Overgrazing=Gujarat/Rajasthan (B-1), Over irrigation=Punjab/Haryana (C-4), Poaching=Tiger reduction (D-3)."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. महुआ एवं कदंब, B. इमली एवं आम, C. काला हिरण (चिंकारा) एवं मोर, D. भैरोदेव डाकव 'सोंचुरी';\nसूची-II: 1. ओडिशा एवं बिहार के आदिवासी (विवाह अवसर पर), 2. बिश्नोई गांव (राजस्थान), 3. छोटानागपुर के मुंडा एवं संताल, 4. अलवर जिला (राजस्थान)","question_en":"Question 45: Match List-I with List-II:\nList-I: A. Mahua and Kadamba, B. Tamarind and Mango, C. Blackbuck (chinkara) and Peacocks, D. Bhairodev Dakav 'Sonchuri';\nList-II: 1. Odisha and Bihar tribals (during weddings), 2. Bishnoi villages (Rajasthan), 3. Mundas and Santhals of Chota Nagpur, 4. Alwar district (Rajasthan)","options":[{"hi":"A-1, B-3, C-4, D-2","en":"A-1, B-3, C-4, D-2"},{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"},{"hi":"A-3, B-2, C-1, D-4","en":"A-3, B-2, C-1, D-4"},{"hi":"A-4, B-1, C-2, D-3","en":"A-4, B-1, C-2, D-3"}],"answer":1,"explanation_hi":"महुआ/कदंब मुंडा/संताल (A-3), इमली/आम ओडिशा/बिहार शादी में (B-1), काला हिरण बिश्नोई गांव (C-2), तथा सोंचुरी अलवर (D-4) से संबंधित हैं।","explanation_en":"Mahua/Kadamba=Mundas/Santhals (A-3), Tamarind/Mango=Odisha/Bihar tribals (B-1), Blackbuck=Bishnoi (C-2), Sonchuri=Alwar (D-4)."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संसाधन संरक्षण तथा सतत विकास से संबंधित निम्नलिखित अंतर्राष्ट्रीय पहलों को कालक्रम में व्यवस्थित कीजिए: 1. क्लब ऑफ रोम द्वारा संसाधन संरक्षण की वकालत, 2. शुमाकर की पुस्तक 'स्मॉल इज ब्यूटीफुल', 3. ब्रांडटलैंड आयोग रिपोर्ट 'अवर कॉमन फ्यूचर', 4. रियो डी जेनेरो पृथ्वी सम्मेलन","question_en":"Question 46: Arrange the following international initiatives related to resource conservation in chronological order: 1. Club of Rome advocated resource conservation, 2. Schumacher's book 'Small is Beautiful', 3. Brundtland Commission Report 'Our Common Future', 4. Rio de Janeiro Earth Summit","options":[{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"1, 3, 2, 4","en":"1, 3, 2, 4"},{"hi":"3, 1, 2, 4","en":"3, 1, 2, 4"}],"answer":0,"explanation_hi":"सही कालक्रम है: क्लब ऑफ रोम (1968), स्मॉल इज ब्यूटीफुल (1974), ब्रांडटलैंड रिपोर्ट (1987), रियो पृथ्वी सम्मेलन (1992)।","explanation_en":"Correct chronological order is: Club of Rome (1968), Small is Beautiful (1974), Brundtland Report (1987), Rio Summit (1992)."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित युग्मों पर विचार कीजिए: 1. भारतीय वन्यजीव (संरक्षण) अधिनियम - 1972, 2. प्रोजेक्ट टाइगर की शुरुआत - 1973, 3. पहली बार पौधों को संरक्षित सूची में शामिल करना - 1991। उपर्युक्त में से कितने सही सुमेलित हैं?","question_en":"Question 47: Consider the following pairs: 1. Indian Wildlife (Protection) Act - 1972, 2. Launch of Project Tiger - 1973, 3. First inclusion of plants in protected list - 1991. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":2,"explanation_hi":"तीनों युग्म सही सुमेलित हैं: वन्यजीव संरक्षण अधिनियम (1972), प्रोजेक्ट टाइगर (1973), तथा पौधों का शामिल होना (1991)।","explanation_en":"All three pairs are correctly matched: Wildlife Protection Act (1972), Project Tiger (1973), and Plants in protected list (1991)."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित युग्मों पर विचार कीजिए: 1. स्थायी वन का सबसे बड़ा क्षेत्र - मध्य प्रदेश, 2. रक्षित (संरक्षित) वनों का बड़ा अनुपात - राजस्थान एवं हरियाणा, 3. अवगीकृत वनों का उच्च प्रतिशत - पूर्वोत्तर राज्य एवं गुजरात। उपर्युक्त में से कितने सही सुमेलित हैं?","question_en":"Question 48: Consider the following pairs: 1. Largest area under permanent forests - Madhya Pradesh, 2. Bulk of forests under protected forests - Rajasthan and Haryana, 3. High percentage of unclassed forests - North-eastern states and Gujarat. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"कोई भी नहीं","en":"None"},{"hi":"सभी तीन","en":"All three"}],"answer":3,"explanation_hi":"तीनों युग्म सत्य हैं: मध्य प्रदेश में 75% स्थायी वन हैं, राजस्थान/हरियाणा में रक्षित वन अधिक हैं, पूर्वोत्तर/गुजरात में अवर्गीकृत वन अधिक हैं।","explanation_en":"All three pairs are correct: MP has 75% permanent forests, Rajasthan/Haryana have bulk protected, NE states/Gujarat have unclassed forests."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित युग्मों पर विचार कीजिए: 1. शृंगवेरपुर - प्रथम शताब्दी ईसा पूर्व, 2. भोपाल झील - 11वीं शताब्दी, 3. हौज खास टैंक - 14वीं शताब्दी। उपर्युक्त में से कितने सही सुमेलित हैं?","question_en":"Question 49: Consider the following pairs: 1. Sringaverapura - 1st century B.C., 2. Bhopal Lake - 11th Century, 3. Hauz Khas tank - 14th Century. How many of the above pairs are correctly matched?","options":[{"hi":"सभी तीन","en":"All three"},{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"कोई भी नहीं","en":"None"}],"answer":0,"explanation_hi":"तीनों युग्म सही सुमेलित हैं: शृंगवेरपुर (1ली श. ई.पू.), भोपाल झील (11वीं श.), तथा हौज खास (14वीं श.)।","explanation_en":"All three pairs are correctly matched: Sringaverapura (1st century BC), Bhopal Lake (11th Century), Hauz Khas (14th Century)."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में संसाधन नीतियों/कार्यक्रमों से संबंधित निम्नलिखित घटनाओं को कालक्रम में व्यवस्थित कीजिए: 1. राष्ट्रीय वन नीति, 2. ओडिशा द्वारा संयुक्त वन प्रबंधन (JFM) का पहला प्रस्ताव, 3. जल जीवन मिशन की घोषणा (आर्थिक सर्वेक्षण 2020-21 के अनुसार)।","question_en":"Question 50: Arrange the following events related to resource policies/programmes in India in chronological order: 1. National Forest Policy, 2. Odisha passed first resolution for Joint Forest Management (JFM), 3. Announcement of Jal Jeevan Mission (as per Economic Survey 2020-21).","options":[{"hi":"2, 1, 3","en":"2, 1, 3"},{"hi":"1, 2, 3","en":"1, 2, 3"},{"hi":"3, 1, 2","en":"3, 1, 2"},{"hi":"1, 3, 2","en":"1, 3, 2"}],"answer":1,"explanation_hi":"सही कालक्रम है: राष्ट्रीय वन नीति (1952), ओडिशा JFM प्रस्ताव (1988), जल जीवन मिशन (हालिया घोषणा)।","explanation_en":"Correct order is: National Forest Policy (1952), Odisha JFM resolution (1988), Jal Jeevan Mission."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
