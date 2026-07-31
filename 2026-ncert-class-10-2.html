@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"UPSC/PCS • NCERT • Class 10 book 1","highlight":"NCERT","shortTitle":"UPSC/PCS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • NCERT • Class 10 book 1","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-upsc-pcs-ncert-class-10-book-1-ncert-class-10-20260731-1j71i","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-07-31","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कर्तन-दहन कृषि (झूम कृषि) को मेक्सिको और मध्य अमेरिका में किस नाम से जाना जाता है?","question_en":"Question 1: By what name is 'slash and burn' agriculture (jhumming) known in Mexico and Central America?","options":[{"hi":"रोका","en":"Roca"},{"hi":"लादांग","en":"Ladang"},{"hi":"कोनुको","en":"Conuco"},{"hi":"मिलपा","en":"Milpa"}],"answer":3,"explanation_hi":"कर्तन-दहन कृषि को मेक्सिको और मध्य अमेरिका में 'मिलपा', ब्राजील में 'रोका' तथा वेनेजुएला में 'कोनुको' कहा जाता है।","explanation_en":"'Slash and burn' agriculture is known as 'Milpa' in Mexico and Central America, 'Roca' in Brazil, and 'Conuco' in Venezuela."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मसाले, चाय और कॉफी जैसे कृषि उत्पादों का भारत से निर्यात भी किया जाता है; भारत में रबी फसलों की बुआई किस अवधि में की जाती है?","question_en":"Question 2: Spices, tea and coffee are exported from India; during which period are Rabi crops sown in India?","options":[{"hi":"जून से जुलाई","en":"June to July"},{"hi":"अप्रैल से जून","en":"April to June"},{"hi":"जनवरी से मार्च","en":"January to March"},{"hi":"अक्टूबर से दिसंबर","en":"October to December"}],"answer":3,"explanation_hi":"रबी फसलों को शीत ऋतु में अक्टूबर से दिसंबर के मध्य बोया जाता है और ग्रीष्म ऋतु में अप्रैल से जून के मध्य काटा जाता है।","explanation_en":"Rabi crops are sown in winter from October to December and harvested in summer from April to June."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"खरीफ फसल चावल के उत्पादन के लिए किस प्रकार की जलवायु परिस्थितियों की आवश्यकता होती है?","question_en":"Question 3: What type of climatic conditions are required for the production of rice, a kharif crop?","options":[{"hi":"उच्च तापमान (25°C से अधिक) और 100 सेमी से अधिक वार्षिक वर्षा","en":"High temperature (above 25°C) and annual rainfall above 100 cm"},{"hi":"कम तापमान (15°C से कम) और 50 सेमी से कम वर्षा","en":"Low temperature (below 15°C) and rainfall less than 50 cm"},{"hi":"मध्यम तापमान (20°C) और 200 सेमी से अधिक वर्षा","en":"Moderate temperature (20°C) and rainfall above 200 cm"},{"hi":"शुष्क जलवायु और 30 सेमी वर्षा","en":"Dry climate and 30 cm rainfall"}],"answer":0,"explanation_hi":"चावल के लिए उच्च तापमान (25°C से ऊपर), उच्च आर्द्रता और 100 सेमी से अधिक वार्षिक वर्षा की आवश्यकता होती है।","explanation_en":"Rice requires high temperature (above 25°C), high humidity, and annual rainfall above 100 cm."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2020 में भारत मूंगफली उत्पादन में चीन के बाद विश्व में किस स्थान पर था?","question_en":"Question 4: In the year 2020, what was India's rank in groundnut production in the world after China?","options":[{"hi":"द्वितीय स्थान","en":"Second position"},{"hi":"तृतीय स्थान","en":"Third position"},{"hi":"प्रथम स्थान","en":"First position"},{"hi":"चतुर्थ स्थान","en":"Fourth position"}],"answer":0,"explanation_hi":"वर्ष 2020 में भारत विश्व में चीन के बाद मूंगफली का दूसरा सबसे बड़ा उत्पादक देश था।","explanation_en":"In 2020, India was the second largest producer of groundnut in the world after China."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में उगाई जाने वाली अरबिका (Arabica) किस्म की कॉफी मूल रूप से किस देश से लाई गई थी?","question_en":"Question 5: From which country was the Arabica variety of coffee grown in India initially brought?","options":[{"hi":"इथियोपिया","en":"Ethiopia"},{"hi":"ब्राजील","en":"Brazil"},{"hi":"यमन","en":"Yemen"},{"hi":"कोलंबिया","en":"Colombia"}],"answer":2,"explanation_hi":"शुरुआत में यमन से लाई गई अरबिका किस्म की कॉफी का उत्पादन भारत में किया जाता है, जिसकी शुरुआत बाबा बूदन पहाड़ियों से हुई।","explanation_en":"The Arabica variety initially brought from Yemen is produced in India, introduced on Baba Budan Hills."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"रबर एक विषुवतीय (Equatorial) फसल है; इसके विकास के लिए कितने सेमी से अधिक वर्षा तथा कितने से अधिक तापमान की आवश्यकता होती है?","question_en":"Question 6: Rubber is an equatorial crop; it requires rainfall of more than how many cm and temperature above what degree?","options":[{"hi":"100 सेमी वर्षा तथा 20°C तापमान","en":"100 cm rainfall and 20°C temperature"},{"hi":"150 सेमी वर्षा तथा 30°C तापमान","en":"150 cm rainfall and 30°C temperature"},{"hi":"200 सेमी वर्षा तथा 25°C तापमान","en":"200 cm rainfall and 25°C temperature"},{"hi":"250 सेमी वर्षा तथा 18°C तापमान","en":"250 cm rainfall and 18°C temperature"}],"answer":2,"explanation_hi":"रबर के लिए नम और आर्द्र जलवायु की आवश्यकता होती है जिसमें 200 सेमी से अधिक वर्षा और 25°C से अधिक तापमान चाहिए।","explanation_en":"Rubber requires a moist and humid climate with rainfall of more than 200 cm and temperature above 25°C."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कपास की फसल को पककर तैयार होने में कितने महीनों का समय लगता है तथा कितने पाला-रहित दिनों की आवश्यकता होती है?","question_en":"Question 7: How many months does cotton take to mature and how many frost-free days are required for its growth?","options":[{"hi":"3 से 4 महीने तथा 150 पाला-रहित दिन","en":"3 to 4 months and 150 frost-free days"},{"hi":"6 से 8 महीने तथा 210 पाला-रहित दिन","en":"6 to 8 months and 210 frost-free days"},{"hi":"10 से 12 महीने तथा 300 पाला-रहित दिन","en":"10 to 12 months and 300 frost-free days"},{"hi":"5 से 6 महीने तथा 180 पाला-रहित दिन","en":"5 to 6 months and 180 frost-free days"}],"answer":1,"explanation_hi":"कपास एक खरीफ फसल है जिसे पकने में 6 से 8 महीने लगते हैं और 210 पाला-रहित दिनों की आवश्यकता होती है।","explanation_en":"Cotton is a kharif crop requiring 6 to 8 months to mature and 210 frost-free days."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भूदान आंदोलन के दौरान पोचमपल्ली में किस व्यक्ति ने 80 भूमिहीन ग्रामीणों को 80 एकड़ भूमि देने की पेशकश की थी?","question_en":"Question 8: During the Bhoodan movement, who offered 80 acres of land to 80 landless villagers at Pochampally?","options":[{"hi":"विनोबा भावे","en":"Vinoba Bhave"},{"hi":"श्री रामचंद्र रेड्डी","en":"Shri Ram Chandra Reddy"},{"hi":"श्रीमन्नारायण अग्रवाल","en":"Shriman Narayan Agarwal"},{"hi":"जयप्रकाश नारायण","en":"Jayaprakash Narayan"}],"answer":1,"explanation_hi":"पोचमपल्ली में अचानक श्री रामचंद्र रेड्डी उठे और उन्होंने 80 भूमिहीन ग्रामीणों को 80 एकड़ भूमि देने की पेशकश की।","explanation_en":"Suddenly, Shri Ram Chandra Reddy stood up and offered 80 acres of land to 80 landless villagers."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दंतधावन (टूथपेस्ट) में कैविटी को कम करने के लिए उपयोग किया जाने वाला फ्लोराइड किस खनिज से प्राप्त होता है?","question_en":"Question 9: The fluoride used to reduce cavities in toothpaste comes from which mineral?","options":[{"hi":"रूटाइल","en":"Rutile"},{"hi":"इल्मेनाइट","en":"Ilmenite"},{"hi":"फ्लोराइट","en":"Fluorite"},{"hi":"एनाटेस","en":"Anatase"}],"answer":2,"explanation_hi":"टूथपेस्ट में कैविटी कम करने वाला फ्लोराइड 'फ्लोराइट' नामक खनिज से प्राप्त होता है।","explanation_en":"Fluoride which is used to reduce cavities comes from a mineral called fluorite."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"खनिजों के सर्वोत्तम अयस्क मैग्नेटाइट में लोहे (Iron) का प्रतिशत कितना पाया जाता है?","question_en":"Question 10: What is the iron content percentage in Magnetite, the finest iron ore?","options":[{"hi":"70 प्रतिशत तक","en":"Up to 70 per cent"},{"hi":"50 से 60 प्रतिशत तक","en":"Up to 50-60 per cent"},{"hi":"40 प्रतिशत तक","en":"Up to 40 per cent"},{"hi":"85 प्रतिशत से अधिक","en":"More than 85 per cent"}],"answer":0,"explanation_hi":"मैग्नेटाइट सर्वश्रेष्ठ लोह अयस्क है जिसमें 70 प्रतिशत तक लोहे का अंश पाया जाता है, जबकि हेमेटाइट में 50-60 प्रतिशत होता है।","explanation_en":"Magnetite is the finest iron ore with a very high content of iron up to 70 per cent."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"छत्तीसगढ़ के बस्तर जिले में स्थित प्रसिद्ध बैलाडिला पहाड़ी श्रृंखला में उच्च कोटि के हेमेटाइट के कितने निक्षेप (Deposits) मिलते हैं?","question_en":"Question 11: The famous Bailadila range of hills in Bastar district of Chhattisgarh comprises how many deposits of super high grade hematite iron ore?","options":[{"hi":"10 निक्षेप","en":"10 deposits"},{"hi":"8 निक्षेप","en":"8 deposits"},{"hi":"20 निक्षेप","en":"20 deposits"},{"hi":"14 निक्षेप","en":"14 deposits"}],"answer":3,"explanation_hi":"बस्तर जिले की बैलाडिला पहाड़ी श्रृंखला में अति उच्च कोटि के हेमेटाइट लोह अयस्क के 14 निक्षेप हैं।","explanation_en":"The Bailadila range of hills in Bastar district comprises 14 deposits of super high grade hematite iron ore."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"एक टन इस्पात (Steel) बनाने में लगभग कितने किलोग्राम मैंगनीज की आवश्यकता होती है?","question_en":"Question 12: Nearly how many kg of manganese is required to manufacture one tonne of steel?","options":[{"hi":"10 किग्रा","en":"10 kg"},{"hi":"5 किग्रा","en":"5 kg"},{"hi":"25 किग्रा","en":"25 kg"},{"hi":"50 किग्रा","en":"50 kg"}],"answer":0,"explanation_hi":"मुख्य रूप से इस्पात के निर्माण में मैंगनीज प्रयुक्त होता है; एक टन इस्पात बनाने में लगभग 10 किग्रा मैंगनीज लगता है।","explanation_en":"Nearly 10 kg of manganese is required to manufacture one tonne of steel."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2018-19 के आंकड़ों के अनुसार भारत में बॉक्साइट का सबसे बड़ा उत्पादक राज्य कौन सा था, जिसका कुल उत्पादन में 65% हिस्सा था?","question_en":"Question 13: According to 2018-19 data, which was the largest bauxite producing state in India, accounting for 65% of total production?","options":[{"hi":"झारखंड","en":"Jharkhand"},{"hi":"छत्तीसगढ़","en":"Chhattisgarh"},{"hi":"गुजरात","en":"Gujarat"},{"hi":"ओडिशा","en":"Odisha"}],"answer":3,"explanation_hi":"वर्ष 2018-19 में ओडिशा भारत का सबसे बड़ा बॉक्साइट उत्पादक राज्य था, जिसका देश के उत्पादन में 65 प्रतिशत योगदान था।","explanation_en":"Odisha was the largest bauxite producing state in India in 2018-19, with a share of 65 per cent."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"तमिलनाडु के नेयवेली (Neyveli) में किस प्रकार का कम गुणवत्ता वाला भूरा कोयला पाया जाता है, जो नरम तथा उच्च नमी युक्त होता है?","question_en":"Question 14: Which low grade brown coal, soft with high moisture content, is found in Neyveli of Tamil Nadu?","options":[{"hi":"पीट (Peat)","en":"Peat"},{"hi":"बिटुमिनस (Bituminous)","en":"Bituminous"},{"hi":"लिग्नाइट (Lignite)","en":"Lignite"},{"hi":"एंथ्रेसाइट (Anthracite)","en":"Anthracite"}],"answer":2,"explanation_hi":"लिग्नाइट एक निम्न श्रेणी का भूरा कोयला होता है। इसके मुख्य भंडार तमिलनाडु के नेयवेली में हैं।","explanation_en":"Lignite is a low grade brown coal. The principal lignite reserves are in Neyveli in Tamil Nadu."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गेल (GAIL) द्वारा निर्मित हजीरा-विजयपुर-जगदीशपुर (HVJ) अंतरराज्यीय गैस पाइपलाइन की प्रारंभिक लंबाई कितनी किमी थी?","question_en":"Question 15: What was the initial length (in km) of the Hazira-Vijaipur-Jagdishpur (HVJ) cross country gas pipeline constructed by GAIL?","options":[{"hi":"1,200 किमी","en":"1,200 km"},{"hi":"2,500 किमी","en":"2,500 km"},{"hi":"1,700 किमी","en":"1,700 km"},{"hi":"3,100 किमी","en":"3,100 km"}],"answer":2,"explanation_hi":"गेल द्वारा निर्मित पहली 1,700 किमी लंबी हजीरा-विजयपुर-जगदीशपुर (HVJ) गैस पाइपलाइन मुंबई हाई तथा बसई को औद्योगिक क्षेत्रों से जोड़ती है।","explanation_en":"The first 1,700 km long Hazira-Vijaipur-Jagdishpur (HVJ) cross country gas pipeline was constructed by GAIL."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में भू-तापीय ऊर्जा (Geothermal Energy) को दोहन करने के लिए प्रायोगिक परियोजनाएं किन दो स्थानों पर स्थापित की गई हैं?","question_en":"Question 16: In which two places have experimental projects been set up in India to harness geothermal energy?","options":[{"hi":"कोयना (महाराष्ट्र) तथा काकरापार (गुजरात)","en":"Koyna (Maharashtra) and Kakrapar (Gujarat)"},{"hi":"जैसलमेर (राजस्थान) तथा कल्पक्कम (तमिलनाडु)","en":"Jaisalmer (Rajasthan) and Kalpakkam (Tamil Nadu)"},{"hi":"अंकलेश्वर (गुजरात) तथा दिगबोई (असम)","en":"Ankleshwar (Gujarat) and Digboi (Assam)"},{"hi":"मणिकर्ण (हिमाचल प्रदेश) तथा पूगा घाटी (लद्दाख)","en":"Manikaran (Himachal Pradesh) and Puga Valley (Ladakh)"}],"answer":3,"explanation_hi":"भू-तापीय ऊर्जा की दो प्रायोगिक परियोजनाएं हिमाचल प्रदेश में मणिकर्ण (पार्वती घाटी) तथा लद्दाख में पूगा घाटी में स्थित हैं।","explanation_en":"Two experimental geothermal projects are located in Manikaran (Parvati Valley, HP) and Puga Valley (Ladakh)."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में पहला सफल वस्त्र उद्योग (कॉटन मिल) वर्ष 1854 में किस शहर में स्थापित किया गया था?","question_en":"Question 17: In which city was the first successful textile mill (cotton mill) established in India in the year 1854?","options":[{"hi":"कोलकाता","en":"Kolkata"},{"hi":"सूरत","en":"Surat"},{"hi":"अहमदाबाद","en":"Ahmedabad"},{"hi":"मुंबई","en":"Mumbai"}],"answer":3,"explanation_hi":"पहला सफल सूती वस्त्र उद्योग वर्ष 1854 में मुंबई में स्थापित किया गया था।","explanation_en":"The first successful textile mill was established in Mumbai in 1854."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की पहली जूट मिल वर्ष 1855 में कोलकाता के पास किस स्थान पर लगाई गई थी?","question_en":"Question 18: At which place near Kolkata was India's first jute mill set up in the year 1855?","options":[{"hi":"बजबज","en":"Budge Budge"},{"hi":"हावड़ा","en":"Howrah"},{"hi":"रिशरा","en":"Rishra"},{"hi":"श्रीरामपुर","en":"Serampore"}],"answer":2,"explanation_hi":"पहला जूट उद्योग कोलकाता के समीप रिशरा में वर्ष 1855 में लगाया गया था।","explanation_en":"The first jute mill was set up near Kolkata in 1855 at Rishra."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1 टन एल्युमीनियम का उत्पादन करने के लिए लगभग कितने टन बॉक्साइट और कितने टन एल्युमिना की आवश्यकता होती है?","question_en":"Question 19: To produce 1 tonne of aluminium, approximately how many tonnes of bauxite and alumina are required?","options":[{"hi":"2 से 3 टन बॉक्साइट तथा 1 टन एल्युमिना","en":"2 to 3 tonnes bauxite and 1 tonne alumina"},{"hi":"8 से 10 टन बॉक्साइट तथा 4 टन एल्युमिना","en":"8 to 10 tonnes bauxite and 4 tonnes alumina"},{"hi":"4 से 6 टन बॉक्साइट तथा 2 टन एल्युमिना","en":"4 to 6 tonnes bauxite and 2 tonnes alumina"},{"hi":"6 से 8 टन बॉक्साइट तथा 3 टन एल्युमिना","en":"6 to 8 tonnes bauxite and 3 tonnes alumina"}],"answer":2,"explanation_hi":"1 टन एल्युमीनियम बनाने के लिए 4 से 6 टन बॉक्साइट से 2 टन एल्युमिना प्राप्त किया जाता है।","explanation_en":"4 to 6 tonnes of bauxite yields 2 tonnes of alumina, which produces 1 tonne of aluminium."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का पहला सीमेंट संयंत्र वर्ष 1904 में किस शहर में स्थापित किया गया था?","question_en":"Question 20: In which city was the first cement plant set up in India in the year 1904?","options":[{"hi":"सिंदरी","en":"Sindri"},{"hi":"पोरबंदर","en":"Porbandar"},{"hi":"मुंबई","en":"Mumbai"},{"hi":"चेन्नई","en":"Chennai"}],"answer":3,"explanation_hi":"भारत में पहला सीमेंट उद्योग वर्ष 1904 में चेन्नई में लगाया गया था।","explanation_en":"The first cement plant was set up in Chennai in 1904."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण प्रबंधन प्रणाली के लिए ISO 14001 प्रमाणन प्राप्त करने वाला भारत का प्रमुख बिजली प्रदाता निगम कौन सा है?","question_en":"Question 21: Which major power providing corporation in India has received ISO 14001 certification for Environment Management System?","options":[{"hi":"NHPC","en":"NHPC"},{"hi":"NTPC","en":"NTPC"},{"hi":"PGCIL","en":"PGCIL"},{"hi":"BHEL","en":"BHEL"}],"answer":1,"explanation_hi":"एनटीपीसी (NTPC) भारत की प्रमुख बिजली प्रदाता कंपनी है जिसे EMS 14001 के लिए ISO प्रमाणन प्राप्त है।","explanation_en":"NTPC is a major power providing corporation in India with ISO certification for EMS 14001."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2020-21 के अनुसार भारत में सड़क नेटवर्क का कुल विस्तार लगभग कितना लाख किमी है?","question_en":"Question 22: As of 2020-21, what is the total aggregation of road networks in India in lakh km?","options":[{"hi":"62.16 लाख किमी","en":"62.16 lakh km"},{"hi":"45.12 लाख किमी","en":"45.12 lakh km"},{"hi":"55.80 लाख किमी","en":"55.80 lakh km"},{"hi":"70.50 लाख किमी","en":"70.50 lakh km"}],"answer":0,"explanation_hi":"2020-21 के अनुसार भारत में विश्व का दूसरा सबसे बड़ा सड़क जाल है जो लगभग 62.16 लाख किमी है।","explanation_en":"India has the second largest road network in the world, aggregating to about 62.16 lakh km (2020-21)."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सीमा सड़क संगठन (BRO) की स्थापना किस वर्ष उत्तर तथा उत्तर-पूर्वी सीमावर्ती क्षेत्रों के सामरिक महत्व की सड़कों के विकास के लिए की गई थी?","question_en":"Question 23: In which year was the Border Roads Organisation (BRO) established for developing roads of strategic importance in northern and north-eastern border areas?","options":[{"hi":"1960","en":"1960"},{"hi":"1950","en":"1950"},{"hi":"1972","en":"1972"},{"hi":"1985","en":"1985"}],"answer":0,"explanation_hi":"सीमा सड़क संगठन की स्थापना 1960 में उत्तरी और उत्तर-पूर्वी सीमावर्ती क्षेत्रों में सड़कों के विकास के लिए की गई थी।","explanation_en":"The Border Roads Organisation (BRO) was established in 1960 for developing strategic roads."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व की सबसे लंबी राजमार्ग सुरंग 'अटल टनल' (9.02 किमी) हिमालय की किस पर्वत श्रृंखला में समुद्र तल से 3000 मीटर की ऊंचाई पर बनी है?","question_en":"Question 24: In which mountain range of the Himalayas at an altitude of 3000 metres is the world's longest highway tunnel 'Atal Tunnel' (9.02 Km) built?","options":[{"hi":"धौलाधार श्रेणी","en":"Dhauladhar range"},{"hi":"पीर पंजाल श्रेणी","en":"Pir Panjal range"},{"hi":"जास्कर श्रेणी","en":"Zaskar range"},{"hi":"शिवालिक श्रेणी","en":"Shiwalik range"}],"answer":1,"explanation_hi":"अटल टनल (9.02 किमी) हिमालय की पीर पंजाल श्रृंखला में समुद्र तल से 3000 मीटर की ऊंचाई पर सीमा सड़क संगठन द्वारा निर्मित है।","explanation_en":"Atal Tunnel (9.02 Km) is built in the Pir Panjal range of Himalayas at an altitude of 3000 metres."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में पहली रेलगाड़ी वर्ष 1853 में मुंबई और ठाणे के मध्य चली थी; इसने कितनी दूरी तय की थी?","question_en":"Question 25: The first train in India steamed off from Mumbai to Thane in 1853; what distance did it cover?","options":[{"hi":"34 किमी","en":"34 km"},{"hi":"50 किमी","en":"50 km"},{"hi":"42 किमी","en":"42 km"},{"hi":"25 किमी","en":"25 km"}],"answer":0,"explanation_hi":"भारत में पहली रेलगाड़ी 1853 में मुंबई से ठाणे के बीच चलाई गई थी जिसने 34 किमी की दूरी तय की थी।","explanation_en":"The first train steamed off from Mumbai to Thane in 1853, covering a distance of 34 km."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय रेलवे में बड़ी लाइन (Broad Gauge) की पटरियों के बीच की चौड़ाई कितनी होती है?","question_en":"Question 26: What is the track width between rails in Broad Gauge operation of Indian Railways?","options":[{"hi":"1.676 मीटर","en":"1.676 metre"},{"hi":"1.000 मीटर","en":"1.000 metre"},{"hi":"0.762 मीटर","en":"0.762 metre"},{"hi":"0.610 मीटर","en":"0.610 metre"}],"answer":0,"explanation_hi":"बड़ी लाइन (Broad Gauge) में दो पटरियों के बीच दूरी 1.676 मीटर होती है, जबकि मीटर गेज में 1.000 मीटर होती है।","explanation_en":"Broad Gauge track width is 1.676 metre, Metre Gauge is 1.000 metre."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय जलमार्ग अधिनियम, 2016 के तहत भारत में कुल कितने जलमार्गों को राष्ट्रीय जलमार्ग (NWs) घोषित किया गया है?","question_en":"Question 27: Under the National Waterways Act, 2016, how many inland waterways have been declared as National Waterways (NWs) in India?","options":[{"hi":"55 राष्ट्रीय जलमार्ग","en":"55 National Waterways"},{"hi":"111 राष्ट्रीय जलमार्ग","en":"111 National Waterways"},{"hi":"100 राष्ट्रीय जलमार्ग","en":"100 National Waterways"},{"hi":"125 राष्ट्रीय जलमार्ग","en":"125 National Waterways"}],"answer":1,"explanation_hi":"राष्ट्रीय जलमार्ग अधिनियम 2016 द्वारा 111 अंतर्देशीय जलमार्गों को राष्ट्रीय जलमार्ग घोषित किया गया है।","explanation_en":"111 inland waterways were declared as National Waterways by the National Waterways Act, 2016."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय जलमार्ग संख्या 1 (N.W. No.1) गंगा नदी पर किन दो स्थानों के मध्य स्थित है जिसकी लंबाई 1620 किमी है?","question_en":"Question 28: National Waterway No. 1 (N.W. No.1) is situated on Ganga river between which two places with a length of 1620 km?","options":[{"hi":"सादिया से धुबरी","en":"Sadiya to Dhubri"},{"hi":"प्रयागराज से हलदिया","en":"Prayagraj to Haldia"},{"hi":"कोट्टापुरम से कोल्लम","en":"Kottapuram to Kollam"},{"hi":"काकीनाडा से पुदुचेरी","en":"Kakinada to Puducherry"}],"answer":1,"explanation_hi":"राष्ट्रीय जलमार्ग संख्या 1 गंगा नदी पर प्रयागराज तथा हलदिया के बीच 1620 किमी लंबा जलमार्ग है।","explanation_en":"N.W. No. 1 is on Ganga river between Prayagraj and Haldia (1620 km)."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"स्वतंत्रता के बाद कराची पत्तन के पाकिस्तान में चले जाने से मुंबई बंदरगाह पर व्यापार दबाव को कम करने के लिए विकसित किया गया पहला बंदरगाह कौन सा था?","question_en":"Question 29: Which was the first port developed soon after Independence to ease the trade volume on Mumbai port after loss of Karachi port?","options":[{"hi":"न्यू मंगलौर पत्तन","en":"New Mangalore Port"},{"hi":"जवाहरलाल नेहरू पत्तन","en":"Jawaharlal Nehru Port"},{"hi":"पारादीप पत्तन","en":"Paradwip Port"},{"hi":"दीनदयाल पत्तन (कांदला)","en":"Deendayal Port (Kandla)"}],"answer":3,"explanation_hi":"देश की आजादी के बाद कांदला (दीनदयाल पत्तन) पहला बंदरगाह था जिसे मुंबई पोर्ट का दबाव घटाने हेतु विकसित किया गया।","explanation_en":"Deendayal Port (Kandla) was the first port developed soon after Independence."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गोवा में स्थित कौन सा बंदरगाह भारत का प्रमुख लोह अयस्क निर्यात करने वाला बंदरगाह है, जो देश के कुल लोह अयस्क निर्यात का लगभग 50% संभालता है?","question_en":"Question 30: Which port located in Goa is the premier iron ore exporting port of the country, accounting for about 50% of India's iron ore export?","options":[{"hi":"मार्मागाओ पत्तन","en":"Mormugao port"},{"hi":"न्यू मंगलौर पत्तन","en":"New Mangalore port"},{"hi":"कोचिन पत्तन","en":"Cochin port"},{"hi":"वी.ओ. चिदंबरनार पत्तन","en":"V.O. Chidambaranar port"}],"answer":0,"explanation_hi":"मार्मागाओ पत्तन (गोवा) देश का अग्रणी लोह अयस्क निर्यात बंदरगाह है, जहाँ से लगभग 50 प्रतिशत लोह अयस्क निर्यात होता है।","explanation_en":"Mormugao port (Goa) is the premier iron ore exporting port accounting for about 50% of iron ore exports."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत विश्व में दालों का सबसे बड़ा उत्पादक तथा सबसे बड़ा उपभोक्ता दोनों है।\nकथन 2: अरहर (तुअर) को छोड़कर अन्य सभी दालें वायु से नाइट्रोजन लेकर मृदा की उर्वरता बनाए रखने में मदद करती हैं।","question_en":"Question 31: Consider the following statements:\nStatement 1: India is the largest producer as well as consumer of pulses in the world.\nStatement 2: Except arhar (tur), all other pulses help in restoring soil fertility by fixing nitrogen from air.","options":[{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"दोनों कथन सत्य हैं। भारत दालों का सबसे बड़ा उत्पादक व उपभोक्ता है और अरहर को छोड़कर अन्य दालें नाइट्रोजन स्थिरीकरण करती हैं।","explanation_en":"Both statements are true. India is the largest producer & consumer of pulses, and all pulses except arhar fix nitrogen."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत विश्व में चाय का सबसे बड़ा उत्पादक देश है।\nकथन 2: चाय के पौधे के लिए वर्ष भर समान रूप से वितरित गुनगुनी और नम मुक्त जलवायु की आवश्यकता होती है।","question_en":"Question 32: Consider the following statements:\nStatement 1: India is the largest producer of tea in the world.\nStatement 2: Tea bushes require warm and moist frost-free climate all through the year.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"}],"answer":3,"explanation_hi":"कथन 1 असत्य है क्योंकि चीन चाय का सबसे बड़ा उत्पादक है (भारत प्रमुख उत्पादक है)। कथन 2 सत्य है।","explanation_en":"Statement 1 is false (China is the largest tea producer). Statement 2 is true regarding tea climatic conditions."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में खनिजों का स्वामित्व सामान्यतः राष्ट्रीयकृत है, परंतु उत्तर-पूर्वी भारत के जनजातीय इलाकों में खनिजों का स्वामित्व व्यक्तियों या समुदायों के पास है।\nकथन 2: नेशनल ग्रीन ट्रिब्यूनल (NGT) ने मेघालय में प्रचलित 'रैट होल' (Rat hole) खनन को अवैध घोषित किया है।","question_en":"Question 33: Consider the following statements:\nStatement 1: In India minerals are generally nationalised, but in tribal areas of north-east India minerals are owned by individuals or communities.\nStatement 2: The National Green Tribunal (NGT) declared 'Rat hole' mining in Meghalaya illegal.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"दोनों कथन सत्य हैं। उत्तर-पूर्व में व्यक्तिगत/सामुदायिक स्वामित्व है तथा NGT ने मेघालय के रैट-होल खनन को अवैध ठहराया है।","explanation_en":"Both statements are true. Mineral ownership in NE is community/individual based, and NGT declared rat-hole mining illegal."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: गोंडवाना काल का कोयला धातुशोधन (Metallurgical) कोयला है जो 200 मिलियन वर्ष से अधिक पुराना है।\nकथन 2: टर्शियरी काल का कोयला केवल 55 मिलियन वर्ष पुराना है जो मुख्यतः उत्तर-पूर्वी राज्यों में पाया जाता है।","question_en":"Question 34: Consider the following statements:\nStatement 1: Gondwana coal is metallurgical coal over 200 million years in age.\nStatement 2: Tertiary coal is only about 55 million years old, mainly found in North-Eastern states.","options":[{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"दोनों कथन सत्य हैं। गोंडवाना कोयला 200 मिलियन वर्ष से अधिक पुराना (दामोदर घाटी आदि) है और टर्शियरी कोयला 55 मिलियन वर्ष पुराना (उत्तर-पूर्व) है।","explanation_en":"Both statements are true regarding Gondwana (200m+ years) and Tertiary coal (55m years)."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में पवन ऊर्जा फार्म का सबसे बड़ा समूह तमिलनाडु में नागरकोइल से मदुरै तक स्थित है।\nकथन 2: राजस्थान का जैसलमेर देश में पवन ऊर्जा के प्रभावी उपयोग के लिए प्रसिद्ध है।","question_en":"Question 35: Consider the following statements:\nStatement 1: The largest wind farm cluster in India is located in Tamil Nadu from Nagarcoil to Madurai.\nStatement 2: Jaisalmer in Rajasthan is well known for effective use of wind energy in the country.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन सत्य हैं। तमिलनाडु में नागरकोइल से मदुरै तक सबसे बड़ा विंड फार्म है और जैसलमेर भी पवन ऊर्जा हेतु प्रसिद्ध है।","explanation_en":"Both statements are true. Largest wind farm cluster is Nagarcoil to Madurai, and Jaisalmer is also famous for wind power."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: पटसन (जूट) को 'सुनहरा रेशा' (Golden Fibre) कहा जाता है जो बाढ़ के मैदानों की उपजाऊ मृदा में उगता है।\nकथन 2: भारत जूट का सबसे बड़ा निर्यातक देश है तथा बांग्लादेश के बाद दूसरा सबसे बड़ा उत्पादक है।","question_en":"Question 36: Consider the following statements:\nStatement 1: Jute is known as the 'Golden Fibre' which grows well on fertile soils in flood plains.\nStatement 2: India is the largest exporter of jute and the second largest producer after Bangladesh.","options":[{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"कथन 1 सत्य है। कथन 2 असत्य है क्योंकि भारत जूट का सबसे बड़ा उत्पादक (producer) है और बांग्लादेश के बाद दूसरा सबसे बड़ा निर्यातक (exporter) है।","explanation_en":"Statement 1 is true. Statement 2 is false because India is the largest producer and second largest exporter after Bangladesh."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: रासायनिक उर्वरक उद्योग में पोटाश (Potash) का शत-प्रतिशत आयात किया जाता है क्योंकि भारत में इसका वाणिज्यिक भंडार नहीं है।\nकथन 2: हरित क्रांति के बाद भारत में लगभग आधा उर्वरक उत्पादन गुजरात, तमिलनाडु, उत्तर प्रदेश, पंजाब और केरल राज्यों से होता है।","question_en":"Question 37: Consider the following statements:\nStatement 1: Potash is entirely imported in the fertilizer industry as India does not have any reserves of commercial potash.\nStatement 2: After Green Revolution, Gujarat, Tamil Nadu, UP, Punjab and Kerala contribute towards half of fertilizer production.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"}],"answer":3,"explanation_hi":"दोनों कथन सत्य हैं। पोटाश पूरी तरह से आयातित होता है तथा 5 राज्य देश का आधा उर्वरक उत्पादन करते हैं।","explanation_en":"Both statements are true. Potash is entirely imported and five states account for half of India's fertilizer output."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में डाक नेटवर्क विश्व में सबसे बड़ा है जिसमें कार्ड और लिफाफे को प्रथम श्रेणी की डाक माना जाता है।\nकथन 2: द्वितीय श्रेणी की डाक में बुक पैकेट, पंजीकृत समाचार पत्र और पत्रिकाओं को हवाई परिवहन द्वारा भेजा जाता है।","question_en":"Question 38: Consider the following statements:\nStatement 1: Indian postal network is the largest in the world where cards and envelopes are considered first-class mail.\nStatement 2: Second-class mail including book packets and newspapers are airlifted between stations.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"कथन 1 सत्य है। कथन 2 असत्य है क्योंकि द्वितीय श्रेणी की डाक को जल व थल परिवहन (surface mail) द्वारा भेजा जाता है, जबकि प्रथम श्रेणी को हवाई परिवहन (airlifted) द्वारा।","explanation_en":"Statement 1 is true. Statement 2 is false because second-class mail is carried by surface mail, while first-class mail is airlifted."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: जब किसी देश के निर्यात का मूल्य आयात के मूल्य से अधिक होता है तो इसे अनुकूल व्यापार संतुलन कहते हैं।\nकथन 2: अंतरराष्ट्रीय व्यापार को किसी देश की आर्थिक समृद्धि का सूचकांक या 'आर्थिक बैरोमीटर' माना जाता है।","question_en":"Question 39: Consider the following statements:\nStatement 1: When the value of export exceeds the value of imports, it is called a favourable balance of trade.\nStatement 2: Advancement of international trade is considered the economic barometer for a country.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"दोनों 1 तथा 2","en":"Both 1 and 2"},{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"दोनों कथन सत्य हैं। निर्यात का मूल्य आयात से अधिक होना अनुकूल व्यापार संतुलन है और अंतरराष्ट्रीय व्यापार आर्थिक बैरोमीटर कहलाता है।","explanation_en":"Both statements are true regarding favourable balance of trade and international trade as an economic barometer."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. झूम, B. पामलू, C. दीपा, D. वालरे;\nसूची-II: 1. मणिपुर, 2. बस्तर (छत्तीसगढ़) एवं अंडमान, 3. उत्तर-पूर्वी राज्य (असम/मेघालय), 4. दक्षिण-पूर्वी राजस्थान","question_en":"Question 40: Match List-I with List-II:\nList-I: A. Jhumming, B. Pamlou, C. Dipa, D. Valre;\nList-II: 1. Manipur, 2. Bastar (Chhattisgarh) and Andaman, 3. North-eastern states (Assam/Meghalaya), 4. South-eastern Rajasthan","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"}],"answer":1,"explanation_hi":"झूम=उत्तर-पूर्व (A-3), पामलू=मणिपुर (B-1), दीपा=बस्तर/अंडमान (C-2), तथा वालरे=राजस्थान (D-4) है।","explanation_en":"Jhumming=North-east (A-3), Pamlou=Manipur (B-1), Dipa=Bastar/Andaman (C-2), Valre=Rajasthan (D-4)."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. मकई (मक्का), B. चावल, C. रबर, D. कपास;\nसूची-II: 1. खरीफ फसल एवं 210 पाला-रहित दिन, 2. विषुवतीय फसल एवं 200 सेमी से अधिक वर्षा, 3. खरीफ फसल एवं 21°C से 27°C तापमान, 4. खरीफ फसल एवं 100 सेमी से अधिक वर्षा","question_en":"Question 41: Match List-I with List-II:\nList-I: A. Maize, B. Rice, C. Rubber, D. Cotton;\nList-II: 1. Kharif crop and 210 frost-free days, 2. Equatorial crop and rainfall > 200 cm, 3. Kharif crop and 21°C to 27°C temperature, 4. Kharif crop and rainfall > 100 cm","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-4, B-3, C-1, D-2","en":"A-4, B-3, C-1, D-2"},{"hi":"A-3, B-4, C-2, D-1","en":"A-3, B-4, C-2, D-1"}],"answer":3,"explanation_hi":"मक्का=21°C-27°C (A-3), चावल=100cm+ वर्षा (B-4), रबर=200cm+ वर्षा (C-2), तथा कपास=210 पाला-रहित दिन (D-1) है।","explanation_en":"Maize=21-27°C (A-3), Rice=100cm+ rain (B-4), Rubber=200cm+ rain (C-2), Cotton=210 frost-free days (D-1)."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. बालाघाट खानें, B. खेतड़ी खानें, C. कोडरमा-हजारीबाग, D. पंचपतमाली निक्षेप;\nसूची-II: 1. बॉक्साइट (ओडिशा), 2. तांबा (मध्य प्रदेश), 3. तांबा (राजस्थान), 4. अभ्रक (झारखंड)","question_en":"Question 42: Match List-I with List-II:\nList-I: A. Balaghat Mines, B. Khetri Mines, C. Koderma-Hazaribagh, D. Panchpatmali Deposits;\nList-II: 1. Bauxite (Odisha), 2. Copper (Madhya Pradesh), 3. Copper (Rajasthan), 4. Mica (Jharkhand)","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-3, C-4, D-1","en":"A-2, B-3, C-4, D-1"},{"hi":"A-3, B-2, C-1, D-4","en":"A-3, B-2, C-1, D-4"},{"hi":"A-4, B-1, C-2, D-3","en":"A-4, B-1, C-2, D-3"}],"answer":1,"explanation_hi":"बालाघाट=तांबा MP (A-2), खेतड़ी=तांबा राजस्थान (B-3), कोडरमा=अभ्रक झारखंड (C-4), पंचपतमाली=बॉक्साइट ओडिशा (D-1) है।","explanation_en":"Balaghat=Copper MP (A-2), Khetri=Copper Rajasthan (B-3), Koderma=Mica Jharkhand (C-4), Panchpatmali=Bauxite Odisha (D-1)."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. नरोरा, B. तारापुर, C. काकरापार, D. कैगा;\nसूची-II: 1. गुजरात, 2. कर्नाटक, 3. उत्तर प्रदेश, 4. महाराष्ट्र","question_en":"Question 43: Match List-I with List-II:\nList-I: A. Narora, B. Tarapur, C. Kakrapar, D. Kaiga;\nList-II: 1. Gujarat, 2. Karnataka, 3. Uttar Pradesh, 4. Maharashtra","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-4, B-3, C-2, D-1","en":"A-4, B-3, C-2, D-1"}],"answer":2,"explanation_hi":"नरोरा उत्तर प्रदेश में (A-3), तारापुर महाराष्ट्र में (B-4), काकरापार गुजरात में (C-1), तथा कैगा कर्नाटक में (D-2) स्थित परमाणु संयंत्र हैं।","explanation_en":"Narora=UP (A-3), Tarapur=Maharashtra (B-4), Kakrapar=Gujarat (C-1), Kaiga=Karnataka (D-2)."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. भिलाई, B. बोकारो, C. दुर्गापुर, D. राउरकेला;\nसूची-II: 1. ओडिशा, 2. पश्चिम बंगाल, 3. छत्तीसगढ़, 4. झारखंड","question_en":"Question 44: Match List-I with List-II:\nList-I: A. Bhilai, B. Bokaro, C. Durgapur, D. Rourkela;\nList-II: 1. Odisha, 2. West Bengal, 3. Chhattisgarh, 4. Jharkhand","options":[{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-4, B-3, C-1, D-2","en":"A-4, B-3, C-1, D-2"},{"hi":"A-3, B-4, C-2, D-1","en":"A-3, B-4, C-2, D-1"}],"answer":3,"explanation_hi":"भिलाई=छत्तीसगढ़ (A-3), बोकारो=झारखंड (B-4), दुर्गापुर=पश्चिम बंगाल (C-2), तथा राउरकेला=ओडिशा (D-1) में स्थित इस्पात संयंत्र हैं।","explanation_en":"Bhilai=Chhattisgarh (A-3), Bokaro=Jharkhand (B-4), Durgapur=West Bengal (C-2), Rourkela=Odisha (D-1)."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. श्यामा प्रसाद मुखर्जी पत्तन, B. वी.ओ. चिदंबरनार पत्तन, C. विशाखापट्टनम पत्तन, D. पारादीप पत्तन;\nसूची-II: 1. तमिलनाडु (प्राकृतिक बंदरगाह), 2. सबसे गहरा भू-आवेष्टित बंदरगाह, 3. ओडिशा (लोह अयस्क निर्यात), 4. कोलकाता (अंतर्देशीय नदीय बंदरगाह)","question_en":"Question 45: Match List-I with List-II:\nList-I: A. Shyama Prasad Mookerjee Port, B. V.O. Chidambaranar Port, C. Vishakhapatnam Port, D. Paradwip Port;\nList-II: 1. Tamil Nadu (natural harbour), 2. Deepest landlocked port, 3. Odisha (iron ore export), 4. Kolkata (inland riverine port)","options":[{"hi":"A-4, B-1, C-2, D-3","en":"A-4, B-1, C-2, D-3"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-2, B-3, C-4, D-1","en":"A-2, B-3, C-4, D-1"}],"answer":0,"explanation_hi":"श्यामा प्रसाद मुखर्जी=कोलकाता नदीय (A-4), चिदंबरनार=तुतीकोरिन (B-1), विशाखापट्टनम=गहरा भू-आवेष्टित (C-2), पारादीप=ओडिशा (D-3) है।","explanation_en":"Shyama Prasad Mookerjee=Kolkata riverine (A-4), Chidambaranar=Tuticorin (B-1), Vishakhapatnam=Landlocked (C-2), Paradwip=Odisha (D-3)."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में निम्नलिखित परिवहन एवं औद्योगिक विकास की घटनाओं को कालक्रम में व्यवस्थित कीजिए: 1. मुंबई में पहली रेलगाड़ी चलना, 2. मुंबई में पहली सफल सूती वस्त्र मिल, 3. रिशरा में पहली जूट मिल, 4. चेन्नई में पहला सीमेंट संयंत्र","question_en":"Question 46: Arrange the following transport and industrial development events in India in chronological order: 1. First train steamed off in Mumbai, 2. First successful cotton mill in Mumbai, 3. First jute mill at Rishra, 4. First cement plant in Chennai","options":[{"hi":"1, 3, 2, 4","en":"1, 3, 2, 4"},{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"3, 1, 2, 4","en":"3, 1, 2, 4"}],"answer":2,"explanation_hi":"सही कालक्रम है: पहली रेलगाड़ी (1853), सूती मिल (1854), जूट मिल (1855), तथा सीमेंट संयंत्र (1904)।","explanation_en":"Correct order is: First train (1853), Cotton mill (1854), Jute mill (1855), Cement plant (1904)."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित युग्मों पर विचार कीजिए: 1. डिगबोई, नाहरकटिया और मोरन-हुगरीजन - असम के तेल क्षेत्र, 2. अंकलेश्वर - गुजरात का महत्वपूर्ण तेल क्षेत्र, 3. कल्पक्कम - तमिलनाडु का तापीय ऊर्जा संयंत्र। उपर्युक्त में से कितने सही सुमेलित हैं?","question_en":"Question 47: Consider the following pairs: 1. Digboi, Naharkatiya and Moran-Hugrijan - Assam oil fields, 2. Ankleshwar - Important oil field of Gujarat, 3. Kalpakkam - Thermal power plant of Tamil Nadu. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"केवल दो युग्म (1 और 2) सही हैं। युग्म 3 असत्य है क्योंकि कल्पक्कम तमिलनाडु में एक परमाणु (Nuclear) ऊर्जा केंद्र है, न कि तापीय (Thermal)।","explanation_en":"Only two pairs (1 and 2) are correct. Pair 3 is wrong because Kalpakkam is a nuclear power station, not thermal."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित युग्मों पर विचार कीजिए: 1. राष्ट्रीय जलमार्ग 1 - गंगा नदी (प्रयागराज से हलदिया), 2. राष्ट्रीय जलमार्ग 2 - ब्रह्मपुत्र नदी (सादिया से धुबरी), 3. राष्ट्रीय जलमार्ग 3 - पश्चिम तटीय नहर (केरल)। उपर्युक्त में से कितने सही सुमेलित हैं?","question_en":"Question 48: Consider the following pairs: 1. National Waterway 1 - Ganga river (Prayagraj to Haldia), 2. National Waterway 2 - Brahmaputra river (Sadiya to Dhubri), 3. National Waterway 3 - West-Coast Canal (Kerala). How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":2,"explanation_hi":"तीनों युग्म सही सुमेलित हैं: NW1 गंगा (1620 किमी), NW2 ब्रह्मपुत्र (891 किमी), तथा NW3 केरल की पश्चिम तटीय नहर (205 किमी)।","explanation_en":"All three pairs are correctly matched: NW1 Ganga (1620 km), NW2 Brahmaputra (891 km), NW3 West-Coast Canal in Kerala (205 km)."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित युग्मों पर विचार कीजिए: 1. मणिकर्ण - हिमाचल प्रदेश (भू-तापीय ऊर्जा), 2. मोनाजाइट बालू - केरल (थोरियम), 3. सुंदरबन क्षेत्र - पश्चिम बंगाल (ज्वारीय ऊर्जा)। उपर्युक्त में से कितने सही सुमेलित हैं?","question_en":"Question 49: Consider the following pairs: 1. Manikaran - Himachal Pradesh (Geothermal energy), 2. Monazite sands - Kerala (Thorium), 3. Sunderban region - West Bengal (Tidal energy). How many of the above pairs are correctly matched?","options":[{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"केवल एक","en":"Only one"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"तीनों युग्म सही सुमेलित हैं: मणिकर्ण (भू-तापीय ऊर्जा), केरल का मोनाजाइट बालू (थोरियम), तथा सुंदरबन (ज्वारीय ऊर्जा)।","explanation_en":"All three pairs are correctly matched: Manikaran (Geothermal), Monazite sands (Thorium), and Sunderbans (Tidal energy)."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में सड़क एवं परिवहन विकास से जुड़े संगठनों/योजनाओं को स्थापना/लागू होने के कालक्रम में व्यवस्थित कीजिए: 1. सीमा सड़क संगठन (BRO), 2. राष्ट्रीय जलमार्ग अधिनियम, 3. जल जीवन मिशन की तरह ग्रामीण सड़कों हेतु 'प्रधानमंत्री ग्राम सड़क योजना'।","question_en":"Question 50: Arrange the organisations/schemes related to road and transport development in India in chronological order: 1. Border Roads Organisation (BRO), 2. National Waterways Act, 3. Pradhan Mantri Grameen Sadak Yojana.","options":[{"hi":"3, 1, 2","en":"3, 1, 2"},{"hi":"2, 1, 3","en":"2, 1, 3"},{"hi":"1, 3, 2","en":"1, 3, 2"},{"hi":"1, 2, 3","en":"1, 2, 3"}],"answer":2,"explanation_hi":"सही कालक्रम है: सीमा सड़क संगठन (1960), प्रधानमंत्री ग्राम सड़क योजना (2000), तथा राष्ट्रीय जलमार्ग अधिनियम (2016)।","explanation_en":"Correct order is: Border Roads Organisation (1960), Pradhan Mantri Grameen Sadak Yojana (2000), and National Waterways Act (2016)."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
