@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"HEO","highlight":"HEO","shortTitle":"HEO","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-heo-20260804-1btpo","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-04","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय स्वास्थ्य प्रोफाइल के आंकड़ों के अनुसार, ग्रामीण क्षेत्रों में विशेषज्ञ डॉक्टरों की कितने प्रतिशत से अधिक की कमी है?","question_en":"Question 1: According to National Health Profile data, there is a deficit of more than what percentage of specialist doctors in rural areas?","options":[{"hi":"50 प्रतिशत","en":"50 percentage"},{"hi":"60 प्रतिशत","en":"60 percentage"},{"hi":"70 प्रतिशत","en":"70 percentage"},{"hi":"80 प्रतिशत","en":"80 percentage"}],"answer":3,"explanation_hi":"राष्ट्रीय स्वास्थ्य प्रोफाइल के अनुसार, देश के ग्रामीण सामुदायिक स्वास्थ्य केंद्रों में विशेषज्ञ डॉक्टरों की 80 प्रतिशत से अधिक की कमी है।","explanation_en":"According to the National Health Profile, there is a deficit of more than 80 percentage of specialist doctors in rural CHCs."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में तृतीयक स्तर के अस्पताल (जैसे एम्स या बड़े कॉर्पोरेट सुपर-स्पेशलिटी अस्पताल) लगभग कितने प्रतिशत शहरी क्षेत्रों में स्थित हैं?","question_en":"Question 2: Approximately what percentage of tertiary level hospitals in India are located in urban areas?","options":[{"hi":"65 प्रतिशत","en":"65 percentage"},{"hi":"75 प्रतिशत","en":"75 percentage"},{"hi":"85 प्रतिशत","en":"85 percentage"},{"hi":"95 प्रतिशत","en":"95 percentage"}],"answer":3,"explanation_hi":"तृतीयक स्तर के सुपर-स्पेशलिटी अस्पताल लगभग 95 प्रतिशत शहरी क्षेत्रों में स्थित हैं, जिससे ग्रामीण मरीजों को शहरों की यात्रा करनी पड़ती है।","explanation_en":"Tertiary super-specialty hospitals are almost 95 percentage located in urban areas, forcing rural patients to travel to cities."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूजैन सोंटाग के अनुसार, समाज में कैंसर के मरीजों के प्रति सहानुभूति दर्शाने के बजाय उन्हें पहले ही मृत मान लेना क्या कहलाता है?","question_en":"Question 3: According to Susan Sontag, what is it called when society treats cancer patients as if they are already dead instead of showing sympathy?","options":[{"hi":"नैतिक मृत्यु","en":"Moral death"},{"hi":"सामाजिक मृत्यु","en":"Social death"},{"hi":"शारीरिक मृत्यु","en":"Physical death"},{"hi":"मानसिक मृत्यु","en":"Mental death"}],"answer":1,"explanation_hi":"सूजैन सोंटाग के अनुसार, कैंसर को मौत की सजा के रूप में देखना और मरीज के प्रति अजीब दृष्टिकोण अपनाना 'सामाजिक मृत्यु' कहलाता है।","explanation_en":"According to Susan Sontag, viewing cancer as a death sentence and treating the patient as already dead is termed 'social death'."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"यूनाइटेड किंगडम में स्वास्थ्य असमानताओं के कारणों को समझाने के लिए प्रस्तुत की गई 'ब्लैक रिपोर्ट' (1980) ने कुल कितने प्रमुख मॉडल प्रस्तुत किए?","question_en":"Question 4: How many major models were presented in 'The Black Report' (1980) of the United Kingdom to explain the causes of health inequalities?","options":[{"hi":"4","en":"4"},{"hi":"2","en":"2"},{"hi":"3","en":"3"},{"hi":"5","en":"5"}],"answer":0,"explanation_hi":"ब्लैक रिपोर्ट ने स्वास्थ्य असमानता को समझाने के लिए 4 मॉडल दिए: कलाकृति, प्राकृतिक या सामाजिक चयन, सांस्कृतिक और भौतिकवादी स्पष्टीकरण।","explanation_en":"The Black Report presented 4 explanatory models for health inequality: artefact, natural or social selection, cultural, and materialist explanation."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'ब्लैक रिपोर्ट' का कौन सा मॉडल यह तर्क देता है कि निम्न वर्ग के लोगों की खराब आदतें ही उनके खराब स्वास्थ्य के लिए जिम्मेदार हैं?","question_en":"Question 5: Which model of 'The Black Report' argues that the bad habits of lower-class people are responsible for their poor health?","options":[{"hi":"कलाकृतियों का स्पष्टीकरण","en":"Artefact explanation"},{"hi":"प्राकृतिक या सामाजिक चयन","en":"Social selection"},{"hi":"सांस्कृतिक या व्यवहारात्मक स्पष्टीकरण","en":"Cultural or behavioural explanation"},{"hi":"भौतिकवादी या संरचनात्मक स्पष्टीकरण","en":"Materialist or structural explanation"}],"answer":2,"explanation_hi":"सांस्कृतिक मॉडल मानता है कि निम्न वर्ग के लोगों की व्यक्तिगत आदतें जैसे धूम्रपान और खराब खान-पान उनके खराब स्वास्थ्य का कारण हैं।","explanation_en":"The cultural model attributes poor health in lower classes to personal habits like smoking and poor diet."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"'ब्लैक रिपोर्ट' का कौन सा मॉडल निम्न वर्ग के खराब स्वास्थ्य का कारण उनकी व्यक्तिगत पसंद के बजाय खराब घर, कम आय और प्रदूषण को मानता है?","question_en":"Question 6: Which model of 'The Black Report' attributes poor health to poor housing, low income, and pollution instead of personal choice?","options":[{"hi":"भौतिकवादी या संरचनात्मक स्पष्टीकरण","en":"Materialist or structural explanation"},{"hi":"प्राकृतिक चयन मॉडल","en":"Social selection model"},{"hi":"कलाकृतियों का स्पष्टीकरण","en":"Artefact explanation"},{"hi":"सांस्कृतिक स्पष्टीकरण","en":"Cultural explanation"}],"answer":0,"explanation_hi":"भौतिकवादी मॉडल खराब स्वास्थ्य का मुख्य कारण आर्थिक संसाधनों की कमी और असुरक्षित भौतिक वातावरण जैसी संरचनात्मक परिस्थितियों को मानता है।","explanation_en":"The materialist model attributes poor health to structural conditions like lack of economic resources and unsafe physical environment."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रसव के दौरान अत्यधिक रक्तस्राव होने पर महिला को अस्पताल ले जाने में होने वाली देरी से होने वाली मृत्यु को चिकित्सा समाजशास्त्र में क्या कहते हैं?","question_en":"Question 7: What is the death caused by delay in transporting a bleeding pregnant woman to a hospital termed in medical sociology?","options":[{"hi":"भोजन की कमी","en":"Lack of food"},{"hi":"परिवहन की विफलता","en":"Transportation failure"},{"hi":"सड़कों का अभाव","en":"Lack of roads"},{"hi":"एम्बुलेंस का खराब होना","en":"Breakdown of ambulances"}],"answer":1,"explanation_hi":"प्रसव के दौरान अत्यधिक रक्तस्राव होने पर ग्रामीण महिलाओं को ससमय शहर न पहुँचा पाने से हुई मृत्यु को परिवहन की विफलता कहा जाता है।","explanation_en":"Deaths caused by not being able to transport bleeding rural pregnant women to city hospitals in time is termed transportation failure."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ग्रामीण बच्चों में नाटापन (Stunting) और कमजोरी (Wasting) की दर पीढ़ियों से चली आ रही किस सूक्ष्म पोषक तत्व संबंधी कमी को दर्शाती है?","question_en":"Question 8: What micronutrient deficiency is reflected by the high rates of stunting and wasting among rural children over generations?","options":[{"hi":"कैलोरी की कमी","en":"Calorie deficiency"},{"hi":"भोजन की अनुपलब्धता","en":"Non-availability of food"},{"hi":"छिपी हुई भूख","en":"Hidden hunger"},{"hi":"पीने के साफ पानी की कमी","en":"Lack of clean drinking water"}],"answer":2,"explanation_hi":"ग्रामीण बच्चों में नाटापन और कमजोरी की अत्यधिक दर पीढ़ियों से चली आ रही सूक्ष्म पोषक तत्वों की कमी और 'छिपी हुई भूख' को दर्शाती है।","explanation_en":"High rates of stunting and wasting in rural children reflect long-standing micronutrient deficiencies termed 'hidden hunger'."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"टैलकॉट पार्सन्स का रोगी भूमिका (Sick Role) का प्रसिद्ध मॉडल मुख्य रूप से किस प्रकार की बीमारियों पर सटीक बैठता है?","question_en":"Question 9: Talcott Parsons' famous model of the Sick Role primarily fits which type of illnesses?","options":[{"hi":"केवल दीर्घकालिक बीमारियों पर","en":"Only on chronic illnesses"},{"hi":"केवल अल्पकालिक बीमारियों पर","en":"Only on acute illnesses"},{"hi":"सभी प्रकार की मानसिक बीमारियों पर","en":"On all types of mental illnesses"},{"hi":"केवल संक्रामक बीमारियों पर","en":"Only on infectious diseases"}],"answer":1,"explanation_hi":"पार्सन्स का मॉडल केवल अल्पकालिक बीमारियों पर लागू होता है; यह मधुमेह या कैंसर जैसी दीर्घकालिक बीमारियों पर सटीक नहीं बैठता है।","explanation_en":"Parsons' model applies only to acute illnesses; it does not accurately fit chronic illnesses like diabetes or cancer."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"काम की तलाश में ग्रामीण पुरुषों के पलायन के कारण खेती में केवल वृद्धों और महिलाओं के बच जाने की प्रक्रिया को क्या कहा जाता है?","question_en":"Question 10: What is the process called when rural men migrate for work, leaving only elderly and women in farming?","options":[{"hi":"महिलाओं द्वारा आधुनिक तकनीक का प्रयोग","en":"Use of modern technology by women"},{"hi":"महिला कृषकों को प्रोत्साहन","en":"Promotion of female farmers"},{"hi":"कृषि का महिलाकरण","en":"Feminization of agriculture"},{"hi":"महिलाओं को भूमि के अधिकार देना","en":"Giving land rights to women"}],"answer":2,"explanation_hi":"ग्रामीण क्षेत्रों से पुरुषों के भारी पलायन से गांवों के खेतों में केवल महिलाओं और वृद्धों का श्रम रह जाने को कृषि का महिलाकरण कहते हैं।","explanation_en":"Out-migration of rural men leaving only women and the elderly to work in fields is termed the feminization of agriculture."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"शिकागो संप्रदाय के तहत लुई विर्थ ने नगर और नगरीय जीवन के अध्ययन में नगर की कौन सी तीन विशेषताएं स्पष्ट की हैं?","question_en":"Question 11: Under the Chicago School, which three characteristics of cities did Louis Wirth clarify in his study of urban life?","options":[{"hi":"आकार, घनत्व और विषमता","en":"Size, density and heterogeneity"},{"hi":"आकार, घनत्व और गतिशीलता","en":"Size, density and mobility"},{"hi":"आकार, धर्म और वर्ग","en":"Size, religion and class"},{"hi":"जनसंख्या, उद्योग और शिक्षा","en":"Population, industry and education"}],"answer":0,"explanation_hi":"लुई विर्थ ने अपने नगरीय अध्ययन में नगर की तीन मूल विशेषताएं बताई हैं: आकार, घनत्व और सामाजिक-सांस्कृतिक विषमता।","explanation_en":"In his urban studies, Louis Wirth identified three core characteristics of a city: size, density, and socio-cultural heterogeneity."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जॉर्ज सिमेल के अनुसार, महानगरों के अत्यधिक मानसिक उद्दीपनों (Stimuli) से स्वयं को बचाने के लिए शहरी मनुष्य कौन सा रवैया अपनाते हैं?","question_en":"Question 12: According to Georg Simmel, what attitude do metropolitan dwellers adopt to protect themselves from excessive mental stimuli?","options":[{"hi":"धन के अभाव का दृष्टिकोण","en":"Attitude of lack of money"},{"hi":"उदासीन दृष्टिकोण","en":"Blasé attitude"},{"hi":"सामाजिक भेदभाव का दृष्टिकोण","en":"Attitude of social discrimination"},{"hi":"प्रदूषण से बचने का दृष्टिकोण","en":"Attitude of avoiding pollution"}],"answer":1,"explanation_hi":"सिमेल के अनुसार, महानगरों की तेज रफ्तार और अत्यधिक उद्दीपनों से बचने के लिए शहरी लोग उदासीन रवैया विकसित करते हैं।","explanation_en":"According to Simmel, city dwellers develop a blasé attitude to shield themselves from metropolitan speed and over-stimulation."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पियरे बोर्दियू के अनुसार, श्रमिक वर्ग के भारी और पेट भरने वाले भोजन (जैसे आलू, वसायुक्त आहार) की पसंद को क्या कहा जाता है?","question_en":"Question 13: According to Pierre Bourdieu, what is the working-class preference for heavy and filling food (like potato and fatty diet) called?","options":[{"hi":"स्वतंत्रता का स्वाद","en":"Taste of liberty"},{"hi":"विलासिता का स्वाद","en":"Taste of luxury"},{"hi":"अभाव का स्वाद","en":"Taste of necessity"},{"hi":"पोषण का स्वाद","en":"Taste of nutrition"}],"answer":2,"explanation_hi":"बोर्दियू के अनुसार, गरीब वर्ग का भारी भोजन ऊर्जा की आवश्यकता के कारण 'अभाव का स्वाद' या 'मजबूरी का स्वाद' कहलाता है।","explanation_en":"According to Bourdieu, the working class's heavy diet due to physical energy needs is termed the 'taste of necessity'."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संरचनावाद के तहत क्लाउड लेवी-स्ट्रॉस ने 'भोजन त्रिकोण' (Culinary Triangle) में किन तीन अवस्थाओं का विश्लेषण किया है?","question_en":"Question 14: Under structuralism, which three states did Claude Lévi-Strauss analyze in the 'Culinary Triangle'?","options":[{"hi":"मीठा, नमकीन और तीखा","en":"Sweet, salty and spicy"},{"hi":"शाकाहारी, मांसाहारी और अंडा","en":"Vegetarian, non-vegetarian and egg"},{"hi":"सात्त्विक, राजसिक और तामसिक","en":"Sattvik, rajsik and tamsik"},{"hi":"कच्चा, पका हुआ और सड़ा हुआ","en":"Raw, cooked and rotten"}],"answer":3,"explanation_hi":"लेवी-स्ट्रॉस ने भोजन त्रिकोण में कच्चा (प्रकृति), पका हुआ (संस्कृति) और सड़ा हुआ (प्रकृति का क्षय) के संबंध को समझाया।","explanation_en":"Lévi-Strauss analyzed the relationship between raw (nature), cooked (culture), and rotten (decay of nature) in the culinary triangle."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्रिटिश समाजशास्त्री मैरी डगलस ने अपनी पुस्तक 'Purity and Danger' में गंदगी (Dirt) को किस रूप में परिभाषित किया है?","question_en":"Question 15: How did British sociologist Mary Douglas define 'Dirt' in her book 'Purity and Danger'?","options":[{"hi":"अपने स्थान से बाहर की वस्तु","en":"Matter out of place"},{"hi":"कीटाणुओं का समूह","en":"Group of germs"},{"hi":"पर्यावरण प्रदूषण","en":"Environmental pollution"},{"hi":"अछूत वस्तु","en":"Untouchable object"}],"answer":0,"explanation_hi":"मैरी डगलस के अनुसार गंदगी कोई स्वतंत्र वस्तु नहीं है, बल्कि यह केवल 'अपने सही स्थान से बाहर की वस्तु' होती है।","explanation_en":"According to Mary Douglas, dirt is not an independent entity but simply 'matter out of place'."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय जाति व्यवस्था में खान-पान और अंतर्भोजन के नियमों के तहत 'पक्का भोजन' से क्या तात्पर्य है?","question_en":"Question 16: Under the rules of food and commensality in Indian caste system, what is meant by 'Pakka food'?","options":[{"hi":"पानी में उबाला हुआ भोजन","en":"Food boiled in water"},{"hi":"घी या तेल में तला हुआ भोजन","en":"Food fried in ghee or oil"},{"hi":"केवल बिना पकाया भोजन","en":"Only uncooked food"},{"hi":"केवल मांसाहारी भोजन","en":"Only non-vegetarian food"}],"answer":1,"explanation_hi":"घी या तेल में तले हुए भोजन (जैसे पूड़ी) को पक्का भोजन माना जाता था, जिसे शुद्ध मानकर उच्च जातियां निम्न जातियों से भी स्वीकार कर लेती थीं।","explanation_en":"Food fried in ghee or oil (like puri) was considered Pakka food, so pure that upper castes accepted it even from lower castes."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जॉर्ज रिट्ज़र ने आधुनिक खान-पान उद्योगों में जिस तार्किकता और नियंत्रण की अवधारणा का उल्लेख किया है, उसका मूल सिद्धांत क्या है?","question_en":"Question 17: What is the core principle of rationality and control in modern food industries mentioned by George Ritzer?","options":[{"hi":"व्यक्तिगत स्वतंत्रता","en":"Personal liberty"},{"hi":"अनिश्चितता","en":"Uncertainty"},{"hi":"पारंपरिक विविधता","en":"Traditional diversity"},{"hi":"दक्षता","en":"Efficiency"}],"answer":3,"explanation_hi":"जॉर्ज रिट्ज़र के मैकडोनाल्डीकरण सिद्धांत के प्रमुख अंगों में दक्षता, संगणनीयता और कड़ा तार्किक नियंत्रण शामिल हैं।","explanation_en":"George Ritzer's McDonaldization theory highlights principles of efficiency, calculability, and strict rational control."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"एडवर्ड सुचमैन के अनुसार, बीमारी के अनुभव (Illness Experience) के पाँच चरणों में से पहला चरण कौन सा है?","question_en":"Question 18: According to Edward Suchman, which is the first stage among the five stages of illness experience?","options":[{"hi":"लक्षणों का अनुभव","en":"Symptom experience"},{"hi":"बीमार भूमिका को अपनाना","en":"Assumption of the sick role"},{"hi":"चिकित्सीय संपर्क","en":"Medical care contact"},{"hi":"मरीज की भूमिका","en":"Dependent-patient role"}],"answer":0,"explanation_hi":"सुचमैन के चरणों के अनुसार, मरीज के बीमार होने का पहला अनुभव शारीरिक लक्षणों का महसूस होना या 'लक्षणों का अनुभव' है।","explanation_en":"According to Suchman's stages, the very first stage is experiencing physical anomalies, termed 'symptom experience'."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"समाजशास्त्री एर्विंग गोफमैन ने अपनी पुस्तक 'Stigma' (1963) में कलंक के जो तीन प्रकार बताए हैं, उनमें कौन शामिल नहीं है?","question_en":"Question 19: Among the three types of stigma identified by Erving Goffman in 'Stigma' (1963), which one is not included?","options":[{"hi":"शारीरिक विकृतियां","en":"Physical deformities"},{"hi":"व्यक्तिगत चरित्र के दोष","en":"Blemishes of individual character"},{"hi":"आदिवासी या सामूहिक कलंक","en":"Tribal or collective stigma"},{"hi":"आर्थिक कमजोरी","en":"Economic weakness"}],"answer":3,"explanation_hi":"गोफमैन ने शारीरिक विकृतियां, चरित्र के दोष और आदिवासी कलंक की चर्चा की है; उन्होंने आर्थिक कमजोरी को कलंक का स्वतंत्र रूप नहीं माना।","explanation_en":"Goffman identified physical deformities, character blemishes, and tribal stigma, not economic weakness as a distinct form."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्रूस लिंक और जो फेलन द्वारा प्रतिपादित सामाजिक कलंक मॉडल का पहला चरण कौन सा है?","question_en":"Question 20: Which is the first stage of the social stigma model formulated by Bruce Link and Jo Phelan?","options":[{"hi":"रूढ़िवादिता","en":"Stereotyping"},{"hi":"लेबलिंग","en":"Labeling"},{"hi":"पृथक्करण","en":"Separation"},{"hi":"प्रतिष्ठा की हानि","en":"Status loss"}],"answer":1,"explanation_hi":"लिंक और फेलन के अनुसार, कलंकित करने की सामाजिक प्रक्रिया का प्रथम चरण समाज द्वारा किसी स्थिति को 'लेबल' देना है।","explanation_en":"According to Link and Phelan, the first stage in the social process of stigmatization is assigning a 'label' to a condition."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय स्वास्थ्य मिशन के तहत ग्रामीण स्तर पर कार्यरत 'आशा' (ASHA) का पूर्ण रूप क्या है?","question_en":"Question 21: What is the full form of 'ASHA', working at the village level under the National Health Mission?","options":[{"hi":"एसोसिएटेड सोशल हेल्थ एजेंट","en":"Associated Social Health Agent"},{"hi":"एक्रेडिटेड सैनिटेशन हेल्थ असिस्टेंट","en":"Accredited Sanitation Health Assistant"},{"hi":"एक्रेडिटेड सोशल हेल्थ एक्टिविस्ट","en":"Accredited Social Health Activist"},{"hi":"ऑक्सिलरी सोशल हेल्थ एक्टिविस्ट","en":"Auxiliary Social Health Activist"}],"answer":2,"explanation_hi":"आशा का पूर्ण रूप 'एक्रेडिटेड सोशल हेल्थ एक्टिविस्ट' है जो ग्रामीण क्षेत्र में संस्थागत प्रसव व स्वास्थ्य हेतु कार्य करती हैं।","explanation_en":"ASHA stands for Accredited Social Health Activist, functioning to promote institutional delivery and health in rural areas."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय स्वास्थ्य लेखा (National Health Accounts) के नवीनतम अनुमानों के अनुसार, भारत में कुल स्वास्थ्य व्यय का लगभग कितना प्रतिशत हिस्सा व्यक्ति को स्वयं अपनी जेब (Out-of-Pocket) से देना पड़ता है?","question_en":"Question 22: According to the latest National Health Accounts estimates, approximately what percentage of total health expenditure in India is borne by citizens as out-of-pocket spending?","options":[{"hi":"50-60 प्रतिशत","en":"50-60 percentage"},{"hi":"20-30 प्रतिशत","en":"20-30 percentage"},{"hi":"35-45 प्रतिशत","en":"35-45 percentage"},{"hi":"70-80 प्रतिशत","en":"70-80 percentage"}],"answer":2,"explanation_hi":"राष्ट्रीय स्वास्थ्य लेखा 2021-22 के अनुसार, आउट-ऑफ-पॉकेट व्यय कुल स्वास्थ्य व्यय के 39.4 प्रतिशत तक घट चुका है, जो 2013-14 के 64.2 प्रतिशत से काफी कम है। यह गिरावट मुख्यतः आयुष्मान भारत जैसी योजनाओं और सरकारी स्वास्थ्य व्यय में वृद्धि के कारण हुई है। यह आँकड़ा प्रतिवर्ष संशोधित होता है, इसलिए परीक्षा से पूर्व नवीनतम रिपोर्ट पर एक बार देख लें।","explanation_en":"As per the National Health Accounts 2021-22, out-of-pocket expenditure has declined to 39.4 percentage of total health expenditure, down sharply from 64.2 percentage in 2013-14. This decline is largely attributed to schemes like Ayushman Bharat and rising government health spending. This figure is revised every year, so do check the latest report before the exam."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से किस उग्र नारीवादी विचारक ने तर्क दिया कि लिंग असमानता की मूल जड़ पितृसत्तात्मक संरचना में है?","question_en":"Question 23: Which of the following radical feminist thinkers argued that the core root of gender inequality lies in patriarchal structures?","options":[{"hi":"मैरी वोल्सटोनक्राफ्ट","en":"Mary Wollstonecraft"},{"hi":"शुलामिथ फायरस्टोन","en":"Shulamith Firestone"},{"hi":"जॉन स्टुअर्ट मिल","en":"John Stuart Mill"},{"hi":"फ्रेडरिक एंगेल्स","en":"Friedrich Engels"}],"answer":1,"explanation_hi":"उग्र नारीवादी विचारक शुलामिथ फायरस्टोन ने माना कि महिलाओं के यौन और पुनरुत्पादन पर पितृसत्ता का कड़ा नियंत्रण ही असमानता की जड़ है।","explanation_en":"Radical feminist thinker Shulamith Firestone argued that patriarchal control over women's sexuality and reproduction is the root of inequality."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कॉर्पोरेट क्षेत्र में महिलाओं की योग्यता के बावजूद उन्हें शीर्ष प्रशासनिक पदों पर जाने से रोकने वाले अदृश्य अवरोध को क्या कहते हैं?","question_en":"Question 24: What is the invisible barrier in the corporate world that prevents women from reaching top positions despite their merit called?","options":[{"hi":"महिलाओं की पेंशन","en":"Pension received by women"},{"hi":"काम के कम घंटे","en":"Lesser working hours of women"},{"hi":"कार्यालयों का वातावरण","en":"Environment of offices"},{"hi":"ग्लास सीलिंग","en":"Glass ceiling"}],"answer":3,"explanation_hi":"कॉर्पोरेट में उच्च प्रबंधन पदों तक महिलाओं के न पहुँच पाने की अदृश्य संरचनात्मक बाधा को 'ग्लास सीलिंग' कहा जाता है।","explanation_en":"The invisible structural barrier that prevents women from ascending to top executive roles in corporations is termed the 'glass ceiling'."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आधुनिक राज्यों द्वारा जनसांख्यिकी और नागरिकों के शरीरों पर नियंत्रण स्थापित करने के लिए प्रयुक्त जैव-राजनीति (Biopolitics) की अवधारणा किसने दी?","question_en":"Question 25: Who gave the concept of Biopolitics used by modern states to control demographics and the bodies of citizens?","options":[{"hi":"मिशेल फूको","en":"Michel Foucault"},{"hi":"कार्ल मार्क्स","en":"Karl Marx"},{"hi":"टैलकॉट पार्सन्स","en":"Talcott Parsons"},{"hi":"रॉबर्ट मर्टन","en":"Robert Merton"}],"answer":0,"explanation_hi":"मिशेल फूको ने जैव-राजनीति और बायो-पावर की अवधारणा से राज्य द्वारा चिकित्सा के माध्यम से आबादी पर नियंत्रण का विश्लेषण किया।","explanation_en":"Michel Foucault analyzed state population control via medical apparatuses through his concepts of biopolitics and bio-power."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: जी.एस. घूर्ये ने जाति व्यवस्था की कुल छह प्रमुख विशेषताएं बताई हैं।\nकथन 2: अंतर्विवाह (Endogamy) का नियम जाति व्यवस्था की एक मुख्य विशेषता है।","question_en":"Question 26: Consider the following statements:\nStatement 1: G.S. Ghurye has identified a total of six primary features of the caste system.\nStatement 2: The rule of endogamy is a key feature of the caste system.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"घूर्ये ने जाति की 6 विशेषताएं दी हैं, जिनमें अंतर्विवाह का नियम और पेशा चुनने की स्वतंत्रता का अभाव प्रमुख हैं।","explanation_en":"Ghurye outlined 6 characteristics of caste, with the rule of endogamy and lack of choice of occupation being prominent."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: जॉर्ज सिमेल ने 'द मेट्रोपोलिस एंड मेंटल लाइफ' निबंध में शहरी जीवन का मनोविज्ञान समझाया है।\nकथन 2: नॉर्बर्ट एलियास ने सभ्यता की प्रक्रिया (The Civilizing Process) में मानवीय स्वच्छता आदतों के विकास का अध्ययन किया।","question_en":"Question 27: Consider the following statements:\nStatement 1: Georg Simmel explained the psychology of urban life in his essay 'The Metropolis and Mental Life'.\nStatement 2: Norbert Elias studied the development of human hygiene habits in 'The Civilizing Process'.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"जॉर्ज सिमेल ने महानगरों के मानसिक प्रभाव तथा नॉर्बर्ट एलियास ने ऐतिहासिक स्वच्छता एवं शर्म के विकास का अध्ययन किया है।","explanation_en":"Georg Simmel studied the mental effects of metropolises, while Norbert Elias analyzed the historical development of hygiene and shame."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: नैदानिक आईट्रोजेनेसिस का अर्थ पारंपरिक चिकित्सा पद्धतियों को पूर्ण संरक्षण देना है।\nकथन 2: इवान इलिच के अनुसार प्राकृतिक जीवन प्रक्रियाओं का चिकित्साकरण सामाजिक आईट्रोजेनेसिस कहलाता है।","question_en":"Question 28: Consider the following statements:\nStatement 1: Clinical iatrogenesis means giving full patronage to traditional systems of medicine.\nStatement 2: According to Ivan Illich, the medicalization of natural life processes is called social iatrogenesis.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"कथन 1 गलत है क्योंकि नैदानिक आईट्रोजेनेसिस का अर्थ डॉक्टर की गलती या दवाओं के दुष्प्रभाव से और बीमार होना है। कथन 2 सही है।","explanation_en":"Statement 1 is false because clinical iatrogenesis refers to illnesses caused by medical errors or drug side effects. Statement 2 is true."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अमर्त्य सेन के अनुसार स्वास्थ्य व्यक्ति की एक बुनियादी क्षमता (Basic Capability) है।\nकथन 2: सिमोन द बोवुआर ने 'द सेकंड सेक्स' पुस्तक में लिखा कि कोई महिला पैदा नहीं होती, बल्कि उसे महिला बनाया जाता है।","question_en":"Question 29: Consider the following statements:\nStatement 1: According to Amartya Sen, health is a basic capability of an individual.\nStatement 2: Simone de Beauvoir wrote in 'The Second Sex' that one is not born, but rather becomes a woman.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"अमर्त्य सेन ने स्वास्थ्य को बुनियादी मानवीय क्षमता तथा सिमोन द बोवुआर ने जेंडर को एक सामाजिक-सांस्कृतिक निर्माण माना है।","explanation_en":"Amartya Sen viewed health as a basic human capability, while Simone de Beauvoir regarded gender as a socio-cultural construct."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"एंगेल्स के अनुसार, किस घटना के उदय के साथ ही महिलाओं का घरेलू दासत्व और लिंग असमानता प्रारंभ हुई थी?","question_en":"Question 30: According to Engels, with the rise of which phenomenon did the domestic servitude of women and gender inequality begin?","options":[{"hi":"कारखानों की स्थापना","en":"Establishment of factories"},{"hi":"निजी संपत्ति","en":"Private property"},{"hi":"धार्मिक अंधविश्वास","en":"Religious superstition"},{"hi":"आधुनिक लोकतंत्र","en":"Modern democracy"}],"answer":1,"explanation_hi":"एंगेल्स ने दर्शाया कि निजी संपत्ति के उदय के साथ अपनी ही वैध संतान को संपत्ति सौंपने की चाहत ने स्त्रियों के दमन को जन्म दिया।","explanation_en":"Engels demonstrated that the rise of private property and the desire to pass it to legitimate heirs led to the oppression of women."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
