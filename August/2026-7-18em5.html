@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  
+  .match-tbl{width:100%;border-collapse:collapse;margin:10px 0 4px}
+  .match-tbl th,.match-tbl td{border:1px solid #d8eaff;padding:8px 11px;text-align:left;vertical-align:top;font-size:.93em}
+  .match-tbl th{color:var(--navy);font-weight:950;font-size:.82em;letter-spacing:.5px;background:#eaf3ff}
+  .qtext-en .match-tbl th{color:#475569;background:#f1f5fb}
+  .lang-seg{display:inline-flex;background:#eef4fc;border:1px solid #d8eaff;border-radius:10px;padding:3px;gap:2px}
+  .lang-b{font-family:inherit;font-size:12.5px;font-weight:900;color:#5b6a83;background:transparent;border:0;
+    border-radius:8px;padding:5px 13px;cursor:pointer;transition:.15s}
+  .lang-b.on{background:linear-gradient(135deg,var(--royal),#0f6fd0);color:#fff}
+  .lang-choose{display:flex;align-items:center;gap:10px;margin:12px 0 0;flex-wrap:wrap}
+  .lc-label{font-size:13px;color:var(--muted);font-weight:900}
+
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="lang-choose"><span class="lc-label">पढ़ने की भाषा:</span><div class="lang-seg" id="coverLang"></div></div><div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap"><div class="topic" id="topic">Topic</div><div class="lang-seg" id="qLang"></div></div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title": "Lower PCS करेंट अफेयर्स • सेट 7 GS", "highlight": "सेट 7 GS", "shortTitle": "Lower PCS करेंट अफेयर्स", "subtitle": "UPPCS Prelims 2026 / RO-ARO • GS Test • सेट 7 GS", "tag": "UPPCS Prelims 2026 / RO-ARO", "pill": "🏆 Live Daily Rank • Jai Ho Study", "description": "UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।", "durationMinutes": 25, "marksPerQuestion": 2.0, "negativeMarks": 0.66, "testId": "jaiho-uppcs-2026-gs-test-lower-pcs-7-gs-20260805-18em5", "footerCredit": "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com", "rankingEnabled": true, "firebaseConfig": {"apiKey": "AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I", "authDomain": "jai-ho-1c1d7.firebaseapp.com", "projectId": "jai-ho-1c1d7", "storageBucket": "jai-ho-1c1d7.firebasestorage.app", "messagingSenderId": "472878277527", "appId": "1:472878277527:web:a62780ddadf60fd5e5dad2", "measurementId": "G-LV29VGHG6J"}, "publishDateStr": "2026-08-05", "questions": [{"id": 1, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "शोधकर्ताओं द्वारा लक्षद्वीप के कदमत द्वीप के दक्षिण-पूर्वी समुद्री क्षेत्र में खोजे गए पावोना क्लेवस (Pavona clavus) नामक विशाल प्रवाल उपनिवेश का कुल क्षेत्रफल लगभग कितना है, जिसे स्थानीय रूप से 'पोटैटो पैच' कहा जाता है?", "question_en": "What is the total area of the giant coral colony named Pavona clavus, locally called 'Potato Patch', discovered by researchers in the south-eastern marine region of Kadmat Island in Lakshadweep?", "options": [{"hi": "1,250 वर्ग मीटर", "en": "1,250 sq m"}, {"hi": "2,250 वर्ग मीटर", "en": "2,250 sq m"}, {"hi": "3,250 वर्ग मीटर", "en": "3,250 sq m"}, {"hi": "4,250 वर्ग मीटर", "en": "4,250 sq m"}], "answer": 3, "explanation_hi": "लक्षद्वीप के कदमत द्वीप के पास खोजी गई पावोना क्लेवस प्रवाल संरचना का क्षेत्रफल लगभग 4,250 वर्ग मीटर है तथा वैज्ञानिकों के अनुसार इसकी संभावित आयु 700 से 1,800 वर्ष के बीच है।", "explanation_en": "The Pavona clavus coral structure discovered near Kadmat Island in Lakshadweep has an area of approximately 4,250 sq m, and scientists estimate its age to be between 700 and 1,800 years."}, {"id": 2, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत सरकार द्वारा देश के छात्रों और वैज्ञानिकों को वैश्विक पत्रिकाओं तक निःशुल्क पहुंच प्रदान करने वाली 'वन नेशन वन सब्सक्रिप्शन' योजना हेतु प्रारंभिक तीन वर्षों (2025, 2026 और 2027) के लिए कुल कितना बजट स्वीकृत किया गया है?", "question_en": "What is the total budget approved by the Government of India for the initial three years (2025, 2026, and 2027) of the 'One Nation One Subscription' scheme providing free access to global journals?", "options": [{"hi": "₹3,000 करोड़", "en": "₹3,000 crore"}, {"hi": "₹6,000 करोड़", "en": "₹6,000 crore"}, {"hi": "₹4,500 करोड़", "en": "₹4,500 crore"}, {"hi": "₹7,500 करोड़", "en": "₹7,500 crore"}], "answer": 1, "explanation_hi": "इस ऐतिहासिक योजना के कार्यान्वयन हेतु भारत सरकार ने 3 वर्षों की अवधि के लिए ₹6,000 करोड़ का बजट आवंटित किया है, जिसकी जिम्मेदारी यूजीसी के इनफ्लिबनेट (INFLIBNET) को सौंपी गई है।", "explanation_en": "For the implementation of this historic scheme, the Government of India has allocated a budget of ₹6,000 crore for a period of 3 years, managed by UGC's INFLIBNET."}, {"id": 3, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "राष्ट्रीय क्वांटम मिशन (NQM) के अंतर्गत विकसित देश के पहले स्वदेशी 'क्वांटम डायमंड माइक्रोस्कोप' (QDM) के संदर्भ में कौन सा संस्थान संबंधित है, जिसने भारत को क्वांटम सेंसिंग क्षेत्र में पहला पेटेंट दिलाया है?", "question_en": "Which institution is associated with the development of the country's first indigenous 'Quantum Diamond Microscope' (QDM) under the National Quantum Mission (NQM), securing India's first patent in quantum sensing?", "options": [{"hi": "आईआईएससी बेंगलुरु", "en": "IISc Bengaluru"}, {"hi": "आईआईटी मद्रास", "en": "IIT Madras"}, {"hi": "आईआईटी बॉम्बे", "en": "IIT Bombay"}, {"hi": "आईआईटी दिल्ली", "en": "IIT Delhi"}], "answer": 2, "explanation_hi": "आईआईटी बॉम्बे में पी-क्वेस्ट ग्रुप ने राष्ट्रीय क्वांटम मिशन के तहत देश का पहला स्वदेशी क्वांटम डायमंड माइक्रोस्कोप (QDM) विकसित किया है, जो चुंबकीय क्षेत्र का 3D मानचित्रण करने में सक्षम है।", "explanation_en": "The P-QUEST group at IIT Bombay developed the country's first indigenous Quantum Diamond Microscope (QDM) under the National Quantum Mission, which is capable of 3D mapping of magnetic fields."}, {"id": 4, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मोबाइल-आधारित आपदा संचार प्रणाली 'सचेत' (SACHET) के तकनीकी आधार के संबंध में कौन सा कथन पूरी तरह सत्य है?", "question_en": "Which statement is completely true regarding the technical basis of the mobile-based disaster communication system 'SACHET'?", "options": [{"hi": "यह प्रणाली पूरी तरह से केवल उपग्रह-आधारित रेडियो तरंगों पर काम करती है", "en": "This system operates entirely on satellite-based radio waves only"}, {"hi": "यह केवल 5G स्मार्टफोन और ब्रॉडबैंड नेटवर्क कनेक्टिविटी पर ही कार्य करती है", "en": "It works only on 5G smartphones and broadband network connectivity"}, {"hi": "यह इसरो द्वारा विकसित नाविक (NavIC) नेविगेशन प्रणाली के सैन्य डोमेन पर आधारित है", "en": "It is based on the military domain of the NavIC navigation system developed by ISRO"}, {"hi": "यह अंतरराष्ट्रीय दूरसंचार संघ (ITU) द्वारा अनुशंसित 'कॉमन अलर्टिंग प्रोटोकॉल' (CAP) पर आधारित है", "en": "This system is based on the 'Common Alerting Protocol' (CAP) recommended by the International Telecommunication Union (ITU)"}], "answer": 3, "explanation_hi": "सचेत प्रणाली ITU द्वारा अनुशंसित कॉमन अलर्टिंग प्रोटोकॉल (CAP) पर आधारित है, जिसे सी-डॉट (C-DOT) ने एनडीएमए के साथ मिलकर भौगोलिक रूप से लक्षित क्षेत्रों में अलर्ट एसएमएस भेजने हेतु विकसित किया है।", "explanation_en": "The SACHET system is based on the Common Alerting Protocol (CAP) recommended by ITU, developed by C-DOT in collaboration with NDMA to send alert SMS in geographically targeted areas."}, {"id": 5, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मौसम, जलवायु और पर्यावरण संबंधी खतरों से निपटने की क्षमता मजबूत करने हेतु भारत सरकार द्वारा महत्वाकांक्षी 'मिशन मौसम' (Mission Mausam) को औपचारिक मंजूरी किस महीने/वर्ष में दी गई थी?", "question_en": "In which month/year was the ambitious 'Mission Mausam' formally approved by the Government of India to strengthen the capacity to handle weather, climate, and environmental hazards?", "options": [{"hi": "जनवरी 2023", "en": "January 2023"}, {"hi": "सितंबर 2024", "en": "September 2024"}, {"hi": "मार्च 2025", "en": "March 2025"}, {"hi": "जून 2026", "en": "June 2026"}], "answer": 1, "explanation_hi": "भारत सरकार ने सितंबर 2024 में ₹2,000 करोड़ के शुरुआती बजट के साथ महत्वाकांक्षी 'मिशन मौसम' को मंजूरी दी थी, जिसका उद्देश्य भारत को मौसम-तैयार देश बनाना है।", "explanation_en": "The Government of India approved the ambitious 'Mission Mausam' in September 2024 with an initial budget of ₹2,000 crore, aiming to make India a weather-ready nation."}, {"id": 6, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "देश के ग्रामीण नागरिकों और किसानों को स्थानीय भाषा में सटीक मौसम जानकारी प्रदान करने वाले 'मौसमग्राम' (Mausamgram) टूल की प्राथमिक तकनीकी विशेषता क्या है?", "question_en": "What is the primary technical feature of the 'Mausamgram' tool which provides accurate weather information to rural citizens and farmers in local languages?", "options": [{"hi": "यह एक जीआईएस-आधारित सेवा है जो उपयोगकर्ताओं को गांव का नाम या पिनकोड खोजकर प्रति घंटा मौसम पूर्वानुमान देखने की सुविधा देती है", "en": "It is a GIS-based service that allows users to view hourly weather forecasts by searching their village name or pincode"}, {"hi": "यह केवल उपग्रह टीवी प्रसारण के माध्यम से लाइव डेटा प्रदान करता है", "en": "It provides live data only through satellite TV broadcast"}, {"hi": "यह केवल देश के महानगरों के वायु प्रदूषण सूचकांक को प्रदर्शित करता है", "en": "It only displays the air pollution index of the country's metropolitan cities"}, {"hi": "यह केवल रक्षा मंत्रालयों के विमानन डेटा को विनियमित करता है", "en": "It only regulates the aviation data of defense ministries"}], "answer": 0, "explanation_hi": "मौसमग्राम 'मौसम ऐप' के भीतर एकीकृत एक जीआईएस-आधारित अनूठी सेवा है जो उपयोगकर्ताओं को सीधे विशिष्ट गांव या पिनकोड खोजकर आगामी समय का प्रति घंटा ग्राफिक्स-युक्त मौसम पूर्वानुमान प्रदर्शित करती है।", "explanation_en": "Mausamgram is a unique GIS-based service integrated within the 'Mausam App' that displays hourly graphical weather forecasts for users by directly searching a specific village or pincode."}, {"id": 7, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सटीक मौसम पूर्वानुमान हेतु 'मिशन मौसम' के रडार बुनियादी ढांचे के तहत किस विशेष स्वदेशी अत्याधुनिक रडार प्रणाली को बड़े पैमाने पर शामिल किया जा रहा है?", "question_en": "Which specific indigenous state-of-the-art radar system is being extensively integrated under the radar infrastructure of 'Mission Mausam' for precise weather forecasting?", "options": [{"hi": "राजेंद्र रडार", "en": "Rajendra Radar"}, {"hi": "वायु रडार", "en": "Vayu Radar (Wind Profiler)"}, {"hi": "स्वाति रडार", "en": "Swathi Radar"}, {"hi": "इंद्र रडार", "en": "Indra Radar"}], "answer": 1, "explanation_hi": "मिशन मौसम के तहत 'वायु रडार' (VAYU Wind Profiler) नामक स्वदेशी प्रणाली को शामिल किया जा रहा है जो हवा की गति, दिशा और वायुमंडलीय बदलावों का वास्तविक समय में सटीक विश्लेषण करता है।", "explanation_en": "Under Mission Mausam, the indigenous system named 'Vayu Radar' (VAYU Wind Profiler) is being integrated, which performs real-time precise analysis of wind speed, direction, and atmospheric changes."}, {"id": 8, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "'बहु-खतरा प्रारंभिक चेतावनी निर्णय सहायता प्रणाली' (MHEW-DSS) के कार्यान्वयन के बाद, मौसम पूर्वानुमान तैयार करने में लगने वाला समय 6 घंटे से घटकर कितना रह गया है?", "question_en": "Following the implementation of the 'Multi-Hazard Early Warning Decision Support System' (MHEW-DSS), the time taken to prepare weather forecasts has been reduced from 6 hours to how many hours?", "options": [{"hi": "लगभग 3 घंटे", "en": "Approximately 3 hours"}, {"hi": "लगभग 1 घंटा", "en": "Approximately 1 hour"}, {"hi": "लगभग 2 घंटे", "en": "Approximately 2 hours"}, {"hi": "लगभग 4 घंटे", "en": "Approximately 4 hours"}], "answer": 0, "explanation_hi": "MHEW-DSS प्रणाली के विकास से पूर्वानुमान तैयार करने का समय 6 घंटे से घटकर लगभग 3 घंटे रह गया है, तथा पूर्वानुमान की अग्रिम अवधि को 5 दिन से बढ़ाकर 7 दिन किया गया है।", "explanation_en": "With the development of the MHEW-DSS system, the forecast preparation time has decreased from 6 hours to approximately 3 hours, and the forecast lead time has increased from 5 to 7 days."}, {"id": 9, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आपदा प्रबंधन (संशोधन) अधिनियम, 2025 के माध्यम से मूल अधिनियम (2005) में कौन सी नई धारा जोड़ी गई है जो राष्ट्रीय स्तर पर 'राष्ट्रीय आपदा डेटाबेस' (NDDA) के गठन का वैधानिक आधार प्रदान करती है?", "question_en": "Which new section has been added to the original Act (2005) through the Disaster Management (Amendment) Act, 2025, providing the statutory basis for the creation of the 'National Disaster Database' (NDDA) at the national level?", "options": [{"hi": "धारा 10A", "en": "Section 10A"}, {"hi": "धारा 24A", "en": "Section 24A"}, {"hi": "धारा 6A", "en": "Section 6A"}, {"hi": "धारा 41A", "en": "Section 41A"}], "answer": 2, "explanation_hi": "आपदा प्रबंधन (संशोधन) अधिनियम, 2025 के तहत राष्ट्रीय आपदा डेटाबेस प्राधिकरण (NDDA) के लिए नई धारा 6A जोड़ी गई है, जबकि शहरी आपदा प्रबंधन प्राधिकरण (UDMA) हेतु नई धारा 41A जोड़ी गई है।", "explanation_en": "Under the Disaster Management (Amendment) Act, 2025, a new Section 6A has been added for the National Disaster Database Authority (NDDA), while a new Section 41A has been added for the Urban Disaster Management Authority (UDMA)."}, {"id": 10, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "राष्ट्रीय रिमोट सेंसिंग सेंटर (NRSC) द्वारा देश में आपदा शमन हेतु तैयार की गई 'बाढ़ जोखिम एटलस' रिपोर्ट के तहत निम्नलिखित में से किस राज्य को 'अपेक्षाकृत कम बाढ़ संभावित' श्रेणी में वर्गीकृत किया गया है?", "question_en": "Under the 'Flood Risk Atlas' report prepared by the National Remote Sensing Centre (NRSC) for disaster mitigation in the country, which of the following states is classified in the 'relatively low flood-prone' category?", "options": [{"hi": "केरल", "en": "Kerala"}, {"hi": "बिहार", "en": "Bihar"}, {"hi": "असम", "en": "Assam"}, {"hi": "उत्तर प्रदेश", "en": "Uttar Pradesh"}], "answer": 0, "explanation_hi": "NRSC एटलस के अनुसार, पश्चिम बंगाल, आंध्र प्रदेश, बिहार, ओडिशा, असम और उत्तर प्रदेश अत्यधिक बाढ़ संभावित हैं; जबकि जम्मू-कश्मीर, तमिलनाडु, केरल, गुजरात, अरुणाचल, कर्नाटक और महाराष्ट्र कम बाढ़ संभावित राज्य हैं।", "explanation_en": "According to the NRSC atlas, West Bengal, Andhra Pradesh, Bihar, Odisha, Assam, and Uttar Pradesh are highly flood-prone; while Jammu & Kashmir, Tamil Nadu, Kerala, Gujarat, Arunachal, Karnataka, and Maharashtra are low flood-prone states."}, {"id": 11, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "राष्ट्रीय आपदा प्रबंधन योजना (NDMP) निम्नलिखित में से किन वैश्विक समझौतों या ढांचों के लक्ष्यों को भारतीय संदर्भ में लागू करने का वैधानिक प्रावधान सुनिश्चित करती है?", "question_en": "The National Disaster Management Plan (NDMP) ensures statutory provisions to implement the goals of which of the following global agreements or frameworks in the Indian context?", "options": [{"hi": "सेंडाई फ्रेमवर्क, सतत विकास लक्ष्य (SDGs) और पेरिस जलवायु समझौता तीनों", "en": "Sendai Framework, Sustainable Development Goals (SDGs), and Paris Climate Agreement all three"}, {"hi": "केवल सेंडाई फ्रेमवर्क और सतत विकास लक्ष्य (SDGs)", "en": "Sendai Framework and Sustainable Development Goals (SDGs) only"}, {"hi": "केवल सतत विकास लक्ष्य (SDGs) और पेरिस जलवायु समझौता", "en": "Sustainable Development Goals (SDGs) and Paris Climate Agreement only"}, {"hi": "केवल सेंडाई फ्रेमवर्क और पेरिस जलवायु समझौता", "en": "Sendai Framework and Paris Climate Agreement only"}], "answer": 0, "explanation_hi": "राष्ट्रीय आपदा प्रबंधन योजना (NDMP) अंतरराष्ट्रीय स्तर के तीन बड़े समझौतों—सेंडाई फ्रेमवर्क, सतत विकास लक्ष्य (SDGs) और पेरिस जलवायु समझौता (COP21)—को देश में लागू करने हेतु रूपरेखा प्रदान करती है।", "explanation_en": "The National Disaster Management Plan (NDMP) provides a framework to implement three major international agreements—Sendai Framework, Sustainable Development Goals (SDGs), and Paris Climate Agreement (COP21)—in the country."}, {"id": 12, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "प्रधानमंत्री नरेंद्र मोदी द्वारा आपदा जोखिम न्यूनीकरण (DRR) हेतु घोषित प्रसिद्ध '10-सूत्री एजेंडा' (10-Point Agenda) को किस वर्ष औपचारिक रूप से वैश्विक मंच पर पहली बार प्रस्तुत किया गया था?", "question_en": "In which year was the famous '10-Point Agenda' for Disaster Risk Reduction (DRR) announced by PM Narendra Modi formally presented for the first time on a global stage?", "options": [{"hi": "सितंबर 2018", "en": "September 2018"}, {"hi": "नवंबर 2016", "en": "November 2016"}, {"hi": "दिसंबर 2020", "en": "December 2020"}, {"hi": "जून 2022", "en": "June 2022"}], "answer": 1, "explanation_hi": "प्रधानमंत्री मोदी ने नवंबर 2016 में नई दिल्ली में आयोजित 'आपदा जोखिम न्यूनीकरण पर एशियाई मंत्रियों के सम्मेलन' के दौरान इस ऐतिहासिक 10-सूत्री एजेंडे को दुनिया के सामने रखा था।", "explanation_en": "PM Modi placed this historic 10-point agenda before the world during the 'Asian Ministerial Conference on Disaster Risk Reduction' held in New Delhi in November 2016."}, {"id": 13, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आपदा प्रबंधन के क्षेत्र में उत्कृष्ट योगदान हेतु दिए जाने वाले 'सुभाष चंद्र बोस आपदा प्रबंधन पुरस्कार 2026' के तहत संस्थागत और व्यक्तिगत श्रेणी के विजेताओं का सही युग्म कौन सा है?", "question_en": "What is the correct pair of institutional and individual category winners of the 'Subhash Chandra Bose Aapda Prabandhan Puraskar 2026' awarded for outstanding contribution in disaster management?", "options": [{"hi": "गुजरात आपदा प्रबंधन संस्थान | श्री कुमार मुन्नन सिंह", "en": "Gujarat Institute of Disaster Management | Shri Kumar Munnan Singh"}, {"hi": "लद्दाख आपदा प्रबंधन प्राधिकरण | प्रोफेसर विनोद शर्मा", "en": "Ladakh Disaster Management Authority | Professor Vinod Sharma"}, {"hi": "ओडिशा राज्य आपदा प्रबंधन प्राधिकरण | डॉ. नवीन कुमार", "en": "Odisha State Disaster Management Authority | Dr. Naveen Kumar"}, {"hi": "सिक्किम राज्य आपदा प्रबंधन प्राधिकरण (SSDMA) | लेफ्टिनेंट कर्नल सीता अशोक शेल्के", "en": "Sikkim State Disaster Management Authority (SSDMA) | Lt. Col. Sita Ashok Shelke"}], "answer": 3, "explanation_hi": "वर्ष 2026 के लिए सिक्किम राज्य आपदा प्रबंधन प्राधिकरण (SSDMA) को संस्थागत श्रेणी में तथा लेफ्टिनेंट कर्नल सीता अशोक शेल्के को व्यक्तिगत श्रेणी में इस सर्वोच्च पुरस्कार के लिए चुना गया है।", "explanation_en": "For the year 2026, the Sikkim State Disaster Management Authority (SSDMA) has been selected in the institutional category and Lt. Col. Sita Ashok Shelke in the individual category for this highest award."}, {"id": 14, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सुभाष चंद्र बोस आपदा प्रबंधन पुरस्कार के नियमों के संदर्भ में कौन सा तथ्य पूरी तरह सत्य है?", "question_en": "Which fact is completely true in the context of the rules of the Subhash Chandra Bose Aapda Prabandhan Puraskar?", "options": [{"hi": "संस्थागत श्रेणी के विजेता को मिलने वाली ₹51 लाख की राशि का उपयोग व्यक्तिगत बोनस के रूप में किया जा सकता है", "en": "The ₹51 lakh prize money for the institutional category winner can be used as a personal bonus"}, {"hi": "संस्थागत श्रेणी की ₹51 लाख की पुरस्कार राशि का उपयोग केवल अनिवार्य रूप से आपदा प्रबंधन गतिविधियों में ही किया जा सकता है", "en": "The ₹51 lakh prize money for the institutional category must be utilized mandatorily only for disaster management activities"}, {"hi": "व्यक्तिगत श्रेणी के विजेता को ₹10 लाख का नकद पुरस्कार दिया जाता है", "en": "The individual category winner is awarded a cash prize of ₹10 lakh"}, {"hi": "इस पुरस्कार हेतु विदेशी नागरिक और अंतरराष्ट्रीय सुरक्षा संस्थान भी समान रूप से पात्र हैं", "en": "Foreign citizens and international security institutions are also equally eligible for this award"}], "answer": 1, "explanation_hi": "नियमों के अनुसार, संस्थागत श्रेणी में मिलने वाली ₹51 लाख की राशि का उपयोग कोई भी संस्थान अपने व्यक्तिगत काम या बोनस हेतु नहीं कर सकता; इसका उपयोग अनिवार्य रूप से केवल आपदा प्रबंधन गतिविधियों में ही किया जाना चाहिए।", "explanation_en": "According to rules, the ₹51 lakh award money for institutions cannot be used for personal work or bonuses; it must be utilized mandatorily only for disaster management activities."}, {"id": 15, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पंचायती राज संस्थाओं में समुदाय आधारित आपदा जोखिम न्यूनीकरण पहलों को सुदृढ़ करने की राष्ट्रीय परियोजना हेतु केंद्र सरकार द्वारा कुल कितना वित्तीय बजट स्वीकृत किया गया है?", "question_en": "What is the total financial budget approved by the Central Government for the National Project to strengthen community-based disaster risk reduction initiatives in Panchayati Raj Institutions?", "options": [{"hi": "₹250.50 करोड़", "en": "₹250.50 crore"}, {"hi": "₹350.00 करोड़", "en": "₹350.00 crore"}, {"hi": "₹507.37 करोड़", "en": "₹507.37 crore"}, {"hi": "₹750.25 करोड़", "en": "₹750.25 crore"}], "answer": 2, "explanation_hi": "पंचायती राज मंत्रालय और राष्ट्रीय आपदा प्रबंधन प्राधिकरण (NDMA) की इस संयुक्त राष्ट्रीय परियोजना के लिए केंद्र सरकार ने कुल ₹507.37 करोड़ का भारी-भरकम बजट मंजूर किया है।", "explanation_en": "For this joint national project of the Ministry of Panchayati Raj and National Disaster Management Authority (NDMA), the Central Government has approved a massive budget of ₹507.37 crore."}, {"id": 16, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "समुदाय आधारित आपदा जोखिम न्यूनीकरण की इस राष्ट्रीय परियोजना के प्रारंभिक चरण में कुल कितने राज्यों और आपदा-प्रवण जिलों को शामिल किया जा रहा है?", "question_en": "How many states and disaster-prone districts are being covered in the initial phase of this national project for community-based disaster risk reduction?", "options": [{"hi": "20 राज्य और 81 जिले", "en": "20 states and 81 districts"}, {"hi": "12 राज्य और 65 जिले", "en": "12 states and 65 districts"}, {"hi": "15 राज्य और 50 जिले", "en": "15 states and 50 districts"}, {"hi": "28 राज्य और 100 जिले", "en": "28 states and 100 districts"}], "answer": 0, "explanation_hi": "यह राष्ट्रीय परियोजना देश के 20 राज्यों के कुल 81 आपदा-प्रवण जिलों में एक साथ संचालित की जा रही है, जिसके तहत प्रत्येक चयनित जिले की 20 ग्राम पंचायतों (कुल 1,620 ग्राम पंचायतें) को कवर किया जाएगा।", "explanation_en": "This national project is being simultaneously operated in 81 disaster-prone districts across 20 states, covering 20 Gram Panchayats in each selected district (total 1,620 Gram Panchayats)."}, {"id": 17, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "इस ₹507.37 करोड़ की राष्ट्रीय परियोजना के अंतर्गत उत्तर प्रदेश के कुल कितने और कौन से संवेदनशील जिलों को समुदाय-आधारित आपदा शमन हेतु शामिल किया गया है?", "question_en": "Under this ₹507.37 crore national project, how many and which sensitive districts of Uttar Pradesh have been included for community-based disaster mitigation?", "options": [{"hi": "6 जिले (गोरखपुर, कुशीनगर, महाराजगंज, बहराइच, श्रावस्ती, बलरामपुर)", "en": "6 districts (Gorakhpur, Kushinagar, Maharajganj, Bahraich, Shravasti, Balrampur)"}, {"hi": "4 जिले (गोरखपुर, लखनऊ, प्रयागराज, वाराणसी)", "en": "4 districts (Gorakhpur, Lucknow, Prayagraj, Varanasi)"}, {"hi": "5 जिले (बहराइच, श्रावस्ती, गोंडा, बस्ती, सिद्धार्थनगर)", "en": "5 districts (Bahraich, Shravasti, Gonda, Basti, Siddharthnagar)"}, {"hi": "8 जिले (गाजीपुर, बलिया, देवरिया, मऊ, आजमगढ़, जौनपुर, मिर्जापुर, सोनभद्र)", "en": "8 districts (Ghazipur, Ballia, Deoria, Mau, Azamgarh, Jaunpur, Mirzapur, Sonbhadra)"}], "answer": 0, "explanation_hi": "इस राष्ट्रीय परियोजना के लिए उत्तर प्रदेश के सर्वाधिक संवेदनशील 6 जिलों (गोरखपुर, कुशीनगर, महाराजगंज, बहराइच, श्रावस्ती और बलरामपुर) का चयन किया गया है।", "explanation_en": "For this national project, 6 highly sensitive districts of Uttar Pradesh (Gorakhpur, Kushinagar, Maharajganj, Bahraich, Shravasti, and Balrampur) have been selected."}, {"id": 18, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय मौसम विज्ञान विभाग (IMD) द्वारा उपयोग की जाने वाली 'नाउकास्ट' (Nowcast) पूर्वानुमान प्रणाली की अधिकतम समय-सीमा क्या निर्धारित होती है, जिसके भीतर अत्यधिक स्थानीय स्तर पर गंभीर मौसम की चेतावनी दी जाती है?", "question_en": "What is the maximum time-limit defined for the 'Nowcast' forecasting system used by the India Meteorological Department (IMD) to issue highly localized severe weather warnings?", "options": [{"hi": "अगले 1 से 2 घंटे तक", "en": "Next 1 to 2 hours"}, {"hi": "अगले 3 से 6 घंटे तक", "en": "Next 3 to 6 hours"}, {"hi": "अगले 12 से 24 घंटे तक", "en": "Next 12 to 24 hours"}, {"hi": "अगले 3 से 5 दिनों तक", "en": "Next 3 to 5 days"}], "answer": 1, "explanation_hi": "नाउकास्टिंग मौसम विज्ञान की वह तकनीक है जिसके तहत उपग्रह और रडार के लाइव डेटा से बहुत कम समय यानी अगले 3 से 6 घंटे के भीतर अचानक आने वाले स्थानीय खतरों (जैसे आंधी, बिजली गिरना) की सटीक चेतावनी दी जाती है।", "explanation_en": "Nowcasting is a meteorological technique in which satellite and radar live data are used to issue precise warnings of sudden local hazards (such as storms, lightning) within next 3 to 6 hours."}, {"id": 19, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "जलवायु परिवर्तन के प्रति संवेदी हिमालयी क्षेत्र के लिए शुरू किए गए 'नए हिमालय अध्ययन' (New Himalayan Studies) का प्राथमिक तकनीकी फोकस क्या है?", "question_en": "What is the primary technical focus of the 'New Himalayan Studies' initiated for the climate-sensitive Himalayan region?", "options": [{"hi": "हिमालय क्षेत्र में केवल नए भू-तापीय और सोने की खदानों का मानचित्रण करना", "en": "Mapping only new geothermal and gold mines in the Himalayan region"}, {"hi": "इस क्षेत्र में केवल नए राष्ट्रीय राजमार्गों और पर्यटन कोरिडोरों का विकास करना", "en": "Developing only new national highways and tourism corridors in this region"}, {"hi": "ग्लेशियरों के पिघलने की दर, ब्लैक कार्बन के प्रभाव तथा ग्लेशियर लेक आउटबर्स्ट फ्लड (GLOF) जैसी आपदाओं का सटीक आकलन व शमन", "en": "Accurate assessment and mitigation of glacier melting rates, black carbon impacts, and Glacier Lake Outburst Flood (GLOF) events"}, {"hi": "हिमालय की पहाड़ियों पर केवल विदेशी तथा तेजी से उगने वाले देवदार व चीड़ के पौधों का रोपण करना", "en": "Planting only exotic and fast-growing cedar and pine saplings on Himalayan hills"}], "answer": 2, "explanation_hi": "ग्लोबल वार्मिंग के चलते पिघलते ग्लेशियरों के गंभीर खतरे को देखते हुए 'नए हिमालय अध्ययन' का मुख्य फोकस ग्लेशियरों के पिघलने, ब्लैक कार्बन के प्रभाव तथा अचानक आने वाली बाढ़ (GLOF) का सटीक आकलन व बचाव है।", "explanation_en": "Due to the severe threat of melting glaciers from global warming, the primary focus of the 'New Himalayan Studies' is the accurate assessment and mitigation of glacial melt, black carbon impacts, and GLOFs."}, {"id": 20, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मौसम पूर्वानुमान मॉडल को अत्यधिक सटीक बनाने हेतु पृथ्वी विज्ञान मंत्रालय के 'संख्यात्मक मौसम पूर्वानुमान' (NWP) मॉडल के ग्रिड रिज़ॉल्यूशन को 12 किलोमीटर से घटाकर कितना कर दिया गया है?", "question_en": "To make weather forecasting models highly accurate, the grid resolution of the Ministry of Earth Sciences' 'Numerical Weather Prediction' (NWP) model has been refined from 12 kilometers to how many kilometers?", "options": [{"hi": "10 किलोमीटर", "en": "10 kilometers"}, {"hi": "8 किलोमीटर", "en": "8 kilometers"}, {"hi": "6 किलोमीटर", "en": "6 kilometers"}, {"hi": "4 किलोमीटर से भी कम (ब्लॉक स्तर)", "en": "Less than 4 kilometers (block level)"}], "answer": 2, "explanation_hi": "भारत ने 'भारत पूर्वानुमान प्रणाली' (Bharat Forecast System) के अंतर्गत संख्यात्मक मौसम पूर्वानुमान मॉडल के ग्रिड रिज़ॉल्यूशन को 12 किमी से घटाकर 6 किलोमीटर कर दिया है, जिससे ग्राम/पंचायत स्तर तक अत्यंत स्थान-विशिष्ट सूक्ष्म पूर्वानुमान संभव हो गया है।", "explanation_en": "Under the Bharat Forecast System, India has improved the grid resolution of its numerical weather prediction model from 12 km to 6 kilometers, enabling highly location-specific forecasts down to the village/Panchayat level."}, {"id": 21, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "उत्तराखंड में आपदा प्रबंधन सुदृढ़ करने के उद्देश्य से सुरकंडा देवी, मुक्तेश्वर और लैंसडाउन के तीन डॉपलर रडार के अलावा किन तीन नए स्थानों पर अत्याधुनिक रडार स्थापित किए जा रहे हैं?", "question_en": "To strengthen disaster management in Uttarakhand, besides the three Doppler radars at Surkanda Devi, Mukteshwar, and Lansdowne, in which three new locations are state-of-the-art radars being installed?", "options": [{"hi": "देहरादून, नैनीताल और पिथौरागढ़", "en": "Dehradun, Nainital, and Pithoragarh"}, {"hi": "हरिद्वार, पंतनगर और औली", "en": "Haridwar, Pantnagar, and Auli"}, {"hi": "केदारनाथ, बद्रीनाथ और गंगोत्री", "en": "Kedarnath, Badrinath, and Gangotri"}, {"hi": "ऋषिकेश, चमोली और अल्मोड़ा", "en": "Rishikesh, Chamoli, and Almora"}], "answer": 1, "explanation_hi": "उत्तराखंड में पहले से सक्रिय 3 डॉपलर रडार के अतिरिक्त हरिद्वार, पंतनगर और औली में 3 नए अत्याधुनिक रडार लगाए जा रहे हैं, जिससे राज्य में कुल क्रियाशील डॉपलर रडारों की संख्या 6 हो जाएगी।", "explanation_en": "In addition to the 3 Doppler radars already active in Uttarakhand, 3 new state-of-the-art radars are being set up in Haridwar, Pantnagar, and Auli, bringing the state's total active radars to 6."}, {"id": 22, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "दोनों सदनों से पारित होने के उपरांत 'आपदा प्रबंधन (संशोधन) अधिनियम, 2025' को किस तिथि को राष्ट्रपति की सहमति प्राप्त हुई तथा यह किस तिथि से पूरे देश में प्रभावी रूप से लागू हो गया?", "question_en": "After being passed by both houses, on which date did the 'Disaster Management (Amendment) Act, 2025' receive the President's assent, and from which date did it come into force nationwide?", "options": [{"hi": "सहमतिः 1 जनवरी 2025 | लागूः 26 जनवरी 2025", "en": "Assent: 1 January 2025 | In force: 26 January 2025"}, {"hi": "सहमतिः 15 मार्च 2025 | लागूः 1 अप्रैल 2025", "en": "Assent: 15 March 2025 | In force: 1 April 2025"}, {"hi": "सहमतिः 30 अप्रैल 2025 | लागूः 1 मई 2025", "en": "Assent: 30 April 2025 | In force: 1 May 2025"}, {"hi": "सहमतिः 29 मार्च 2025 | लागूः 9 अप्रैल 2025", "en": "Assent: 29 March 2025 | In force: 9 April 2025"}], "answer": 3, "explanation_hi": "इस संशोधन अधिनियम को 29 मार्च, 2025 को भारत के राष्ट्रपति की अंतिम सहमति प्राप्त हुई तथा इसके महत्वपूर्ण प्रावधान 9 अप्रैल, 2025 से पूरे देश में आधिकारिक रूप से प्रभावी कर दिए गए।", "explanation_en": "This amendment act received the final assent of the President of India on 29 March 2025, and its key provisions came into force nationwide on 9 April 2025."}, {"id": 23, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आपदा प्रबंधन (संशोधन) अधिनियम, 2025 के माध्यम से सरकार ने आपदा से पूर्व और आपदा के दौरान रणनीतिक निर्णय लेने वाले किन महत्वपूर्ण संगठनों/समितियों को 'वैधानिक दर्जा' (Statutory Status) प्रदान किया है?", "question_en": "Through the Disaster Management (Amendment) Act, 2025, the Government has granted 'Statutory Status' to which important organizations/committees that make strategic decisions before and during disasters?", "options": [{"hi": "राष्ट्रीय संकट प्रबंधन समिति (NCMC) और उच्च स्तरीय समिति (HLC)", "en": "National Crisis Management Committee (NCMC) and High-Level Committee (HLC)"}, {"hi": "नीति आयोग और केंद्रीय सतर्कता आयोग", "en": "NITI Aayog and Central Vigilance Commission"}, {"hi": "भारतीय मौसम विज्ञान विभाग (IMD) और इसरो (ISRO)", "en": "India Meteorological Department (IMD) and ISRO"}, {"hi": "राष्ट्रीय सुरक्षा परिषद और रक्षा अनुसंधान एवं विकास संगठन (DRDO)", "en": "National Security Council and DRDO"}], "answer": 0, "explanation_hi": "इस ऐतिहासिक संशोधन के जरिए 'राष्ट्रीय संकट प्रबंधन समिति' (NCMC) और राहत फंड जारी करने वाली 'उच्च स्तरीय समिति' (HLC) को अधिनियम के तहत स्पष्ट वैधानिक दर्जा दे दिया गया है।", "explanation_en": "Through this historic amendment, the 'National Crisis Management Committee' (NCMC) and the 'High-Level Committee' (HLC) that releases relief funds have been granted clear statutory status under the Act."}, {"id": 24, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत के भौगोलिक और प्रशासनिक आपदा प्रोफाइल के अनुसार, देश के कुल भूभाग का कितना प्रतिशत हिस्सा क्रमशः 'बाढ़ और नदी कटाव' तथा कृषि योग्य क्षेत्र का कितना हिस्सा 'सूखे' की चपेट में आता है?", "question_en": "According to India's geographical and administrative disaster profile, what percentage of the country's total land area is prone to 'floods and river erosion', and what percentage of its cultivable land is sensitive to 'droughts' respectively?", "options": [{"hi": "बाढ़ः 25% भूमि | सूखाः 40% कृषि योग्य भूमि", "en": "Floods: 25% land | Drought: 40% cultivable land"}, {"hi": "बाढ़ः 5% भूमि | सूखाः 50% कृषि योग्य भूमि", "en": "Floods: 5% land | Drought: 50% cultivable land"}, {"hi": "बाढ़ः 18% भूमि | सूखाः 35% कृषि योग्य भूमि", "en": "Floods: 18% land | Drought: 35% cultivable land"}, {"hi": "बाढ़ः 12% भूमि | सूखाः 68% कृषि योग्य भूमि", "en": "Floods: 12% land | Drought: 68% cultivable land"}], "answer": 3, "explanation_hi": "आंकड़ों के अनुसार, भारत का कुल 12% भूभाग बाढ़ और नदी कटाव के खतरे में आता है तथा देश की लगभग 68% कृषि योग्य भूमि मानसून की अनिश्चितता के कारण सूखे के प्रति संवेदनशील है।", "explanation_en": "According to data, approximately 12% of India's land area is prone to floods and river erosion, and around 68% of its cultivable land is sensitive to droughts due to monsoon uncertainties."}, {"id": 25, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "दिल्ली-एनसीआर क्षेत्र में अगस्त 2025 में आयोजित देश की सबसे बड़ी मॉक ड्रिल 'अभ्यास सुरक्षा चक्र' मुख्य रूप से किस संभावित चरम घटना के विरुद्ध की गई तैयारियों के मूल्यांकन से संबंधित थी?", "question_en": "The country's largest mock drill 'Abhyas Suraksha Chakra' conducted in August 2025 in the Delhi-NCR region was primarily associated with evaluating preparedness against which potential extreme event?", "options": [{"hi": "तीव्र तटीय चक्रवात और ज्वारीय बाढ़", "en": "Severe coastal cyclone and tidal flooding"}, {"hi": "सीवेज रिसाव जनित औद्योगिक रासायनिक आपदा", "en": "Sewage leak induced industrial chemical disaster"}, {"hi": "बड़े पैमाने पर आने वाला विनाशकारी भूकंप", "en": "Large-scale devastating earthquake"}, {"hi": "पड़ोसी देशों से होने वाला जैविक युद्ध आक्रमण", "en": "Biological warfare attack from neighboring countries"}], "answer": 2, "explanation_hi": "दिल्ली-एनसीआर क्षेत्र की भू-वैज्ञानिक संवेदनशीलता को देखते हुए एनडीएमए द्वारा आयोजित इस विशाल मॉक ड्रिल 'अभ्यास सुरक्षा चक्र' में 'बड़े पैमाने पर भूकंप' आने के कृत्रिम परिदृश्य पर त्वरित बचाव प्रणालियों का परीक्षण किया गया।", "explanation_en": "Considering the geological sensitivity of the Delhi-NCR region, this massive mock drill 'Abhyas Suraksha Chakra' organized by NDMA tested quick response systems on a simulated 'large-scale earthquake' scenario."}, {"id": 26, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आपदा क्षेत्र में अधिकारियों को अंतरिक्ष आधारित डेटा और मानचित्रों तक त्वरित पहुंच देने हेतु विकसित मोबाइल ऐप 'एनडीईएम लाइट 2.0' (NDEM Lite 2.0) का विकास किस राष्ट्रीय एजेंसी द्वारा किया गया है?", "question_en": "Which national agency has developed the mobile app 'NDEM Lite 2.0' designed to provide officials in disaster zones with quick access to space-based data and maps?", "options": [{"hi": "राष्ट्रीय आपदा प्रबंधन प्राधिकरण (NDMA)", "en": "National Disaster Management Authority (NDMA)"}, {"hi": "भारतीय अंतरिक्ष अनुसंधान संगठन का राष्ट्रीय सुदूर संवेदन केंद्र (ISRO-NRSC)", "en": "National Remote Sensing Centre of the Indian Space Research Organisation (ISRO-NRSC)"}, {"hi": "रक्षा मंत्रालय का रक्षा अनुसंधान एवं विकास संगठन (DRDO)", "en": "Ministry of Defence's DRDO"}, {"hi": "भारत सरकार का नीति आयोग (NITI Aayog)", "en": "NITI Aayog of the Government of India"}], "answer": 1, "explanation_hi": "NDEM Lite 2.0 ऐप इसरो के राष्ट्रीय सुदूर संवेदन केंद्र (NRSC), हैदराबाद द्वारा विकसित किया गया है जो राष्ट्रीय आपातकालीन डेटाबेस (NDEM) का एक हल्का मोबाइल संस्करण है।", "explanation_en": "The NDEM Lite 2.0 app was developed by ISRO's National Remote Sensing Centre (NRSC), Hyderabad, which is a lightweight mobile version of the National Disaster Emergency Database (NDEM)."}, {"id": 27, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आपदा प्रबंधन पर सर्वोच्च शासी निकाय 'राष्ट्रीय आपदा प्रबंधन प्राधिकरण' (NDMA) को वैधानिक रूप से किस तिथि को देश में पूर्णतः पुनर्गठित एवं स्थापित किया गया था?", "question_en": "On which date was the country's highest governing body on disaster management, the 'National Disaster Management Authority' (NDMA), statutorily reorganized and fully established?", "options": [{"hi": "27 सितंबर 2006", "en": "27 September 2006"}, {"hi": "23 दिसंबर 2005", "en": "23 December 2005"}, {"hi": "15 अगस्त 2007", "en": "15 August 2007"}, {"hi": "1 जनवरी 2008", "en": "1 January 2008"}], "answer": 0, "explanation_hi": "आपदा प्रबंधन अधिनियम को 23 दिसंबर 2005 को मंजूरी मिली थी, परंतु आगे चलकर 27 सितंबर 2006 को कानूनन राष्ट्रीय आपदा प्रबंधन प्राधिकरण (NDMA) की स्थापना की गई थी, जिसके अध्यक्ष पदेन प्रधानमंत्री होते हैं।", "explanation_en": "The Disaster Management Act received assent on 23 December 2005, but later on 27 September 2006, the National Disaster Management Authority (NDMA) was statutorily established, chaired ex-officio by the Prime Minister."}, {"id": 28, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "चक्रवात 'दितवाह' (Cyclone Ditwah) से प्रभावित श्रीलंका को सहायता पहुंचाने हेतु चलाए गए 'ऑपरेशन सागर बंधु' के अंतर्गत भारतीय नौसेना ने किस लैंडिंग क्राफ्ट यूटिलिटी (LCU) जहाज समूह को कोलंबो भेजा था?", "question_en": "Under 'Operation Sagar Bandhu' launched to assist Sri Lanka affected by Cyclone 'Ditwah', which Landing Craft Utility (LCU) ship group was deployed to Colombo by the Indian Navy?", "options": [{"hi": "LCU 33, LCU 35, LCU 39", "en": ""}, {"hi": "LCU 41, LCU 44, LCU 49", "en": ""}, {"hi": "LCU 60, LCU 61, LCU 65", "en": ""}, {"hi": "LCU 54, LCU 51, LCU 57", "en": ""}], "answer": 3, "explanation_hi": "दितवाह चक्रवात राहत अभियान के तहत भारतीय नौसेना ने आईएनएस घड़ियाल के अतिरिक्त तीन एलसीयू जहाजों (LCU 54, LCU 51, और LCU 57) को कुल 1000 टन से अधिक राहत सामग्री और 'भीष्म' चिकित्सा क्यूब्स के साथ श्रीलंका भेजा था।", "explanation_en": "Under the Ditwah cyclone relief operation, the Indian Navy sent three LCU ships (LCU 54, LCU 51, and LCU 57) in addition to INS Gharial, carrying over 1000 tons of relief material and 'BHISHM' medical cubes to Sri Lanka."}, {"id": 29, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "फरवरी 2026 में नई दिल्ली में आयोजित 'विश्व सतत विकास शिखर सम्मेलन' (WSDS 2026) के समापन सत्र में जारी 'एक्ट4अर्थ घोषणापत्र 2026' में पहली बार किसे भारत का 'क्रिटिकल नेचुरल इंफ्रास्ट्रक्चर' (Critical Natural Infrastructure) घोषित किया गया है?", "question_en": "In the 'Act4Earth Manifesto 2026' released at the concluding session of the 'World Sustainable Development Summit' (WSDS 2026) held in New Delhi in February 2026, what has been declared as India's 'Critical Natural Infrastructure' for the first time?", "options": [{"hi": "सुंदरबन के मैंग्रोव वन", "en": "Mangrove forests of Sundarbans"}, {"hi": "गंगा-ब्रह्मपुत्र नदी घाटी बेसिन", "en": "Ganga-Brahmaputra river valley basin"}, {"hi": "पश्चिमी घाट पर्वत श्रृंखला", "en": "Western Ghats mountain range"}, {"hi": "हिमालयी क्षेत्र", "en": "Himalayan Region"}], "answer": 3, "explanation_hi": "एक्ट4अर्थ घोषणापत्र 2026 में पहली बार 'हिमालय' को जलवायु अनुकूलन, जल सुरक्षा और सतत विकास हेतु आवश्यक देश का एक महत्वपूर्ण प्राकृतिक बुनियादी ढांचा (Critical Natural Infrastructure) के रूप में विधिक व नीतिगत मान्यता दी गई है।", "explanation_en": "In the Act4Earth Manifesto 2026, for the first time, 'Himalayas' have been legally and policy-wise recognized as a Critical Natural Infrastructure of the country essential for climate resilience, water security, and sustainable development."}, {"id": 30, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "एनडीएमए द्वारा बादल फटने और पर्वतीय क्षेत्रों में अचानक आने वाली विनाशकारी बाढ़ की निगरानी हेतु शुरू की गई अपग्रेडेड 'फ्लैश फ्लड गाइडेंस सिस्टम' (FFGS-U) कितने घंटे पूर्व चेतावनी देने में सक्षम है?", "question_en": "How many hours in advance is the upgraded 'Flash Flood Guidance System' (FFGS-U), launched by NDMA to monitor cloudbursts and sudden devastating floods in mountainous regions, capable of issuing warnings?", "options": [{"hi": "अगले 1 से 3 घंटे पूर्व", "en": "1 to 3 hours in advance"}, {"hi": "अगले 48 से 72 घंटे पूर्व", "en": "48 to 72 hours in advance"}, {"hi": "अगले 6 से 24 घंटे पूर्व", "en": "6 to 24 hours in advance"}, {"hi": "अगले 5 से 7 दिन पूर्व", "en": "5 to 7 days in advance"}], "answer": 2, "explanation_hi": "FFGS-U प्रणाली उपग्रह डेटा और संख्यात्मक मौसम मॉडलों के उपयोग से ब्लॉक स्तर तक बारीक रिज़ॉल्यूशन पर अगले 6 से 24 घंटों में अचानक आने वाली बाढ़ (Flash Floods) की अत्यधिक सटीक अग्रिम चेतावनी जारी करती है।", "explanation_en": "The FFGS-U system, utilizing satellite data and numerical weather models at block level with high resolution, issues highly accurate warnings of flash floods 6 to 24 hours in advance."}, {"id": 31, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत-एआई प्रभाव शिखर सम्मेलन 2026 के अंतर्गत घोषित जिम्मेदार एआई वैश्विक सहयोग को संचालित करने वाले '3 सूत्रों' (3 Core Principles) में निम्नलिखित में से कौन-सा शामिल नहीं था?", "question_en": "Which of the following was NOT included in the '3 Core Principles' driving responsible AI global cooperation declared under the India-AI Impact Summit 2026?", "options": [{"hi": "रक्षा एवं सैन्य रोबोटिक्स का पूर्ण स्वायत्त हथियारों के रूप में नियंत्रण", "en": "Autonomous Military Weaponry and Defense Robotics control"}, {"hi": "संप्रभु एआई नवाचार और तकनीकी आत्मनिर्भरता", "en": "Sovereign AI Innovation and Technical Self-reliance"}, {"hi": "लोकतांत्रिक और सुरक्षित एआई गवर्नेस", "en": "Democratic and Safe AI Governance"}, {"hi": "वैश्विक दक्षिण (Global South) के लिए एआई समावेशन और डिजिटल इक्विटी", "en": "AI Inclusion and Digital Equity for the Global South"}], "answer": 0, "explanation_hi": "शिखर सम्मेलन के दौरान भारत ने संप्रभु एआई, लोकतांत्रिक व सुरक्षित गवर्नेस तथा वैश्विक दक्षिण हेतु एआई समावेशन के 3 प्रमुख सूत्रों को रखा था; सैन्य रोबोटिक्स का स्वायत्त नियंत्रण इसका हिस्सा नहीं है, क्योंकि भारत मानव-केंद्रित एआई का पक्षधर है।", "explanation_en": "During the summit, India proposed 3 key principles of Sovereign AI, Democratic & Safe Governance, and AI Inclusion for the Global South; autonomous military robotics is not a part of it, as India advocates for human-centric AI."}, {"id": 32, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "'इंडिया-एआई इम्पैक्ट समिट 2026' में भारतजैन (BharatGen) कंसोर्टियम द्वारा प्रदर्शित किए गए 'BharatGen Param2' मॉडल की प्रमुख विशेषता क्या है?", "question_en": "What is the primary feature of the 'BharatGen Param2' model showcased by the BharatGen consortium at the 'India-AI Impact Summit 2026'?", "options": [{"hi": "यह केवल अंग्रेजी और रूसी भाषा को अनुवाद करने वाला एक वित्तीय रोबोटिक सॉफ्टवेयर है", "en": "It is a financial robotic software that translates only English and Russian"}, {"hi": "यह गहरे अंतरिक्ष में सैटेलाइट और अंतरिक्ष स्टेशनों के संचालन हेतु बनाया गया प्रोसेसर है", "en": "It is a processor designed for the operation of satellites and space stations in deep space"}, {"hi": "यह 17 बिलियन पैरामीटर वाला एक संप्रभु बहुभाषी मॉडल है जो 22 आधिकारिक भारतीय भाषाओं को सपोर्ट करता है", "en": "It is a sovereign multilingual model with 17 billion parameters that natively supports 22 official Indian languages"}, {"hi": "यह कृषि क्षेत्र में कीट रोग पहचान हेतु एक ऑफलाइन रोबोटिक कैमरा सेंसर है", "en": "It is an offline robotic camera sensor for pest disease identification in the agriculture sector"}], "answer": 2, "explanation_hi": "BharatGen Param2 मॉडल एक संप्रभु बड़ा भाषा मॉडल (LLM) है जिसमें 17 बिलियन पैरामीटर हैं और यह भारत की भाषाई संप्रभुता सुनिश्चित करने के लिए सभी 22 आधिकारिक अनुसूचित भाषाओं को सपोर्ट करता है।", "explanation_en": "The BharatGen Param2 model is a sovereign Large Language Model (LLM) with 17 billion parameters that natively supports all 22 official scheduled languages to ensure linguistic sovereignty."}, {"id": 33, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "समिट के दौरान प्रदर्शित भारत के जिम्मेदार एआई ढांचे 'M.A.N.A.V.' (मानव) मॉडल के पूर्ण रूप के संदर्भ में कौन सा विकल्प बिल्कुल सही सुमेलित है?", "question_en": "In the context of India's responsible AI framework 'M.A.N.A.V.' (MANAV) model showcased during the summit, which option is correctly matched with its full form?", "options": [{"hi": "M - Maritime & Navigation Systems / मैरीटाइम एंड नेविगेशन सिस्टम्स", "en": ""}, {"hi": "N - Network for Artificial Vectoring / नेटवर्क फॉर आर्टिफिशियल वेक्टरिंग", "en": ""}, {"hi": "V - Venture for Aviation Vehicles / वेंचर फॉर एविएशन व्हीकल्स", "en": ""}, {"hi": "A - Accountable Governance / जवाबदेह शासन", "en": ""}], "answer": 3, "explanation_hi": "M.A.N.A.V. मॉडल का पूर्ण रूप 'Moral & Ethical Systems, Accountable Governance, National Sovereignty, Accessible & Inclusive Technology, Valid & Legitimate Systems' है।", "explanation_en": "The full form of the M.A.N.A.V. model is 'Moral & Ethical Systems, Accountable Governance, National Sovereignty, Accessible & Inclusive Technology, Valid & Legitimate Systems'."}, {"id": 34, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "जिम्मेदार एआई डिजिटल अभियान के तहत भारत ने 16 से 17 फरवरी 2026 के बीच 24 घंटे के भीतर कुल कितने डिजिटल प्रतिज्ञा पत्र (Pledges) प्राप्त करके गिनीज वर्ल्ड रिकॉर्ड में अपना नाम दर्ज कराया?", "question_en": "Under the responsible AI digital campaign, how many total digital pledges did India receive within 24 hours between 16 and 17 February 2026 to register its name in the Guinness World Records?", "options": [{"hi": "1,50,450 डिजिटल प्रतिज्ञाएँ", "en": "1,50,450 digital pledges"}, {"hi": "2,50,946 डिजिटल प्रतिज्ञाएँ", "en": "2,50,946 digital pledges"}, {"hi": "2,05,100 डिजिटल प्रतिज्ञाएँ", "en": "2,05,100 digital pledges"}, {"hi": "5,00,000 डिजिटल प्रतिज्ञाएँ", "en": "5,00,000 digital pledges"}], "answer": 1, "explanation_hi": "समिट के दौरान चलाए गए इस राष्ट्रव्यापी नागरिक अभियान में भारत ने मात्र 24 घंटे में रिकॉर्ड 2,50,946 वैध डिजिटल प्रतिज्ञाएं (Pledges) प्राप्त कीं, जिसे गिनीज वर्ल्ड रिकॉर्ड के रूप में प्रमाणित किया गया।", "explanation_en": "In this nationwide citizen campaign run during the summit, India received a record 2,50,946 valid digital pledges in just 24 hours, certified as a Guinness World Record."}, {"id": 35, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आर्थिक रूप से कमजोर ग्रामीण छात्रों को राष्ट्रीय प्रतियोगी परीक्षाओं (JEE, NEET) की निःशुल्क तैयारी कराने हेतु शुरू किए गए 'साथी' (SATHEE) पोर्टल का सही पूर्ण रूप क्या है?", "question_en": "What is the correct full form of the 'SATHEE' portal launched to provide free national competitive exam (JEE, NEET) preparation to economically weak rural students?", "options": [{"hi": "Student Assessment Technology and Help for Entrance Exams / स्टूडेंट असेसमेंट टेक्नोलॉजी एंड हेल्प फॉर एंट्रेंस एग्जाम्स", "en": ""}, {"hi": "Sovereign Academic Tutorial and High Education Enterprise / सॉवरेन एकेडमिक ट्यूटोरियल एंड हाई एजुकेशन एंटरप्राइज", "en": ""}, {"hi": "Self Assessment Test and Help for Entrance Exams / सेल्फ असेसमेंट टेस्ट एंड हेल्प फॉर एंट्रेंस एग्जाम्स", "en": ""}, {"hi": "Systematic Analytical Training and Holistic Education Environment / सिस्टमैटिक एनालिटिकल ट्रेनिंग एंड होलिस्टिक एजुकेशन एनवायरनमेंट", "en": ""}], "answer": 2, "explanation_hi": "साथी (SATHEE) का पूर्ण रूप 'Self Assessment Test and Help for Entrance Exams' है, जिसे शिक्षा मंत्रालय ने आईआईटी कानपुर के सहयोग से विकसित किया है।", "explanation_en": "The full form of SATHEE is 'Self Assessment Test and Help for Entrance Exams', developed by the Ministry of Education in collaboration with IIT Kanpur."}, {"id": 36, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "प्रतिष्ठित 'सूचना समाज पर विश्व शिखर सम्मेलन' (WSIS) पुरस्कार 2026 हेतु नामांकित की गई दूरसंचार विभाग (DoT) की अनूठी पहल 'समृद्ध ग्रामः भारतनेट द्वारा समर्थित एकीकृत फिजीटल सेवा वितरण मॉडल' को किस श्रेणी के अंतर्गत रखा गया है?", "question_en": "Under which category has the Department of Telecommunications' (DoT) unique initiative 'Samridh Gram: Integrated Phygital Service Delivery Model Supported by BharatNet', nominated for the prestigious WSIS Award 2026, been categorized?", "options": [{"hi": "Action Line AL C1: ICT Role in Education / एक्शन लाइन AL C1: शिक्षा में आईसीटी की भूमिका", "en": ""}, {"hi": "Action Line AL C4: Capacity Building / एक्शन लाइन AL C4: क्षमता निर्माण", "en": ""}, {"hi": "Action Line AL C6: Enabling Environment / एक्शन लाइन AL C6: पर्यावरण को सक्षम करना", "en": ""}, {"hi": "Action Line AL C7: e-Health / एक्शन लाइन AL C7: ई-स्वास्थ्य", "en": ""}], "answer": 2, "explanation_hi": "ग्रामीण समावेशी विकास और ब्रॉडबैंड अवसंरचना के उपयोग वाले समृद्ध ग्राम मॉडल को विशेष रूप से 'Action Line AL C6: Enabling Environment' (पर्यावरण को सक्षम करना) श्रेणी में रखा गया है।", "explanation_en": "The Samridh Gram model utilizing rural inclusive development and broadband infrastructure has been specifically placed in the category 'Action Line AL C6: Enabling Environment'."}, {"id": 37, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय शोधकर्ताओं (ARCI हैदराबाद व IIT हैदराबाद) द्वारा उपभोक्ता इलेक्ट्रॉनिक्स के लिए विकसित किए गए पर्यावरण-अनुकूल और स्वयं-संचालित फोटोडिटेक्टर में किस विशिष्ट सीसा-रहित (Lead-free) रासायनिक यौगिक का उपयोग किया गया है?", "question_en": "Which specific lead-free chemical compound has been used in the environment-friendly and self-powered photodetector developed by Indian researchers (ARCI Hyderabad and IIT Hyderabad) for consumer electronics?", "options": [{"hi": "PbI_2", "en": ""}, {"hi": "Cs_2AgBiBr_6", "en": ""}, {"hi": "GaAs", "en": ""}, {"hi": "SiC", "en": ""}], "answer": 1, "explanation_hi": "शोधकर्ताओं ने पारंपरिक विषैले सीसा-आधारित लेड आयोडाइड पेरोव्स्काइट के विकल्प के रूप में डबल पेरोव्स्काइट 'Cs_2AgBiBr_6' का सफल विकास किया है, जो अगली पीढ़ी के हरित इलेक्ट्रॉनिक्स के निर्माण के अनुकूल है।", "explanation_en": "Researchers have successfully developed double perovskite 'Cs_2AgBiBr_6' as an alternative to the traditional toxic lead-based lead iodide perovskite, aligning with next-generation green electronics manufacturing."}, {"id": 38, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "नई दिल्ली में आयोजित किए गए 31वें 'विश्व ओज़ोन दिवस 2025' का आधिकारिक मुख्य विषय (Theme) क्या निर्धारित किया गया था?", "question_en": "What was the official main theme of the 31st 'World Ozone Day 2025' held in New Delhi?", "options": [{"hi": "ओजोन और जलवायुः जीवन के लिए एक वैश्विक समझौता", "en": "Ozone and Climate: A Global Agreement for Life"}, {"hi": "मिशन लाइफः ओजोन परत का पूर्ण सुधार", "en": "Mission LiFE: Complete Recovery of Ozone Layer"}, {"hi": "हरित शीतलन और क्योटो प्रोटोकॉल का क्रियान्वयन", "en": "Green Cooling and Kyoto Protocol Implementation"}, {"hi": "'विज्ञान से वैश्विक कार्रवाई तक'", "en": "'From Science to Global Action'"}], "answer": 3, "explanation_hi": "31वें विश्व ओज़ोन दिवस 2025 का मुख्य विषय 'विज्ञान से वैश्विक कार्रवाई तक' (From Science to Global Action) था, जो नीति निर्माण और अंतर्राष्ट्रीय सहयोग हेतु वैज्ञानिक प्रमाणों पर केंद्रित था।", "explanation_en": "The main theme of the 31st World Ozone Day 2025 was 'From Science to Global Action', focusing on scientific evidence to drive policy formulation and international cooperation."}, {"id": 39, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "विश्व ओज़ोन दिवस कार्यक्रम के दौरान भारत द्वारा अपनी आधार रेखा (Baseline) से हाइड्रोक्लोरोफ्लोरोकार्बन (HCFC) के उत्पादन और खपत में कितने प्रतिशत की ऐतिहासिक कमी का लक्ष्य सफलतापूर्वक हासिल करने की सराहना की गई?", "question_en": "During the World Ozone Day event, India was appreciated for successfully achieving what percentage of historic reduction in the production and consumption of hydrochlorofluorocarbons (HCFCs) from its baseline?", "options": [{"hi": "67.5 प्रतिशत", "en": "67.5 percent"}, {"hi": "50 प्रतिशत", "en": "50 percent"}, {"hi": "75 प्रतिशत", "en": "75 percent"}, {"hi": "99 प्रतिशत", "en": "99 percent"}], "answer": 0, "explanation_hi": "भारत ने मॉन्ट्रियल प्रोटोकॉल के तहत अपनी बेसलाइन से HCFC उत्पादन और खपत में 67.5 प्रतिशत की भारी कमी का लक्ष्य हासिल किया है; साथ ही वर्ष 2020 में ओजोन परत को नुकसान पहुंचाने वाले विलायक 'HCFC-141b' को पूरी तरह से देश से समाप्त कर दिया गया था।", "explanation_en": "Under the Montreal Protocol, India has successfully achieved a massive 67.5% reduction in HCFC production and consumption from its baseline; also, the ozone-depleting solvent 'HCFC-141b' was completely phased out from the country in 2020."}, {"id": 40, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कौशल विकास और उद्यमिता मंत्रालय के सहयोग से 120 औद्योगिक प्रशिक्षण संस्थानों (ITI) को शीतलन एवं वातानुकूलन (RAC) उपकरण प्रदान करने की योजना मॉन्ट्रियल प्रोटोकॉल के किस संशोधन के लक्ष्यों को पूरा करने हेतु लागू की जा रही है?", "question_en": "The plan to provide cooling and air conditioning (RAC) equipment to 120 Industrial Training Institutes (ITIs) in collaboration with the Ministry of Skill Development and Entrepreneurship is being implemented to meet the goals of which amendment of the Montreal Protocol?", "options": [{"hi": "लंदन संशोधन", "en": "London Amendment"}, {"hi": "कोपेनहेगन संशोधन", "en": "Copenhagen Amendment"}, {"hi": "किगाली संशोधन 2028", "en": "Kigali Amendment"}, {"hi": "बीजिंग संशोधन", "en": "Beijing Amendment"}], "answer": 2, "explanation_hi": "इसका उद्देश्य देश के शीतलन क्षेत्र में ऐसा कुशल कार्यबल तैयार करना है जो कम ग्लोबल वार्मिंग क्षमता (Low-GWP) वाले रेफ्रिजरेंट को संभाल सके, जो मॉन्ट्रियल प्रोटोकॉल के किगाली संशोधन के तहत HFC चरण-डाउन आवश्यकताओं को पूरा करने हेतु अत्यंत महत्वपूर्ण है।", "explanation_en": "The objective is to train a skilled workforce in the country's cooling sector to handle low-GWP refrigerants, which is crucial for meeting HFC phase-down requirements under the Kigali Amendment of the Montreal Protocol."}, {"id": 41, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "ग्लास्गो में आयोजित COP 26 के दौरान प्रधानमंत्री नरेंद्र मोदी द्वारा प्रस्तुत भारत की जलवायु कार्रवाई के 'पंचामृत' (Panchamrit) लक्ष्यों में निम्नलिखित में से कौन सा विकल्प शामिल नहीं है?", "question_en": "Among the 'Panchamrit' climate action targets presented by PM Narendra Modi during COP 26 in Glasgow, which of the following options is NOT included?", "options": [{"hi": "वर्ष 2050 तक नेट-ज़ीरो (शुद्ध-शून्य) उत्सर्जन का लक्ष्य हासिल करना", "en": "Achieving the net-zero emissions target by 2050"}, {"hi": "वर्ष 2030 तक अर्थव्यवस्था की कार्बन तीव्रता (Carbon Intensity) को 45% से अधिक कम करना", "en": "Reducing the carbon intensity of the economy by more than 45% by 2030"}, {"hi": "वर्ष 2030 तक कुल अनुमानित कार्बन उत्सर्जन में 1 बिलियन टन की कमी लाना", "en": "Bringing down total projected carbon emissions by 1 billion tonnes by 2030"}, {"hi": "वर्ष 2030 तक गैर-जीवाश्म ईंधन स्रोतों से 500 GW की स्थापित बिजली क्षमता तैयार करना", "en": "Achieving 500 GW of installed power capacity from non-fossil fuel sources by 2030"}], "answer": 0, "explanation_hi": "भारत ने ग्लासगो कॉप 26 में नेट-ज़ीरो (Net-zero) उत्सर्जन का अंतिम लक्ष्य वर्ष 2070 तक हासिल करने की प्रतिबद्धता जताई थी, न कि वर्ष 2050 तक; बाकी तीनों लक्ष्य 2030 के संदर्भ में बिल्कुल सही हैं।", "explanation_en": "At Glasgow COP 26, India committed to achieving its net-zero emissions target by the year 2070, not by 2050; the other three targets are completely correct with respect to 2030."}, {"id": 42, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "बाकू में आयोजित COP 29 में भारत ने किस देश तथा वैश्विक संगठनों के सहयोग से 'आपदा रोधी अवसंरचना' और 'औद्योगिक डीकार्बोनाइजेशन' पर केंद्रित विशेष सत्रों का आयोजन किया था?", "question_en": "At COP 29 held in Baku, in collaboration with which country and global organizations did India organize special sessions focused on 'disaster-resilient infrastructure' and 'industrial decarbonization'?", "options": [{"hi": "फ्रांस और अंतर्राष्ट्रीय सौर गठबंधन (ISA)", "en": "France and International Solar Alliance (ISA)"}, {"hi": "जर्मनी, संयुक्त राष्ट्र विकास कार्यक्रम (UNDP) और नीति आयोग", "en": "Germany, UNDP, and NITI Aayog"}, {"hi": "स्वीडन, CDRI, ISA और प्राकृतिक संसाधन रक्षा परिषद (NRDC)", "en": "Sweden, CDRI, ISA, and Natural Resources Defense Council (NRDC)"}, {"hi": "संयुक्त राज्य अमेरिका और विश्व बैंक", "en": "United States and World Bank"}], "answer": 2, "explanation_hi": "बाकू में आयोजित कॉप 29 शिखर सम्मेलन के दौरान भारत ने स्वीडन, सीडीआरआई, अंतर्राष्ट्रीय सौर गठबंधन और एनआरडीसी के साथ मिलकर इन महत्वपूर्ण पर्यावरणीय व औद्योगिक विषयों पर विशेष बहुपक्षीय सत्र आयोजित किए थे।", "explanation_en": "During the COP 29 summit in Baku, India, in partnership with Sweden, CDRI, ISA, and NRDC, hosted special multilateral sessions on these crucial environmental and industrial themes."}, {"id": 43, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "देश की स्वच्छ ऊर्जा प्रतिबद्धताओं के तहत भारत में सौर टैरिफ (Solar Tariffs) के संदर्भ में कौन सा तथ्य ऐतिहासिक गिरावट को पूरी तरह प्रमाणित करता है?", "question_en": "Under the country's clean energy commitments, which fact completely certifies the historic decline in Solar Tariffs in India?", "options": [{"hi": "सौर टैरिफ में वर्तमान में 40% की भारी वृद्धि हुई है", "en": "Solar tariffs have currently seen a heavy increase of 40%"}, {"hi": "सौर टैरिफ को देश के सभी 36 राज्यों/यूटी में ₹5.00/kWh पर स्थिर कर दिया गया है", "en": "Solar tariffs have been fixed at ₹5.00/kWh across all 36 states/UTs"}, {"hi": "सौर टैरिफ 90% की विशाल गिरावट के साथ पूरे देश में समान रूप से ₹1.00/kWh हो गया है", "en": "Solar tariffs have dropped by a massive 90%, becoming uniformly ₹1.00/kWh nationwide"}, {"hi": "सौर टैरिफ पिछले दस वर्षों में लगभग 65% घटकर 2014-15 के ₹6.17/kWh से कम होकर 2024-25 में ₹2.15/kWh हो गया है", "en": "Solar tariffs have dropped by approximately 65% in the last ten years, falling from ₹6.17/kWh in 2014-15 to ₹2.15/kWh in 2024-25"}], "answer": 3, "explanation_hi": "सौर ऊर्जा उत्पादन क्षमता में भारी बढ़ोतरी के साथ ही इसके टैरिफ दरों में लगभग 65% की अभूतपूर्व कमी आई है, जो 2014-15 के ₹6.17 प्रति यूनिट से गिरकर 2024-25 में ₹2.15 प्रति यूनिट हो गई है, जो विश्व की सबसे सस्ती दरों में शामिल है।", "explanation_en": "Along with a massive increase in solar generation capacity, its tariff rates have seen an unprecedented decline of about 65%, falling from ₹6.17 per unit in 2014-15 to ₹2.15 per unit in 2024-25, among the cheapest globally."}, {"id": 44, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "दीर्घकालिक स्वच्छ ऊर्जा आत्मनिर्भरता के अंतर्गत भारत सरकार ने वर्ष 2047 (आजादी के शताब्दी वर्ष) तक कुल कितने गीगावाट (GW) परमाणु ऊर्जा क्षमता हासिल करने का महत्वाकांक्षी लक्ष्य निर्धारित किया है?", "question_en": "Under long-term clean energy self-reliance, what total gigawatt (GW) nuclear power capacity target has been set by the Government of India for the year 2047 (centenary year of independence)?", "options": [{"hi": "100 GW", "en": ""}, {"hi": "50 GW", "en": ""}, {"hi": "140 GW", "en": ""}, {"hi": "500 GW", "en": ""}], "answer": 0, "explanation_hi": "देश की परमाणु ऊर्जा क्षमता जो वर्ष 2014 में केवल 4.78 गीगावाट थी, वह वर्ष 2025 के मध्य तक 8.78 गीगावाट हो चुकी है। सरकार ने इस क्षमता को वर्ष 2047 तक बढ़ाकर 100 गीगावाट करने का दीर्घकालिक विज़न रखा है।", "explanation_en": "The country's nuclear power capacity, which was only 4.78 GW in 2014, reached 8.78 GW by mid-2025. The government has set a long-term vision to increase this capacity to 100 GW by the year 2047."}, {"id": 45, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "राष्ट्रीय हरित हाइड्रोजन मिशन के तहत वर्ष 2030 तक निर्धारित परिणामों के संदर्भ में कौन सा बिंदु सत्य है?", "question_en": "Which point is true in the context of the outcomes set under the National Green Hydrogen Mission by the year 2030?", "options": [{"hi": "प्रति वर्ष कम से कम 5 MMT की हरित हाइड्रोजन उत्पादन क्षमता विकसित करना", "en": "Achieving at least 5 MMT of green hydrogen production capacity per annum"}, {"hi": "उपरोक्त सभी तीनों बिंदु सही हैं", "en": "All of the above three points are correct"}, {"hi": "कुल ₹8 लाख करोड़ से अधिक का निवेश और 6 लाख से अधिक नौकरियों का सृजन", "en": "Over ₹8 lakh crore in total investments and creation of over 6 lakh jobs"}, {"hi": "जीवाश्म ईंधन के आयात में ₹1 लाख करोड़ से अधिक की संचयी कमी लाना", "en": "A cumulative reduction in fossil fuel imports of over ₹1 lakh crore"}], "answer": 1, "explanation_hi": "जनवरी 2023 में शुरू किए गए राष्ट्रीय हरित हाइड्रोजन मिशन के तहत वर्ष 2030 तक ये तीनों लक्ष्य (सालाना 5 MMT उत्पादन, ₹8 लाख करोड़ निवेश, 6 लाख नौकरियां और ₹1 लाख करोड़ आयात कमी) पूरी तरह सही हैं।", "explanation_en": "Under the National Green Hydrogen Mission launched in January 2023, all these three targets (5 MMT annual production, ₹8 lakh crore investment, 6 lakh jobs, and ₹1 lakh crore import reduction) are completely correct."}, {"id": 46, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "'प्रधानमंत्री सूर्य घरः मुफ़्त बिजली योजना' के अंतर्गत विकसित किए जाने वाले 'आदर्श सौर ग्राम' (Model Solar Village) के विकास हेतु चयनित राजस्व गांवों को कुल कितनी वित्तीय सहायता प्रदान करने का प्रावधान है?", "question_en": "What total financial assistance is provided for selected revenue villages for the development of 'Model Solar Villages' under the 'PM Surya Ghar: Muft Bijli Yojana'?", "options": [{"hi": "800 करोड़ रुपये के कुल बजट से प्रत्येक चयनित बड़े राजस्व गांव को ₹1 करोड़", "en": "₹1 crore to each selected large revenue village from a total budget of ₹800 crore"}, {"hi": "प्रत्येक चयनित जिले के एक गांव को ₹50 लाख", "en": "₹50 lakh for one village of each selected district"}, {"hi": "प्रत्येक शहरी मलिन बस्ती क्षेत्र के गांव को ₹2 करोड़", "en": "₹2 crore to each urban slum area village"}, {"hi": "बिना किसी आबादी वाले जंगली वन ग्रामों को ₹5 करोड़", "en": "₹5 crore to unpopulated forest villages"}], "answer": 0, "explanation_hi": "ग्रामीण क्षेत्रों में ऊर्जा आत्मनिर्भरता को गति देने हेतु ₹800 करोड़ के कुल बजट के तहत, देश के प्रत्येक जिले के चुनिंदा बड़े राजस्व गांवों (5,000 से अधिक आबादी वाले सामान्य गांवों) को ₹1 करोड़ की केंद्रीय वित्तीय सहायता प्रदान की जाएगी।", "explanation_en": "To accelerate energy self-reliance in rural areas, under a total budget of ₹800 crore, selected large revenue villages in each district of the country (general villages with over 5,000 population) will be provided with ₹1 crore in central financial assistance."}, {"id": 47, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "ऊर्जा दक्षता को बड़े पैमाने पर बढ़ावा देने वाली प्रसिद्ध 'उजाला योजना' (UJALA Scheme) के अंतर्गत जनवरी 2025 तक देश भर में कुल कितने करोड़ एलईईडी (LED) बल्ब वितरित किए जा चुके हैं?", "question_en": "Under the famous 'UJALA' scheme promoting energy efficiency on a large scale, how many crore LED bulbs have been distributed across the country by January 2025?", "options": [{"hi": "12.50 करोड़ एलईडी बल्ब", "en": "12.50 crore LED bulbs"}, {"hi": "50.15 करोड़ एलईडी बल्ब", "en": "50.15 crore LED bulbs"}, {"hi": "36.87 करोड़ एलईडी बल्ब", "en": "36.87 crore LED bulbs"}, {"hi": "100 करोड़ एलईडी बल्ब", "en": "100 crore LED bulbs"}], "answer": 2, "explanation_hi": "5 जनवरी 2015 को प्रधानमंत्री द्वारा शुरू की गई उजाला योजना के तहत जनवरी 2025 तक कुल 36.87 करोड़ से अधिक एलईडी बल्ब वितरित किए जा चुके हैं, जिससे देश में हर साल 47,883 मिलियन किलोवाट-घंटे बिजली और ₹19,153 करोड़ की वार्षिक बचत होती है।", "explanation_en": "Under the UJALA scheme launched by the Prime Minister on 5 January 2015, over 36.87 crore LED bulbs have been distributed by January 2025, saving 47,883 million kWh of electricity and ₹19,153 crore annually."}, {"id": 48, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत के जैव विविधता बजट 2025-26 के मुख्य हाइलाइट्स के अनुसार, देश के पर्यावरण, वन और जलवायु परिवर्तन मंत्रालय (MoEFCC) को कुल कितना वार्षिक बजट आवंटित किया गया है?", "question_en": "According to the key highlights of India's Biodiversity Budget 2025-26, what total annual budget has been allocated to the Ministry of Environment, Forest, and Climate Change (MoEFCC)?", "options": [{"hi": "₹1,500.00 करोड़", "en": "₹1,500.00 crore"}, {"hi": "₹3,412.82 करोड़ (पिछले वर्ष से 9% अधिक)", "en": "₹3,412.82 crore (9% increase from previous year)"}, {"hi": "₹2,500.80 करोड़", "en": "₹2,500.80 crore"}, {"hi": "₹5,000.45 करोड़", "en": "₹5,000.45 crore"}], "answer": 1, "explanation_hi": "बजट 2025-26 के आधिकारिक आंकड़ों के अनुसार, MoEFCC का कुल वार्षिक आवंटन ₹3,412.82 करोड़ निर्धारित किया गया है, जिसमें से सर्वाधिक ₹3,276.82 करोड़ राजस्व व्यय हेतु आवंटित है।", "explanation_en": "According to official data of Budget 2025-26, the total annual allocation for MoEFCC is fixed at ₹3,412.82 crore, with the highest ₹3,276.82 crore allocated for revenue expenditure."}, {"id": 49, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत वन स्थिति रिपोर्ट (ISFR) के आंकड़ों के अनुसार, प्रभावी संरक्षण के परिणामस्वरूप देश का कुल वन क्षेत्र 2013 के 6,98,712 वर्ग किमी से बढ़कर वर्ष 2023 में कितना दर्ज किया गया है?", "question_en": "According to the data of the India State of Forest Report (ISFR), as a result of effective conservation, the country's total forest area has increased from 6,98,712 sq km in 2013 to how much in 2023?", "options": [{"hi": "7,00,000 वर्ग किमी", "en": "7,00,000 sq km"}, {"hi": "7,50,112 वर्ग किमी", "en": "7,50,112 sq km"}, {"hi": "8,05,220 वर्ग किमी", "en": "8,05,220 sq km"}, {"hi": "7,15,343 वर्ग किमी", "en": "7,15,343 sq km"}], "answer": 3, "explanation_hi": "दिसंबर 2024 में जारी आंकड़ों के अनुसार भारत का वनावरण बढ़कर 7,15,343 वर्ग किमी हो गया है तथा देश का कुल संचयी कार्बन सिंक बढ़कर 30.43 बिलियन टन CO2 समतुल्य हो चुका है।", "explanation_en": "According to data released in December 2024, India's forest cover has increased to 7,15,343 sq km, and the country's total cumulative carbon sink has reached 30.43 billion tonnes of CO2 equivalent."}, {"id": 50, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "एशियाई शेरों के प्राकृतिक संरक्षण को मजबूती प्रदान करने हेतु भारत सरकार द्वारा संचालित 'प्रोजेक्ट लायन' (Project Lion) के अंतर्गत वित्तीय वर्ष 2023-24 में गुजरात गिर क्षेत्र हेतु कुल कितना विशेष बजटीय आवंटन किया गया था?", "question_en": "Under 'Project Lion' operated by the Government of India to strengthen the natural conservation of Asiatic Lions, what total special budgetary allocation was made for the Gujarat Gir region in the financial year 2023-24?", "options": [{"hi": "₹50.00 करोड़", "en": "₹50.00 crore"}, {"hi": "₹99.50 करोड़", "en": "₹99.50 crore"}, {"hi": "₹155.52 करोड़", "en": "₹155.52 crore"}, {"hi": "₹120.00 करोड़", "en": "₹120.00 crore"}], "answer": 2, "explanation_hi": "गिद्ध व सिंह जैसे राष्ट्रीय वन्यजीवों के संरक्षण संवर्धन के तहत एशियाई शेरों के संरक्षण कार्यों हेतु भारत सरकार द्वारा वित्त वर्ष 2023-24 में विशेष रूप से ₹155.52 करोड़ की राशि आवंटित की गई थी।", "explanation_en": "Under national wildlife conservation efforts, the Government of India allocated a special amount of ₹155.52 crore in the financial year 2023-24 specifically for the conservation of Asiatic Lions."}]};
+
+/* ===== भाषा टॉगल + प्रश्न-प्रकार फ़ॉर्मैटर ===== */
+var JH_LANG = (function(){ try{ return localStorage.getItem("jaiho_lang")||"bi"; }catch(e){ return "bi"; } })();
+function langSegHTML(){
+  var L=JH_LANG, o=function(v,t){ return '<button type="button" class="lang-b'+(L===v?" on":"")+'" data-lang="'+v+'">'+t+'</button>'; };
+  return o("hi","हिंदी")+o("en","English")+o("bi","दोनों");
+}
+function paintLang(){
+  ["qLang","coverLang"].forEach(function(id){
+    var box=document.getElementById(id); if(!box) return;
+    box.innerHTML=langSegHTML();
+    box.querySelectorAll(".lang-b").forEach(function(b){
+      b.addEventListener("click",function(){ setJhLang(b.getAttribute("data-lang")); });
+    });
+  });
+}
+function setJhLang(l){
+  JH_LANG=l; try{ localStorage.setItem("jaiho_lang",l); }catch(e){}
+  paintLang();
+  try{ if(document.getElementById("testScreen").style.display==="block") renderQuestion(); }catch(e){}
+  try{ if(document.getElementById("resultScreen").style.display==="block") renderReview(); }catch(e){}
+}
+function jhEsc(t){ return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function _jhPoints(t){
+  t = String(t).replace(/\s*(कथन\s*\d+\s*[:：])/g,"\n$1")
+       .replace(/\s*(Statement\s*\d+\s*[:：])/gi,"\n$1")
+       .replace(/([।;?:,])\s*(\d+\.\s)/g,"$1\n$2");
+  return t.replace(/^\n+/,"").replace(/\n[ \t]+/g,"\n");
+}
+function _jhMatch(raw){
+  var t=String(raw);
+  var reI=/(सूची|List)[\s\-–—]*I(?!I)\s*(?:\([^)]*\))?\s*[:：]/i;
+  var reII=/(सूची|List)[\s\-–—]*II\s*(?:\([^)]*\))?\s*[:：]/i;
+  var mI=t.match(reI), mII=t.match(reII);
+  if(!mI||!mII||mII.index<=mI.index) return null;
+  var intro=t.slice(0,mI.index).trim();
+  var segI=t.slice(mI.index+mI[0].length,mII.index).trim().replace(/[;।,]\s*$/,"");
+  var rest=t.slice(mII.index+mII[0].length);
+  var mo=rest.match(/(सही\s*मिलान|नीचे\s*दिए|सुमेलित|Choose|Select|Match|कूट)/i);
+  var segII, outro="";
+  if(mo){ segII=rest.slice(0,mo.index).trim(); outro=rest.slice(mo.index).trim(); }
+  else segII=rest.trim();
+  segII=segII.replace(/[;।,]\s*$/,"");
+  var sp=function(seg,re){ return seg.split(re).map(function(x){return x.trim();}).filter(Boolean); };
+  var A=sp(segI,/\s*,\s*(?=[A-Z]\.)/), B=sp(segII,/\s*,\s*(?=\d+\.)/);
+  if(A.length<2||B.length<2) return null;
+  var n=Math.max(A.length,B.length), rows="";
+  for(var k=0;k<n;k++) rows+="<tr><td>"+jhEsc(A[k]||"")+"</td><td>"+jhEsc(B[k]||"")+"</td></tr>";
+  return (intro?jhEsc(intro)+"\n":"")
+    + '<table class="match-tbl"><tr><th>'+jhEsc(mI[1])+'-I</th><th>'+jhEsc(mII[1])+'-II</th></tr>'+rows+'</table>'
+    + (outro?jhEsc(outro):"");
+}
+function jhFmt(raw){ if(!raw) return ""; var mt=_jhMatch(raw); return mt?mt:jhEsc(_jhPoints(raw)); }
+
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  paintLang();
+    el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  var _hi=q.question_hi||"", _en=q.question_en||"";
+  if(JH_LANG==="en" && _en){ el("qtext").innerHTML = jhFmt(_en); el("qtextEn").classList.add("hidden"); }
+  else { el("qtext").innerHTML = jhFmt(_hi||_en);
+         if(JH_LANG==="bi" && _en && _hi){ el("qtextEn").innerHTML = jhFmt(_en); el("qtextEn").classList.remove("hidden"); }
+         else { el("qtextEn").innerHTML=""; el("qtextEn").classList.add("hidden"); } }
+  paintLang();
+  el("options").innerHTML = (q.options||[]).map((op,i)=>{var oh=(op&&op.hi)||"", oe=(op&&op.en)||"";var body = (JH_LANG==="en"&&oe) ? `<div class="op-hi">${jhEsc(oe)}</div>` : (JH_LANG==="bi"&&oe&&oe!==oh) ? `<div class="op-hi">${jhEsc(oh)}</div><div class="op-en">${jhEsc(oe)}</div>` : `<div class="op-hi">${jhEsc(oh||oe)}</div>`;return `<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div>${body}</div></button>`;}).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{
+  const user = answers[i];
+  const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad");
+  const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong");
+  const optTxt = function(o){ if(!o) return ""; var oh=o.hi||"", oe=o.en||"";
+    if(JH_LANG==="en" && oe) return oe;
+    if(JH_LANG==="bi" && oe && oe!==oh) return oh+" / "+oe;
+    return oh||oe; };
+  const utext = user===null ? "Not attempted" : `${letters[user]}. ${optTxt(q.options[user])}`;
+  const correctText = `${letters[q.answer]}. ${optTxt(q.options[q.answer])}`;
+  var qMain = (JH_LANG==="en" && q.question_en) ? q.question_en : (q.question_hi||q.question_en||"");
+  var qSub  = (JH_LANG==="bi" && q.question_en && q.question_hi) ? q.question_en : "";
+  var eMain = (JH_LANG==="en" && q.explanation_en) ? q.explanation_en : (q.explanation_hi||q.explanation_en||"");
+  var eSub  = (JH_LANG==="bi" && q.explanation_en && q.explanation_hi) ? q.explanation_en : "";
+  return `<div class="review-item"><div class="review-head">`
+    + `<strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong>`
+    + `<span class="badge ${status}">${statusText}</span></div>`
+    + `<div class="review-content"><div style="white-space:pre-line"><b>${jhFmt(qMain)}</b></div>`
+    + (qSub?`<div class="qtext-en" style="white-space:pre-line">${jhFmt(qSub)}</div>`:"")
+    + `<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div>`
+    + (eMain?`<div class="explain"><b>Explanation:</b> ${escapeHTML(eMain)}`
+        + (eSub?`<br><span style="color:#64748b">${escapeHTML(eSub)}</span>`:"")+`</div>`:"")
+    + `</div></div>`;
+}).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
