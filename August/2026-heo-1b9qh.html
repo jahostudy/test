@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"HEO","highlight":"HEO","shortTitle":"HEO","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-heo-20260806-1b9qh","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-06","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"शालोम श्वाट्ज के अनुसार, मूल्यों के संज्ञानात्मक घटक का मुख्य संबंध किस पहलू से है?","question_en":"Question 1: According to Shalom Schwartz, the cognitive component of values is primarily related to which aspect?","options":[{"hi":"वैचारिक और बौद्धिक पक्ष से","en":"Conceptual and intellectual aspect"},{"hi":"भावनात्मक और संवेगात्मक पक्ष से","en":"Emotional and affective aspect"},{"hi":"क्रियात्मक और व्यावहारिक पक्ष से","en":"Practical and action-based aspect"},{"hi":"जैविक और शारीरिक विकास से","en":"Biological and physical development"}],"answer":0,"explanation_hi":"संज्ञानात्मक घटक मूल्य के वैचारिक और बौद्धिक पक्ष को दर्शाता है जिसके तहत व्यक्ति को विश्वास होता है कि कोई आदर्श क्यों आवश्यक है।","explanation_en":"The cognitive component represents the intellectual aspect of a value, explaining why a specific ideal is logical and necessary."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मनोवैज्ञानिक शालोम श्वाट्ज ने विश्व की विभिन्न संस्कृतियों के गहन अध्ययन के बाद कुल कितने सार्वभौमिक मूल्य प्रतिपादित किए हैं?","question_en":"Question 2: How many universal values did psychologist Shalom Schwartz formulate after studying various global cultures deeply?","options":[{"hi":"5","en":"5"},{"hi":"10","en":"10"},{"hi":"15","en":"15"},{"hi":"20","en":"20"}],"answer":1,"explanation_hi":"श्वाट्ज के सार्वभौमिक मूल्य सिद्धांत के अनुसार दुनिया का कोई भी समाज हो, मानव व्यवहार के पीछे मूल रूप से 10 सार्वभौमिक मूल्य कार्य करते हैं।","explanation_en":"According to Schwartz's theory of basic human values, there are 10 universal values that drive human behavior in any society."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"श्वाट्ज के सार्वभौमिक मूल्य सिद्धांत के तहत 'संरक्षण अथवा रूढ़िवादिता' (Conservation) समूह में कौन सा मूल्य शामिल है?","question_en":"Question 3: Which value is included under the 'Conservation' category in Schwartz's theory of basic human values?","options":[{"hi":"स्व-निर्देशन","en":"Self-direction"},{"hi":"सुखवाद","en":"Hedonism"},{"hi":"अनुरूपता","en":"Conformity"},{"hi":"शक्ति","en":"Power"}],"answer":2,"explanation_hi":"संरक्षण या रूढ़िवादिता समूह के तहत सुरक्षा, अनुरूपता (Conformity) और परंपरा को शामिल किया जाता है जो समाज की व्यवस्था को बनाए रखते हैं।","explanation_en":"The Conservation category includes security, conformity, and tradition, which emphasize maintaining social order and stability."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"श्वाट्ज के मूल्य सिद्धांत में 'उपलब्धि' (Achievement) और 'शक्ति' (Power) को किस वैचारिक समूह में विभाजित किया गया है?","question_en":"Question 4: Under Schwartz's theory, into which conceptual group are 'Achievement' and 'Power' categorized?","options":[{"hi":"परिवर्तन के प्रति खुलापन","en":"Openness to change"},{"hi":"स्व-उत्कर्ष या परोपकार","en":"Self-transcendence"},{"hi":"संरक्षण या रूढ़िवादिता","en":"Conservation"},{"hi":"स्व-संवर्धन या स्वार्थ","en":"Self-enhancement"}],"answer":3,"explanation_hi":"स्व-संवर्धन समूह व्यक्ति को अपने व्यक्तिगत हितों, सफलता और समाज में ऊंचे स्थान को प्राप्त करने के लिए केंद्रित करता है।","explanation_en":"Self-enhancement focuses on personal success, achievement, and dominating others through power and prestige."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मानव मूल्य हमेशा ऊपर रहकर नीचे की मनोवृत्तियों को नियंत्रित और मार्गदर्शित करते हैं।\nकथन 2: मनोवृत्ति प्रत्यक्ष व्यवहार के रूप में समाज में प्रकट होती है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 5: Consider the following statements:\nStatement 1: Human values always reside at a higher level to control and guide underlying attitudes.\nStatement 2: Attitude manifests in society as direct behavior. Which of the above statement(s) is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"मूल्य वह बीज है जिससे मनोवृत्ति का पौधा निकलता है और व्यवहार उस पौधे पर लगने वाला फल है, जो एक पदानुक्रमित प्रवाह है।","explanation_en":"Value is the seed from which the plant of attitude grows, and behavior is the fruit of that plant, showing a hierarchical flow."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"स्कूलों के कड़े नियम, प्रार्थना सभा में अनुशासन और खेल के मैदान में टीम भावना का विकास किस पाठ्यक्रम के तहत आता है?","question_en":"Question 6: Under which curriculum do strict school rules, prayer assembly discipline, and sportsmanship on the playground fall?","options":[{"hi":"प्रत्यक्ष पाठ्यक्रम","en":"Direct curriculum"},{"hi":"छिपा हुआ अथवा अप्रत्यक्ष पाठ्यक्रम","en":"Hidden curriculum"},{"hi":"जैविक पाठ्यक्रम","en":"Biological curriculum"},{"hi":"वैधानिक पाठ्यक्रम","en":"Statutory curriculum"}],"answer":1,"explanation_hi":"छिपा हुआ पाठ्यक्रम (Hidden Curriculum) स्कूल के नियमों, समयबद्धता और खेल भावना द्वारा बच्चों में सहयोग और सहनशीलता जैसे मूल्यों को व्यावहारिक रूप से स्थापित करता है।","explanation_en":"The hidden curriculum informally teaches cooperation and tolerance through daily school rules, time discipline, and sportsmanship."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मनोवृत्ति (Attitude) के त्रिपक्षीय 'ABC' मॉडल में कौन सा घटक पसंद-नापसंद, भय अथवा संवेगात्मक तीव्रता को दर्शाता है?","question_en":"Question 7: Which component in the tripartite 'ABC' model of attitude represents likes-dislikes, fear, or emotional intensity?","options":[{"hi":"भावात्मक घटक","en":"Affective component"},{"hi":"संज्ञानात्मक घटक","en":"Cognitive component"},{"hi":"व्यवहारात्मक घटक","en":"Behavioral component"},{"hi":"तर्कसंगत घटक","en":"Rational component"}],"answer":0,"explanation_hi":"भावात्मक घटक (Affective Component) मनोवृत्ति के संवेगात्मक पक्ष को प्रकट करता है जो उसे ऊर्जा और तीव्रता प्रदान करता है।","explanation_en":"The affective component covers emotional aspects like likes, dislikes, love, or hate, giving intensity to an attitude."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किसी लोकप्रिय खेल सितारे को शीतल पेय ब्रांड का बार-बार सेवन करते दिखाकर उपभोक्ताओं में अनुकूल दृष्टिकोण बनाना किस सिद्धांत पर आधारित है?","question_en":"Question 8: Creating a positive consumer attitude by repeatedly showing a popular sports star consuming a cold drink brand is based on which theory?","options":[{"hi":"संज्ञानात्मक विसंगति सिद्धांत","en":"Cognitive dissonance theory"},{"hi":"सामाजिक अधिगम सिद्धांत","en":"Social learning theory"},{"hi":"संतुलन सिद्धांत","en":"Balance theory"},{"hi":"शास्त्रीय अनुबंधन","en":"Classical conditioning"}],"answer":3,"explanation_hi":"शास्त्रीय अनुबंधन के तहत विज्ञापनदाता शीतल पेय (तटस्थ उद्दीपक) को लोकप्रिय सितारे (स्वाभाविक उद्दीपक) के साथ जोड़कर सकारात्मक मनोवृत्ति बनाते हैं।","explanation_en":"In classical conditioning, advertisers associate a neutral stimulus (cold drink) with an unconditioned stimulus (star athlete) to build positive attitudes."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जब किसी छात्र के सतत विकास पर दिए गए भाषण के लिए सहपाठियों और शिक्षकों द्वारा प्रशंसा व पुरस्कार मिलता है, तो वहां कौन सा अनुबंधन सक्रिय होता है?","question_en":"Question 9: When a student receives praise and awards from classmates and teachers for a speech on sustainable development, which conditioning is active?","options":[{"hi":"शास्त्रीय अनुबंधन","en":"Classical conditioning"},{"hi":"क्रियाप्रसूत अनुबंधन","en":"Operant conditioning"},{"hi":"प्रेक्षणात्मक अनुबंधन","en":"Observational conditioning"},{"hi":"संज्ञानात्मक अनुबंधन","en":"Cognitive conditioning"}],"answer":1,"explanation_hi":"क्रियाप्रसूत अनुबंधन स्किनर के सुदृढ़ीकरण पर आधारित है, जहां प्रशंसा या पुरस्कार मिलने पर छात्र की वह सकारात्मक मनोवृत्ति जीवनभर के लिए मजबूत हो जाती है।","explanation_en":"Operant conditioning is based on Skinner's reinforcement, where praise or awards strengthen and maintain positive attitudes."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बच्चों द्वारा घर में माता-पिता को समाज के विभिन्न राजनीतिक दलों अथवा जातियों की प्रशंसा करते सुनकर उनके प्रति अनुकूल दृष्टिकोण विकसित करना क्या कहलाता है?","question_en":"Question 10: What is it called when children develop favorable attitudes toward political parties or castes by listening to and observing their parents at home?","options":[{"hi":"शास्त्रीय अनुबंधन","en":"Classical conditioning"},{"hi":"प्रत्यक्ष व्यक्तिगत अनुभव","en":"Direct personal experience"},{"hi":"प्रेक्षणात्मक अधिगम अथवा मॉडलिंग","en":"Observational learning or Modeling"},{"hi":"संज्ञानात्मक विसंगति निवारण","en":"Cognitive dissonance reduction"}],"answer":2,"explanation_hi":"बांडुरा के अनुसार, मनुष्य केवल स्वयं के अनुभवों से नहीं सीखता, बल्कि दूसरों के व्यवहार और उनके परिणामों का सूक्ष्म निरीक्षण करके भी मनोवृत्ति विकसित करता है।","explanation_en":"According to Bandura, individuals develop attitudes by observing the behaviors of significant role models like parents."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"तुलनात्मक दृष्टि से एक व्यक्ति के जीवन में मुख्य मूल्यों (Core Values) की संख्या सामान्यतः कितनी होती है?","question_en":"Question 11: Comparatively, how many core values does an individual typically hold in their life?","options":[{"hi":"10 से 15","en":"10 to 15"},{"hi":"100 से अधिक","en":"More than 100"},{"hi":"अनगिनत","en":"Countless"},{"hi":"केवल 2","en":"Only 2"}],"answer":0,"explanation_hi":"किसी व्यक्ति के जीवन में मुख्य मूल्यों की संख्या बहुत सीमित (10 से 15) होती है, जबकि उसकी मनोवृत्तियां (Attitudes) अनगिनत हो सकती हैं।","explanation_en":"The number of core values is highly limited (usually 10 to 15) in a person's life, whereas their attitudes are countless."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लियोन फेस्टिंगर ने 'संज्ञानात्मक विसंगति सिद्धांत' (Cognitive Dissonance Theory) का प्रतिपादन किस वर्ष किया था?","question_en":"Question 12: In which year did Leon Festinger formulate the 'Cognitive Dissonance Theory'?","options":[{"hi":"वर्ष 1946","en":"Year 1946"},{"hi":"वर्ष 1951","en":"Year 1951"},{"hi":"वर्ष 1960","en":"Year 1960"},{"hi":"वर्ष 1957","en":"Year 1957"}],"answer":3,"explanation_hi":"लियोन फेस्टिंगर ने वर्ष 1957 में यह क्रांतिकारी सिद्धांत दिया, जो विचारों और व्यावहारिक व्यवहार के बीच विसंगति से उत्पन्न तनाव को समझाता है।","explanation_en":"Leon Festinger introduced this revolutionary theory in 1957 to explain the tension generated by inconsistencies between beliefs and actions."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"फ्रिट्ज हाइडर के प्रसिद्ध संतुलन सिद्धांत (Balance Theory) के 'P-O-X' मॉडल में वर्ण 'P' का क्या अर्थ है?","question_en":"Question 13: In Fritz Heider's famous Balance Theory 'P-O-X' model, what does the letter 'P' stand for?","options":[{"hi":"वह निर्जीव वस्तु","en":"Impersonal object"},{"hi":"वह मुख्य व्यक्ति जिसकी मनोवृत्ति का अध्ययन हो रहा है","en":"The primary person whose attitude is being studied"},{"hi":"वह दूसरा व्यक्ति जो जीवन में महत्वपूर्ण है","en":"The other significant person"},{"hi":"सामाजिक जनसमूह","en":"Public audience"}],"answer":1,"explanation_hi":"हाइडर के मॉडल में P मुख्य व्यक्ति (Person) है, O दूसरा व्यक्ति (Other Person) है और X कोई वस्तु अथवा विचार (Object or Issue) है।","explanation_en":"In Heider's model, P stands for the Person being studied, O for the Other Person, and X for the Impersonal Object or Issue."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संतुलन सिद्धांत के अनुसार, यदि P और O का संबंध अनुकूल (+), O और X का अनुकूल (+) तथा P और X का संबंध प्रतिकूल (-) हो, तो गुणा करने पर कौन सी स्थिति बनेगी?","question_en":"Question 14: According to Balance Theory, if relationship P-O is (+), O-X is (+), and P-X is (-), what state is created by multiplying these signs?","options":[{"hi":"आदर्श संतुलित स्थिति","en":"Ideal balanced state"},{"hi":"शून्य विसंगति स्थिति","en":"Zero dissonance state"},{"hi":"असंतुलित और तनावपूर्ण स्थिति","en":"Unbalanced and stressful state"},{"hi":"संज्ञानात्मक एकरूपता","en":"Cognitive uniformity"}],"answer":2,"explanation_hi":"तीनों संबंधों के प्रतीकों का गुणनफल (+) x (+) x (-) = (-) नकारात्मक आता है, जिसका अर्थ है कि यह एक असंतुलित तनावपूर्ण स्थिति है जहाँ मनोवृत्ति बदलती है।","explanation_en":"Multiplying the signs yields a negative result (+) x (+) x (-) = (-), which denotes an unbalanced state that drives attitude change."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डैनियल काट्ज़ (1960) के अनुसार, मनोवृत्ति का कौन सा कार्य व्यक्ति को जटिल, बिखरी हुई सूचनाओं को समझने और त्वरित निर्णय लेने का मानसिक शॉर्टकट प्रदान करता है?","question_en":"Question 15: According to Daniel Katz (1960), which function of attitude provides a mental shortcut to organize complex information and make quick decisions?","options":[{"hi":"उपयोगितावादी कार्य","en":"Utilitarian function"},{"hi":"अहंकार-रक्षात्मक कार्य","en":"Ego-defensive function"},{"hi":"मूल्य-अभिव्यक्तात्मक कार्य","en":"Value-expressive function"},{"hi":"ज्ञान कार्य","en":"Knowledge function"}],"answer":3,"explanation_hi":"ज्ञान कार्य (Knowledge Function) मनोवृत्ति का सबसे बुनियादी कार्य है, जो जटिल संसार को समझने के लिए मानसिक फिल्टर या शॉर्टकट (Heuristic) का काम करता है।","explanation_en":"The knowledge function acts as a cognitive filter or heuristic, helping the brain process massive amounts of complex information easily."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सिविल सेवा परीक्षा में असफल होने पर छात्र द्वारा अपनी कमी मानने के बजाय आयोग अथवा परीक्षा प्रणाली को ही भ्रष्ट घोषित कर देना काट्ज़ के किस कार्य का उदाहरण है?","question_en":"Question 16: Failing in civil services and declaring the exam system corrupt instead of accepting one's shortcomings is an example of which function of attitude in Katz's theory?","options":[{"hi":"अहंकार-रक्षात्मक कार्य","en":"Ego-defensive function"},{"hi":"उपयोगितावादी कार्य","en":"Utilitarian function"},{"hi":"मूल्य-अभिव्यक्तात्मक कार्य","en":"Value-expressive function"},{"hi":"ज्ञान व्यवस्थित कार्य","en":"Knowledge-organizing function"}],"answer":0,"explanation_hi":"अहंकार-रक्षात्मक कार्य हीनता और आत्म-ग्लानि के डर से व्यक्ति के आत्म-सम्मान की रक्षा करने के लिए नकारात्मक अथवा रक्षात्मक मनोवृत्ति विकसित करता है।","explanation_en":"The ego-defensive function protects self-esteem from threats of failure and insecurity by projecting blame onto external systems."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"समाजशास्त्र के इतिहास में 'सामाजिक नियंत्रण' (Social Control) शब्द का सर्वप्रथम व्यवस्थित प्रयोग इ. ए. रॉस ने किस वर्ष अपनी पुस्तक में किया था?","question_en":"Question 17: In the history of sociology, in which year did E.A. Ross first systematically use the term 'Social Control' in his book?","options":[{"hi":"वर्ष 1895","en":"Year 1895"},{"hi":"वर्ष 1901","en":"Year 1901"},{"hi":"वर्ष 1915","en":"Year 1915"},{"hi":"वर्ष 1922","en":"Year 1922"}],"answer":1,"explanation_hi":"इ. ए. रॉस को सामाजिक नियंत्रण की अवधारणा का जनक माना जाता है, जिन्होंने अपनी वर्ष 1901 में प्रकाशित पुस्तक 'Social Control' में इसका व्यवस्थित विश्लेषण किया।","explanation_en":"E.A. Ross, considered the father of social control, systematically introduced the concept in his 1901 book titled 'Social Control'."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सामाजिक नियंत्रण को लागू करने के तौर-तरीकों के आधार पर इसे 'प्रत्यक्ष एवं अप्रत्यक्ष नियंत्रण' में वर्गीकृत करने वाले समाजशास्त्री कौन हैं?","question_en":"Question 18: Which sociologist categorized social control into 'Direct and Indirect Control' based on the methods of implementation?","options":[{"hi":"एमाइल दुर्खीम","en":"Émile Durkheim"},{"hi":"किम्बल यंग","en":"Kimball Young"},{"hi":"कार्ल मैनहीम","en":"Karl Mannheim"},{"hi":"चार्ल्स कूले","en":"Charles Cooley"}],"answer":2,"explanation_hi":"कार्ल मैनहीम ने सामाजिक नियंत्रण को दो श्रेणियों में बांटा: प्राथमिक संबंधों द्वारा लगने वाला प्रत्यक्ष नियंत्रण और अमूर्त नियमों द्वारा लगने वाला अप्रत्यक्ष नियंत्रण।","explanation_en":"Karl Mannheim classified social control into direct control exercised by primary groups and indirect control exerted by abstract social rules."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रसिद्ध पुस्तक 'सोशल चेंज' (Social Change) के रचयिता कौन हैं जिन्होंने भौतिक और अभौतिक संस्कृति के अंतर को समझाने के लिए 'सांस्कृतिक पिछड़न' का सिद्धांत दिया?","question_en":"Question 19: Who is the author of 'Social Change' who advanced the concept of 'Cultural Lag' to explain differences between material and non-material culture?","options":[{"hi":"विलियम एफ. ओगबर्न","en":"William F. Ogburn"},{"hi":"किंग्सले डेविस","en":"Kingsley Davis"},{"hi":"मैकाइवर तथा पेज","en":"MacIver and Page"},{"hi":"ऑस्कर लुईस","en":"Oscar Lewis"}],"answer":0,"explanation_hi":"विलियम एफ. ओगबर्न ने अपनी पुस्तक 'सोशल चेंज' में दर्शाया कि भौतिक संस्कृति तेजी से आगे बढ़ती है, परंतु अभौतिक संस्कृति पीछे छूट जाती है, जिसे सांस्कृतिक पिछड़न कहते हैं।","explanation_en":"William F. Ogburn coined 'Cultural Lag' in 'Social Change', showing that non-material culture lags behind rapid advancements in material culture."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ऑगस्ट कॉम्टे के 'तीन स्तरों के नियम' (Law of Three Stages) के अनुसार, वह कौन सा स्तर है जिसमें अमूर्त शक्तियों अथवा प्रकृति को घटनाओं का कारण माना जाता है?","question_en":"Question 20: According to Auguste Comte's 'Law of Three Stages', which stage attributes the causes of occurrences to abstract forces or nature?","options":[{"hi":"धार्मिक स्तर","en":"Theological stage"},{"hi":"वैज्ञानिक या प्रत्यक्षवादी स्तर","en":"Scientific or positivist stage"},{"hi":"औद्योगिक स्तर","en":"Industrial stage"},{"hi":"तात्त्विक स्तर","en":"Metaphysical stage"}],"answer":3,"explanation_hi":"तात्त्विक स्तर मानव विकास का मध्यवर्ती स्तर है, जहाँ अलौकिक शक्तियों के स्थान पर अमूर्त शक्तियों अथवा प्रकृति को घटनाओं का नियामक माना जाता है।","explanation_en":"The metaphysical stage is the intermediate stage where events are explained through abstract, impersonal forces rather than anthropomorphic deities."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ओसवाल्ड स्पेंगलर ने अपनी पुस्तक 'द डिक्लाइन ऑफ द वेस्ट' (The Decline of the West) में विश्व की कितनी प्रमुख सभ्यताओं के जीवन चक्र का अध्ययन किया था?","question_en":"Question 21: How many major civilizations' life cycles did Oswald Spengler study in his book 'The Decline of the West'?","options":[{"hi":"5","en":"5"},{"hi":"8","en":"8"},{"hi":"12","en":"12"},{"hi":"21","en":"21"}],"answer":1,"explanation_hi":"स्पेंगलर ने विश्व की 8 सभ्यताओं का अध्ययन कर चक्रीय सिद्धांत दिया कि सभ्यताओं का भी मनुष्य की भांति जन्म, विकास और निश्चित विनाश होता है।","explanation_en":"Spengler presented a cyclical theory by analyzing 8 world civilizations, stating they undergo birth, maturity, and inevitable decline."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इतिहासकार और समाजशास्त्री अर्नाल्ड टॉयनबी ने अपनी पुस्तक 'ए स्टडी ऑफ हिस्ट्री' (A Study of History) में कुल कितनी सभ्यताओं का ऐतिहासिक विश्लेषण किया है?","question_en":"Question 22: How many total civilizations did historian and sociologist Arnold Toynbee analyze historically in his book 'A Study of History'?","options":[{"hi":"10","en":"10"},{"hi":"15","en":"15"},{"hi":"21","en":"21"},{"hi":"28","en":"28"}],"answer":2,"explanation_hi":"टॉयनबी ने अपनी ऐतिहासिक पुस्तक में 21 सभ्यताओं का विश्लेषण कर सामाजिक परिवर्तन का 'चुनौती और प्रत्युत्तर' (Challenge and Response) सिद्धांत दिया।","explanation_en":"Toynbee analyzed 21 civilizations to formulate his famous 'Challenge and Response' theory of social change."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पिटिरिम सोरोकिन के सांस्कृतिक गतिशीलता सिद्धांत के अंतर्गत वह कौन सी संस्कृति है जिसमें भौतिकता और आध्यात्मिकता का एक सुंदर संतुलन पाया जाता है?","question_en":"Question 23: Under Pitirim Sorokin's theory of cultural dynamics, which culture represents a beautiful balance between materialism and spirituality?","options":[{"hi":"आदर्शवादिता संस्कृति","en":"Idealistic culture"},{"hi":"इन्द्रियपरक संस्कृति","en":"Sensate culture"},{"hi":"विचारात्मक संस्कृति","en":"Ideational culture"},{"hi":"वैज्ञानिक संस्कृति","en":"Scientific culture"}],"answer":0,"explanation_hi":"सोरोकिन ने संस्कृतियों के तीन प्रकार बताए हैं, जिनमें 'आदर्शवादिता संस्कृति' भौतिकता (इन्द्रियपरक) और आध्यात्मिकता (विचारात्मक) का सुंदर मिश्रण है।","explanation_en":"Sorokin identified three cultural states, where 'Idealistic culture' serves as a balanced synthesis of sensate and ideational aspects."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अशाब्दिक संप्रेषण (Non-Verbal Communication) के अंतर्गत हाथ मिलाना, पीठ थपथपाना अथवा गले मिलना किस श्रेणी के तहत अध्ययन किया जाता है?","question_en":"Question 24: Under non-verbal communication, handshakes, patting on the back, or hugging are studied under which category?","options":[{"hi":"कायनेसिक्स अथवा शरीर भाषा","en":"Kinesics or body language"},{"hi":"स्पर्श संप्रेषण","en":"Haptics"},{"hi":"प्रॉक्सेमिक्स अथवा सामीप्य","en":"Proxemics or physical distance"},{"hi":"पैरालैंग्वेज अथवा पार्श्व-भाषा","en":"Paralanguage or vocal tone"}],"answer":1,"explanation_hi":"स्पर्श संप्रेषण (Haptics) अशाब्दिक संप्रेषण का वह भाग है जो स्पर्श के माध्यम से स्नेह, सहानुभूति अथवा प्रभुत्व को व्यक्त करता है।","explanation_en":"Haptics is the subfield of non-verbal communication that analyzes tactile contact like handshakes and hugs to convey emotions or status."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पेटी एवं कस्योपो द्वारा प्रतिपादित 'विस्तार-संभावना प्रतिमान' (ELM) के अनुसार, किस मार्ग से बदला गया दृष्टिकोण दीर्घकालिक होता है?","question_en":"Question 25: According to the 'Elaboration Likelihood Model' (ELM) by Petty and Cacioppo, which route to persuasion leads to long-lasting attitude change?","options":[{"hi":"परिधीय मार्ग","en":"Peripheral route"},{"hi":"अनुमानी मार्ग","en":"Heuristic route"},{"hi":"केंद्रीय मार्ग","en":"Central route"},{"hi":"संवेगात्मक मार्ग","en":"Affective route"}],"answer":2,"explanation_hi":"केंद्रीय मार्ग (Central Route) में प्राप्तकर्ता विषय-वस्तु का गहन तर्कसंगत विश्लेषण करता है, जिससे बदला गया दृष्टिकोण अधिक स्थायी, दृढ़ और दीर्घकालिक होता है।","explanation_en":"In the Central Route, the receiver engages in deep, rational analysis of the message content, which makes the resulting attitude change more stable, resistant, and long-lasting."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
