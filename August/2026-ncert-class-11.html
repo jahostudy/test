@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  
+  .match-tbl{width:100%;border-collapse:collapse;margin:10px 0 4px}
+  .match-tbl th,.match-tbl td{border:1px solid #d8eaff;padding:8px 11px;text-align:left;vertical-align:top;font-size:.93em}
+  .match-tbl th{color:var(--navy);font-weight:950;font-size:.82em;letter-spacing:.5px;background:#eaf3ff}
+  .qtext-en .match-tbl th{color:#475569;background:#f1f5fb}
+  .lang-seg{display:inline-flex;background:#eef4fc;border:1px solid #d8eaff;border-radius:10px;padding:3px;gap:2px}
+  .lang-b{font-family:inherit;font-size:12.5px;font-weight:900;color:#5b6a83;background:transparent;border:0;
+    border-radius:8px;padding:5px 13px;cursor:pointer;transition:.15s}
+  .lang-b.on{background:linear-gradient(135deg,var(--royal),#0f6fd0);color:#fff}
+  .lang-choose{display:flex;align-items:center;gap:10px;margin:12px 0 0;flex-wrap:wrap}
+  .lc-label{font-size:13px;color:var(--muted);font-weight:900}
+
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="lang-choose"><span class="lc-label">पढ़ने की भाषा:</span><div class="lang-seg" id="coverLang"></div></div><div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap"><div class="topic" id="topic">Topic</div><div class="lang-seg" id="qLang"></div></div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title": "NCERT Class 11 • Geography", "highlight": "Geography", "shortTitle": "NCERT Class 11", "subtitle": "UPPCS Prelims 2026 / RO-ARO • GS Test • Geography", "tag": "UPPCS Prelims 2026 / RO-ARO", "pill": "🏆 Live Daily Rank • Jai Ho Study", "description": "UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।", "durationMinutes": 25, "marksPerQuestion": 2.0, "negativeMarks": 0.66, "testId": "jaiho-uppcs-2026-gs-test-ncert-class-11-geography-ncert-geography-class-11-20260807-1ljbh", "footerCredit": "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com", "rankingEnabled": true, "firebaseConfig": {"apiKey": "AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I", "authDomain": "jai-ho-1c1d7.firebaseapp.com", "projectId": "jai-ho-1c1d7", "storageBucket": "jai-ho-1c1d7.firebasestorage.app", "messagingSenderId": "472878277527", "appId": "1:472878277527:web:a62780ddadf60fd5e5dad2", "measurementId": "G-LV29VGHG6J"}, "publishDateStr": "2026-08-07", "questions": [{"id": 1, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कोपेन के जलवायु वर्गीकरण के अनुसार, उष्णकटिबंधीय जलवायु (A) के अंतर्गत सबसे ठंडे महीने का औसत तापमान कितना होना चाहिए?", "question_en": "According to Koeppen's climate classification, what must be the average temperature of the coldest month under the Tropical Climate (A)?", "options": [{"hi": "18°C या उससे अधिक", "en": "18°C or higher"}, {"hi": "12°C या उससे अधिक", "en": "12°C or higher"}, {"hi": "15°C या उससे अधिक", "en": "15°C or higher"}, {"hi": "10°C या उससे अधिक", "en": "10°C or higher"}], "answer": 0, "explanation_hi": "कोपेन योजना में उष्णकटिबंधीय जलवायु (A) का निर्धारण सबसे ठंडे महीने के 18°C या उससे अधिक औसत तापमान के आधार पर किया जाता है।", "explanation_en": "In Koeppen's scheme, Tropical Climate (A) is defined by having the average temperature of the coldest month as 18°C or higher."}, {"id": 2, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कोपेन वर्गीकरण के अनुसार, कोष्ण शीतोष्ण (मध्य-अक्षांश) जलवायु (C) के सबसे ठंडे महीने का औसत तापमान क्या होना चाहिए?", "question_en": "According to Koeppen's classification, what must be the average temperature of the coldest month for Warm Temperate (Mid-latitude) climates (C)?", "options": [{"hi": "0°C से कम", "en": "below 0°C"}, {"hi": "10°C से कम", "en": "below 10°C"}, {"hi": "minus 3°C से अधिक लेकिन 18°C से कम", "en": "higher than minus 3°C but below 18°C"}, {"hi": "minus 3°C से कम", "en": "below minus 3°C"}], "answer": 2, "explanation_hi": "कोष्ण शीतोष्ण जलवायु (C) के लिए सबसे ठंडे महीने का औसत तापमान minus 3°C से अधिक लेकिन 18°C से कम होना अनिवार्य है।", "explanation_en": "For warm temperate climates (C), the average temperature of the coldest month must be higher than minus 3°C but below 18°C."}, {"id": 3, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "शीत हिम-वन जलवायु (D) की मुख्य विशेषता क्या है जिसके आधार पर कोपेन ने इसे वर्गीकृत किया?", "question_en": "What is the key characteristic of Cold Snow Forest Climates (D) based on which Koeppen classified it?", "options": [{"hi": "सबसे गर्म महीने का औसत तापमान 0°C से कम होना", "en": "Average temperature of the warmest month is below 0°C"}, {"hi": "वार्षिक वर्षा का वाष्पीकरण से अधिक होना", "en": "Annual precipitation exceeds potential evaporation"}, {"hi": "सबसे ठंडे महीने का औसत तापमान minus 3°C या उससे कम होना", "en": "Average temperature of the coldest month is minus 3°C or below"}, {"hi": "वर्ष के सभी महीनों का औसत तापमान 10°C से ऊपर होना", "en": "Average temperature of all months is above 10°C"}], "answer": 2, "explanation_hi": "कोपेन के वर्गीकरण में शीत हिम-वन जलवायु (D) के सबसे ठंडे महीने का औसत तापमान minus 3°C या उससे कम होता है।", "explanation_en": "In Koeppen's classification, Cold Snow Forest Climates (D) have the average temperature of the coldest month as minus 3°C or below."}, {"id": 4, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "ध्रुवीय जलवायु (E) के लिए कोपेन ने कौन सा तापमान संबंधी मानदंड निर्धारित किया है?", "question_en": "What temperature criterion did Koeppen establish for Polar Climates (E)?", "options": [{"hi": "सबसे ठंडे महीने का तापमान minus 15°C से कम होना", "en": "Coldest month temperature is below minus 15°C"}, {"hi": "सभी महीनों का औसत तापमान 10°C से नीचे होना", "en": "Average temperature for all months is below 10°C"}, {"hi": "सबसे गर्म महीने का औसत तापमान 0°C से ऊपर होना", "en": "Average temperature of the warmest month is above 0°C"}, {"hi": "वार्षिक औसत तापमान हमेशा ऋणात्मक होना", "en": "Annual mean temperature is always negative"}], "answer": 1, "explanation_hi": "ध्रुवीय जलवायु (E) के तहत वर्ष के सभी महीनों का औसत तापमान 10°C से नीचे रहता है।", "explanation_en": "Under Polar Climates (E), the average temperature for all months of the year remains below 10°C."}, {"id": 5, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "विश्व में अब तक का सबसे उच्चतम छाया तापमान 58°C किस स्थान पर दर्ज किया गया था?", "question_en": "Where was the world's highest ever shade temperature of 58°C recorded?", "options": [{"hi": "जैकोबाबाद, पाकिस्तान", "en": "Jacobabad, Pakistan"}, {"hi": "अल अज़ीज़ियाह, लीबिया", "en": "Al Aziziyah, Libya"}, {"hi": "डेथ वैली, संयुक्त राज्य अमेरिका", "en": "Death Valley, USA"}, {"hi": "दश्त-ए-लुत, ईरान", "en": "Dasht-e-Lut, Iran"}], "answer": 1, "explanation_hi": "13 सितंबर 1922 को लीबिया के अल अज़ीज़ियाह में विश्व का सर्वाधिक छाया तापमान 58°C दर्ज किया गया था।", "explanation_en": "The world's highest shade temperature of 58°C was recorded at Al Aziziyah, Libya on 13 September 1922."}, {"id": 6, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पुरातात्विक खोजों के अनुसार, किस काल के आसपास राजस्थान मरुस्थल में गीली और ठंडी जलवायु हुआ करती थी?", "question_en": "According to archaeological findings, around which period did the Rajasthan desert experience a wet and cool climate?", "options": [{"hi": "लगभग 8,000 ईसा पूर्व", "en": "Around 8,000 BC"}, {"hi": "लगभग 3,000 ईसा पूर्व", "en": "Around 3,000 BC"}, {"hi": "लगभग 1,500 ईसा पूर्व", "en": "Around 1,500 BC"}, {"hi": "लगभग 10,000 ईसा पूर्व", "en": "Around 10,000 BC"}], "answer": 0, "explanation_hi": "पुरातात्विक निष्कर्षों के अनुसार, राजस्थान मरुस्थल में लगभग 8,000 ईसा पूर्व में आर्द्र और शीतल जलवायु मौजूद थी।", "explanation_en": "According to archaeological findings, the Rajasthan desert experienced a wet and cool climate around 8,000 BC."}, {"id": 7, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "ऐतिहासिक साक्ष्यों के अनुसार यूरोप में किस अवधि को लघु हिमयुग (Little Ice Age) के रूप में जाना जाता है?", "question_en": "According to historical evidence, which period is known as the \"Little Ice Age\" in Europe?", "options": [{"hi": "1050 से 1350 ईस्वी", "en": "AD 1050 to 1350"}, {"hi": "1550 से 1850 ईस्वी", "en": "AD 1550 to 1850"}, {"hi": "1350 से 1550 ईस्वी", "en": "AD 1350 to 1550"}, {"hi": "1850 से 1920 ईस्वी", "en": "AD 1850 to 1920"}], "answer": 1, "explanation_hi": "यूरोप ने वर्ष 1550 से लगभग 1850 तक की अवधि के दौरान लघु हिमयुग का सामना किया था।", "explanation_en": "Europe witnessed the \"Little Ice Age\" from the year 1550 to approximately 1850."}, {"id": 8, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "क्योटो प्रोटोकॉल (Kyoto protocol) को किस वर्ष घोषित किया गया था जो 2005 में प्रभावी हुआ?", "question_en": "In which year was the Kyoto protocol proclaimed, which eventually went into effect in 2005?", "options": [{"hi": "1992", "en": ""}, {"hi": "2000", "en": ""}, {"hi": "2002", "en": ""}, {"hi": "1997", "en": ""}], "answer": 3, "explanation_hi": "क्योटो क्योटो प्रोटोकॉल की उद्घोषणा वर्ष 1997 में की गई थी।", "explanation_en": "The famous Kyoto protocol was proclaimed in the year 1997 and came into force in 2005."}, {"id": 9, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पृथ्वी की सतह के निकट वार्षिक औसत वायु तापमान लगभग कितना मापा गया है?", "question_en": "What is the approximate annual average near-surface air temperature of the earth?", "options": [{"hi": "16°C", "en": ""}, {"hi": "14°C", "en": ""}, {"hi": "15°C", "en": ""}, {"hi": "12°C", "en": ""}], "answer": 1, "explanation_hi": "पृथ्वी का वैश्विक स्तर पर वार्षिक औसत निकट-सतह वायु तापमान लगभग 14°C है।", "explanation_en": "The annual average near-surface air temperature of the world is approximately 14°C."}, {"id": 10, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "बीसवीं शताब्दी के अंत में दर्ज किया गया वैश्विक औसत तापमान उन्नीसवीं शताब्दी के अंत के तापमान से कितना अधिक था?", "question_en": "By how much was the globally averaged annual mean temperature at the end of the 20th century above that recorded at the end of the 19th century?", "options": [{"hi": "0.6°C", "en": ""}, {"hi": "0.8°C", "en": ""}, {"hi": "0.4°C", "en": ""}, {"hi": "1.0°C", "en": ""}], "answer": 0, "explanation_hi": "उन्नीसवीं सदी के अंत की तुलना में बीसवीं शताब्दी के अंत तक वैश्विक औसत तापमान में 0.6°C की वृद्धि दर्ज की गई थी।", "explanation_en": "The globally averaged annual mean temperature at the end of the 20th century was about 0.6°C above that recorded at the end of the 19th century."}, {"id": 11, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "महाद्वीपीय ढाल (Continental Slope) की गहराई सामान्यतः किस सीमा के बीच पाई जाती है?", "question_en": "The depth of the continental slope typically varies between which of the following ranges?", "options": [{"hi": "200 और 3,000 मीटर", "en": "200 and 3,000 m"}, {"hi": "3,000 और 6,000 मीटर", "en": "3,000 and 6,000 m"}, {"hi": "500 और 5,000 मीटर", "en": "500 and 5,000 m"}, {"hi": "20 और 200 मीटर", "en": "20 and 200 m"}], "answer": 0, "explanation_hi": "महाद्वीपीय ढाल महाद्वीपीय मग्नतट को गहरे महासागरीय बेसिन से जोड़ती है और इसकी गहराई 200 से 3,000 मीटर के बीच होती है।", "explanation_en": "The continental slope connects shelves with ocean basins and its depth varies between 200 and 3,000 m."}, {"id": 12, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "गहरे समुद्री मैदानों (Deep Sea Plain) की गहराई सामान्यतः महासागरों में कितनी होती है?", "question_en": "What is the typical depth range of the deep sea plains in the oceans?", "options": [{"hi": "5,000 से 8,000 मीटर", "en": "5,000 to 8,000 m"}, {"hi": "2,000 से 4,000 मीटर", "en": "2,000 to 4,000 m"}, {"hi": "3,000 से 6,000 मीटर", "en": "3,000 to 6,000 m"}, {"hi": "1,000 से 3,000 मीटर", "en": "1,000 to 3,000 m"}], "answer": 2, "explanation_hi": "गहरे समुद्री मैदान अत्यंत मंद ढाल वाले, सपाट क्षेत्र होते हैं जिनकी गहराई 3,000 से 6,000 मीटर के बीच पाई जाती है।", "explanation_en": "Deep sea plains are gently sloping, flattest areas of ocean basins with depths varying between 3,000 and 6,000 m."}, {"id": 13, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "विश्व प्रसिद्ध महासागरीय 'हडसन कैनियन' (Hudson Canyon) निम्नलिखित में से किस महासागरीय घाटी राहत का उदाहरण है?", "question_en": "The world-famous 'Hudson Canyon' is an example of which of the following ocean floor relief features?", "options": [{"hi": "जलमग्न पर्वत", "en": "Seamount"}, {"hi": "खाड़ी", "en": "Atoll"}, {"hi": "अंतःसमुद्री कैनियन", "en": "Submarine Canyon"}, {"hi": "गयाट", "en": "Guyot"}], "answer": 2, "explanation_hi": "हडसन कैनियन विश्व का सबसे प्रसिद्ध जलमग्न कैनियन है जो महाद्वीपीय मग्नतट और ढाल को काटते हुए आगे बढ़ता है।", "explanation_en": "The Hudson Canyon is the best-known submarine canyon in the world, cutting across continental shelves and slopes."}, {"id": 14, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "महासागरों में सतह के गर्म जल की परत (प्रथम परत) की मोटाई उष्णकटिबंधीय क्षेत्रों में सामान्यतः कितनी होती है?", "question_en": "What is the typical thickness of the first layer of warm ocean water in low latitudes?", "options": [{"hi": "लगभग 500 मीटर", "en": "About 500 m"}, {"hi": "लगभग 1,000 मीटर", "en": "About 1,000 m"}, {"hi": "लगभग 1,500 मीटर", "en": "About 1,500 m"}, {"hi": "लगभग 100 मीटर", "en": "About 100 m"}], "answer": 0, "explanation_hi": "महासागरीय तापमान की त्रस्तरीय प्रणाली में पहली गर्म परत की मोटाई लगभग 500 मीटर होती है और इसका तापमान 20° से 25°C होता है।", "explanation_en": "The first layer represents the top layer of warm water, which is about 500 m thick with temperatures ranging from 20° to 25°C."}, {"id": 15, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "तापमान की वह तीव्र संक्रमण परत जहां गहराई के साथ महासागरीय तापमान में अत्यधिक तीव्र गिरावट आती है उसे क्या कहा जाता है?", "question_en": "What is the sharp transition layer of water in the ocean where temperature decreases rapidly with increasing depth called?", "options": [{"hi": "पिक्नोक्लाइन", "en": "Pycnocline"}, {"hi": "थर्मोक्लाइन", "en": "Thermocline"}, {"hi": "आइसोथर्म", "en": "Isotherm"}, {"hi": "हैलोक्लाइन", "en": "Halocline"}], "answer": 1, "explanation_hi": "थर्मोक्लाइन (ताप-प्रवणता) महासागरों में वह सीमा क्षेत्र है जहां से गहराई के साथ तापमान में तीव्र गिरावट शुरू होती है।", "explanation_en": "The thermocline is a boundary region characterized by a rapid decrease in temperature with increasing depth."}, {"id": 16, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अपेक्षाकृत कम लवणता वाली सीमा जिसे सामान्यतः 'खारा जल' (Brackish water) सीमांकित करने की ऊपरी सीमा माना जाता है कितनी है?", "question_en": "What is the salinity value considered as the upper limit to demarcate 'brackish water'?", "options": [{"hi": "20.0 ppt", "en": ""}, {"hi": "30.0 ppt", "en": ""}, {"hi": "35.0 ppt", "en": ""}, {"hi": "24.7 ppt", "en": ""}], "answer": 3, "explanation_hi": "लवणता का मान 24.7 ppt खारे जल (ब्रैकिश वाटर) को सामान्य समुद्री जल से सीमांकित करने की ऊपरी स्वीकृत सीमा है।", "explanation_en": "A salinity of 24.7 ppt has been considered as the upper limit to demarcate brackish water."}, {"id": 17, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "विश्व की सर्वाधिक लवणता वाली झील 'वॉन झील' (Lake Van) किस देश में स्थित है?", "question_en": "In which country is the world's most saline water body 'Lake Van' located?", "options": [{"hi": "ईरान", "en": "Iran"}, {"hi": "इजरायल", "en": "Israel"}, {"hi": "तुर्की", "en": "Turkey"}, {"hi": "जॉर्डन", "en": "Jordan"}], "answer": 2, "explanation_hi": "तुर्की की वॉन झील में विश्व की सर्वाधिक लवणता (330 ppt) पाई जाती है।", "explanation_en": "Lake Van, which has the highest recorded salinity of 330 ppt, is located in Turkey."}, {"id": 18, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "खुले महासागरों की सामान्य औसत लवणता सीमा कितनी पाई जाती है?", "question_en": "What is the normal salinity range for open oceans?", "options": [{"hi": "35 से 40 ppt", "en": "35 to 40 ppt"}, {"hi": "41 से 45 ppt", "en": "41 to 45 ppt"}, {"hi": "33 से 37 ppt", "en": "33 to 37 ppt"}, {"hi": "20 से 30 ppt", "en": "20 to 30 ppt"}], "answer": 2, "explanation_hi": "खुले महासागरों में लवणता का सामान्य परिसर 33 ppt से 37 ppt के बीच होता है।", "explanation_en": "The salinity for the normal open ocean ranges between 33 ppt and 37 ppt."}, {"id": 19, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अटलांटिक महासागर में अधिकतम लवणता (37 ppt) किन अक्षांशों और देशांतरों के बीच दर्ज की जाती है?", "question_en": "Between which latitudes and longitudes is the maximum salinity of 37 ppt observed in the Atlantic Ocean?", "options": [{"hi": "10°N-20°N और 10°W-30°W", "en": "10°N-20°N and 10°W-30°W"}, {"hi": "30°N-40°N और 40°W-80°W", "en": "30°N-40°N and 40°W-80°W"}, {"hi": "0°-10°N और 10°W-40°W", "en": "0°-10°N and 10°W-40°W"}, {"hi": "20°N-30°N और 20°W-60°W", "en": "20°N-30°N and 20°W-60°W"}], "answer": 3, "explanation_hi": "अटलांटिक महासागर में अधिकतम लवणता (37 ppt) मुख्य रूप से 20°N से 30°N अक्षांशों तथा 20°W से 60°W देशांतरों के बीच पाई जाती है।", "explanation_en": "In the Atlantic Ocean, maximum salinity of 37 ppt is observed between 20°N-30°N latitudes and 20°W-60°W longitudes."}, {"id": 20, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "समुद्र के भीतर वह विशिष्ट संक्रमण क्षेत्र जहां गहराई के साथ लवणता में तीव्र परिवर्तन (वृद्धि) होता है क्या कहलाता है?", "question_en": "What is the distinct vertical zone in the ocean where salinity increases sharply with depth called?", "options": [{"hi": "हैलोक्लाइन", "en": "Halocline"}, {"hi": "थर्मोक्लाइन", "en": "Thermocline"}, {"hi": "पिक्नोक्लाइन", "en": "Pycnocline"}, {"hi": "आइसोक्लाइन", "en": "Isocline"}], "answer": 0, "explanation_hi": "हैलोक्लाइन (लवणता-प्रवणता) महासागरों में वह परत है जहां गहराई के साथ लवणता अत्यंत तेजी से बढ़ती है।", "explanation_en": "The halocline is a distinct vertical zone in the ocean characterized by a sharp increase in salinity."}, {"id": 21, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "शांत समुद्र पर कितनी गति या उससे कम की हवा चलने पर पानी की सतह पर छोटी लहरें (तरंगिकाएँ) बनने लगती हैं?", "question_en": "A breeze of what speed or less blowing over calm water leads to the formation of small ripples?", "options": [{"hi": "8 नॉट", "en": "8 knots"}, {"hi": "2 नॉट", "en": "2 knots"}, {"hi": "10 नॉट", "en": "10 knots"}, {"hi": "5 नॉट", "en": "5 knots"}], "answer": 1, "explanation_hi": "शांत जल पर 2 नॉट या उससे कम की हवा चलने पर लहरों की उत्पत्ति की प्रारंभिक अवस्था में छोटी तरंगिकाएँ बनती हैं।", "explanation_en": "When a breeze of 2 knots or less blows over calm water, small ripples form on the water surface."}, {"id": 22, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कनाडा की किस खाड़ी में विश्व के सबसे ऊंचे ज्वार (15-16 मीटर ऊंचे) आते हैं?", "question_en": "In which bay of Canada do the highest tides in the world (15-16 m high) occur?", "options": [{"hi": "फंडी की खाड़ी", "en": "Bay of Fundy"}, {"hi": "जेम्स की खाड़ी", "en": "James Bay"}, {"hi": "सेंट लॉरेंस की खाड़ी", "en": "Gulf of St. Lawrence"}, {"hi": "हडसन की खाड़ी", "en": "Hudson Bay"}], "answer": 0, "explanation_hi": "कनाडा के नोवा स्कोटिया में स्थित फंडी की खाड़ी में विश्व का सबसे ऊंचा ज्वार-भाटा (15 से 16 मीटर) दर्ज किया जाता है।", "explanation_en": "The highest tides in the world occur in the Bay of Fundy in Nova Scotia, Canada, with a range of 15-16 m."}, {"id": 23, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सौर तापन से जल के प्रसार के कारण, भूमध्य रेखा के पास महासागर का जल स्तर मध्य-अक्षांशों की तुलना में कितना ऊंचा होता है?", "question_en": "Due to expansion from solar heating, how much higher is the ocean water level near the equator than in the middle latitudes?", "options": [{"hi": "2 सेमी", "en": "2 cm"}, {"hi": "15 सेमी", "en": "15 cm"}, {"hi": "8 सेमी", "en": "8 cm"}, {"hi": "25 सेमी", "en": "25 cm"}], "answer": 2, "explanation_hi": "सौर ऊर्जा द्वारा गर्म होने के कारण जल का प्रसार होता है जिससे भूमध्य रेखा पर जल स्तर मध्य-अक्षांशों से लगभग 8 सेमी ऊंचा होता है।", "explanation_en": "Heating by solar energy expands water, making the ocean level near the equator about 8 cm higher than in mid-latitudes."}, {"id": 24, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "महासागर के कुल जल का कितना प्रतिशत हिस्सा सतही जलधाराओं (Surface Currents) के रूप में ऊपरी 400 मीटर में समाहित है?", "question_en": "What percentage of all ocean water is constituted by surface currents, occupying the upper 400 m of the ocean?", "options": [{"hi": "20 प्रतिशत", "en": "20 per cent"}, {"hi": "10 प्रतिशत", "en": "10 per cent"}, {"hi": "5 प्रतिशत", "en": "5 per cent"}, {"hi": "15 प्रतिशत", "en": "15 per cent"}], "answer": 1, "explanation_hi": "महासागरीय जल का केवल 10 प्रतिशत भाग ही सतही जलधाराओं के रूप में ऊपरी 400 मीटर में प्रवाहित होता है, शेष 90 प्रतिशत गहरे जल में है।", "explanation_en": "Surface currents constitute about 10 per cent of all ocean water, comprising the upper 400 m of the oceans."}, {"id": 25, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत के सुंदरबन क्षेत्र (पश्चिम बंगाल) में दुर्गादुआर पर क्रियान्वित की जा रही ज्वारीय विद्युत परियोजना की क्षमता कितनी है?", "question_en": "What is the capacity of the tidal power project being set up at Durgaduani in Sunderbans, West Bengal?", "options": [{"hi": "3 मेगावाट", "en": "3 MW"}, {"hi": "5 मेगावाट", "en": "5 MW"}, {"hi": "10 मेगावाट", "en": "10 MW"}, {"hi": "15 मेगावाट", "en": "15 MW"}], "answer": 0, "explanation_hi": "सुंदरबन के दुर्गादुआर में भारत सरकार द्वारा 3 मेगावाट क्षमता की एक ज्वारीय विद्युत परियोजना क्रियान्वित की जा रही है।", "explanation_en": "A 3 MW tidal power project is underway at Durgaduani in the Sunderbans of West Bengal."}, {"id": 26, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "वैश्विक जैव विविधता का इतिहास लगभग कितने वर्षों के निरंतर क्रमिक विकास (Evolution) का परिणाम माना जाता है?", "question_en": "The biodiversity we have today is the result of how many billion years of evolution?", "options": [{"hi": "0.5-1.5 अरब वर्ष", "en": "0.5-1.5 billion years"}, {"hi": "1.0-2.0 अरब वर्ष", "en": "1.0-2.0 billion years"}, {"hi": "2.5-3.5 अरब वर्ष", "en": "2.5-3.5 billion years"}, {"hi": "4.0-4.5 अरब वर्ष", "en": "4.0-4.5 billion years"}], "answer": 2, "explanation_hi": "पृथ्वी पर आज पाई जाने वाली समृद्ध जैव विविधता लगभग 2.5 से 3.5 अरब वर्षों के निरंतर जैविक विकास का परिणाम है।", "explanation_en": "Biodiversity as we have today on earth is the result of 2.5-3.5 billion years of constant evolution."}, {"id": 27, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "जैव वैज्ञानिकों के अनुसार पृथ्वी पर पाए जाने वाली कुल प्रजातियों की संख्या का सर्वोत्तम अनुमान (best estimate) कितना माना गया है?", "question_en": "According to scientists, what is the best estimate of the total number of species globally?", "options": [{"hi": "50 मिलियन", "en": "50 million"}, {"hi": "10 मिलियन", "en": "10 million"}, {"hi": "20 मिलियन", "en": "20 million"}, {"hi": "5 मिलियन", "en": "5 million"}], "answer": 1, "explanation_hi": "यद्यपि वैश्विक प्रजातियों की संख्या 2 से 100 मिलियन के बीच आंकी जाती है, किंतु वर्तमान में 10 मिलियन को ही सर्वोत्तम अनुमान माना गया है।", "explanation_en": "The number of species globally varies from 2 million to 100 million, with 10 million being the best estimate."}, {"id": 28, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पृथ्वी पर अब तक जीवित रही कुल जैविक प्रजातियों में से लगभग कितने प्रतिशत प्रजातियाँ वर्तमान में विलुप्त (Extinct) हो चुकी हैं?", "question_en": "Approximately what percentage of all the species that have ever lived on earth are today extinct?", "options": [{"hi": "75 प्रतिशत", "en": "75 per cent"}, {"hi": "90 प्रतिशत", "en": "90 per cent"}, {"hi": "50 प्रतिशत", "en": "50 per cent"}, {"hi": "99 प्रतिशत", "en": "99 per cent"}], "answer": 3, "explanation_hi": "पृथ्वी के दीर्घकालिक भूवैज्ञानिक इतिहास में उत्पन्न हुई लगभग 99 प्रतिशत प्रजातियाँ आज पूर्णतः विलुप्त हो चुकी हैं।", "explanation_en": "It is estimated that 99 per cent of the species that have ever lived on the earth are today extinct."}, {"id": 29, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मेडागास्कर द्वीप की जैव विविधता के संदर्भ में वहां पाई जाने वाली पौधों और जंतुओं की कितनी प्रजातियाँ विश्व में अनन्य (स्थानिक) हैं?", "question_en": "Regarding the biodiversity of Madagascar, approximately what percentage of its plants and animals are endemic (found nowhere else in the world)?", "options": [{"hi": "75 प्रतिशत", "en": "75 per cent"}, {"hi": "50 प्रतिशत", "en": "50 per cent"}, {"hi": "95 प्रतिशत", "en": "95 per cent"}, {"hi": "85 प्रतिशत", "en": "85 per cent"}], "answer": 3, "explanation_hi": "मेडागास्कर द्वीप अपनी उच्च स्थानिक जैव विविधता के लिए प्रसिद्ध है, जहां लगभग 85 प्रतिशत वनस्पति और जीव अनन्य रूप से पाए जाते हैं।", "explanation_en": "In Madagascar, about 85 per cent of the plants and animals are found nowhere else in the world."}, {"id": 30, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "जून 1992 में ब्राजील के रियो डी जेनेरियो में आयोजित ऐतिहासिक 'पृथ्वी शिखर सम्मेलन' (Earth Summit) में भारत सहित कितने देशों ने जैव विविधता अभिसमय पर हस्ताक्षर किए थे?", "question_en": "In June 1992, at the Earth Summit in Rio de Janeiro, India along with how many other nations signed the Convention on Biological Diversity?", "options": [{"hi": "100 देशों", "en": "100 nations"}, {"hi": "180 देशों", "en": "180 nations"}, {"hi": "155 देशों", "en": "155 nations"}, {"hi": "141 देशों", "en": "141 nations"}], "answer": 2, "explanation_hi": "रियो डी जेनेरियो पृथ्वी शिखर सम्मेलन (1992) में भारत और 155 अन्य राष्ट्रों ने मिलकर जैव विविधता समझौते पर हस्ताक्षर किए थे।", "explanation_en": "The Government of India along with 155 other nations signed the Convention on Biological Diversity at Rio de Janeiro in June 1992."}, {"id": 31, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: कोपेन द्वारा विकसित विश्व जलवायु वर्गीकरण योजना पूरी तरह से एक आनुभविक (Empirical) मॉडल है। कथन 2: कोपेन ने जलवायु का वितरण दर्शाने के लिए मुख्य रूप से वनस्पति के वितरण को आधार बनाया।", "question_en": "Consider the following statements: Statement 1: The climate classification scheme developed by Koeppen is entirely an empirical model. Statement 2: Koeppen identified a close relationship between the distribution of vegetation and climate.", "options": [{"hi": "दोनों", "en": "Both"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 0, "explanation_hi": "दोनों कथन सत्य हैं क्योंकि कोपेन का वर्गीकरण तापमान और वर्षा के आनुभविक आंकड़ों तथा वनस्पति के वितरण के बीच घनिष्ठ संबंध पर आधारित है।", "explanation_en": "Both statements are correct as Koeppen's empirical classification relates certain values of temperature and precipitation to vegetation distribution."}, {"id": 32, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: भूमध्यरेखीय जलवायु (Af) क्षेत्रों में वर्षा मुख्यतः दोपहर के बाद गरज के साथ बौछार के रूप में होती है। कथन 2: इस क्षेत्र का वार्षिक तापांतर (Annual range of temperature) बहुत अधिक पाया जाता है।", "question_en": "Consider the following statements: Statement 1: In the tropical wet climate (Af) regions, significant rainfall occurs in the afternoon as thunder showers. Statement 2: The annual range of temperature in this region is very high.", "options": [{"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "दोनों", "en": "Both"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 1, "explanation_hi": "केवल पहला कथन सत्य है क्योंकि भूमध्यरेखीय क्षेत्रों में तापमान वर्षभर समान रूप से उच्च रहने के कारण वार्षिक तापांतर नगण्य (negligible) होता है।", "explanation_en": "Only Statement 1 is correct because the annual range of temperature in equatorial Af climate is negligible, not very high."}, {"id": 33, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: भूमध्यसागरीय जलवायु (Cs) में ग्रीष्मकाल अत्यधिक आर्द्र तथा शीतकाल पूर्णतः शुष्क होता है। कथन 2: यह जलवायु पश्चिमी तटीय क्षेत्रों में 30° से 40° अक्षांशों के बीच पाई जाती है।", "question_en": "Consider the following statements: Statement 1: In Mediterranean climates (Cs), the summers are highly humid and winters are completely dry. Statement 2: This climate occurs along the west coast of continents between 30° and 40° latitudes.", "options": [{"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "दोनों", "en": "Both"}, {"hi": "केवल 2", "en": "Only 2"}], "answer": 3, "explanation_hi": "दूसरा कथन सत्य है क्योंकि भूमध्यसागरीय जलवायु ग्रीष्मकाल में उपोष्णकटिबंधीय उच्च दाब के कारण गर्म और शुष्क होती है जबकि शीतकाल में पछुआ हवाओं से वर्षा होती है।", "explanation_en": "Only Statement 2 is correct. Statement 1 is wrong because Mediterranean climate is characterized by hot, dry summers and mild, rainy winters."}, {"id": 34, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: टुंड्रा जलवायु (ET) में स्थायी रूप से जमी रहने वाली मृदा की निचली परत (Permafrost) नहीं पाई जाती। कथन 2: इस जलवायु क्षेत्र में बड़े-बड़े सदाबहार शंकुधारी वन पाए जाते हैं।", "question_en": "Consider the following statements: Statement 1: The tundra climate (ET) region lacks a permanently frozen subsoil layer known as permafrost. Statement 2: Large evergreen coniferous forests dominate the vegetation of this climate zone.", "options": [{"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "दोनों", "en": "Both"}], "answer": 0, "explanation_hi": "दोनों कथन असत्य हैं क्योंकि टुंड्रा क्षेत्र में पर्माफ्रॉस्ट (स्थायी रूप से जमी मिट्टी) पाई जाती है और कठोर परिस्थितियों के कारण यहाँ वृक्षों के स्थान पर केवल काई और लाइकेन उगते हैं।", "explanation_en": "Both statements are incorrect. Tundra climate is characterized by permafrost, and supports only low-growing plants like mosses and lichens, not forests."}, {"id": 35, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: महाद्वीपीय मग्नतट (Continental Shelf) पर पाए जाने वाले सघन अवसादी जमाव जीवाश्म ईंधन के प्रमुख स्रोत बनते हैं। कथन 2: विश्व का सबसे बड़ा महाद्वीपीय मग्नतट साइबेरियाई मग्नतट है जिसकी चौड़ाई 500 किमी है।", "question_en": "Consider the following statements: Statement 1: Massive sedimentary deposits on continental shelves become major sources of fossil fuels. Statement 2: The largest continental shelf in the world is the Siberian shelf, which stretches to 500 km in width.", "options": [{"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "दोनों", "en": "Both"}, {"hi": "केवल 2", "en": "Only 2"}], "answer": 1, "explanation_hi": "पहला कथन सत्य है। दूसरा कथन असत्य है क्योंकि विश्व के सबसे बड़े साइबेरियाई मग्नतट की चौड़ाई 1,500 किमी है, न कि 500 किमी।", "explanation_en": "Only Statement 1 is correct. Statement 2 is incorrect because the Siberian shelf in the Arctic Ocean stretches to 1,500 km in width."}, {"id": 36, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: महासागरों में महाद्वीपीय मग्नतट की सीमा समाप्त होने पर ढाल में आने वाली तीव्र गिरावट को 'शेल्फ ब्रेक' कहा जाता है। कथन 2: महासागरीय खाइयाँ सामान्यतः सक्रिय ज्वालामुखियों और तीव्र भूकंपीय क्षेत्रों से संबद्ध होती हैं।", "question_en": "Consider the following statements: Statement 1: The continental shelf typically ends at a very steep slope called the shelf break. Statement 2: Oceanic trenches are associated with active volcanoes and strong earthquakes.", "options": [{"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "दोनों", "en": "Both"}], "answer": 3, "explanation_hi": "दोनों कथन सत्य हैं क्योंकि मग्नतट की सीमा तीव्र ढाल (शेल्फ ब्रेक) पर समाप्त होती है और गहरी खाइयाँ प्लेट विवर्तनिकी सीमाओं पर स्थित होने के कारण भूकंपीय क्षेत्र होती हैं।", "explanation_en": "Both statements are correct. The shelf ends at the shelf break and deep trenches are geologically active and seismically unstable zones."}, {"id": 37, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: उत्तरी गोलार्द्ध के महासागरों की सतह का तापमान दक्षिणी गोलार्द्ध के महासागरों की तुलना में कम होता है। कथन 2: धरातल पर महासागर का सर्वाधिक औसत वार्षिक तापमान भूमध्य रेखा पर न होकर उसके कुछ उत्तर में पाया जाता है।", "question_en": "Consider the following statements: Statement 1: Ocean surface temperatures in the Northern Hemisphere are lower than those in the Southern Hemisphere. Statement 2: The highest annual average ocean temperature is recorded slightly north of the equator rather than on it.", "options": [{"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "दोनों", "en": "Both"}, {"hi": "केवल 2", "en": "Only 2"}], "answer": 3, "explanation_hi": "कथन 2 सत्य है। कथन 1 असत्य है क्योंकि उत्तरी गोलार्द्ध में स्थलखंड की अधिकता के कारण वहाँ के महासागर दक्षिणी गोलार्द्ध की तुलना में अपेक्षाकृत अधिक गर्म होते हैं।", "explanation_en": "Only Statement 2 is correct. Statement 1 is false because Northern Hemisphere oceans record higher temperatures than Southern Hemisphere ones due to land distribution."}, {"id": 38, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: समुद्री जल में पाई जाने वाली लवणता, तापमान और घनत्व आपस में गहराई से अंतर्संबंधित होते हैं। कथन 2: उच्च अक्षांशों में स्थित होने के बावजूद बाल्टिक सागर में अत्यधिक उच्च वाष्पीकरण के कारण उच्च लवणता पाई जाती है।", "question_en": "Consider the following statements: Statement 1: Ocean salinity, temperature, and density of water are closely interrelated. Statement 2: Despite its high latitude location, the Baltic Sea records very high salinity due to extreme evaporation.", "options": [{"hi": "दोनों", "en": "Both"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 2", "en": "Only 2"}], "answer": 2, "explanation_hi": "पहला कथन सत्य है। दूसरा कथन असत्य है क्योंकि बाल्टिक सागर में नदियों द्वारा प्रचुर मात्रा में मीठा जल लाए जाने के कारण इसकी लवणता अत्यंत निम्न होती है।", "explanation_en": "Only Statement 1 is correct. Statement 2 is incorrect because the Baltic Sea records very low salinity due to the massive influx of river waters."}, {"id": 39, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: महासागरीय तरंगें वास्तव में तरंग ऊर्जा का संचरण होती हैं, न कि जल का वास्तविक प्रवाह। कथन 2: महासागरीय जलधाराओं में कोरिओलिस बल के प्रभाव से पानी उत्तरी गोलार्द्ध में दाईं ओर तथा दक्षिणी गोलार्द्ध में बाईं ओर मुड़ जाता है।", "question_en": "Consider the following statements: Statement 1: Ocean waves are actually the energy, not the water itself, which moves across the ocean surface. Statement 2: Under the influence of the Coriolis force, ocean currents deflect to the right in the Northern Hemisphere and to the left in the Southern Hemisphere.", "options": [{"hi": "केवल 2", "en": "Only 2"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "दोनों", "en": "Both"}], "answer": 3, "explanation_hi": "दोनों कथन सत्य हैं। तरंगों में जल के कण केवल लघु वृत्तों में घूमते हैं तथा कोरिओलिस बल धाराओं को उनके प्रवाह मार्ग से विक्षेपित करता है।", "explanation_en": "Both statements are correct. Waves transport energy circularly without physical mass transport of water, and currents deflect as per Ferrell's Law."}, {"id": 40, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: जैव विविधता हॉटस्पॉट (Hotspots) का निर्धारण मुख्य रूप से क्षेत्र में पाई जाने वाली विशिष्ट वनस्पति (प्रजातियों) के आधार पर किया जाता है। कथन 2: भारत सरकार द्वारा वन्यजीव (संरक्षण) अधिनियम वर्ष 1980 में पारित किया गया था।", "question_en": "Consider the following statements: Statement 1: Biodiversity hotspots are primarily defined and identified based on their rich vegetation and plants. Statement 2: The Government of India passed the Wildlife (Protection) Act in the year 1980.", "options": [{"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "दोनों", "en": "Both"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 1, "explanation_hi": "पहला कथन सत्य है क्योंकि वनस्पतियाँ प्राथमिक उत्पादकता का निर्धारण करती हैं। दूसरा कथन असत्य है क्योंकि भारतीय वन्यजीव अधिनियम 1972 में पारित हुआ था।", "explanation_en": "Only Statement 1 is correct. Statement 2 is incorrect because the Wildlife (Protection) Act was passed in 1972, not 1980."}, {"id": 41, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (कोपेन संकेत): A. Cs, B. Aw, C. BWh, D. Cfb; सूची-II (विशेषता): 1. उष्णकटिबंधीय शुष्क शीत ऋतु, 2. शुष्क ग्रीष्म मरुस्थल, 3. पश्चिमी तटीय समुद्री जलवायु, 4. शुष्क ग्रीष्म ऋतु कोष्ण शीतोष्ण", "question_en": "Match List-I with List-II: List-I (Koeppen climate code): A. Cs, B. Aw, C. BWh, D. Cfb; List-II (Characteristic): 1. Tropical dry winter, 2. Subtropical desert, 3. Marine west coast, 4. Dry hot summer warm temperate", "options": [{"hi": "A-4, B-1, C-2, D-3", "en": ""}, {"hi": "A-1, B-4, C-3, D-2", "en": ""}, {"hi": "A-4, B-3, C-2, D-1", "en": ""}, {"hi": "A-2, B-1, C-4, D-3", "en": ""}], "answer": 0, "explanation_hi": "Cs भूमध्यसागरीय शुष्क ग्रीष्म काल (4), Aw उष्णकटिबंधीय शुष्क शीत ऋतु (1), BWh उपोष्णकटिबंधीय मरुस्थल (2), और Cfb पश्चिमी तटीय समुद्री जलवायु (3) को दर्शाता है।", "explanation_en": "Cs corresponds to dry hot summer (4), Aw to tropical dry winter (1), BWh to subtropical desert (2), and Cfb to marine west coast (3)."}, {"id": 42, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (अति लवणता वाले जल निकाय): A. मृत सागर, B. ग्रेट साल्ट लेक, C. वॉन झील; सूची-II (लवणता ppt में): 1. 330 ppt, 2. 238 ppt, 3. 220 ppt", "question_en": "Match List-I with List-II: List-I (Hypersaline water body): A. Dead Sea, B. Great Salt Lake, C. Lake Van; List-II (Salinity in ppt): 1. 330 ppt, 2. 238 ppt, 3. 220 ppt", "options": [{"hi": "A-3, B-1, C-2", "en": ""}, {"hi": "A-2, B-1, C-3", "en": ""}, {"hi": "A-1, B-2, C-3", "en": ""}, {"hi": "A-2, B-3, C-1", "en": ""}], "answer": 3, "explanation_hi": "मृत सागर की लवणता 238 ppt (2), ग्रेट साल्ट लेक की 220 ppt (3) और तुर्की की वॉन झील की सर्वाधिक 330 ppt (1) पाई जाती है।", "explanation_en": "Dead Sea has 238 ppt salinity (2), Great Salt Lake has 220 ppt (3), and Lake Van has 330 ppt (1)."}, {"id": 43, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (ज्वार-भाटा के प्रकार): A. अपभू, B. उपभू, C. अपसौर, D. उपसौर; सूची-II (विवरण): 1. चंद्रमा का पृथ्वी के निकटतम होना, 2. चंद्रमा का पृथ्वी से दूरतम होना, 3. पृथ्वी का सूर्य के निकटतम होना, 4. पृथ्वी का सूर्य से दूरतम होना", "question_en": "Match List-I with List-II: List-I (Tidal terms): A. Apogee, B. Perigee, C. Aphelion, D. Perihelion; List-II (Description): 1. Moon nearest to earth, 2. Moon farthest from earth, 3. Earth nearest to sun, 4. Earth farthest from sun", "options": [{"hi": "A-2, B-1, C-3, D-4", "en": ""}, {"hi": "A-4, B-3, C-2, D-1", "en": ""}, {"hi": "A-2, B-1, C-4, D-3", "en": ""}, {"hi": "A-1, B-2, C-3, D-4", "en": ""}], "answer": 2, "explanation_hi": "अपभू में चंद्रमा पृथ्वी से दूर (2), उपभू में निकट (1), अपसौर में पृथ्वी सूर्य से दूर (4) तथा उपसौर में पृथ्वी सूर्य के अत्यंत निकट (3) होती है।", "explanation_en": "Apogee represents moon farthest (2), Perigee moon nearest (1), Aphelion earth farthest from sun (4), and Perihelion earth nearest to sun (3)."}, {"id": 44, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (महासागर): A. प्रशांत महासागर, B. अटलांटिक महासागर, C. हिंद महासागर; सूची-II (अन्वेषित गर्त): 1. 32 गर्त, 2. 19 गर्त, 3. 6 गर्त", "question_en": "Match List-I with List-II: List-I (Ocean): A. Pacific Ocean, B. Atlantic Ocean, C. Indian Ocean; List-II (Number of explored trenches): 1. 32 trenches, 2. 19 trenches, 3. 6 trenches", "options": [{"hi": "A-2, B-1, C-3", "en": ""}, {"hi": "A-1, B-3, C-2", "en": ""}, {"hi": "A-3, B-2, C-1", "en": ""}, {"hi": "A-1, B-2, C-3", "en": ""}], "answer": 3, "explanation_hi": "महासागरीय खाइयों में से अब तक प्रशांत महासागर में 32 गर्त (1), अटलांटिक में 19 गर्त (2) और हिंद महासागर में 6 गर्त (3) खोजे गए हैं।", "explanation_en": "Of the 57 explored trenches so far, 32 are in the Pacific Ocean (1), 19 in the Atlantic Ocean (2), and 6 in the Indian Ocean (3)."}, {"id": 45, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (महासागरीय धाराएँ): A. गल्फ स्ट्रीम, B. लैब्राडोर, C. कैनरी; सूची-II (प्रकृति): 1. ठंडी धारा, 2. गर्म धारा, 3. उपोष्णकटिबंधीय ठंडी धारा", "question_en": "Match List-I with List-II: List-I (Ocean Currents): A. Gulf Stream, B. Labrador, C. Canaries; List-II (Nature): 1. Cold current, 2. Warm current, 3. Subtropical cold current", "options": [{"hi": "A-1, B-2, C-3", "en": ""}, {"hi": "A-3, B-1, C-2", "en": ""}, {"hi": "A-2, B-1, C-3", "en": ""}, {"hi": "A-2, B-3, C-1", "en": ""}], "answer": 2, "explanation_hi": "गल्फ स्ट्रीम उत्तरी अटलांटिक की गर्म धारा है (2), लैब्राडोर उच्च अक्षांश की ठंडी धारा है (1), और कैनरी उपोष्णकटिबंधीय ठंडी धारा (3) है।", "explanation_en": "Gulf Stream is a warm current (2), Labrador is a high-latitude cold current (1), and Canaries is a subtropical cold current (3)."}, {"id": 46, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "विश्व तापमान के संदर्भ में हाल के इतिहास में घटित निम्नलिखित घटनाओं को उनके आरंभ होने के कालक्रम (सबसे पहले से सबसे बाद) के अनुसार व्यवस्थित कीजिए: 1. सहारा के दक्षिण में साहेल क्षेत्र में सूखा, 2. Europe में लघु हिमयुग का आरंभ, 3. बीसवीं शताब्दी का सबसे तीव्र गर्म वर्ष, 4. राजस्थान मरुस्थल में आर्द्र जलवायु की समाप्ति", "question_en": "With reference to recent global temperature history, arrange the following events in chronological order of their start (from earliest to latest): 1. Sahel drought, 2. Little Ice Age in Europe, 3. Warmest year of the 20th century, 4. End of wet climate in Rajasthan desert", "options": [{"hi": "2, 1, 4, 3", "en": ""}, {"hi": "4, 2, 1, 3", "en": ""}, {"hi": "2, 4, 1, 3", "en": ""}, {"hi": "4, 1, 2, 3", "en": ""}], "answer": 1, "explanation_hi": "राजस्थान की आर्द्र जलवायु का अंत लगभग 1,700 ईसा पूर्व हुआ (4), लघु हिमयुग 1550 ईस्वी में आरंभ हुआ (2), साहेल सूखा 1967 में हुआ (1), और सबसे गर्म वर्ष 1998 था (3)।", "explanation_en": "Rajasthan's wet climate ended around 1700 BC (4), Little Ice Age started in 1550 (2), Sahel drought in 1967 (1), and warmest year was 1998 (3)."}, {"id": 47, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भूवैज्ञानिक अतीत में पृथ्वी के गर्म रहने वाले निम्नलिखित प्रमुख अवधियों को सबसे प्राचीन से सबसे नवीन कालक्रम में व्यवस्थित कीजिए: 1. कैंब्रियन काल, 2. प्लाइस्टोसीन युग, 3. सिलूरियन काल, 4. ऑर्डोविशियन काल", "question_en": "Arrange the following warm periods in the earth's geological past in chronological order from oldest to newest: 1. Cambrian period, 2. Pleistocene epoch, 3. Silurian period, 4. Ordovician period", "options": [{"hi": "1, 4, 3, 2", "en": ""}, {"hi": "1, 3, 4, 2", "en": ""}, {"hi": "3, 1, 4, 2", "en": ""}, {"hi": "4, 1, 3, 2", "en": ""}], "answer": 0, "explanation_hi": "भूवैज्ञानिक इतिहास में सबसे प्राचीन कैंब्रियन काल है (1), उसके बाद ऑर्डोविशियन (4), फिर सिलूरियन (3) और अंततः प्लाइस्टोसीन हिमयुग/अंतरा-हिमयुग काल (2) आता है।", "explanation_en": "In geological history, the correct sequence of periods from oldest to newest is Cambrian (1), Ordovician (4), Silurian (3), and Pleistocene (2)."}, {"id": 48, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित में से कितने युग्म (कोपेन जलवायु समूह और विशेषताएं) सही सुमेलित हैं? 1. समूह A: उष्णकटिबंधीय - सबसे ठंडे महीने का औसत तापमान 18°C या अधिक, 2. समूह B: शुष्क जलवायु - संभावित वाष्पीकरण वर्षा से अधिक होना, 3. समूह D: शीत हिम-वन जलवायु - सबसे ठंडे महीने का औसत तापमान minus 3°C या उससे कम", "question_en": "How many of the following pairs of Koeppen climate groups and their characteristics are correctly matched? 1. Group A: Tropical - coldest month average 18°C or higher, 2. Group B: Dry climates - potential evaporation exceeds precipitation, 3. Group D: Cold snow forest - coldest month average minus 3°C or below", "options": [{"hi": "कोई भी नहीं", "en": "None"}, {"hi": "सभी तीन युग्म", "en": "All three pairs"}, {"hi": "केवल एक युग्म", "en": "Only one pair"}, {"hi": "केवल दो युग्म", "en": "Only two pairs"}], "answer": 1, "explanation_hi": "सभी तीनों युग्म कोपेन जलवायु समूहों की वास्तविक तापमान और वाष्पीकरण संबंधी विशेषताओं के साथ बिल्कुल सही सुमेलित हैं।", "explanation_en": "All three pairs are correctly matched according to Koeppen's established climate group criteria."}, {"id": 49, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित देशों और उनके भौगोलिक महत्व के युग्मों पर विचार कीजिए: 1. मेडागास्कर - लगभग 85 प्रतिशत पौधे और जीव विश्व में स्थानिक हैं, 2. ब्राजील - अमेज़न वर्षावन और प्रचुर Aw जलवायु का विस्तृत क्षेत्र, 3. कनाडा - फंडी की खाड़ी में विश्व का सबसे ऊंचा ज्वार। उपर्युक्त में से कौन-कौन से युग्म सही सुमेलित हैं?", "question_en": "Consider the following pairs of countries and their geographical significance: 1. Madagascar - About 85 percent plants and animals are endemic, 2. Brazil - Extensive area of Amazon rainforest and Aw climate, 3. Canada - Highest tides of the world in the Bay of Fundy. Which of the above pairs are correctly matched?", "options": [{"hi": "केवल 1 और 3", "en": "Only 1 and 3"}, {"hi": "केवल 1 और 2", "en": "Only 1 and 2"}, {"hi": "1, 2 और 3", "en": "1, 2 and 3"}, {"hi": "केवल 2 और 3", "en": "Only 2 and 3"}], "answer": 2, "explanation_hi": "तीनों युग्म सही सुमेलित हैं। मेडागास्कर में 85 प्रतिशत स्थानिक प्रजातियाँ हैं, ब्राजील में सघन अमेज़न वन और Aw जलवायु है तथा कनाडा में फंडी की खाड़ी स्थित है।", "explanation_en": "All three pairs are correctly matched according to their respective geographic and biological profiles mentioned in the text."}, {"id": 50, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित में से कौन सा युग्म (विशिष्ट जैव विविधता क्षेत्र) सही सुमेलित नहीं है?", "question_en": "Which of the following pairs of specific biodiversity-rich areas is not correctly matched?", "options": [{"hi": "हम्बोल्टिया डेकुरेंस (दक्षिण पश्चिमी घाट का दुर्लभ स्थानिक पेड़)", "en": "Humbodtia decurrens (Rare endemic tree of Southern Western Ghats)"}, {"hi": "मेसोसॉरस (दक्षिण अफ्रीका और ब्राजील के प्राचीन सरीसृप जीवाश्म)", "en": "Mesosaurus (Ancient reptile fossils of South Africa and Brazil)"}, {"hi": "रेड पांडा (संकटग्रस्त श्रेणी की प्रजाति)", "en": "Red Panda (Endangered category species)"}, {"hi": "सिल्वर पाइंस (टुंड्रा क्षेत्र की अनन्य सदाबहार शंकुधारी वनस्पति)", "en": "Silver pines (Exclusive evergreen coniferous vegetation of tundra region)"}], "answer": 3, "explanation_hi": "युग्म (C) सही सुमेलित नहीं है क्योंकि टुंड्रा क्षेत्र में सदाबहार देवदार (पाइंस) जैसे बड़े वृक्ष नहीं उगते, वहाँ केवल कम ऊंचाई वाले मॉस, लाइकेन और बौने पुष्पी पौधे उगते हैं।", "explanation_en": "Pair C is incorrect because trees like evergreen pines do not grow in the tundra due to permafrost; only low mosses, lichens, and dwarf flowering plants survive there."}]};
+
+/* ===== भाषा टॉगल + प्रश्न-प्रकार फ़ॉर्मैटर ===== */
+var JH_LANG = (function(){ try{ return localStorage.getItem("jaiho_lang")||"bi"; }catch(e){ return "bi"; } })();
+function langSegHTML(){
+  var L=JH_LANG, o=function(v,t){ return '<button type="button" class="lang-b'+(L===v?" on":"")+'" data-lang="'+v+'">'+t+'</button>'; };
+  return o("hi","हिंदी")+o("en","English")+o("bi","दोनों");
+}
+function paintLang(){
+  ["qLang","coverLang"].forEach(function(id){
+    var box=document.getElementById(id); if(!box) return;
+    box.innerHTML=langSegHTML();
+    box.querySelectorAll(".lang-b").forEach(function(b){
+      b.addEventListener("click",function(){ setJhLang(b.getAttribute("data-lang")); });
+    });
+  });
+}
+function setJhLang(l){
+  JH_LANG=l; try{ localStorage.setItem("jaiho_lang",l); }catch(e){}
+  paintLang();
+  try{ if(document.getElementById("testScreen").style.display==="block") renderQuestion(); }catch(e){}
+  try{ if(document.getElementById("resultScreen").style.display==="block") renderReview(); }catch(e){}
+}
+function jhEsc(t){ return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function _jhPoints(t){
+  t = String(t).replace(/\s*(कथन\s*\d+\s*[:：])/g,"\n$1")
+       .replace(/\s*(Statement\s*\d+\s*[:：])/gi,"\n$1")
+       .replace(/([।;?:,])\s*(\d+\.\s)/g,"$1\n$2");
+  return t.replace(/^\n+/,"").replace(/\n[ \t]+/g,"\n");
+}
+function _jhMatch(raw){
+  var t=String(raw);
+  var reI=/(सूची|List)[\s\-–—]*I(?!I)\s*(?:\([^)]*\))?\s*[:：]/i;
+  var reII=/(सूची|List)[\s\-–—]*II\s*(?:\([^)]*\))?\s*[:：]/i;
+  var mI=t.match(reI), mII=t.match(reII);
+  if(!mI||!mII||mII.index<=mI.index) return null;
+  var intro=t.slice(0,mI.index).trim();
+  var segI=t.slice(mI.index+mI[0].length,mII.index).trim().replace(/[;।,]\s*$/,"");
+  var rest=t.slice(mII.index+mII[0].length);
+  var mo=rest.match(/(सही\s*मिलान|नीचे\s*दिए|सुमेलित|Choose|Select|Match|कूट)/i);
+  var segII, outro="";
+  if(mo){ segII=rest.slice(0,mo.index).trim(); outro=rest.slice(mo.index).trim(); }
+  else segII=rest.trim();
+  segII=segII.replace(/[;।,]\s*$/,"");
+  var sp=function(seg,re){ return seg.split(re).map(function(x){return x.trim();}).filter(Boolean); };
+  var A=sp(segI,/\s*,\s*(?=[A-Z]\.)/), B=sp(segII,/\s*,\s*(?=\d+\.)/);
+  if(A.length<2||B.length<2) return null;
+  var n=Math.max(A.length,B.length), rows="";
+  for(var k=0;k<n;k++) rows+="<tr><td>"+jhEsc(A[k]||"")+"</td><td>"+jhEsc(B[k]||"")+"</td></tr>";
+  return (intro?jhEsc(intro)+"\n":"")
+    + '<table class="match-tbl"><tr><th>'+jhEsc(mI[1])+'-I</th><th>'+jhEsc(mII[1])+'-II</th></tr>'+rows+'</table>'
+    + (outro?jhEsc(outro):"");
+}
+function jhFmt(raw){ if(!raw) return ""; var mt=_jhMatch(raw); return mt?mt:jhEsc(_jhPoints(raw)); }
+
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  paintLang();
+    el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  var _hi=q.question_hi||"", _en=q.question_en||"";
+  if(JH_LANG==="en" && _en){ el("qtext").innerHTML = jhFmt(_en); el("qtextEn").classList.add("hidden"); }
+  else { el("qtext").innerHTML = jhFmt(_hi||_en);
+         if(JH_LANG==="bi" && _en && _hi){ el("qtextEn").innerHTML = jhFmt(_en); el("qtextEn").classList.remove("hidden"); }
+         else { el("qtextEn").innerHTML=""; el("qtextEn").classList.add("hidden"); } }
+  paintLang();
+  el("options").innerHTML = (q.options||[]).map((op,i)=>{var oh=(op&&op.hi)||"", oe=(op&&op.en)||"";var body = (JH_LANG==="en"&&oe) ? `<div class="op-hi">${jhEsc(oe)}</div>` : (JH_LANG==="bi"&&oe&&oe!==oh) ? `<div class="op-hi">${jhEsc(oh)}</div><div class="op-en">${jhEsc(oe)}</div>` : `<div class="op-hi">${jhEsc(oh||oe)}</div>`;return `<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div>${body}</div></button>`;}).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{
+  const user = answers[i];
+  const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad");
+  const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong");
+  const optTxt = function(o){ if(!o) return ""; var oh=o.hi||"", oe=o.en||"";
+    if(JH_LANG==="en" && oe) return oe;
+    if(JH_LANG==="bi" && oe && oe!==oh) return oh+" / "+oe;
+    return oh||oe; };
+  const utext = user===null ? "Not attempted" : `${letters[user]}. ${optTxt(q.options[user])}`;
+  const correctText = `${letters[q.answer]}. ${optTxt(q.options[q.answer])}`;
+  var qMain = (JH_LANG==="en" && q.question_en) ? q.question_en : (q.question_hi||q.question_en||"");
+  var qSub  = (JH_LANG==="bi" && q.question_en && q.question_hi) ? q.question_en : "";
+  var eMain = (JH_LANG==="en" && q.explanation_en) ? q.explanation_en : (q.explanation_hi||q.explanation_en||"");
+  var eSub  = (JH_LANG==="bi" && q.explanation_en && q.explanation_hi) ? q.explanation_en : "";
+  return `<div class="review-item"><div class="review-head">`
+    + `<strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong>`
+    + `<span class="badge ${status}">${statusText}</span></div>`
+    + `<div class="review-content"><div style="white-space:pre-line"><b>${jhFmt(qMain)}</b></div>`
+    + (qSub?`<div class="qtext-en" style="white-space:pre-line">${jhFmt(qSub)}</div>`:"")
+    + `<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div>`
+    + (eMain?`<div class="explain"><b>Explanation:</b> ${escapeHTML(eMain)}`
+        + (eSub?`<br><span style="color:#64748b">${escapeHTML(eSub)}</span>`:"")+`</div>`:"")
+    + `</div></div>`;
+}).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
