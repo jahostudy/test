@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  
+  .match-tbl{width:100%;border-collapse:collapse;margin:10px 0 4px}
+  .match-tbl th,.match-tbl td{border:1px solid #d8eaff;padding:8px 11px;text-align:left;vertical-align:top;font-size:.93em}
+  .match-tbl th{color:var(--navy);font-weight:950;font-size:.82em;letter-spacing:.5px;background:#eaf3ff}
+  .qtext-en .match-tbl th{color:#475569;background:#f1f5fb}
+  .lang-seg{display:inline-flex;background:#eef4fc;border:1px solid #d8eaff;border-radius:10px;padding:3px;gap:2px}
+  .lang-b{font-family:inherit;font-size:12.5px;font-weight:900;color:#5b6a83;background:transparent;border:0;
+    border-radius:8px;padding:5px 13px;cursor:pointer;transition:.15s}
+  .lang-b.on{background:linear-gradient(135deg,var(--royal),#0f6fd0);color:#fff}
+  .lang-choose{display:flex;align-items:center;gap:10px;margin:12px 0 0;flex-wrap:wrap}
+  .lc-label{font-size:13px;color:var(--muted);font-weight:900}
+
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="lang-choose"><span class="lc-label">पढ़ने की भाषा:</span><div class="lang-seg" id="coverLang"></div></div><div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap"><div class="topic" id="topic">Topic</div><div class="lang-seg" id="qLang"></div></div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title": "NCERT Class 11 • भूगोल", "highlight": "भूगोल", "shortTitle": "NCERT Class 11", "subtitle": "UPPCS Prelims 2026 / RO-ARO • GS Test • भूगोल", "tag": "UPPCS Prelims 2026 / RO-ARO", "pill": "🏆 Live Daily Rank • Jai Ho Study", "description": "UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।", "durationMinutes": 25, "marksPerQuestion": 2.0, "negativeMarks": 0.66, "testId": "jaiho-uppcs-2026-gs-test-ncert-class-11-ncert-class-11-20260808-1soum", "footerCredit": "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com", "rankingEnabled": true, "firebaseConfig": {"apiKey": "AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I", "authDomain": "jai-ho-1c1d7.firebaseapp.com", "projectId": "jai-ho-1c1d7", "storageBucket": "jai-ho-1c1d7.firebasestorage.app", "messagingSenderId": "472878277527", "appId": "1:472878277527:web:a62780ddadf60fd5e5dad2", "measurementId": "G-LV29VGHG6J"}, "publishDateStr": "2026-08-08", "questions": [{"id": 1, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत की प्रादेशिक जल सीमा समुद्र में तट से कितनी दूरी तक विस्तृत है?", "question_en": "To what distance does India's territorial water limit extend from the coast into the sea?", "options": [{"hi": "15 समुद्री मील (लगभग 27.8 किमी)", "en": "15 nautical miles (about 27.8 km)"}, {"hi": "12 समुद्री मील (लगभग 21.9 किमी)", "en": "12 nautical miles (about 21.9 km)"}, {"hi": "10 समुद्री मील (लगभग 18.5 किमी)", "en": "10 nautical miles (about 18.5 km)"}, {"hi": "24 समुद्री मील (लगभग 44.4 किमी)", "en": "24 nautical miles (about 44.4 km)"}], "answer": 1, "explanation_hi": "भारत की क्षेत्रीय सीमा समुद्र में तट से 12 समुद्री मील (लगभग 21.9 किमी) तक फैली हुई है।", "explanation_en": "India's territorial limit extends towards the sea upto 12 nautical miles (about 21.9 km) from the coast."}, {"id": 2, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "एक समुद्री मील (Nautical mile) का मान लगभग कितने किलोमीटर के बराबर होता है?", "question_en": "One nautical mile is equal to approximately how many kilometres?", "options": [{"hi": "लगभग 1.8 किमी (1.852 किमी)", "en": "about 1.8 km (1.852 km)"}, {"hi": "लगभग 1.5 किमी (1.482 किमी)", "en": "about 1.5 km (1.482 km)"}, {"hi": "लगभग 1.6 किमी (1.584 किमी)", "en": "about 1.6 km (1.584 km)"}, {"hi": "लगभग 2.0 किमी (2.052 किमी)", "en": "about 2.0 km (2.052 km)"}], "answer": 0, "explanation_hi": "एक समुद्री मील (Nautical mile) का मान लगभग 1.8 किमी (1.852 किमी) के बराबर होता है जबकि मानक मील 1.6 किमी होता है।", "explanation_en": "One nautical mile is approximately equal to 1.8 km (1.852 km) whereas a statute mile is about 1.6 km."}, {"id": 3, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "बंगाल की खाड़ी में स्थित भारत की सबसे दक्षिणी सीमा कितने डिग्री अक्षांश पर स्थित है?", "question_en": "At what degree latitude is India's southernmost boundary located in the Bay of Bengal?", "options": [{"hi": "8°4' N अक्षांश", "en": "8°4' N latitude"}, {"hi": "6°45' N अक्षांश", "en": "6°45' N latitude"}, {"hi": "37°6' N अक्षांश", "en": "37°6' N latitude"}, {"hi": "6°30' N अक्षांश", "en": "6°30' N latitude"}], "answer": 1, "explanation_hi": "बंगाल की खाड़ी में भारत की दक्षिणी सीमा 6°45' N अक्षांश पर स्थित है।", "explanation_en": "India's southern boundary extends upto 6°45' N latitude in the Bay of Bengal."}, {"id": 4, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत की उत्तर से दक्षिण की वास्तविक दूरी कितनी मापी गई है?", "question_en": "What is the actual distance measured from the north to south extremity of India?", "options": [{"hi": "3,280 किमी", "en": "3,280 km"}, {"hi": "2,933 किमी", "en": "2,933 km"}, {"hi": "3,000 किमी", "en": "3,000 km"}, {"hi": "3,214 किमी", "en": "3,214 km"}], "answer": 3, "explanation_hi": "भारत की उत्तर से दक्षिण की वास्तविक दूरी 3,214 किमी है, जबकि पूर्व से पश्चिम केवल 2,933 किमी है।", "explanation_en": "The actual distance measured from north to south extremity is 3,214 km, and that from east to west is only 2,933 km."}, {"id": 5, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत का मानक याम्योत्तर (Standard Meridian) निम्नलिखित में से कौन सा चुना गया है?", "question_en": "Which of the following has been selected as the standard meridian of India?", "options": [{"hi": "82°30' E देशांतर", "en": "82°30' E longitude"}, {"hi": "82°00' E देशांतर", "en": "82°00' E longitude"}, {"hi": "75°30' E देशांतर", "en": "75°30' E longitude"}, {"hi": "90°30' E देशांतर", "en": "90°30' E longitude"}], "answer": 0, "explanation_hi": "भारत का मानक याम्योत्तर 82°30' E चुना गया है, जो 7°30' के गुणक के वैश्विक समझौते के अनुरूप है।", "explanation_en": "82°30' E has been selected as the standard meridian of India, in accordance with the world multiples of 7°30'."}, {"id": 6, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत के मुख्य भूमि की तटीय सीमा की लंबाई कितनी है?", "question_en": "What is the length of the coastline of the mainland of India?", "options": [{"hi": "7,517 किमी", "en": "7,517 km"}, {"hi": "15,200 किमी", "en": "15,200 km"}, {"hi": "6,100 किमी", "en": "6,100 km"}, {"hi": "5,600 किमी", "en": "5,600 km"}], "answer": 2, "explanation_hi": "भारत की मुख्य भूमि की तटरेखा की लंबाई 6,100 किमी है, तथा द्वीपों सहित कुल तटरेखा 7,517 किमी है।", "explanation_en": "The peninsular part of India has a coastline of 6,100 km in the mainland and 7,517 km for the entire geographical coast."}, {"id": 7, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित में से कौन सा देश भारत का भू-सीमा साझा करने वाला पड़ोसी देश नहीं है?", "question_en": "Which of the following countries is not a land-boundary sharing neighbour of India?", "options": [{"hi": "मालदीव", "en": "Maldives"}, {"hi": "भूटान", "en": "Bhutan"}, {"hi": "नेपाल", "en": "Nepal"}, {"hi": "बांग्लादेश", "en": "Bangladesh"}], "answer": 0, "explanation_hi": "मालदीव हिंद महासागर में स्थित भारत का द्वीपीय पड़ोसी देश है, जो भू-सीमा साझा नहीं करता है।", "explanation_en": "Maldives is an island country located in the Indian Ocean and is our maritime neighbour, not sharing a land frontier."}, {"id": 8, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "श्रीलंका को भारत से अलग करने वाली संकीर्ण जलसंधि का नाम क्या है?", "question_en": "What is the name of the narrow strait separating Sri Lanka from India?", "options": [{"hi": "पाक जलसंधि", "en": "Palk Strait"}, {"hi": "मलक्का जलसंधि", "en": "Malacca Strait"}, {"hi": "महानदी मुहाना", "en": "Mahanadi Estuary"}, {"hi": "मन्नार की खाड़ी", "en": "Gulf of Mannar"}], "answer": 0, "explanation_hi": "श्रीलंका भारत से मन्नार की खाड़ी और पाक जलसंधि (Palk Strait) द्वारा अलग होता है।", "explanation_en": "Sri Lanka is separated from India by the Gulf of Mannar and Palk Strait."}, {"id": 9, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय प्रायद्वीपीय खंड (Peninsular Block) के पूर्वोत्तर विस्तार के रूप में किसे जाना जाता है?", "question_en": "Which of the following is known as the northeastern extension of the Indian Peninsular Block?", "options": [{"hi": "राजमहल पहाड़ियाँ", "en": "Rajmahal Hills"}, {"hi": "छोटा नागपुर पठार", "en": "Chotanagpur Plateau"}, {"hi": "कार्बी एंग्लोंग और मेघालय पठार", "en": "Karbi Anglong and Meghalaya Plateau"}, {"hi": "अरावली श्रेणी", "en": "Aravali Range"}], "answer": 2, "explanation_hi": "मेघालय का पठार और असम का कार्बी एंग्लोंग पठार वास्तव में प्रायद्वीपीय पठार के ही पूर्वोत्तर विस्तार हैं।", "explanation_en": "The Karbi Anglong and the Meghalaya Plateau in the northeast are extensions of the Peninsular block."}, {"id": 10, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मेघालय का पठार पश्चिम बंगाल के मालदा फॉल्ट (Malda fault) द्वारा किससे अलग होता है?", "question_en": "By which feature is the Meghalaya plateau separated from the Chotanagpur plateau in West Bengal?", "options": [{"hi": "अरावली भ्रंश", "en": "Aravali fault"}, {"hi": "नर्मदा घाटी", "en": "Narmada valley"}, {"hi": "मालदा भ्रंश", "en": "Malda fault"}, {"hi": "भीमा भ्रंश", "en": "Bhima fault"}], "answer": 2, "explanation_hi": "पूर्वोत्तर के प्रायद्वीपीय हिस्से को पश्चिम बंगाल में स्थित मालदा भ्रंश (Malda fault) छोटानागपुर पठार से अलग करता है।", "explanation_en": "The northeastern parts are separated by the Malda fault in West Bengal from the Chotanagpur plateau."}, {"id": 11, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "इंडो-गंगा-ब्रह्मपुत्र मैदान में जलोढ़ निक्षेप (Alluvial deposits) की औसत गहराई कितनी पाई जाती है?", "question_en": "What is the average depth of alluvial deposits in the Indo-Ganga-Brahmaputra plains?", "options": [{"hi": "100 से 500 मीटर", "en": "100 to 500 m"}, {"hi": "500 से 1,000 मीटर", "en": "500 to 1,000 m"}, {"hi": "3,000 से 5,000 मीटर", "en": "3,000 to 5,000 m"}, {"hi": "1,000 से 2,000 मीटर", "en": "1,000 to 2,000 m"}], "answer": 3, "explanation_hi": "गंगा और ब्रह्मपुत्र जैसी नदियों द्वारा जमा किए गए जलोढ़ निक्षेपों की औसत गहराई 1,000-2,000 मीटर के बीच होती है।", "explanation_en": "The average depth of alluvial deposits in these plains ranges from 1,000-2,000 m."}, {"id": 12, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "महान हिमालय या केंद्रीय अक्षीय श्रेणी की पूर्व से पश्चिम तक अनुमानित लंबाई कितनी है?", "question_en": "What is the approximate length of the Great Himalayan range from east to west?", "options": [{"hi": "2,500 किमी", "en": "2,500 km"}, {"hi": "3,200 किमी", "en": "3,200 km"}, {"hi": "1,500 किमी", "en": "1,500 km"}, {"hi": "4,000 किमी", "en": "4,000 km"}], "answer": 0, "explanation_hi": "महान हिमालय श्रेणी की पूर्व से पश्चिम लंबाई लगभग 2,500 किमी है तथा चौड़ाई 160-400 किमी है।", "explanation_en": "The approximate length of the Great Himalayan range, also known as the central axial range, is 2,500 km."}, {"id": 13, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "शिवालिक के तलहटी ढाल के समानांतर पाई जाने वाली संकीर्ण पट्टी (8-10 किमी चौड़ाई) को क्या कहते हैं?", "question_en": "What is the narrow belt (8-10 km width) parallel to the Shiwalik foothills at the break-up of slope called?", "options": [{"hi": "तराई", "en": "Tarai"}, {"hi": "खादर", "en": "Khadar"}, {"hi": "भांगर", "en": "Bhangar"}, {"hi": "भाबर", "en": "Bhabar"}], "answer": 3, "explanation_hi": "शिवालिक के समानांतर 8-10 किमी चौड़ाई वाली पट्टी भाबर कहलाती है, जहां नदियां भारी कंकड़ जमा कर अदृश्य हो जाती हैं।", "explanation_en": "Bhabar is a narrow belt ranging between 8-10 km parallel to the Shiwalik foothills at the break-up of the slope."}, {"id": 14, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भाबर के दक्षिण में स्थित वह दलदली और अनुपयुक्त क्षेत्र (10-20 किमी चौड़ाई) जहां नदियां पुनः प्रकट होती हैं क्या कहलाता है?", "question_en": "What is the marshy and swampy belt of 10-20 km width south of Bhabar where streams re-emerge called?", "options": [{"hi": "तराई", "en": "Tarai"}, {"hi": "भांगर", "en": "Bhangar"}, {"hi": "खादर", "en": "Khadar"}, {"hi": "रेह", "en": "Reh"}], "answer": 0, "explanation_hi": "भाबर के दक्षिण में नदियां पुनः धरातल पर प्रकट होकर दलदली क्षेत्र बनाती हैं जिसे तराई कहा जाता है।", "explanation_en": "South of the Bhabar is the Tarai belt, with an approximate width of 10-20 km where streams re-emerge, creating swampy conditions."}, {"id": 15, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "प्रायद्वीपीय पठार की सबसे ऊंची चोटी 'अनाइमुडी' (Anaimudi - 2,695 मीटर) किस पहाड़ी पर स्थित है?", "question_en": "On which hill is 'Anaimudi' (2,695 m), the highest peak of the Peninsular plateau, located?", "options": [{"hi": "अनाइमलाई पहाड़ियाँ", "en": "Anaimalai hills"}, {"hi": "इलायची पहाड़ियाँ", "en": "Cardamom hills"}, {"hi": "नीलगिरि पहाड़ियाँ", "en": "Nilgiri hills"}, {"hi": "नल्लामलाई पहाड़ियाँ", "en": "Nallamala hills"}], "answer": 0, "explanation_hi": "प्रायद्वीपीय पठार की सबसे ऊंची चोटी अनाइमुडी (2,695 मीटर) पश्चिमी घाट की अनाइमलाई पहाड़ियों पर स्थित है।", "explanation_en": "'Anaimudi' (2,695 m), the highest peak of the Peninsular plateau is located on the Anaimalai hills of the Western Ghats."}, {"id": 16, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अरावली श्रेणी से निकलने वाली चंबल नदी की एकमात्र महत्वपूर्ण सहायक नदी कौन सी है?", "question_en": "Which is the only significant tributary of the Chambal river that originates from the Aravalli range?", "options": [{"hi": "सोन नदी", "en": "Son river"}, {"hi": "बेतवा नदी", "en": "Betwa river"}, {"hi": "केन नदी", "en": "Ken river"}, {"hi": "बनास नदी", "en": "Banas river"}], "answer": 3, "explanation_hi": "बनास नदी ही चंबल की एकमात्र ऐसी सहायक नदी है जो पश्चिम में अरावली श्रेणी से निकलती है।", "explanation_en": "Banas is the only significant tributary of the river Chambal that originates from the Aravalli in the west."}, {"id": 17, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "जैसलमेर के निकट आकल (Aakal) में स्थित वुड फॉसिल पार्क के जीवाश्मों की अनुमानित आयु कितनी है?", "question_en": "What is the estimated age of the wood fossils present in Aakal Wood Fossil Park near Jaisalmer?", "options": [{"hi": "लगभग 64 मिलियन वर्ष", "en": "Approximately 64 million years"}, {"hi": "लगभग 460 मिलियन वर्ष", "en": "Approximately 460 million years"}, {"hi": "लगभग 180 मिलियन वर्ष", "en": "Approximately 180 million years"}, {"hi": "लगभग 100 मिलियन वर्ष", "en": "Approximately 100 million years"}], "answer": 2, "explanation_hi": "जैसलमेर के आकल में स्थित वुड फॉसिल पार्क के लकड़ी के जीवाश्मों की आयु लगभग 180 मिलियन वर्ष आंकी गई है।", "explanation_en": "The approximate age of the wood-fossils at Aakal near Jaisalmer is estimated to be 180 million years."}, {"id": 18, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "केरल के मालाबार तट पर पाए जाने वाले विशिष्ट पश्चजल (Backwaters) को स्थानीय भाषा में क्या कहा जाता है?", "question_en": "What are the distinct backwaters found along the Malabar coast of Kerala locally called?", "options": [{"hi": "लैगून", "en": "Lagoons"}, {"hi": "कयाल", "en": "Kayals"}, {"hi": "प्लाया", "en": "Playas"}, {"hi": "मैंग्रोव", "en": "Mangroves"}], "answer": 1, "explanation_hi": "केरल के मालाबार तट पर कयाल (Kayals) नाम के पश्चजल पाए जाते हैं, जहाँ प्रतिवर्ष प्रसिद्ध नेहरू ट्रॉफी नौका दौड़ होती है।", "explanation_en": "The Malabar coast has got certain distinguishing features in the form of 'Kayals' (backwaters) used for fishing and navigation."}, {"id": 19, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अंडमान द्वीप समूह और निकोबार द्वीप समूह को कौन सा जल निकाय एक-दूसरे से अलग करता है?", "question_en": "Which water body separates the Andaman island group from the Nicobar island group?", "options": [{"hi": "नौ डिग्री चैनल", "en": "Nine degree channel"}, {"hi": "दस डिग्री चैनल", "en": "Ten degree channel"}, {"hi": "मन्नार की खाड़ी", "en": "Gulf of Mannar"}, {"hi": "पाक खाड़ी", "en": "Palk Bay"}], "answer": 1, "explanation_hi": "अंडमान और निकोबार द्वीप समूह को 10 डिग्री चैनल (Ten degree channel) नामक जल निकाय पृथक करता है।", "explanation_en": "The Andaman in the north and the Nicobar in the south are separated by a waterbody called the Ten degree channel."}, {"id": 20, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "ग्रेट निकोबार द्वीप पर स्थित सबसे ऊंची पर्वत चोटी निम्नलिखित में से कौन सी है?", "question_en": "Which of the following is the highest mountain peak located on the Great Nicobar Island?", "options": [{"hi": "माउंट डियावोलो (515 मीटर)", "en": "Mount Diavolo (515 m)"}, {"hi": "सैडल पीक (738 मीटर)", "en": "Saddle Peak (738 m)"}, {"hi": "माउंट कोयोब (460 मीटर)", "en": "Mount Koyob (460 m)"}, {"hi": "माउंट थुलियर (642 मीटर)", "en": "Mount Thuiller (642 m)"}], "answer": 3, "explanation_hi": "सैडल पीक उत्तरी अंडमान में है, जबकि ग्रेट निकोबार द्वीप की सबसे ऊंची पर्वत चोटी माउंट थुलियर (642 मीटर) है।", "explanation_en": "Mount Thuiller is the highest peak of Great Nicobar (642 m), while Saddle Peak (738 m) is in North Andaman."}, {"id": 21, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "लक्षद्वीप द्वीप समूह के सुदूर दक्षिण में स्थित सबसे बड़ा द्वीप कौन सा है?", "question_en": "Which is the largest island in the Lakshadweep archipelago, located at the southern end?", "options": [{"hi": "अमिनी द्वीप", "en": "Amini Island"}, {"hi": "कवरत्ती", "en": "Kavaratti"}, {"hi": "मणीकोय द्वीप", "en": "Minicoy"}, {"hi": "चेत लात द्वीप", "en": "Chetlat Island"}], "answer": 2, "explanation_hi": "लक्षद्वीप का सबसे बड़ा द्वीप मिनिकॉय द्वीप (4.53 वर्ग किमी) है जो नौ डिग्री चैनल के दक्षिण में स्थित है।", "explanation_en": "Minicoy is the largest island of Lakshadweep with an area of 4.53 sq. km."}, {"id": 22, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "गंगा, ब्रह्मपुत्र, महानदी और कृष्णा जैसी बड़ी नदियां भारत के कुल अपवाह क्षेत्र का कितना प्रतिशत भाग बंगाल की खाड़ी की ओर उन्मुख करती हैं?", "question_en": "What percentage of India's drainage area, consisting of rivers like Ganga and Brahmaputra, is oriented towards the Bay of Bengal?", "options": [{"hi": "77 प्रतिशत", "en": "77 per cent"}, {"hi": "23 प्रतिशत", "en": "23 per cent"}, {"hi": "50 प्रतिशत", "en": "50 per cent"}, {"hi": "85 प्रतिशत", "en": "85 per cent"}], "answer": 0, "explanation_hi": "भारत का लगभग 77% अपवाह क्षेत्र बंगाल की खाड़ी की ओर उन्मुख है तथा शेष 23% अपवाह अरब सागर में जाता है।", "explanation_en": "Nearly 77 per cent of the drainage area is oriented towards the Bay of Bengal while 23 per cent discharges in the Arabian Sea."}, {"id": 23, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मध्यम नदी बेसिन (Medium river basins) के अंतर्गत अपवाह क्षेत्र का पैमाना कितना निर्धारित किया गया है?", "question_en": "What is the catchment area scale established for medium river basins in India?", "options": [{"hi": "10,000 से 50,000 वर्ग किमी", "en": "10,000 to 50,000 sq. km"}, {"hi": "20,000 वर्ग किमी से अधिक", "en": "More than 20,000 sq. km"}, {"hi": "2,000 वर्ग किमी से कम", "en": "Less than 2,000 sq. km"}, {"hi": "2,000 से 20,000 वर्ग किमी", "en": "2,000 to 20,000 sq. km"}], "answer": 3, "explanation_hi": "2,000 से 20,000 वर्ग किमी के जलग्रहण क्षेत्र वाले अपवाह तंत्र को मध्यम नदी बेसिन (कुल 44 बेसिन) माना जाता है।", "explanation_en": "Medium river basins include 44 river basins with catchment areas between 2,000-20,000 sq. km."}, {"id": 24, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सिंधु नदी का उद्गम तिब्बत क्षेत्र में किस हिमनद (Glacier) से होता है?", "question_en": "From which glacier does the Indus river originate in the Tibetan region?", "options": [{"hi": "चेमायुंगडुंग हिमनद", "en": "Chemayungdung glacier"}, {"hi": "बोखर चू के निकट हिमनद", "en": "Glacier near Bokhar Chu"}, {"hi": "मिलम हिमनद", "en": "Milam glacier"}, {"hi": "गंगोत्री हिमनद", "en": "Gangotri glacier"}], "answer": 1, "explanation_hi": "सिंधु नदी कैलाश पर्वतमाला में 4,164 मीटर की ऊंचाई पर बोखर चू (Bokhar Chu) के निकट एक हिमनद से निकलती है।", "explanation_en": "The Indus originates from a glacier near Bokhar Chu in the Tibetan region at an altitude of 4,164 m in Kailash range."}, {"id": 25, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "चेनाब नदी जो सिंधु की सबसे बड़ी सहायक नदी है हिमाचल प्रदेश में किन दो धाराओं के मिलने से बनती है?", "question_en": "The Chenab river, the largest tributary of Indus, is formed by the confluence of which two streams in Himachal Pradesh?", "options": [{"hi": "Saraswati और Sabarmati", "en": "Saraswati and Sabarmati"}, {"hi": "चंद्र और भागा", "en": "Chandra and Bhaga"}, {"hi": "कालीगंडक और त्रिशूलगंगा", "en": "Kaligandak and Trishulganga"}, {"hi": "धौली और विष्णु गंगा", "en": "Dhauli and Vishnu Ganga"}], "answer": 1, "explanation_hi": "चेनाब नदी हिमाचल प्रदेश में तंडी (Tandi) के पास चंद्र और भागा धाराओं के संगम से बनती है, इसे चंद्रभागा भी कहते हैं।", "explanation_en": "The Chenab is formed by two streams, the Chandra and the Bhaga, which join at Tandi near Keylong in Himachal Pradesh."}, {"id": 26, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "तिब्बत में सतलुज नदी को स्थानीय रूप से किस नाम से पुकारा जाता है?", "question_en": "By what local name is the Satluj river known in Tibet?", "options": [{"hi": "त्संगपो", "en": "Tsangpo"}, {"hi": "सिंगी खम्बान", "en": "Singi Khamban"}, {"hi": "यमुना", "en": "Yamuna"}, {"hi": "लांगचेन खम्बाब", "en": "Langchen Khambab"}], "answer": 3, "explanation_hi": "सतलुज नदी मानसरोवर के निकट राकस ताल से निकलती है, जहाँ इसे लांगचेन खम्बाब कहा जाता है।", "explanation_en": "The Satluj originates in the Raksas Tal in Tibet where it is known as Langchen Khambab."}, {"id": 27, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "गंगा नदी की लंबाई भारतीय राज्यों में क्रमशः किस क्रम में फैली हुई है?", "question_en": "In what chronological length is the Ganga river shared across the Indian states respectively?", "options": [{"hi": "उत्तराखंड (520 किमी), उत्तर प्रदेश (1,450 किमी), बिहार (445 किमी), पश्चिम बंगाल (110 किमी)", "en": "Uttarakhand (520 km), Uttar Pradesh (1,450 km), Bihar (445 km), West Bengal (110 km)"}, {"hi": "उत्तराखंड (110 किमी), उत्तर प्रदेश (1,450 किमी), बिहार (445 किमी), पश्चिम बंगाल (520 किमी)", "en": "Uttarakhand (110 km), Uttar Pradesh (1,450 km), Bihar (445 km), West Bengal (520 km)"}, {"hi": "उत्तराखंड (110 किमी), उत्तर प्रदेश (1,450 किमी), बिहार (520 किमी), पश्चिम बंगाल (445 किमी)", "en": "Uttarakhand (110 km), Uttar Pradesh (1,450 km), Bihar (520 km), West Bengal (445 km)"}, {"hi": "उत्तराखंड (445 किमी), उत्तर प्रदेश (1,450 किमी), बिहार (110 किमी), पश्चिम बंगाल (520 किमी)", "en": "Uttarakhand (445 km), Uttar Pradesh (1,450 km), Bihar (110 km), West Bengal (520 km)"}], "answer": 1, "explanation_hi": "गंगा नदी की लंबाई उत्तराखंड में 110 किमी, उत्तर प्रदेश में सर्वाधिक 1,450 किमी, बिहार में 445 किमी और पश्चिम बंगाल में 520 किमी है।", "explanation_en": "The Ganga is shared by Uttarakhand (110 km), Uttar Pradesh (1,450 km), Bihar (445 km) and West Bengal (520 km)."}, {"id": 28, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "गंगा की सबसे पश्चिमी और सबसे लंबी सहायक नदी 'यमुना' का उद्गम किस पर्वत चोटी के ढाल से होता है?", "question_en": "From the slopes of which mountain range does the 'Yamuna', the westernmost and longest tributary of Ganga, originate?", "options": [{"hi": "धौलागिरि श्रेणी", "en": "Dhaulagiri range"}, {"hi": "अमरकंटक श्रेणी", "en": "Amarkantak range"}, {"hi": "बंदरपूंछ श्रेणी", "en": "Banderpunch range"}, {"hi": "नंदा देवी श्रेणी", "en": "Nanda Devi range"}], "answer": 2, "explanation_hi": "यमुना नदी का स्रोत बंदरपूंछ श्रेणी के पश्चिमी ढाल पर स्थित यमुनोत्री हिमनद (6,316 मीटर) है।", "explanation_en": "The Yamuna has its source in the Yamunotri glacier on the western slopes of Banderpunch range (6,316 m)."}, {"id": 29, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "तिब्बत में पूर्व की ओर बहने वाली 'त्संगपो' (Tsangpo) का अर्थ क्या है?", "question_en": "What is the meaning of 'Tsangpo', the eastward flowing river in Tibet?", "options": [{"hi": "पवित्र करने वाली", "en": "The purifier"}, {"hi": "शेर का मुख", "en": "The lion's mouth"}, {"hi": "विशाल जलधारा", "en": "The giant stream"}, {"hi": "पर्वतीय नदी", "en": "The mountain river"}], "answer": 0, "explanation_hi": "ब्रह्मपुत्र नदी को तिब्बत में शुष्क क्षेत्रों से गुजरने के कारण त्संगपो कहा जाता है, जिसका अर्थ 'पवित्र करने वाली' है।", "explanation_en": "The Brahmaputra is known as the Tsangpo in southern Tibet, which means 'the purifier.'"}, {"id": 30, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "महानदी का अपवाह बेसिन राज्यों के अनुसार मुख्य रूप से किस अनुपात में विभाजित है?", "question_en": "How is the drainage basin of the Mahanadi river primarily shared among states?", "options": [{"hi": "49 प्रतिशत महाराष्ट्र में तथा 51 प्रतिशत मध्य प्रदेश और छत्तीसगढ़ में", "en": "49 per cent in Maharashtra, and 51 per cent in Madhya Pradesh and Chhattisgarh"}, {"hi": "53 प्रतिशत मध्य प्रदेश और छत्तीसगढ़ में तथा 47 प्रतिशत ओडिशा में", "en": "53 per cent in Madhya Pradesh and Chhattisgarh, and 47 per cent in Odisha"}, {"hi": "79 प्रतिशत महाराष्ट्र में तथा 21 प्रतिशत मध्य प्रदेश और गुजरात में", "en": "79 per cent in Maharashtra, and 21 per cent in Madhya Pradesh and Gujarat"}, {"hi": "41 प्रतिशत कर्नाटक में तथा 59 प्रतिशत तमिलनाडु और केरल में", "en": "41 per cent in Karnataka, and 59 per cent in Tamil Nadu and Kerala"}], "answer": 1, "explanation_hi": "महानदी बेसिन का 53% भाग मध्य प्रदेश व छत्तीसगढ़ में तथा 47% भाग ओडिशा राज्य में फैला हुआ है।", "explanation_en": "Fifty three per cent of the drainage basin of Mahanadi lies in Madhya Pradesh and Chhattisgarh, while 47 per cent lies in Odisha."}, {"id": 31, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: भारत की स्थलीय सीमा लगभग 30 डिग्री अक्षांशों तक विस्तृत है। कथन 2: भारत का कुल क्षेत्रफल 3.28 मिलियन वर्ग किमी है जो विश्व के भूखंड का 2.4% है।", "question_en": "Consider the following statements: Statement 1: The latitudinal and longitudinal extent of India is roughly 30 degrees. Statement 2: India's area of 3.28 million sq. km accounts for 2.4 per cent of the world's land surface.", "options": [{"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "दोनों", "en": "Both"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 2, "explanation_hi": "दोनों कथन सत्य हैं। भारत का अक्षांशीय विस्तार लगभग 30 डिग्री है और यह क्षेत्रफल में विश्व का 2.4% हिस्सा रखता है।", "explanation_en": "Both statements are correct as India's extent is roughly 30 degrees and its 3.28 million sq km area is 2.4% of the world."}, {"id": 32, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: प्रायद्वीपीय पठार की नदियां उथली तथा अत्यधिक तीव्र प्रवणता (gradients) वाली होती हैं। कथन 2: हिमालय की नदियां नवीन तथा अत्यंत गहरी घाटियों एवं कंदराओं से होकर गुजरती हैं।", "question_en": "Consider the following statements: Statement 1: The river valleys in the Peninsular Block are shallow with high gradients. Statement 2: The Himalayan rivers are youthful and flow through deep gorges.", "options": [{"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "दोनों", "en": "Both"}, {"hi": "केवल 2", "en": "Only 2"}], "answer": 3, "explanation_hi": "कथन 2 सत्य है। कथन 1 गलत है क्योंकि प्रायद्वीपीय ब्लॉक की नदियां उथली होने के साथ अत्यंत मंद प्रवणता (low gradients) वाली होती हैं।", "explanation_en": "Only Statement 2 is correct. Statement 1 is false because Peninsular rivers have shallow valleys with low gradients, not high."}, {"id": 33, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: पश्चिमी तटीय मैदान जलमग्न (submerged) तट के प्रमुख उदाहरण हैं, इसलिए यहां प्राकृतिक बंदरगाह अधिक हैं। कथन 2: पूर्वी तटीय मैदानों पर नदियां कोई डेल्टा नहीं बनाती हैं और सीधे समुद्र में गिरती हैं।", "question_en": "Consider the following statements: Statement 1: The western coastal plains are an example of a submerged coastal plain, offering natural conditions for ports. Statement 2: The rivers flowing through the eastern coastal plains do not form any delta.", "options": [{"hi": "दोनों", "en": "Both"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 2, "explanation_hi": "कथन 1 सत्य है। कथन 2 गलत है क्योंकि पूर्वी तटीय मैदानों पर महानदी, कृष्णा, गोदावरी और कावेरी नदियां बड़े-बड़े डेल्टा बनाती हैं।", "explanation_en": "Only Statement 1 is correct. Statement 2 is incorrect because rivers on the eastern coastal plain form well-developed deltas."}, {"id": 34, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: भारत का एकमात्र सक्रिय ज्वालामुखी 'बैरन द्वीप' अंडमान and निकोबार द्वीप समूह में स्थित है। कथन 2: लक्षद्वीप समूह की भौगोलिक विशेषता यहां पाए जाने वाले सघन प्रवाल जमाव (coral deposits) हैं।", "question_en": "Consider the following statements: Statement 1: Barren Island, the only active volcano of India, is situated in the Andaman and Nicobar Islands. Statement 2: The entire Lakshadweep island group is built of coral deposits.", "options": [{"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "दोनों", "en": "Both"}], "answer": 3, "explanation_hi": "दोनों कथन सत्य हैं। बैरन द्वीप अंडमान में एकमात्र सक्रिय ज्वालामुखी है तथा लक्षद्वीप पूर्णतः प्रवाल जमाव (coral deposits) से बना है।", "explanation_en": "Both statements are correct. Barren is the only active volcano in India and Lakshadweep is completely built of corals."}, {"id": 35, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: प्रायद्वीपीय पठार की कावेरी नदी वर्ष भर बिना किसी बड़े उतार-चढ़ाव के बहती है। कथन 2: कावेरी नदी का ऊपरी जलग्रहण क्षेत्र दक्षिण-पश्चिम मानसून से तथा निचला क्षेत्र उत्तर-पूर्वी मानसून से वर्षा प्राप्त करता है।", "question_en": "Consider the following statements: Statement 1: The Kaveri river carries water throughout the year with comparatively less fluctuation than other Peninsular rivers. Statement 2: Its upper catchment receives rainfall in summer (southwest monsoon) and the lower part in winter (northeast monsoon).", "options": [{"hi": "दोनों", "en": "Both"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 0, "explanation_hi": "दोनों कथन सही हैं। कावेरी के जलग्रहण क्षेत्र को दोनों मानसूनों (गर्मियों और सर्दियों) से पानी मिलता है, इसलिए यह प्रायद्वीपीय नदियों में अपवाद स्वरूप बारहमासी जैसी है।", "explanation_en": "Both statements are correct since Kaveri's dual rainfall regime reduces seasonal water flow fluctuations."}, {"id": 36, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: नर्मदा और तापी नदियां भ्रंश घाटी (rift valley) से होकर बहने वाली दो अपवाद स्वरूप बड़ी नदियां हैं। कथन 2: ये दोनों नदियां पूर्व दिशा में बहते हुए बंगाल की खाड़ी में गिरती हैं।", "question_en": "Consider the following statements: Statement 1: The Narmada and Tapi are two large Peninsular rivers that flow through rift valleys. Statement 2: Both of Of these rivers flow eastwards to discharge into the Bay of Bengal.", "options": [{"hi": "दोनों", "en": "Both"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 2, "explanation_hi": "कथन 1 सत्य है। कथन 2 गलत है क्योंकि नर्मदा और तापी नदियां पश्चिम की ओर बहती हैं और अरब सागर में गिरती हैं।", "explanation_en": "Only Statement 1 is correct. Statement 2 is incorrect because Narmada and Tapi flow westwards into the Arabian Sea."}, {"id": 37, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: सिंधु नदी को तिब्बत में 'त्संगपो' के नाम से जाना जाता है जिसका अर्थ शेर का मुख होता है। कथन 2: ब्रह्मपुत्र नदी तिब्बत में 'सिंगी खम्बान' नाम से जानी जाती है जिसका अर्थ पवित्र करने वाली है।", "question_en": "Consider the following statements: Statement 1: The Indus river is known as 'Tsangpo' in Tibet, which means lion's mouth. Statement 2: The Brahmaputra river is known as 'Singi Khamban' in Tibet, which means 'the purifier.'", "options": [{"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "दोनों", "en": "Both"}], "answer": 1, "explanation_hi": "दोनों कथन गलत हैं। सिंधु को तिब्बत में 'सिंगी खम्बान' (शेर का मुख) तथा ब्रह्मपुत्र को 'त्संगपो' (पवित्र करने वाली) कहते हैं।", "explanation_en": "Both statements are incorrect. Indus is known as Singi Khamban (lion's mouth) and Brahmaputra as Tsangpo (the purifier)."}, {"id": 38, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: सतलुज नदी एक पूर्ववर्ती (antecedent) नदी है जो हिमालय पर्वतमाला को काटकर शिपकी ला से भारत में प्रवेश करती है। कथन 2: सतलुज नदी का उद्गम तिब्बत के राकस ताल से होता है।", "question_en": "Consider the following statements: Statement 1: The Satluj river is an antecedent river that cuts across the Himalayas to enter India through Shipki La. Statement 2: The Satluj river originates from Raksas Tal near Mansarovar.", "options": [{"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "दोनों", "en": "Both"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 2, "explanation_hi": "दोनों कथन सही हैं। सतलुज एक पूर्ववर्ती नदी है जो राकस ताल से निकलकर शिपकी ला दर्रे द्वारा भारत में प्रवेश करती है।", "explanation_en": "Both statements are correct. Satluj is an antecedent river originating in Raksas Tal and passing through Shipki La."}, {"id": 39, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: सोन नदी गंगा की एक प्रमुख बाएं तट (left bank) की सहायक नदी है जो उत्तर दिशा में बहती है। कथन 2: रामगंगा नदी गंगा की दाहिने तट (right bank) की एकमात्र सहायक नदी है जो गढ़वाल की पहाड़ियों से निकलती है।", "question_en": "Consider the following statements: Statement 1: The Son is a major left bank tributary of the Ganga flowing northwards. Statement 2: The Ramganga is the only right bank tributary of the Ganga originating in the Garhwal hills.", "options": [{"hi": "दोनों", "en": "Both"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 3, "explanation_hi": "दोनों कथन गलत हैं। सोन गंगा की दाहिने तट की सहायक नदी है, तथा रामगंगा बाएं तट की सहायक नदी है।", "explanation_en": "Both statements are incorrect. Son is a right-bank tributary, and Ramganga is a left-bank tributary of the Ganga."}, {"id": 40, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: गंडक नदी का उद्गम नेपाल हिमालय में धौलागिरि और माउंट एवरेस्ट के बीच होता है। कथन 2: गंडक नदी बिहार के चंपारण जिले में प्रवेश कर सोनपुर के निकट गंगा नदी में मिल जाती है।", "question_en": "Consider the following statements: Statement 1: The Gandak river rises in the Nepal Himalayas between Dhaulagiri and Mount Everest. Statement 2: The Gandak enters the Ganga plain in Champaran and joins Ganga near Patna at Sonpur.", "options": [{"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "दोनों", "en": "Both"}], "answer": 3, "explanation_hi": "दोनों कथन सत्य हैं। गंडक नदी धौलागिरि और एवरेस्ट के बीच से निकलती है और चंपारण से भारत में प्रवेश कर सोनपुर में गंगा से मिलती है।", "explanation_en": "Both statements are correct as Gandak originates between Dhaulagiri and Everest and joins Ganga at Sonpur, Bihar."}, {"id": 41, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (नदी का नाम): A. झेलम, B. चेनाब, C. रावी, D. ब्यास; सूची-II (उद्गम स्थल): 1. रोहतांग दर्रे के पश्चिम में कुल्लू पहाड़ियाँ, 2. वेरीनाग झरना, 3. रोहतांग दर्रे के निकट ब्यास कुंड, 4. केलांग के निकट चंद्र और भागा धाराओं का संगम", "question_en": "Match List-I with List-II: List-I (River name): A. Jhelum, B. Chenab, C. Ravi, D. Beas; List-II (Source of origin): 1. Kullu hills west of Rohtang Pass, 2. Verinag spring, 3. Beas Kund near Rohtang Pass, 4. Confluence of Chandra and Bhaga near Keylong", "options": [{"hi": "A-2, B-4, C-1, D-3", "en": ""}, {"hi": "A-1, B-2, C-3, D-4", "en": ""}, {"hi": "A-2, B-1, C-4, D-3", "en": ""}, {"hi": "A-4, B-3, C-1, D-2", "en": ""}], "answer": 0, "explanation_hi": "झेलम का उद्गम वेरीनाग (2) से, चेनाब का चंद्रभागा संगम (4) से, रावी का रोहतांग के पश्चिम (1) से और ब्यास का ब्यास कुंड (3) से होता है।", "explanation_en": "Jhelum originates from Verinag (2), Chenab from Chandra-Bhaga confluence (4), Ravi west of Rohtang (1), and Beas from Beas Kund (3)."}, {"id": 42, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (हिमनद अथवा पठार): A. भगीरथी का उद्गम, B. अलकनंदा का उद्गम, C. शारदा का उद्गम, D. सोन का उद्गम; सूची-II (भौगोलिक अवस्थिति): 1. सतोपंथ हिमनद, 2. गंगोत्री हिमनद, 3. अमरकंटक पठार, 4. मिलाम हिमनद", "question_en": "Match List-I with List-II: List-I (Glacier or Plateau): A. Origin of Bhagirathi, B. Origin of Alaknanda, C. Origin of Sarda, D. Origin of Son; List-II (Geographical location): 1. Satopanth glacier, 2. Gangotri glacier, 3. Amarkantak plateau, 4. Milam glacier", "options": [{"hi": "A-2, B-1, C-4, D-3", "en": ""}, {"hi": "A-1, B-2, C-3, D-4", "en": ""}, {"hi": "A-4, B-3, C-2, D-1", "en": ""}, {"hi": "A-2, B-4, C-1, D-3", "en": ""}], "answer": 0, "explanation_hi": "भगीरथी का गंगोत्री (2) से, अलकनंदा का सतोपंथ (1) से, शारदा का मिलाम (4) से तथा सोन का अमरकंटक (3) से उद्गम होता है।", "explanation_en": "Bhagirathi originates from Gangotri (2), Alaknanda from Satopanth (1), Sarda from Milam (4), and Son from Amarkantak (3)."}, {"id": 43, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (प्रायद्वीपीय नदियां): A. गोदावरी, B. कृष्णा, C. कावेरी, D. नर्मदा; सूची-II (उद्गम स्थल पहाड़ियां अथवा स्थान): 1. महाबलेश्वर (सह्याद्रि), 2. ब्रह्मगिरि पहाड़ियाँ (कोगाडु), 3. नासिक जिला (त्र्यंबक पहाड़ियां), 4. अमरकंटक पठार का पश्चिमी ढाल", "question_en": "Match List-I with List-II: List-I (Peninsular rivers): A. Godavari, B. Krishna, C. Kaveri, D. Narmada; List-II (Source origin): 1. Mahabaleshwar (Sahyadri), 2. Brahmagiri hills of Kogadu, 3. Nasik district, 4. Western flank of Amarkantak plateau", "options": [{"hi": "A-1, B-3, C-4, D-2", "en": ""}, {"hi": "A-3, B-1, C-2, D-4", "en": ""}, {"hi": "A-2, B-4, C-1, D-3", "en": ""}, {"hi": "A-4, B-2, C-3, D-1", "en": ""}], "answer": 1, "explanation_hi": "गोदावरी नासिक (3) से, कृष्णा महाबलेश्वर (1) से, कावेरी ब्रह्मगिरि (2) से तथा नर्मदा अमरकंटक के पश्चिमी ढाल (4) से निकलती है।", "explanation_en": "Godavari originates in Nasik (3), Krishna near Mahabaleshwar (1), Kaveri in Brahmagiri (2), and Narmada from Amarkantak (4)."}, {"id": 44, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (द्वीप चोटियाँ अथवा अंडमान-निकोबार): A. सैडल पीक, B. माउंट डियावोलो, C. माउंट कोयोब, D. माउंट थुलियर; सूची-II (अवस्थिति): 1. दक्षिण अंडमान, 2. मध्य अंडमान, 3. उत्तरी अंडमान, 4. ग्रेट निकोबार", "question_en": "Match List-I with List-II: List-I (Island Peaks or Andaman-Nicobar): A. Saddle Peak, B. Mount Diavolo, C. Mount Koyob, D. Mount Thuiller; List-II (Location): 1. South Andaman, 2. Middle Andaman, 3. North Andaman, 4. Great Nicobar", "options": [{"hi": "A-4, B-1, C-2, D-3", "en": ""}, {"hi": "A-1, B-3, C-4, D-2", "en": ""}, {"hi": "A-2, B-4, C-1, D-3", "en": ""}, {"hi": "A-3, B-2, C-1, D-4", "en": ""}], "answer": 3, "explanation_hi": "सैडल पीक उत्तरी अंडमान (3) में है, माउंट डियावोलो मध्य अंडमान (2) में, माउंट कोयोब दक्षिण अंडमान (1) में तथा माउंट थुलियर ग्रेट निकोबार (4) में स्थित है।", "explanation_en": "Saddle Peak is in North Andaman (3), Mt Diavolo in Middle (2), Mt Koyob in South (1), and Mt Thuiller in Great Nicobar (4)."}, {"id": 45, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (अपवाह प्रतिरूप): A. द्रुमाकृतिक, B. अरीय, C. जालीनुमा, D. अभिकेंद्री; सूची-II (विवरण अथवा उदाहरण): 1. नदियाँ अमरकंटक श्रेणी जैसी पहाड़ियों से निकलकर सभी दिशाओं में बहती हैं, 2. प्राथमिक सहायक नदियाँ समानांतर और द्वितीयक समकोण पर मिलती हैं, 3. नदियाँ किसी गर्त या झील में सभी दिशाओं से जल विसर्जित करती हैं, 4. पेड़ की शाखाओं जैसा प्रतिरूप जैसे उत्तरी मैदान की नदियाँ", "question_en": "Match List-I with List-II: List-I (Drainage Pattern): A. Dendritic, B. Radial, C. Trellis, D. Centripetal; List-II (Description or Example): 1. Rivers originate from a hill and flow in all directions like Amarkantak, 2. Primary tributaries flow parallel and secondary join at right angles, 3. Rivers discharge water from all directions into a lake or depression, 4. Tree branch-like pattern like northern plain rivers", "options": [{"hi": "A-1, B-2, C-3, D-4", "en": ""}, {"hi": "A-4, B-1, C-2, D-3", "en": ""}, {"hi": "A-3, B-4, C-1, D-2", "en": ""}, {"hi": "A-2, B-3, C-4, D-1", "en": ""}], "answer": 1, "explanation_hi": "द्रुमाकृतिक पेड़ की शाखाओं जैसा (4) है, अरीय अमरकंटक जैसी पहाड़ियों से बाहर जाना (1) है, जालीनुमा समकोण मिलन (2) है, तथा अभिकेंद्री गर्त में गिरना (3) है।", "explanation_en": "Dendritic is tree-like (4), Radial flows outwards in all directions (1), Trellis meets at right angles (2), and Centripetal discharges into a depression (3)."}, {"id": 46, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "गंगा नदी के उद्गम से शुरू करते हुए अलकनंदा की निम्नलिखित सहायक नदियों के संगम स्थलों (प्रयाग) को उत्तर से दक्षिण के भौगोलिक क्रम में व्यवस्थित कीजिए: 1. विष्णु प्रयाग, 2. रुद्र प्रयाग, 3. कर्ण प्रयाग, 4. देवप्रयाग", "question_en": "Starting from the upper reaches of the Alaknanda, arrange the following confluence points (Prayags) of its tributaries in geographical order from North to South: 1. Vishnu Prayag, 2. Rudra Prayag, 3. Karna Prayag, 4. Devprayag", "options": [{"hi": "3, 1, 2, 4", "en": ""}, {"hi": "1, 2, 3, 4", "en": ""}, {"hi": "1, 3, 2, 4", "en": ""}, {"hi": "4, 2, 3, 1", "en": ""}], "answer": 2, "explanation_hi": "उत्तर से दक्षिण सही क्रम है: विष्णु प्रयाग (धौली और विष्णु गंगा का मिलन), कर्ण प्रयाग (पिंडार का मिलन), रुद्र प्रयाग (मंदाकिनी का मिलन), और अंत में देवप्रयाग (भागीरथी और अलकनंदा का मिलन)।", "explanation_en": "The correct north-to-south sequence of Prayags is Vishnu Prayag, Karna Prayag, Rudra Prayag, and finally Devprayag."}, {"id": 47, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "यमुना नदी के मार्ग के अनुसार, प्रायद्वीपीय पठार से निकलने वाली उसकी निम्नलिखित सहायक नदियों के संगम स्थलों को पश्चिम से पूर्व के भौगोलिक क्रम में व्यवस्थित कीजिए: 1. बेतवा, 2. केन, 3. चंबल, 4. सिंध", "question_en": "According to the course of the Yamuna river, arrange the following tributaries originating from the Peninsular plateau in geographical order from West to East: 1. Betwa, 2. Ken, 3. Chambal, 4. Sind", "options": [{"hi": "1, 3, 4, 2", "en": ""}, {"hi": "3, 1, 4, 2", "en": ""}, {"hi": "3, 4, 1, 2", "en": ""}, {"hi": "4, 3, 1, 2", "en": ""}], "answer": 2, "explanation_hi": "पश्चिम से पूर्व की ओर यमुना में मिलने वाली नदियों का सही क्रम है: चंबल (3), सिंध (4), बेतवा (1) और अंत में केन (2)।", "explanation_en": "The correct sequence of Yamuna's right bank tributaries from West to East is Chambal, Sind, Betwa, and Ken."}, {"id": 48, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भूवैज्ञानिक अतीत में भारतीय प्रायद्वीपीय खंड के उत्तर की ओर विस्थापन के विभिन्न चरणों से संबद्ध निम्नलिखित घटनाओं को सबसे प्राचीन से सबसे नवीन कालक्रम में व्यवस्थित कीजिए: 1. भारतीय प्लेट का यूरेशियन प्लेट से टकराव और टेथिस सागर का बंद होना, 2. पैंजिया सुपरमहाद्वीप का विभाजन और भारतीय व ऑस्ट्रेलियाई प्लेट का अलग होना, 3. सिंधु-गंगा-ब्रह्मपुत्र बेसिन का निर्माण", "question_en": "Arrange the following geological events associated with the northward movement of the Indian plate in chronological order from oldest to newest: 1. Collision of the Indian plate with the Eurasian plate and closure of Tethys, 2. Splitting of Pangaea and separation of Indian and Australian plates, 3. Formation of the Indo-Ganga-Brahmaputra geosynclinal depression", "options": [{"hi": "1, 2, 3", "en": ""}, {"hi": "2, 1, 3", "en": ""}, {"hi": "2, 3, 1", "en": ""}, {"hi": "3, 2, 1", "en": ""}], "answer": 1, "explanation_hi": "सबसे पहले पैंजिया से भारतीय प्लेट अलग हुई (2), फिर उत्तर की ओर बढ़कर यूरेशियाई प्लेट से टकराई जिससे टेथिस बंद हुआ (1), और अंततः हिमालय की तीसरी श्रृंखला के दौरान 64 मिलियन वर्ष पूर्व गंगा बेसिन द्रोणी बनी (3)।", "explanation_en": "The correct sequence from oldest to newest is: Splitting and separation of plate (2), collision with Eurasian plate (1), and formation of Indo-Ganga-Brahmaputra plain (3)."}, {"id": 49, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित में से कितने युग्म (प्रायद्वीपीय नदी - उसका जलग्रहण क्षेत्र प्रतिशत) सही सुमेलित हैं? 1. गोदावरी नदी बेसिन: 49 प्रतिशत महाराष्ट्र में, 20 प्रतिशत मध्य प्रदेश व छत्तीसगढ़ में, और शेष आंध्र प्रदेश में, 2. कृष्णा नदी बेसिन: 27 प्रतिशत महाराष्ट्र में, 44 प्रतिशत कर्नाटक में, और 29 प्रतिशत आंध्र प्रदेश व तेलंगाना में, 3. कावेरी नदी बेसिन: 3 प्रतिशत केरल में, 41 प्रतिशत कर्नाटक में, और 56 प्रतिशत तमिलनाडु में", "question_en": "How many of the following pairs of Peninsular river and its catchment area percentage are correctly matched? 1. Godavari basin: 49 per cent in Maharashtra, 20 per cent in MP and Chhattisgarh, rest in AP, 2. Krishna basin: 27 per cent in Maharashtra, 44 per cent in Karnataka, 29 per cent in AP and Telangana, 3. Kaveri basin: 3 per cent in Kerala, 41 per cent in Karnataka, 56 per cent in Tamil Nadu", "options": [{"hi": "सभी तीन युग्म", "en": "All three pairs"}, {"hi": "कोई भी नहीं", "en": "None"}, {"hi": "केवल एक युग्म", "en": "Only one pair"}, {"hi": "केवल दो युग्म", "en": "Only two pairs"}], "answer": 0, "explanation_hi": "सभी तीनों युग्म पूरी तरह सही सुमेलित हैं। गोदावरी, कृष्णा और कावेरी नदियों के जलग्रहण क्षेत्रों के राज्यवार प्रतिशत आंकड़े आपके स्रोतों के बिल्कुल अनुकूल हैं।", "explanation_en": "All three pairs are correctly matched based on the exact state-wise catchment percentages given in your source materials."}, {"id": 50, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित भौगोलिक युग्मों (नदी एवं सहायक नदी) पर विचार कीजिए: 1. सिंधु - श्योक, जास्कर और द्रास, 2. गंगा - रामगंगा, घाघरा और महानंदा, 3. ब्रह्मपुत्र - सुबनसिरी, कामेंग और मानस। उपर्युक्त में से कौन-कौन से युग्म सही सुमेलित हैं?", "question_en": "Consider the following geographical pairs of river and tributary: 1. Indus - Shyok, Zaskar and Dras, 2. Ganga - Ramganga, Ghaghara and Mahananda, 3. Brahmaputra - Subansiri, Kameng and Manas. Which of the above pairs are correctly matched?", "options": [{"hi": "केवल 2 और 3", "en": "Only 2 and 3"}, {"hi": "केवल 1 और 2", "en": "Only 1 and 2"}, {"hi": "1, 2 और 3", "en": "1, 2 and 3"}, {"hi": "केवल 1 और 3", "en": "Only 1 and 3"}], "answer": 2, "explanation_hi": "तीनों युग्म सही सुमेलित हैं। श्योक, जास्कर, द्रास सिंधु की हैं; रामगंगा, घाघरा, महानंदा गंगा की तथा सुबनसिरी, कामेंग, मानस ब्रह्मपुत्र की सहायक नदियां हैं।", "explanation_en": "All three pairs are correctly matched as Shyok-Zaskar-Dras are of Indus, Ramganga-Ghaghara-Mahananda of Ganga, and Subansiri-Kameng-Manas of Brahmaputra."}]};
+
+/* ===== भाषा टॉगल + प्रश्न-प्रकार फ़ॉर्मैटर ===== */
+var JH_LANG = (function(){ try{ return localStorage.getItem("jaiho_lang")||"bi"; }catch(e){ return "bi"; } })();
+function langSegHTML(){
+  var L=JH_LANG, o=function(v,t){ return '<button type="button" class="lang-b'+(L===v?" on":"")+'" data-lang="'+v+'">'+t+'</button>'; };
+  return o("hi","हिंदी")+o("en","English")+o("bi","दोनों");
+}
+function paintLang(){
+  ["qLang","coverLang"].forEach(function(id){
+    var box=document.getElementById(id); if(!box) return;
+    box.innerHTML=langSegHTML();
+    box.querySelectorAll(".lang-b").forEach(function(b){
+      b.addEventListener("click",function(){ setJhLang(b.getAttribute("data-lang")); });
+    });
+  });
+}
+function setJhLang(l){
+  JH_LANG=l; try{ localStorage.setItem("jaiho_lang",l); }catch(e){}
+  paintLang();
+  try{ if(document.getElementById("testScreen").style.display==="block") renderQuestion(); }catch(e){}
+  try{ if(document.getElementById("resultScreen").style.display==="block") renderReview(); }catch(e){}
+}
+function jhEsc(t){ return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function _jhPoints(t){
+  t = String(t).replace(/\s*(कथन\s*\d+\s*[:：])/g,"\n$1")
+       .replace(/\s*(Statement\s*\d+\s*[:：])/gi,"\n$1")
+       .replace(/([।;?:,])\s*(\d+\.\s)/g,"$1\n$2");
+  return t.replace(/^\n+/,"").replace(/\n[ \t]+/g,"\n");
+}
+function _jhMatch(raw){
+  var t=String(raw);
+  var reI=/(सूची|List)[\s\-–—]*I(?!I)\s*(?:\([^)]*\))?\s*[:：]/i;
+  var reII=/(सूची|List)[\s\-–—]*II\s*(?:\([^)]*\))?\s*[:：]/i;
+  var mI=t.match(reI), mII=t.match(reII);
+  if(!mI||!mII||mII.index<=mI.index) return null;
+  var intro=t.slice(0,mI.index).trim();
+  var segI=t.slice(mI.index+mI[0].length,mII.index).trim().replace(/[;।,]\s*$/,"");
+  var rest=t.slice(mII.index+mII[0].length);
+  var mo=rest.match(/(सही\s*मिलान|नीचे\s*दिए|सुमेलित|Choose|Select|Match|कूट)/i);
+  var segII, outro="";
+  if(mo){ segII=rest.slice(0,mo.index).trim(); outro=rest.slice(mo.index).trim(); }
+  else segII=rest.trim();
+  segII=segII.replace(/[;।,]\s*$/,"");
+  var sp=function(seg,re){ return seg.split(re).map(function(x){return x.trim();}).filter(Boolean); };
+  var A=sp(segI,/\s*,\s*(?=[A-Z]\.)/), B=sp(segII,/\s*,\s*(?=\d+\.)/);
+  if(A.length<2||B.length<2) return null;
+  var n=Math.max(A.length,B.length), rows="";
+  for(var k=0;k<n;k++) rows+="<tr><td>"+jhEsc(A[k]||"")+"</td><td>"+jhEsc(B[k]||"")+"</td></tr>";
+  return (intro?jhEsc(intro)+"\n":"")
+    + '<table class="match-tbl"><tr><th>'+jhEsc(mI[1])+'-I</th><th>'+jhEsc(mII[1])+'-II</th></tr>'+rows+'</table>'
+    + (outro?jhEsc(outro):"");
+}
+function jhFmt(raw){ if(!raw) return ""; var mt=_jhMatch(raw); return mt?mt:jhEsc(_jhPoints(raw)); }
+
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  paintLang();
+    el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  var _hi=q.question_hi||"", _en=q.question_en||"";
+  if(JH_LANG==="en" && _en){ el("qtext").innerHTML = jhFmt(_en); el("qtextEn").classList.add("hidden"); }
+  else { el("qtext").innerHTML = jhFmt(_hi||_en);
+         if(JH_LANG==="bi" && _en && _hi){ el("qtextEn").innerHTML = jhFmt(_en); el("qtextEn").classList.remove("hidden"); }
+         else { el("qtextEn").innerHTML=""; el("qtextEn").classList.add("hidden"); } }
+  paintLang();
+  el("options").innerHTML = (q.options||[]).map((op,i)=>{var oh=(op&&op.hi)||"", oe=(op&&op.en)||"";var body = (JH_LANG==="en"&&oe) ? `<div class="op-hi">${jhEsc(oe)}</div>` : (JH_LANG==="bi"&&oe&&oe!==oh) ? `<div class="op-hi">${jhEsc(oh)}</div><div class="op-en">${jhEsc(oe)}</div>` : `<div class="op-hi">${jhEsc(oh||oe)}</div>`;return `<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div>${body}</div></button>`;}).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{
+  const user = answers[i];
+  const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad");
+  const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong");
+  const optTxt = function(o){ if(!o) return ""; var oh=o.hi||"", oe=o.en||"";
+    if(JH_LANG==="en" && oe) return oe;
+    if(JH_LANG==="bi" && oe && oe!==oh) return oh+" / "+oe;
+    return oh||oe; };
+  const utext = user===null ? "Not attempted" : `${letters[user]}. ${optTxt(q.options[user])}`;
+  const correctText = `${letters[q.answer]}. ${optTxt(q.options[q.answer])}`;
+  var qMain = (JH_LANG==="en" && q.question_en) ? q.question_en : (q.question_hi||q.question_en||"");
+  var qSub  = (JH_LANG==="bi" && q.question_en && q.question_hi) ? q.question_en : "";
+  var eMain = (JH_LANG==="en" && q.explanation_en) ? q.explanation_en : (q.explanation_hi||q.explanation_en||"");
+  var eSub  = (JH_LANG==="bi" && q.explanation_en && q.explanation_hi) ? q.explanation_en : "";
+  return `<div class="review-item"><div class="review-head">`
+    + `<strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong>`
+    + `<span class="badge ${status}">${statusText}</span></div>`
+    + `<div class="review-content"><div style="white-space:pre-line"><b>${jhFmt(qMain)}</b></div>`
+    + (qSub?`<div class="qtext-en" style="white-space:pre-line">${jhFmt(qSub)}</div>`:"")
+    + `<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div>`
+    + (eMain?`<div class="explain"><b>Explanation:</b> ${escapeHTML(eMain)}`
+        + (eSub?`<br><span style="color:#64748b">${escapeHTML(eSub)}</span>`:"")+`</div>`:"")
+    + `</div></div>`;
+}).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
