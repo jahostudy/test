@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  
+  .match-tbl{width:100%;border-collapse:collapse;margin:10px 0 4px}
+  .match-tbl th,.match-tbl td{border:1px solid #d8eaff;padding:8px 11px;text-align:left;vertical-align:top;font-size:.93em}
+  .match-tbl th{color:var(--navy);font-weight:950;font-size:.82em;letter-spacing:.5px;background:#eaf3ff}
+  .qtext-en .match-tbl th{color:#475569;background:#f1f5fb}
+  .lang-seg{display:inline-flex;background:#eef4fc;border:1px solid #d8eaff;border-radius:10px;padding:3px;gap:2px}
+  .lang-b{font-family:inherit;font-size:12.5px;font-weight:900;color:#5b6a83;background:transparent;border:0;
+    border-radius:8px;padding:5px 13px;cursor:pointer;transition:.15s}
+  .lang-b.on{background:linear-gradient(135deg,var(--royal),#0f6fd0);color:#fff}
+  .lang-choose{display:flex;align-items:center;gap:10px;margin:12px 0 0;flex-wrap:wrap}
+  .lc-label{font-size:13px;color:var(--muted);font-weight:900}
+
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="lang-choose"><span class="lc-label">पढ़ने की भाषा:</span><div class="lang-seg" id="coverLang"></div></div><div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap"><div class="topic" id="topic">Topic</div><div class="lang-seg" id="qLang"></div></div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title": "Lower PCS Set 10 • विज्ञान एवं कंप्यूटर", "highlight": "विज्ञान एवं कंप्यूटर", "shortTitle": "Lower PCS Set 10", "subtitle": "UPPCS Prelims 2026 / RO-ARO • GS Test • विज्ञान एवं कंप्यूटर", "tag": "UPPCS Prelims 2026 / RO-ARO", "pill": "🏆 Live Daily Rank • Jai Ho Study", "description": "UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।", "durationMinutes": 25, "marksPerQuestion": 2.0, "negativeMarks": 0.66, "testId": "jaiho-uppcs-2026-gs-test-lower-pcs-set-10-20260808-1gnzc", "footerCredit": "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com", "rankingEnabled": true, "firebaseConfig": {"apiKey": "AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I", "authDomain": "jai-ho-1c1d7.firebaseapp.com", "projectId": "jai-ho-1c1d7", "storageBucket": "jai-ho-1c1d7.firebasestorage.app", "messagingSenderId": "472878277527", "appId": "1:472878277527:web:a62780ddadf60fd5e5dad2", "measurementId": "G-LV29VGHG6J"}, "publishDateStr": "2026-08-08", "questions": [{"id": 1, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भौतिकी के नियमों के अनुसार, रबर और स्टील (इस्पात) की तुलना में कौन अधिक 'प्रत्यास्थ' (Elastic) माना जाता है और क्यों?", "question_en": "According to the laws of physics, which one is considered more 'Elastic' between rubber and steel, and why?", "options": [{"hi": "स्टील; क्योंकि इसका प्रतिबल और विकृति का अनुपात (यंग मापांक) रबर से अधिक होता है", "en": "Steel; because its ratio of stress to strain (Young's Modulus) is higher than that of rubber"}, {"hi": "रबर; क्योंकि इसे आसानी से खींचकर बहुत लंबा किया जा सकता है", "en": "Rubber; because it can be easily stretched to a very long length"}, {"hi": "दोनों समान रूप से प्रत्यास्थ हैं; क्योंकि दोनों पर हुक का नियम लागू होता है", "en": "Both are equally elastic; because Hooke's law applies to both"}, {"hi": "स्टील; क्योंकि इसकी संपीड़ितता रबर से कम होती है", "en": "Steel; because its compressibility is lower than that of rubber"}], "answer": 0, "explanation_hi": "प्रत्यास्थता की माप विरूपक बल लगाने पर उत्पन्न प्रतिबल और विकृति के अनुपात से होती है। स्टील में समान विकृति उत्पन्न करने के लिए बहुत अधिक प्रतिबल की आवश्यकता होती है, अतः स्टील, रबर से अधिक प्रत्यास्थ है।", "explanation_en": "Elasticity is measured by the ratio of stress to strain. Since steel requires much greater stress than rubber to produce the same strain, steel is more elastic than rubber."}, {"id": 2, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "यदि एक कुली अपने सिर पर भारी सूटकेस रखकर समतल रेलवे प्लेटफॉर्म पर क्षैतिज रूप से 100 मीटर चलता है, तो गुरुत्वाकर्षण बल के विरुद्ध उसके द्वारा किया गया कार्य कितना होगा?", "question_en": "If a coolie walks 100 meters horizontally on a flat railway platform carrying a heavy suitcase on his head, what is the work done by him against the force of gravity?", "options": [{"hi": "धनात्मक कार्य; क्योंकि विस्थापन की दूरी 100 मीटर है", "en": "Positive work; because the displacement distance is 100 meters"}, {"hi": "शून्य; क्योंकि बल (गुरुत्वाकर्षण) और विस्थापन परस्पर 90 डिग्री लंबवत हैं", "en": "Zero; because the force (gravity) and displacement are mutually perpendicular at 90 degrees"}, {"hi": "ऋणात्मक कार्य; क्योंकि गुरुत्वाकर्षण बल नीचे की ओर कार्य कर रहा है", "en": "Negative work; because the gravitational force is acting downwards"}, {"hi": "अनंत कार्य; क्योंकि सूटकेस का द्रव्यमान बहुत अधिक है", "en": "Infinite work; because the mass of the suitcase is very high"}], "answer": 1, "explanation_hi": "कार्य W = F.d cos(θ) होता है। यहाँ गुरुत्वाकर्षण बल नीचे की ओर (90 डिग्री पर) कार्य करता है और विस्थापन क्षैतिज है। cos(90°) = 0 होने के कारण किया गया कार्य शून्य होता है।", "explanation_en": "Work is defined as W = F.d cos(θ). Here, gravity acts vertically downwards (at 90 degrees) while the displacement is horizontal. Since cos(90°) = 0, the work done is zero."}, {"id": 3, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पानी पर मच्छरों के लारवा तैरते रहते हैं, लेकिन पानी पर मिट्टी का तेल (Kerosene) छिड़कते ही वे पानी में डूबकर मर जाते हैं। इसका मुख्य भौतिक कारण क्या है?", "question_en": "Mosquito larvae float on water, but they drown and die as soon as kerosene oil is sprayed on the water. What is the primary physical reason for this?", "options": [{"hi": "मिट्टी का तेल छिड़कने से पानी का घनत्व बहुत बढ़ जाता है", "en": "Spraying kerosene greatly increases the density of water"}, {"hi": "केरोसिन लारवा के श्वसन छिद्रों को भौतिक रूप से सील कर देता है", "en": "Kerosene physically seals the respiratory pores of the larvae"}, {"hi": "पानी की श्यानता (Viscosity) अत्यधिक कम हो जाती है", "en": "The viscosity of water becomes extremely low"}, {"hi": "मिट्टी का तेल छिड़कने से पानी का पृष्ठ तनाव (Surface Tension) कम हो जाता है", "en": "Spraying kerosene decreases the surface tension of water"}], "answer": 3, "explanation_hi": "पानी पर केरोसिन छिड़कने से पानी का पृष्ठ तनाव कम हो जाता है, जिससे लारवा को सहारा देने वाली पानी की सतह की 'तनी हुई झिल्ली' नष्ट हो जाती है और वे डूब जाते हैं।", "explanation_en": "Spraying kerosene lowers the surface tension of water, destroying the 'stretched membrane' of the water surface that supports the larvae, causing them to drown."}, {"id": 4, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "प्रकाश के पूर्ण आंतरिक परावर्तन (Total Internal Reflection - TIR) के घटित होने के लिए कौन-सी अनिवार्य स्थिति पूरी होनी चाहिए?", "question_en": "Which mandatory condition must be fulfilled for the occurrence of Total Internal Reflection (TIR) of light?", "options": [{"hi": "प्रकाश किरण को विरल माध्यम (Rarer) से सघन माध्यम (Denser) की ओर जाना चाहिए", "en": "The light ray must travel from a rarer medium to a denser medium"}, {"hi": "आपतन कोण (Angle of Incidence) क्रांतिक कोण से छोटा होना चाहिए", "en": "The angle of incidence must be smaller than the critical angle"}, {"hi": "प्रकाश किरण को सघन माध्यम (Denser) से विरल माध्यम (Rarer) की ओर जाना चाहिए", "en": "The light ray must travel from a denser medium to a rarer medium"}, {"hi": "दोनों माध्यमों का अपवर्तनांक बिल्कुल समान होना चाहिए", "en": "The refractive index of both media must be absolutely identical"}], "answer": 2, "explanation_hi": "TIR के लिए दो शर्तें आवश्यक हैं: 1. प्रकाश सघन से विरल माध्यम में जाए, और 2. आपतन कोण का मान क्रांतिक कोण (Critical Angle) से अधिक होना चाहिए।", "explanation_en": "Two conditions are required for TIR: 1. Light must travel from a denser to a rarer medium, and 2. The angle of incidence must be greater than the critical angle."}, {"id": 5, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "वाशिंग मशीन का ड्रायर (Dryer) तथा दूध से मक्खन निकालने वाली मशीन किस भौतिक बल के सिद्धांत पर कार्य करती है?", "question_en": "The dryer of a washing machine and a cream separator machine work on the principle of which physical force?", "options": [{"hi": "अपकेंद्रीय बल (Centrifugal Force)", "en": "Centrifugal Force"}, {"hi": "अभिकेंद्रीय बल (Centripetal Force)", "en": "Centripetal Force"}, {"hi": "गुरुत्वाकर्षण बल (Gravitational Force)", "en": "Gravitational Force"}, {"hi": "विद्युत चुंबकीय बल (Electromagnetic Force)", "en": "Electromagnetic Force"}], "answer": 0, "explanation_hi": "वाशिंग मशीन का ड्रायर और मक्खन निकालने वाली मशीन अपकेंद्रीय बल (Centrifugal force) पर काम करती हैं, जो केंद्र से बाहर की ओर लगने वाला एक आभासी बल है।", "explanation_en": "Washing machine dryers and cream separators operate on Centrifugal force, which is a pseudo/apparent force acting outwards from the center."}, {"id": 6, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कारों और इंजनों के रेडिएटरों को ठंडा करने के लिए पानी का ही उपयोग सबसे उपयुक्त क्यों माना जाता है?", "question_en": "Why is water considered the most suitable coolant for car and engine radiators?", "options": [{"hi": "क्योंकि पानी की विशिष्ट ऊष्मा (Specific Heat) बहुत अधिक होती है", "en": "Because water has a very high specific heat capacity"}, {"hi": "क्योंकि पानी की तापीय चालकता स्टील से अधिक होती है", "en": "Because water has a higher thermal conductivity than steel"}, {"hi": "क्योंकि पानी का क्वथनांक बहुत कम होता है", "en": "Because water has a very low boiling point"}, {"hi": "क्योंकि पानी का घनत्व शून्य डिग्री सेल्सियस पर अधिकतम होता है", "en": "Because the density of water is maximum at 0 degrees Celsius"}], "answer": 0, "explanation_hi": "पानी की विशिष्ट ऊष्मा बहुत अधिक होती है, जिसका अर्थ है कि यह अपने तापमान में बिना किसी बड़े बदलाव के बहुत अधिक ऊष्मा अवशोषित कर सकता है।", "explanation_en": "Water has a very high specific heat capacity, meaning it can absorb a large amount of heat with minimal change in its own temperature, making it an excellent coolant."}, {"id": 7, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूर्योदय से कुछ मिनट पहले ही सूर्य का दिखाई देना और तारों का टिमटमाना प्रकाश की किस घटना के कारण होता है?", "question_en": "The sun becoming visible a few minutes before actual sunrise and the twinkling of stars are caused by which optical phenomenon?", "options": [{"hi": "प्रकाश का प्रकीर्णन (Scattering)", "en": "Scattering of light"}, {"hi": "प्रकाश का विवर्तन (Diffraction)", "en": "Diffraction of light"}, {"hi": "पूर्ण आंतरिक परावर्तन (Total Internal Reflection)", "en": "Total Internal Reflection"}, {"hi": "वायुमंडलीय अपवर्तन (Refraction)", "en": "Atmospheric Refraction"}], "answer": 3, "explanation_hi": "पृथ्वी के वायुमंडल की विभिन्न परतों का घनत्व अलग-अलग होने के कारण प्रकाश की किरणें मुड़ती (अपवर्तित होती) हैं, जिससे तारा टिमटिमाता है और सूर्य वास्तविक स्थिति से थोड़ा ऊपर उठा दिखता है।", "explanation_en": "Due to different densities of various layers of the earth's atmosphere, light rays bend (refract), causing stars to twinkle and the sun to appear slightly raised before actual sunrise."}, {"id": 8, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "घरेलू बिजली के कनेक्शनों और वायरिंग को किस क्रम (संयोजन) में स्थापित किया जाता है और इसका क्या कारण है?", "question_en": "In which combination are domestic electrical connections and wiring established, and what is the reason?", "options": [{"hi": "श्रेणी क्रम (Series); क्योंकि इससे परिपथ में बहने वाली धारा का मान समान रहता है", "en": "Series combination; because it keeps the current flowing in the circuit constant"}, {"hi": "मिश्रित क्रम; क्योंकि कुछ उपकरणों को उच्च धारा तथा कुछ को उच्च वोल्टेज चाहिए", "en": "Mixed combination; because some appliances require high current and others high voltage"}, {"hi": "समानांतर क्रम (Parallel); क्योंकि यह परिपथ के कुल प्रतिरोध को बहुत बढ़ा देता है", "en": "Parallel combination; because it greatly increases the total resistance of the circuit"}, {"hi": "समानांतर क्रम (Parallel); क्योंकि इससे सभी उपकरणों को समान वोल्टेज प्राप्त होता है", "en": "Parallel combination; because it ensures all appliances receive equal voltage"}], "answer": 3, "explanation_hi": "घरेलू वायरिंग समानांतर क्रम में होती है ताकि प्रत्येक उपकरण को समान वोल्टेज (सामान्यतः 220V) प्राप्त हो और एक उपकरण बंद होने पर अन्य पर प्रभाव न पड़े।", "explanation_en": "Domestic wiring is done in parallel combination so that each appliance receives equal voltage (typically 220V) and turning off one appliance does not affect the others."}, {"id": 9, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "एक मोमबत्ती (Candle) के जलने की प्रक्रिया के संदर्भ में निम्नलिखित में से कौन-सा कथन वैज्ञानिक रूप से पूर्णतः सही है?", "question_en": "Regarding the burning process of a candle, which of the following statements is scientifically absolutely correct?", "options": [{"hi": "यह केवल एक भौतिक परिवर्तन है; क्योंकि मोम पिघलकर पुनः जम जाता है", "en": "It is only a physical change; because the wax melts and solidifies again"}, {"hi": "यह केवल एक रासायनिक परिवर्तन है; क्योंकि प्रकाश और ऊष्मा उत्पन्न होती है", "en": "It is only a chemical change; because light and heat are produced"}, {"hi": "यह भौतिक और रासायनिक दोनों प्रकार का परिवर्तन है", "en": "It is both a physical and a chemical change"}, {"hi": "यह न तो भौतिक है और न ही रासायनिक; यह एक जैविक प्रक्रिया है", "en": "It is neither physical nor chemical; it is a biological process"}], "answer": 2, "explanation_hi": "मोम का पिघलना एक भौतिक परिवर्तन है (अवस्था परिवर्तन), जबकि मोम के वाष्प का दहन होकर कार्बन डाइऑक्साइड और जलवाष्प बनना एक रासायनिक परिवर्तन है।", "explanation_en": "The melting of wax is a physical change (state change), while the combustion of wax vapor to produce carbon dioxide and water vapor is a chemical change."}, {"id": 10, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "परमाणु संरचना के संदर्भ में, 'समन्यूट्रॉनिक' (Isotones) किन्हें कहा जाता है?", "question_en": "In the context of atomic structure, what are 'Isotones' defined as?", "options": [{"hi": "ऐसे तत्व जिनमें प्रोटॉन और न्यूट्रॉन दोनों की संख्या बिल्कुल समान होती है", "en": "Elements that have the exact same number of both protons and neutrons"}, {"hi": "समान परमाणु क्रमांक (Atomic Number) लेकिन भिन्न द्रव्यमान संख्या वाले तत्व", "en": "Elements with the same atomic number but different mass numbers"}, {"hi": "समान द्रव्यमान संख्या (Mass Number) लेकिन भिन्न परमाणु क्रमांक वाले तत्व", "en": "Elements with the same mass number but different atomic numbers"}, {"hi": "ऐसे तत्व जिनमें न्यूट्रॉनों की संख्या समान होती है, लेकिन प्रोटॉन भिन्न होते हैं", "en": "Elements that have the same number of neutrons but different number of protons"}], "answer": 3, "explanation_hi": "समस्थानिकों (Isotopes) में प्रोटॉन समान होते हैं, समभारिकों (Isobars) में द्रव्यमान समान होता है, और समन्यूट्रॉनिकों (Isotones) में न्यूट्रॉनों की संख्या समान होती है।", "explanation_en": "Isotopes have the same number of protons, Isobars have the same mass number, and Isotones have the same number of neutrons."}, {"id": 11, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मानव रक्त (Human Blood) की प्रकृति रासायनिक दृष्टिकोण से कैसी होती है और इसका औसत pH मान कितना दर्ज किया जाता है?", "question_en": "What is the chemical nature of human blood, and what is its recorded average pH value?", "options": [{"hi": "हल्का अम्लीय (Slightly Acidic); औसत pH 6.5", "en": "Slightly Acidic; average pH of 6.5"}, {"hi": "हल्का क्षारीय (Slightly Alkaline); औसत pH 7.4", "en": "Slightly Alkaline; average pH of 7.4"}, {"hi": "पूर्णतः उदासीन (Neutral); औसत pH 7.0", "en": "Absolutely Neutral; average pH of 7.0"}, {"hi": "अत्यधिक क्षारीय (Strongly Alkaline); औसत pH 8.5", "en": "Strongly Alkaline; average pH of 8.5"}], "answer": 1, "explanation_hi": "मानव रक्त का pH मान लगभग 7.4 होता है, जो इसे उदासीन स्तर (7.0) से थोड़ा ऊपर यानी हल्का क्षारीय (Slightly Alkaline) बनाता है।", "explanation_en": "The pH value of human blood is around 7.4, which makes it slightly above the neutral level of 7.0, meaning it is slightly alkaline."}, {"id": 12, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "घरेलू रसोई गैस सिलेंडरों (LPG) में प्रयुक्त गैसों में रिसाव का पता लगाने के लिए मिलाए जाने वाले तीक्ष्ण गंधयुक्त पदार्थ 'एथिल मरकैप्टेन' का सूत्र क्या है?", "question_en": "What is the chemical formula of 'Ethyl Mercaptan', the sharp-smelling compound added to domestic LPG cylinders to detect leaks?", "options": [{"hi": "CH3SH", "en": ""}, {"hi": "C2H5SH", "en": ""}, {"hi": "C3H8", "en": ""}, {"hi": "C4H10", "en": ""}], "answer": 1, "explanation_hi": "LPG में प्रोपेन और ब्यूटेन मुख्य रूप से होते हैं जो गंधहीन होते हैं। रिसाव का पता लगाने के लिए C2H5SH (एथिल मरकैप्टेन) मिलाया जाता है, जबकि CH3SH मिथाइल मरकैप्टेन है।", "explanation_en": "Propane and butane in LPG are odorless. To detect leaks, Ethyl Mercaptan (C2H5SH) is mixed. CH3SH is Methyl Mercaptan."}, {"id": 13, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "दैनिक जीवन में प्रयुक्त होने वाले काँच (Glass) के बारे में कौन-सा वैज्ञानिक कथन सर्वाधिक उपयुक्त है?", "question_en": "Which scientific statement is most appropriate regarding Glass used in daily life?", "options": [{"hi": "यह एक क्रिस्टलीय ठोस (Crystalline Solid) है जिसकी संरचना निश्चित होती है", "en": "It is a crystalline solid with a definite structural geometry"}, {"hi": "यह सिलिका और पोटेशियम का एक शुद्ध रासायनिक यौगिक (Compound) है", "en": "It is a pure chemical compound of silica and potassium"}, {"hi": "यह एक अतिशीतित द्रव (Supercooled Liquid) और अक्रिस्टलीय ठोस है", "en": "It is an amorphous solid and a supercooled liquid"}, {"hi": "यह कमरे के तापमान पर बहुत उच्च श्यानता (Viscosity) वाला एक द्रव है", "en": "It is a liquid with extremely high viscosity at room temperature"}], "answer": 2, "explanation_hi": "काँच में कोई निश्चित क्रिस्टलीय संरचना या गलनांक नहीं होता, इसलिए इसे 'अतिशीतित द्रव' (Supercooled Liquid) अथवा अक्रिस्टलीय ठोस माना जाता है।", "explanation_en": "Glass does not have a definite crystalline structure or sharp melting point, which is why it is classified as a supercooled liquid or an amorphous solid."}, {"id": 14, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "रासायनिक विज्ञान के वर्गीकरण के अनुसार, 'वायु' (Air) और 'शुद्ध जल' (Water) क्रमशः किस श्रेणी के अंतर्गत आते हैं?", "question_en": "According to chemical classifications, 'Air' and 'Pure Water' fall under which categories respectively?", "options": [{"hi": "वायु एक यौगिक (Compound) है और जल एक तत्व (Element) है", "en": "Air is a compound and Water is an element"}, {"hi": "दोनों ही रासायनिक मिश्रण (Mixture) के अंतर्गत वर्गीकृत हैं", "en": "Both are classified under chemical mixtures"}, {"hi": "वायु एक मिश्रण (Mixture) है और जल एक यौगिक (Compound) है", "en": "Air is a mixture and Water is a compound"}, {"hi": "वायु एक तत्व (Element) है और जल एक विलयन (Solution) है", "en": "Air is an element and Water is a solution"}], "answer": 2, "explanation_hi": "वायु में गैसों का अनुपात निश्चित नहीं होता, अतः यह एक मिश्रण है। जल में हाइड्रोजन और ऑक्सीजन 2:1 के निश्चित भारात्मक अनुपात में होते हैं, अतः यह यौगिक है।", "explanation_en": "Air does not have a fixed proportion of gases, making it a mixture. Water contains hydrogen and oxygen in a fixed 2:1 atomic ratio, making it a compound."}, {"id": 15, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अम्ल-क्षार सूचक 'फिनॉल्फथैलीन' (Phenolphthalein) अम्लीय और क्षारीय माध्यम में क्रमशः कौन-सा रंग प्रदर्शित करता है?", "question_en": "What colors does the acid-base indicator 'Phenolphthalein' display in acidic and basic mediums respectively?", "options": [{"hi": "अम्लीय माध्यम में रंगहीन (Colorless) और क्षारीय माध्यम में गुलाबी (Pink)", "en": "Colorless in acidic medium and Pink in basic medium"}, {"hi": "अम्लीय माध्यम में लाल (Red) और क्षारीय माध्यम में नीला (Blue)", "en": "Red in acidic medium and Blue in basic medium"}, {"hi": "अम्लीय माध्यम में पीला (Yellow) और क्षारीय माध्यम में हरा (Green)", "en": "Yellow in acidic medium and Green in basic medium"}, {"hi": "अम्लीय माध्यम में गुलाबी (Pink) और क्षारीय माध्यम में रंगहीन (Colorless)", "en": "Pink in acidic medium and Colorless in basic medium"}], "answer": 0, "explanation_hi": "फिनॉल्फथैलीन एक सिंथेटिक सूचक है जो अम्लीय विलयन में पूरी तरह रंगहीन रहता है, लेकिन क्षारीय विलयन में जाते ही गहरा गुलाबी रंग प्रदान करता है।", "explanation_en": "Phenolphthalein is a synthetic indicator that remains colorless in acidic solutions but turns deep pink in basic solutions."}, {"id": 16, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "विटामिन B3 (नियासिन) की गंभीर कमी से होने वाले 'पेलाग्रा' रोग को '4D रोग' क्यों कहा जाता है?", "question_en": "Why is 'Pellagra', caused by severe deficiency of Vitamin B3 (Niacin), referred to as the '4D disease'?", "options": [{"hi": "क्योंकि यह त्वचा की चारों परतों (4 Layers of Skin) को नष्ट कर देता है", "en": "Because it destroys all four layers of the human skin"}, {"hi": "क्योंकि इसके चार मुख्य लक्षण हैं: चक्कर आना, बहरापन, डिहाइड्रेशन और दाद", "en": "Because of its four major symptoms: Dizziness, Deafness, Dehydration, and Dermatophytosis"}, {"hi": "क्योंकि इसके चार नैदानिक चरण हैं: डर्मेटाइटिस, डायरिया, डिमेंशिया और डेथ", "en": "Because it has four clinical stages: Dermatitis, Diarrhea, Dementia, and Death"}, {"hi": "क्योंकि इसकी पहचान शरीर में चार प्रकार के एंजाइमों के ह्रास से होती है", "en": "Because its identification is based on the decline of four specific enzymes"}], "answer": 2, "explanation_hi": "पेलाग्रा रोग के लक्षणों में त्वचा रोग (Dermatitis), दस्त (Diarrhea), मानसिक भ्रम (Dementia) शामिल हैं और अंत में मृत्यु (Death) हो जाती है। इसे 'कैसल्स नेकलेस' लक्षण भी कहते हैं।", "explanation_en": "Pellagra is characterized by Dermatitis, Diarrhea, and Dementia, which if left untreated can lead to Death. It is also associated with Casal's necklace symptom."}, {"id": 17, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मानव शरीर के लिए आवश्यक 20 अमीनो एसिड्स में से 'आवश्यक अमीनो एसिड्स' (Essential Amino Acids) की संख्या कितनी है और इन्हें यह नाम क्यों दिया गया है?", "question_en": "Out of the 20 amino acids required by the human body, what is the count of 'Essential Amino Acids' and why are they named so?", "options": [{"hi": "11; क्योंकि ये प्रोटीन निर्माण की मुख्य शृंखला का आधार होते हैं", "en": "11; because they form the basis of the main protein building chain"}, {"hi": "9; क्योंकि ये मांसपेसियों के विकास में भाग नहीं लेते बल्कि केवल हार्मोन बनाते हैं", "en": "9; because they do not participate in muscle growth but only produce hormones"}, {"hi": "20; क्योंकि सभी अमीनो एसिड भोजन के माध्यम से प्राप्त करना अनिवार्य है", "en": "20; because it is mandatory to obtain all amino acids through diet"}, {"hi": "9; क्योंकि इनका संश्लेषण मानव शरीर स्वयं नहीं कर सकता और इन्हें भोजन से लेना अनिवार्य है", "en": "9; because they cannot be synthesized by the human body and must be obtained from diet"}], "answer": 3, "explanation_hi": "20 में से 9 अमीनो एसिड शरीर स्वयं नहीं बना सकता (जैसे ल्यूसीन, लाइसिन), अतः इन्हें भोजन से प्राप्त करना 'आवश्यक' होता है। शेष 11 शरीर स्वयं संश्लेषित कर लेता है।", "explanation_en": "Out of 20, 9 amino acids cannot be synthesized by the body (e.g., Leucine, Lysine) and are 'essential' to consume via diet. The body can synthesize the other 11."}, {"id": 18, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मानव पाचन तंत्र में खाए गए प्रोटीनों के पाचन की शुरुआत आमाशय (Stomach) में होती है। इसे सक्रिय करने के लिए कौन-सा एंजाइम और माध्यम आवश्यक होता है?", "question_en": "In the human digestive system, protein digestion starts in the stomach. Which enzyme and medium are required to activate this process?", "options": [{"hi": "ट्रिप्सिन (Trypsin) एंजाइम; आमाशय रस का क्षारीय माध्यम", "en": "Trypsin enzyme; alkaline medium of gastric juice"}, {"hi": "पेप्सिन (Pepsin) एंजाइम; आमाशय रस का अत्यधिक अम्लीय (HCl) माध्यम", "en": "Pepsin enzyme; highly acidic (HCl) medium of gastric juice"}, {"hi": "एमाइलेज (Amylase) एंजाइम; उदासीन आमाशय रस माध्यम", "en": "Amylase enzyme; neutral gastric juice medium"}, {"hi": "पेप्सिन (Pepsin) एंजाइम; आमाशय रस का हल्का क्षारीय माध्यम", "en": "Pepsin enzyme; slightly alkaline gastric juice medium"}], "answer": 1, "explanation_hi": "आमाशय में उपस्थित हाइड्रोक्लोरिक एसिड (HCl) प्रोटीन की संरचना को खोलता है और निष्क्रिय पेप्सिनोजेन को सक्रिय पेप्सिन (Pepsin) एंजाइम में बदलता है, जो अत्यधिक अम्लीय माध्यम में कार्य करता है।", "explanation_en": "In the stomach, hydrochloric acid (HCl) denatures proteins and activates pepsinogen into active Pepsin enzyme, which functions only in a highly acidic environment."}, {"id": 19, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "विटामिन B12 (कोबालएमीन) और विटामिन B9 (फॉलिक एसिड) की कमी से होने वाले 'मेगालोब्लास्टिक एनीमिया' (Megaloblastic Anemia) का मुख्य लक्षण क्या है?", "question_en": "What is the primary characteristic feature of 'Megaloblastic Anemia' caused by the deficiency of Vitamin B12 (Cobalamin) and Vitamin B9 (Folic Acid)?", "options": [{"hi": "लाल रक्त कोशिकाओं (RBCs) का आकार हँसिए (Sickle) जैसा हो जाता है", "en": "The shape of red blood cells (RBCs) becomes sickle-shaped"}, {"hi": "अस्थि मज्जा (Bone Marrow) द्वारा लाल रक्त कोशिकाओं का निर्माण पूरी तरह बंद हो जाता है", "en": "The production of red blood cells by the bone marrow is completely stopped"}, {"hi": "RBCs का आकार सामान्य से बहुत छोटा और गोलाकार हो जाता है", "en": "The shape of RBCs becomes extremely small and spherical compared to normal"}, {"hi": "RBCs का आकार सामान्य से बहुत बड़ा हो जाता है, लेकिन वे पूरी तरह अपरिपक्व रहती हैं", "en": "RBCs become much larger than normal but remain completely immature"}], "answer": 3, "explanation_hi": "विटामिन B12 और B9 की कमी से कोशिका विभाजन बाधित होता है, जिससे RBCs का आकार सामान्य से बहुत बड़ा (मेगालोब्लास्ट) हो जाता है लेकिन वे अपरिपक्व और अकार्यात्मक रहती हैं।", "explanation_en": "Deficiency of Vitamin B12 and B9 impairs DNA synthesis during cell division, making RBCs abnormally large (megaloblasts) but immature and non-functional."}, {"id": 20, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मानव शरीर कार्बोहाइड्रेट्स का संचय आंतों से अवशोषण के पश्चात यकृत (Liver) और मांसपेसियों में किस रासायनिक रूप में करता है?", "question_en": "In what chemical form does the human body store carbohydrates in the liver and muscles after absorption from the intestines?", "options": [{"hi": "स्टार्च (Starch)", "en": "Starch"}, {"hi": "ग्लाइकोजन (Glycogen)", "en": "Glycogen"}, {"hi": "ग्लूकोज (Glucose)", "en": "Glucose"}, {"hi": "सेल्युलोज (Cellulose)", "en": "Cellulose"}], "answer": 1, "explanation_hi": "मानव व जंतु अपनी अतिरिक्त शर्करा को ग्लाइकोजन (Glycogen) के रूप में यकृत और मांसपेशियों में संचित करते हैं, जबकि पौधे कार्बोहाइड्रेट्स को स्टार्च के रूप में जमा करते हैं।", "explanation_en": "Humans and animals store excess carbohydrates as Glycogen in liver and muscle tissues, whereas plants store carbohydrates in the form of starch."}, {"id": 21, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "चिकित्सा आकलन के अनुसार, डायरिया (अतिसार) से पीड़ित बच्चे में 'गंभीर निर्जलीकरण' (Severe Dehydration) की पहचान करने के लिए सबसे सटीक व्यावहारिक परीक्षण कौन-सा है?", "question_en": "According to medical assessment, which is the most accurate practical test to identify 'Severe Dehydration' in a child suffering from diarrhea?", "options": [{"hi": "बच्चे के शरीर के कुल तापमान का 102 डिग्री फ़ारेनहाइट से अधिक बढ़ जाना", "en": "The body temperature of the child rising above 102 degrees Fahrenheit"}, {"hi": "बच्चे का सामान्य से अधिक सक्रिय होना और अत्यधिक रोना", "en": "The child being more active than normal and crying excessively"}, {"hi": "त्वचा का अत्यधिक तैलीय (Oily) हो जाना", "en": "The skin becoming abnormally oily"}, {"hi": "पेट की त्वचा को चुटकी से खींचने पर उसका अपनी जगह वापस जाने में 2 सेकंड से अधिक समय लेना", "en": "Pinching the skin of the abdomen and it taking more than 2 seconds to return to its place"}], "answer": 3, "explanation_hi": "गंभीर निर्जलीकरण में आँखें धँस जाती हैं, मुँह सूख जाता है, बच्चा सुस्त या बेहोश रहता है, और पेट की त्वचा खींचने पर बहुत धीरे-धीरे (2 सेकंड से अधिक) अपनी जगह वापस जाती है।", "explanation_en": "In severe dehydration, eyes are sunken, mouth is dry, the child is lethargic or unconscious, and the abdominal skin pinch goes back very slowly (taking more than 2 seconds)."}, {"id": 22, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "एनीमिया (रक्तअल्पता) के गंभीर रोगियों में नाखूनों का चम्मच के आकार का होना (Koilonychia) और जीभ पर सूजन आना (Glossitis) क्रमशः किस तत्व की कमी के विशिष्ट लक्षण हैं?", "question_en": "In severe anemia patients, spoon-shaped nails (Koilonychia) and swelling of the tongue (Glossitis) are specific symptoms of the deficiency of which element?", "options": [{"hi": "कैल्शियम (Calcium)", "en": "Calcium"}, {"hi": "विटामिन D (Calciferol)", "en": "Vitamin D"}, {"hi": "आयरन या लोहा (Iron)", "en": "Iron"}, {"hi": "सोडियम (Sodium)", "en": "Sodium"}], "answer": 2, "explanation_hi": "चम्मच जैसे नाखून (कोइलोनिकिया) और जीभ पर सूजन (ग्लोसिटिस) गंभीर आयरन की कमी से होने वाले एनीमिया (IDA) के विशिष्ट नैदानिक लक्षण हैं।", "explanation_en": "Spoon-shaped nails (koilonychia) and inflammation of the tongue (glossitis) are classic clinical signs of severe iron deficiency anemia (IDA)."}, {"id": 23, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आहारीय फाइबर (Dietary Fiber) के संदर्भ में, 'घुलनशील फाइबर' (Soluble Fiber) मानव शरीर के लिए किस प्रकार लाभकारी माना जाता है?", "question_en": "With reference to dietary fiber, how is 'Soluble Fiber' considered beneficial for the human body?", "options": [{"hi": "यह पानी में घुलकर जेल जैसा पदार्थ बनाता है, जो कोलेस्ट्रॉल और रक्त शर्करा (Blood Sugar) को कम करता है", "en": "It dissolves in water to form a gel-like substance, which lowers cholesterol and blood sugar levels"}, {"hi": "यह सीधे पचकर ग्लूकोज में परिवर्तित हो जाता है और तीव्र ऊर्जा प्रदान करता है", "en": "It is directly digested into glucose to provide instant energy"}, {"hi": "यह मल (Stool) को भारी बनाता है और केवल कब्ज से राहत देता है", "en": "It adds bulk to the stool and solely provides relief from constipation"}, {"hi": "यह वसा में घुलनशील विटामिनों को अवशोषित करने में मुख्य भूमिका निभाता है", "en": "It plays a major role in absorbing fat-soluble vitamins"}], "answer": 0, "explanation_hi": "घुलनशील फाइबर (जैसे ओट्स, सेब में) पानी में घुलकर जेल बनाता है जो पाचन को धीमा कर कोलेस्ट्रॉल और ग्लूकोज अवशोषण को कम करता है। अघुलनशील फाइबर मल को भारी बनाता है।", "explanation_en": "Soluble fiber (found in oats, apples) dissolves in water to form a gel, which slows digestion, helping to reduce cholesterol and glucose absorption."}, {"id": 24, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "वृद्धावस्था (65+ वर्ष) में मांसपेशियों के स्वतः होने वाले क्षय को रोकने के लिए दैनिक प्रोटीन की आवश्यकता कितनी बढ़ जाती है और इस स्थिति को क्या कहा जाता है?", "question_en": "To prevent spontaneous muscle loss in old age (65+ years), how much does the daily protein requirement increase and what is this condition called?", "options": [{"hi": "लगभग 1.2 ग्राम/किग्रा; सार्कोपेनिया (Sarcopenia)", "en": "Approximately 1.2 g/kg; Sarcopenia"}, {"hi": "लगभग 0.8 ग्राम/किग्रा; ऑस्टियोपोरोसिस (Osteoporosis)", "en": "Approximately 0.8 g/kg; Osteoporosis"}, {"hi": "लगभग 2.0 ग्राम/किग्रा; मैरास्मस (Marasmus)", "en": "Approximately 2.0 g/kg; Marasmus"}, {"hi": "लगभग 1.5 ग्राम/किग्रा; क्वाशियोरकोर (Kwashiorkor)", "en": "Approximately 1.5 g/kg; Kwashiorkor"}], "answer": 0, "explanation_hi": "उम्र बढ़ने के साथ मांसपेशियों की हानि को 'सार्कोपेनिया' कहते हैं। बुजुर्गों को सामान्य वयस्क (0.8 ग्राम) की तुलना में अधिक प्रोटीन (~1.2 ग्राम/किग्रा) की आवश्यकता होती है।", "explanation_en": "Age-related muscle wasting is called Sarcopenia. Elderly individuals require more protein (~1.2 g/kg of body weight) than normal adults (0.8 g/kg) to prevent it."}, {"id": 25, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पारितंत्र (Ecosystem) के संचालन में ऊर्जा के प्रवाह और पोषक तत्वों (पदार्थों) के प्रवाह के प्रारूपों में मुख्य अंतर क्या है?", "question_en": "What is the primary difference between the patterns of energy flow and nutrient (matter) flow in the operation of an ecosystem?", "options": [{"hi": "ऊर्जा का प्रवाह चक्रीय होता है, जबकि पोषक तत्वों का प्रवाह केवल एकदिशीय होता है", "en": "Energy flow is cyclic, while nutrient flow is strictly unidirectional"}, {"hi": "दोनों का प्रवाह पारितंत्र में पूरी तरह से चक्रीय (Cyclic) प्रारूप में होता है", "en": "Both energy and nutrients flow in a completely cyclic pattern within the ecosystem"}, {"hi": "ऊर्जा का प्रवाह एकदिशीय (Unidirectional) होता है, जबकि पोषक तत्वों का प्रवाह चक्रीय (Cyclic) होता है", "en": "Energy flow is unidirectional, while nutrient flow is cyclic"}, {"hi": "ऊर्जा का प्रवाह बहुदिशीय होता है, जबकि पोषक तत्व स्थिर बने रहते हैं", "en": "Energy flow is multidirectional, while nutrients remain static"}], "answer": 2, "explanation_hi": "सूर्य से प्राप्त ऊर्जा उत्पादकों से उपभोक्ताओं की ओर केवल एक दिशा में बहती है और वापस नहीं लौटती (एकदिशीय)। लेकिन जैव-भू-रासायनिक चक्रों में नाइट्रोजन, फॉस्फोरस आदि बार-बार चक्रित होते हैं (चक्रीय)।", "explanation_en": "Energy from the sun flows in a single direction (unidirectional) from producers to consumers and cannot be recycled. Nutrients like Nitrogen and Phosphorus are recycled repeatedly (cyclic)."}, {"id": 26, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पारिस्थितिकी पिरामिडों के संदर्भ में कौन-सा पिरामिड किसी भी पारितंत्र में कभी भी उल्टा (Inverted) नहीं बन सकता है?", "question_en": "In the context of ecological pyramids, which pyramid can never be inverted in any ecosystem?", "options": [{"hi": "ऊर्जा का पिरामिड (Pyramid of Energy)", "en": "Pyramid of Energy"}, {"hi": "जीव भार का पिरामिड (Pyramid of Biomass)", "en": "Pyramid of Biomass"}, {"hi": "संख्या का पिरामिड (Pyramid of Numbers)", "en": "Pyramid of Numbers"}, {"hi": "उपभोक्ताओं का पिरामिड (Pyramid of Consumers)", "en": "Pyramid of Consumers"}], "answer": 0, "explanation_hi": "ऊर्जा का पिरामिड सदैव सीधा (Upright) बनता है, क्योंकि ऊष्मागतिकी के नियमानुसार हर पोषण स्तर पर ऊर्जा का ह्रास होता है और केवल 10% ऊर्जा ही अगले स्तर पर स्थानांतरित होती है।", "explanation_en": "The pyramid of energy is always upright because thermodynamic laws dictate that energy is lost at each trophic level, with only 10% transferring to the next level."}, {"id": 27, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "वायु प्रदूषण के संदर्भ में, निम्नलिखित में से कौन-सा विकल्प केवल 'द्वितीयक प्रदूषकों' (Secondary Pollutants) के समूह को दर्शाता है?", "question_en": "In the context of air pollution, which of the following options represents a group of only 'Secondary Pollutants'?", "options": [{"hi": "कार्बन डाइऑक्साइड (CO2), कार्बन मोनोऑक्साइड (CO) और डीडीटी (DDT)", "en": "Carbon dioxide (CO2), Carbon monoxide (CO), and DDT"}, {"hi": "सल्फर डाइऑक्साइड (SO2), मीथेन (CH4) और अमोनिया", "en": "Sulfur dioxide (SO2), Methane (CH4), and Ammonia"}, {"hi": "ओजोन (O3), पेरॉक्सीएसिटाइल नाइट्रेट (PAN) और सल्फ्यूरिक अम्ल (H2SO4)", "en": "Ozone (O3), Peroxyacetyl Nitrate (PAN), and Sulfuric Acid (H2SO4)"}, {"hi": "पार्टिकुलेट मैटर (PM 2.5), सीसा (Lead) और नाइट्रिक ऑक्साइड", "en": "Particulate Matter (PM 2.5), Lead, and Nitric Oxide"}], "answer": 2, "explanation_hi": "प्राथमिक प्रदूषक (CO2, SO2, DDT) सीधे स्रोत से उत्सर्जित होते हैं। द्वितीयक प्रदूषक (O3, PAN, H2SO4, प्रकाश-रासायनिक धुंध) प्राथमिक प्रदूषकों की वातावरण में अंतःक्रिया से बनते हैं।", "explanation_en": "Primary pollutants are directly emitted from sources. Secondary pollutants (Ozone, PAN, H2SO4, Smog) are formed in the atmosphere through chemical reactions between primary pollutants."}, {"id": 28, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "जहरीले पदार्थों के जैव-संचय (Bioaccumulation) और जैव-आवर्धन (Biomagnification) की प्रक्रियाओं के बीच बुनियादी अंतर क्या है?", "question_en": "What is the fundamental difference between the processes of Bioaccumulation and Biomagnification of toxic substances?", "options": [{"hi": "जैव-संचय जलीय पारितंत्र में होता है, जबकि जैव-आवर्धन केवल स्थलीय घास के मैदानों में होता है", "en": "Bioaccumulation occurs in aquatic ecosystems, while Biomagnification occurs only in terrestrial grasslands"}, {"hi": "जैव-संचय एक ही जीव के जीवनकाल में होता है; जैव-आवर्धन पूरी खाद्य श्रृंखला में पोषण स्तरों पर सांद्रता का बढ़ना है", "en": "Bioaccumulation occurs within a single organism's lifespan; Biomagnification is the increase in concentration across food chain trophic levels"}, {"hi": "जैव-आवर्धन की दर प्राथमिक उत्पादकों में सबसे अधिक होती है, जबकि जैव-संचय केवल शीर्ष उपभोक्ताओं में होता है", "en": "The rate of biomagnification is highest in primary producers, while bioaccumulation occurs only in top consumers"}, {"hi": "दोनों प्रक्रियाएं बिल्कुल समान हैं; इनमें कोई अंतर नहीं है", "en": "Both processes are absolutely identical; there is no difference between them"}], "answer": 1, "explanation_hi": "जैव-संचय (Bioaccumulation) एक विशिष्ट जीव में समय के साथ विषैले रसायन के जमा होने को दर्शाता है। जैव-आवर्धन (Biomagnification) खाद्य श्रृंखला में ऊपर की ओर जाने पर प्रत्येक स्तर पर सांद्रता की वृद्धि है।", "explanation_en": "Bioaccumulation refers to the build-up of a toxic chemical in a single specific organism over time. Biomagnification is the increase in concentration of the toxin at each successive trophic level of a food chain."}, {"id": 29, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "दो विभिन्न प्रजातियों के मध्य ऐसा जैविक संबंध क्या कहलाता है जिसमें एक प्रजाति को लाभ होता है, लेकिन दूसरी को न तो लाभ होता है और न ही कोई नुकसान?", "question_en": "What is the biological interaction between two different species called where one species benefits, but the other is neither benefited nor harmed?", "options": [{"hi": "सहोपकारिता (Mutualism)", "en": "Mutualism"}, {"hi": "सहभोजिता (Commensalism)", "en": "Commensalism"}, {"hi": "प्रतिजीविता (Amensalism)", "en": "Amensalism"}, {"hi": "परजीविता (Parasitism)", "en": "Parasitism"}], "answer": 1, "explanation_hi": "सहभोजिता (Commensalism) में एक को लाभ (+) और दूसरे को कोई प्रभाव नहीं (0) होता है (जैसे शार्क पर चिपकी रेमोरा मछली)। प्रतिजीविता (Amensalism) में एक को हानि (-) और दूसरे को कोई प्रभाव नहीं (0) होता है।", "explanation_en": "In Commensalism, one species is benefited (+) and the other is unaffected (0). In Amensalism, one is harmed (-) and the other is unaffected (0)."}, {"id": 30, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पारिस्थितिकी निकेत (Ecological Niche) के संदर्भ में 'प्रतिस्पर्धी अपवर्जन सिद्धांत' (Competitive Exclusion Principle / गॉस का नियम) क्या प्रतिपादित करता है?", "question_en": "In the context of Ecological Niche, what does the 'Competitive Exclusion Principle' (Gause's Law) state?", "options": [{"hi": "विभिन्न प्रजातियाँ हमेशा आपस में सहयोग करके अपने निकेत का क्षेत्रफल बढ़ा लेती हैं", "en": "Different species always cooperate to expand the area of their ecological niche"}, {"hi": "एक ही आवास में रहने वाली सभी प्रजातियों का निकेत हमेशा बिल्कुल समान होना चाहिए", "en": "All species living in the same habitat must always have absolutely identical niches"}, {"hi": "निकेत केवल आवास की भौतिक भौगोलिक सीमाओं को निर्धारित करता है", "en": "Niche strictly determines only the physical geographical boundaries of a habitat"}, {"hi": "पूर्णतः समान संसाधनों के लिए प्रतिस्पर्धी दो प्रजातियाँ एक ही निकेत में अनिश्चित काल तक सह-अस्तित्व में नहीं रह सकतीं", "en": "Two competing species with identical ecological niches cannot coexist indefinitely under limited resources"}], "answer": 3, "explanation_hi": "गॉस के नियम के अनुसार, यदि दो प्रजातियों का निकेत पूरी तरह समान हो जाए और संसाधन सीमित हों, तो तीव्र प्रतिस्पर्धा के कारण एक प्रजाति विस्थापित हो जाएगी या अपना उपयोग बदल लेगी।", "explanation_en": "According to Gause's Principle, two species competing for the exact same limiting resources cannot stable-coexist; the weaker competitor will be excluded or must shift its niche."}, {"id": 31, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पारितंत्र में 'की-स्टोन प्रजाति' (Keystone Species) की भूमिका के संदर्भ में कौन-सा कथन पारिस्थितिकी दृष्टिकोण से सही है?", "question_en": "With reference to the role of 'Keystone Species' in an ecosystem, which statement is ecologically correct?", "options": [{"hi": "ये जैव भार और संख्या की दृष्टि से पारितंत्र में सबसे बड़ी और सर्वाधिक संख्या वाली प्रजाति होती हैं", "en": "They are the largest and most abundant species in the ecosystem by biomass and number"}, {"hi": "ये केवल जलीय पारितंत्रों में पाई जाने वाली प्राथमिक उत्पादक प्रजातियाँ हैं", "en": "They are primary producer species found exclusively in aquatic ecosystems"}, {"hi": "इनके विलुप्त होने पर पारितंत्र की स्थिरता और संरचना पर कोई प्रभाव नहीं पड़ता है", "en": "Their extinction has no impact on the stability and structure of the ecosystem"}, {"hi": "इनका प्रभाव इनकी अत्यधिक संख्या या जैव भार के कारण नहीं, बल्कि विशिष्ट पारिस्थितिक भूमिका के कारण होता है", "en": "Their impact is not due to high abundance or biomass, but because of their unique ecological role"}], "answer": 3, "explanation_hi": "की-स्टोन प्रजातियाँ (जैसे शेर, पीला पत्थर मेहराब की तरह) संख्या में बहुत कम हो सकती हैं, लेकिन वे पूरे समुदाय की संरचना और विविधता को नियंत्रित करती हैं।", "explanation_en": "Keystone species have low abundance/biomass but exert strong, disproportionate control over the structure and stability of their entire ecological community."}, {"id": 32, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पारिस्थितिक अनुक्रमण (Ecological Succession) के चरणों के संदर्भ में 'न्यूडेशन' (Nudation) शब्द का क्या अर्थ है?", "question_en": "With reference to the stages of Ecological Succession, what does the term 'Nudation' refer to?", "options": [{"hi": "किसी नए जैविक समुदाय के बसने के लिए खाली या वनस्पति रहित स्थान का निर्मित होना", "en": "The creation of a bare or vegetation-free area for a new biological community to colonize"}, {"hi": "बाहर से नई प्रजातियों का प्रकीर्णन द्वारा उस खाली क्षेत्र में प्रवेश करना", "en": "The entry and establishment of new species from outside via dispersal into the bare area"}, {"hi": "विभिन्न प्रजातियों के मध्य सीमित संसाधनों के लिए होने वाली तीव्र प्रतिस्पर्धा", "en": "The intense competition occurring between different species for limited resources"}, {"hi": "चरम अवस्था (Climax Community) का पूरी तरह संतुलित होकर स्थिर हो जाना", "en": "The climax community becoming fully balanced and stable"}], "answer": 0, "explanation_hi": "अनुक्रमण की प्रक्रिया में न्यूडेशन (Nudation) पहला चरण है, जिसमें आग, बाढ़ या भूकंप के कारण वनस्पति विहीन खाली क्षेत्र तैयार होता है। इसके बाद आक्रमण (Invasion) होता है।", "explanation_en": "Nudation is the first stage of succession, involving the creation of a bare area without any life (due to volcanic activity, erosion, etc.), followed by Invasion."}, {"id": 33, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "रामसर कन्वेंशन के अंतर्गत प्रयुक्त होने वाले 'मॉन्ट्रेक्स रिकॉर्ड' (Montreux Record) का क्या कार्य है?", "question_en": "What is the function of the 'Montreux Record' maintained under the Ramsar Convention?", "options": [{"hi": "यह विश्व के सभी समुद्री राष्ट्रीय उद्यानों और प्रवाल भित्तियों के संरक्षण की एक स्वतंत्र वैश्विक संधि है", "en": "It is an independent global treaty for the conservation of all marine national parks and coral reefs"}, {"hi": "यह ऐसे रामसर स्थलों की सूची है जहाँ मानवीय हस्तक्षेप के कारण पारिस्थितिक स्वरूप में परिवर्तन हो चुका है या हो रहा है", "en": "It is a register of Ramsar sites where changes in ecological character have occurred or are occurring due to human interference"}, {"hi": "यह संकटग्रस्त पक्षियों के शिकार को रोकने वाला एक कानूनी दस्तावेज है", "en": "It is a legally binding document to prevent the hunting of endangered migratory birds"}, {"hi": "यह पूर्णतः सुरक्षित घोषित किए गए केवल अंटार्कटिका के आर्द्रभूमियों की सूची है", "en": "It is a register containing only the fully protected wetlands of Antarctica"}], "answer": 1, "explanation_hi": "मॉन्ट्रेक्स रिकॉर्ड रामसर सूची के अंतर्गत संकटग्रस्त आर्द्रभूमियों का एक रजिस्टर है, जहाँ तकनीकी विकास, प्रदूषण या अन्य मानवीय हस्तक्षेप से संकट उत्पन्न हुआ है (जैसे भारत का लोकटक और केवलादेव)।", "explanation_en": "The Montreux Record is a register of wetland sites on the List of Ramsar wetlands of international importance where changes in ecological character have occurred, are occurring, or are likely to occur."}, {"id": 34, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "जैव विविधता मापन के अंतर्गत प्रयुक्त होने वाली 'बीटा (β) विविधता' मुख्य रूप से क्या दर्शाती है?", "question_en": "What does 'Beta (β) diversity' primarily represent in the measurement of biodiversity?", "options": [{"hi": "किसी एक निश्चित विशिष्ट समुदाय या स्थानीय क्षेत्र के अंदर उपस्थित कुल प्रजातियों की संख्या", "en": "The total number of species present within a single local community or specific area"}, {"hi": "एक संपूर्ण बड़े भू-दृश्य या विशाल भौगोलिक क्षेत्र की कुल जैव विविधता का मापन", "en": "The total overall diversity of an entire large landscape or vast geographical region"}, {"hi": "एक आवास से दूसरे आवास में जाने पर प्रजातियों की संरचनात्मक विविधता और उनके प्रवेश-निकास की दर", "en": "The structural diversity of species and their turnover rate when moving from one habitat to another"}, {"hi": "केवल संकटग्रस्त आनुवंशिक जीनों की विविधता का प्रतिशत सूचकांक", "en": "The percentage index of diversity of only threatened genetic genes"}], "answer": 2, "explanation_hi": "अल्फा विविधता = एक निश्चित क्षेत्र के अंदर प्रजातियों की संख्या। बीटा विविधता = आवास बदलने पर प्रजातियों के संरचनात्मक बदलाव की दर (turnover)। गामा विविधता = बड़े क्षेत्रीय स्तर की कुल विविधता।", "explanation_en": "Alpha diversity is species richness in a local site. Beta diversity is the species turnover rate between habitats. Gamma diversity is the overall diversity of a large landscape."}, {"id": 35, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "राष्ट्रीय उद्यानों (National Parks) और वन्यजीव अभयारण्यों (Wildlife Sanctuaries) के संरक्षण नियमों में सबसे बड़ा मुख्य अंतर क्या है?", "question_en": "What is the biggest key difference between the conservation rules of National Parks and Wildlife Sanctuaries?", "options": [{"hi": "राष्ट्रीय उद्यानों में मानवीय गतिविधियाँ और चराई पूर्णतः प्रतिबंधित होती हैं, जबकि अभयारण्य में ये नियंत्रित रूप से अनुमत हो सकती हैं", "en": "Human activities and grazing are completely prohibited in National Parks, while they may be allowed in limited controlled ways in Sanctuaries"}, {"hi": "वन्यजीव अभयारण्य पूरी तरह से केवल बाघों के लिए होते हैं, जबकि राष्ट्रीय उद्यान सभी जीवों के लिए होते हैं", "en": "Wildlife Sanctuaries are strictly for tigers, while National Parks are for all forms of wildlife"}, {"hi": "राष्ट्रीय उद्यान राज्य सरकारों द्वारा तथा अभयारण्य केवल संयुक्त राष्ट्र (UN) द्वारा घोषित किए जाते हैं", "en": "National Parks are declared by state governments, while Sanctuaries are declared solely by the United Nations"}, {"hi": "अभयारण्यों में शिकार की अनुमति होती है, जबकि राष्ट्रीय उद्यानों में शिकार पर आंशिक प्रतिबंध होता है", "en": "Hunting is permitted in Wildlife Sanctuaries, while it is partially restricted in National Parks"}], "answer": 0, "explanation_hi": "राष्ट्रीय उद्यान अत्यधिक संरक्षित क्षेत्र हैं जहाँ वन्यजीव अधिनियम के तहत चराई, निवास और कोई भी मानवीय हस्तक्षेप पूर्णतः निषिद्ध है। अभयारण्यों में सीमित चराई और लकड़ी काटने जैसी अधिकार नियंत्रित रूप से अनुमत होते हैं।", "explanation_en": "National Parks are highly protected areas where grazing and human settlement are completely prohibited. Sanctuaries allow limited human activities (like grazing, fuel wood collection) under strict regulation."}, {"id": 36, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कंप्यूटर आर्किटेक्चर के पदानुक्रम में सीपीयू (CPU) के लिए प्रयुक्त होने वाले डेटा स्टोरेज माध्यमों का गति (गतिशीलता) के घटते क्रम में सही अनुक्रम क्या है?", "question_en": "In the computer memory hierarchy, what is the correct sequence of data storage mediums in decreasing order of speed?", "options": [{"hi": "रैम (RAM) > L1 कैश > L2 कैश > रजिस्टर्स > हार्ड डिस्क ड्राइव (HDD)", "en": "RAM > L1 Cache > L2 Cache > Registers > Hard Disk Drive (HDD)"}, {"hi": "रजिस्टर्स > रैम (RAM) > L1 कैश > L2 कैश > सॉलिड स्टेट ड्राइव (SSD)", "en": "Registers > RAM > L1 Cache > L2 Cache > Solid State Drive (SSD)"}, {"hi": "रजिस्टर्स > L1 कैश > L2 कैश > रैम (RAM) > सॉलिड स्टेट ड्राइव (SSD)", "en": "Registers > L1 Cache > L2 Cache > RAM > Solid State Drive (SSD)"}, {"hi": "L1 कैश > L2 कैश > रजिस्टर्स > रैम (RAM) > सॉलिड स्टेट ड्राइव (SSD)", "en": "L1 Cache > L2 Cache > Registers > RAM > Solid State Drive (SSD)"}], "answer": 2, "explanation_hi": "रजिस्टर्स सीपीयू कोर के सबसे करीब और तेज होते हैं, इसके बाद L1 कैश, फिर L2 कैश, फिर रैम, फिर सॉलिड स्टेट ड्राइव (SSD) और सबसे अंत में हार्ड डिस्क (HDD) आती है।", "explanation_en": "Registers are located inside the CPU core and are the fastest, followed by L1 Cache, L2 Cache, Main Memory (RAM), SSD, and lastly HDD."}, {"id": 37, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कंप्यूटर की रैम के दो मुख्य प्रकारों - स्टेटिक रैम (SRAM) और डायनामिक रैम (DRAM) के कार्य सिद्धांत में सबसे बुनियादी तकनीकी अंतर क्या है?", "question_en": "What is the most fundamental technical difference in the working principle of the two main RAM types - Static RAM (SRAM) and Dynamic RAM (DRAM)?", "options": [{"hi": "SRAM विद्युत आपूर्ति बंद होने पर भी डेटा सुरक्षित रखता है, जबकि DRAM का डेटा तुरंत नष्ट हो जाता है", "en": "SRAM retains data even when power is turned off, whereas DRAM instantly loses its data"}, {"hi": "SRAM डेटा रखने के लिए फ्लिप-फ्लॉप का उपयोग करता है; DRAM कैपेसिटर का उपयोग करता है जिसमें चार्ज लीक होने के कारण लगातार रिफ्रेशिंग की आवश्यकता होती है", "en": "SRAM uses flip-flops to hold data; DRAM uses capacitors which leak charge and require constant refresh cycles"}, {"hi": "DRAM को केवल चुंबकीय डिस्क पर बनाया जा सकता है, जबकि SRAM केवल सेमीकंडक्टर सिलिकॉन चिप पर बनती है", "en": "DRAM can only be built on magnetic disks, while SRAM is made exclusively on semiconductor silicon chips"}, {"hi": "SRAM को बार-बार रिफ्रेश करने की आवश्यकता होती है, जबकि DRAM बिना रिफ्रेश किए स्थिर रहता है", "en": "SRAM requires frequent refreshing, while DRAM remains stable without refreshing"}], "answer": 1, "explanation_hi": "DRAM के कैपेसिटर समय के साथ चार्ज लीक करते हैं, जिससे डेटा सुरक्षित रखने के लिए हर कुछ मिलीसेकंड में रिफ्रेशिंग आवश्यक होती है। SRAM फ्लिप-फ्लॉप पर आधारित होने के कारण बिना रिफ्रेश किए डेटा बनाए रखता है।", "explanation_en": "DRAM stores data in capacitors that leak charge, necessitating periodic refresh cycles. SRAM uses flip-flops that do not leak charge, requiring no refresh cycles."}, {"id": 38, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "ऑपरेटिंग सिस्टम के प्रोसेस मैनेजमेंट में प्रयुक्त होने वाला 'fork()' सिस्टम कॉल पूर्ण होने पर क्रमशः पैरेंट प्रोसेस और नवनिर्मित चाइल्ड प्रोसेस को क्या वैल्यू रिटर्न करता है?", "question_en": "In operating system process management, what values does the 'fork()' system call return to the parent process and the newly created child process respectively upon completion?", "options": [{"hi": "पैरेंट को शून्य (0) और चाइल्ड प्रोसेस को पैरेंट की PID (>0)", "en": "Zero (0) to the parent, and parent's PID (>0) to the child process"}, {"hi": "दोनों को समान रूप से शून्य (0) वैल्यू रिटर्न करता है", "en": "Zero (0) to both processes equally"}, {"hi": "पैरेंट को 1 और चाइल्ड प्रोसेस को ऋणात्मक मान (-1)", "en": "1 to the parent and a negative value (-1) to the child process"}, {"hi": "पैरेंट को चाइल्ड की PID (>0) और चाइल्ड प्रोसेस को शून्य (0)", "en": "Child's PID (>0) to the parent, and zero (0) to the child process"}], "answer": 3, "explanation_hi": "सफल fork() होने पर, मूल पैरेंट प्रोसेस को नए बने चाइल्ड की प्रोसेस आईडी (PID) प्राप्त होती है, जबकि चाइल्ड प्रोसेस को '0' प्राप्त होता है ताकि वह स्वयं की पहचान कर सके।", "explanation_en": "Upon success, fork() returns the Process ID (PID) of the child to the parent, and returns '0' to the child process itself to differentiate it from the parent."}, {"id": 39, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "रिलेशनल डेटाबेस (RDBMS) की शब्दावली में, एक टेबल के संदर्भ में 'डिग्री' (Degree) और 'कार्डिनलिटी' (Cardinality) क्रमशः किन्हें परिभाषित करती हैं?", "question_en": "In Relational Database (RDBMS) terminology, what do 'Degree' and 'Cardinality' define in the context of a table?", "options": [{"hi": "कॉलमों (Attributes) की कुल संख्या को डिग्री, और पंक्तियों (Rows/Tuples) की कुल संख्या को कार्डिनलिटी", "en": "The total number of columns (attributes) as Degree, and the total number of rows (tuples) as Cardinality"}, {"hi": "पंक्तियों (Rows) की कुल संख्या को डिग्री, और कॉलमों (Columns) की कुल संख्या को कार्डिनलिटी", "en": "The total number of rows as Degree, and the total number of columns as Cardinality"}, {"hi": "टेबल की कुल भंडारण क्षमता (Bytes) को डिग्री, और अनुक्रमित कुंजियों की संख्या को कार्डिनलिटी", "en": "The total storage capacity of the table as Degree, and the number of indexed keys as Cardinality"}, {"hi": "प्राइमरी कुंजियों की संख्या को डिग्री, और फॉरेन कुंजियों की संख्या को कार्डिनलिटी", "en": "The number of primary keys as Degree, and the number of foreign keys as Cardinality"}], "answer": 0, "explanation_hi": "डेटाबेस डिज़ाइन में, कॉलम या फील्ड (Attributes) की संख्या को डिग्री (Degree) कहा जाता है, तथा रिकॉर्ड्स या पंक्तियों (Tuples) की संख्या को कार्डिनलिटी (Cardinality) कहा जाता है।", "explanation_en": "In database design, the number of columns/attributes in a relation is called its Degree, and the number of rows/tuples is called its Cardinality."}, {"id": 40, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कंप्यूटर की बाइनरी अंकगणित प्रणाली में, यदि एक 8-बिट संख्या '0000 1101' है, तो इसका 2's कॉम्प्लीमेंट (2's Complement) रूप क्या होगा?", "question_en": "In computer binary arithmetic, if an 8-bit binary number is '0000 1101', what will be its 2's Complement form?", "options": [{"hi": "1111 0010", "en": ""}, {"hi": "0000 1101", "en": ""}, {"hi": "1111 1111", "en": ""}, {"hi": "1111 0011", "en": ""}], "answer": 3, "explanation_hi": "संख्या '0000 1101' का 1's Complement = 1111 0010। इसमें 1 जोड़ने पर 2's Complement = 1111 0011 प्राप्त होता है, जिसका उपयोग ऋणात्मक संख्याओं को दर्शाने हेतु होता है।", "explanation_en": "1's complement of '0000 1101' is '1111 0010'. Adding 1 to this gives '1111 0011', which is the 2's complement used to represent negative numbers."}, {"id": 41, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सॉफ़्टवेयर विकास के अंतर्गत कोड के अनुवादकों - 'कंपाइलर' (Compiler) और 'इंटरप्रेटर' (Interpreter) की कार्यप्रणाली में मुख्य अंतर क्या है?", "question_en": "What is the main difference in the working principle of the code translators - 'Compiler' and 'Interpreter' in software development?", "options": [{"hi": "कंपाइलर निष्पादन से पहले पूरे कोड को एक साथ मशीन कोड में बदलता है, जबकि इंटरप्रेटर लाइन-दर-लाइन अनुवाद करता है", "en": "Compiler translates the entire source code into machine code at once before execution, while Interpreter translates line-by-line during execution"}, {"hi": "इंटरप्रेटर कंपाइलर की तुलना में निष्पादन गति में बहुत तेज़ होता है", "en": "Interpreter is much faster in execution speed compared to Compiler"}, {"hi": "कंपाइलर केवल असेंबली भाषा को मशीन भाषा में बदलता है, जबकि इंटरप्रेटर उच्च स्तरीय भाषा को बदलता है", "en": "Compiler translates only assembly language to machine language, while Interpreter translates high-level language"}, {"hi": "कंपाइलर एक हार्डवेयर घटक है, जबकि इंटरप्रेटर एक केवल शुद्ध एप्लीकेशन सॉफ्टवेयर है", "en": "Compiler is a hardware component, while Interpreter is strictly an application software"}], "answer": 0, "explanation_hi": "कंपाइलर पूरे उच्च-स्तरीय कोड को पहले एक साथ 'ऑब्जेक्ट कोड/मशीन भाषा' में परिवर्तित करता है। इंटरप्रेटर प्रोग्राम को सीधे रन करता है और हर लाइन को निष्पादन के समय ही अनुवादित करता है।", "explanation_en": "A compiler converts the entire high-level program into machine code once before execution. An interpreter executes the code directly, translating it line-by-line on the fly."}, {"id": 42, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आईपी एड्रेसिंग के अंतर्गत 'APIPA' (Automatic Private IP Addressing) रेंज विंडोज द्वारा कंप्यूटर को कब आवंटित की जाती है और इसकी सही रेंज क्या है?", "question_en": "Under IP addressing, when is the 'APIPA' range assigned to a computer by Windows, and what is its correct range?", "options": [{"hi": "जब कंप्यूटर पहली बार इंटरनेट सेवा प्रदाता (ISP) से जुड़ता है; आईपी रेंज 192.168.0.0 से 192.168.255.255", "en": "When the computer connects to the ISP for the first time; IP range of 192.168.0.0 to 192.168.255.255"}, {"hi": "जब लूपबैक एड्रेस के लिए कनेक्टिविटी जाँची जाती है; आईपी रेंज 127.0.0.0 से 127.255.255.255", "en": "When checking connectivity for loopback tests; IP range of 127.0.0.0 to 127.255.255.255"}, {"hi": "जब DHCP सर्वर से संपर्क विफल हो जाता है; आईपी रेंज 169.254.0.0 से 169.254.255.255", "en": "When communication with the DHCP server fails; IP range of 169.254.0.0 to 169.254.255.255"}, {"hi": "जब सिस्टम को सुरक्षित वैन (WAN) नेटवर्क पर लाया जाता है; आईपी रेंज 10.0.0.0 से 10.255.255.255", "en": "When bringing the system onto a secured WAN network; IP range of 10.0.0.0 to 10.255.255.255"}], "answer": 2, "explanation_hi": "APIPA विंडोज़ द्वारा स्वतः असाइन किया जाने वाला लिंक-लोकल एड्रेस है, जो तब सक्रिय होता है जब सिस्टम ऑटोमैटिक आईपी (DHCP) पर सेट हो लेकिन नेटवर्क में राउटर/DHCP सर्वर से आईपी न मिले।", "explanation_en": "APIPA is a link-local address assigned automatically by Windows when a client configured for DHCP cannot reach the DHCP server, using the 169.254.0.0/16 block."}, {"id": 43, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "नेटवर्क टोपोलॉजी के संदर्भ में, 'स्टार टोपोलॉजी' (Star Topology) और 'बस टोपोलॉजी' (Bus Topology) के क्रैश होने (विफलता) की परिस्थितियों में क्या मुख्य अंतर है?", "question_en": "In the context of network topologies, what is the main difference in the failure (crash) conditions of 'Star Topology' and 'Bus Topology'?", "options": [{"hi": "स्टार में एक भी कंप्यूटर खराब होने पर पूरा नेटवर्क बंद हो जाता है, जबकि बस में ऐसा नहीं होता", "en": "In Star, failure of even a single computer shuts down the entire network, whereas in Bus it does not"}, {"hi": "बस टोपोलॉजी में केंद्रीय नियंत्रक के रूप में हमेशा एक हब (Hub) प्रयुक्त होता है", "en": "Bus topology always utilizes a central hub acting as a controller"}, {"hi": "स्टार में केंद्रीय हब/स्विच विफल होने पर पूरा नेटवर्क बंद होता है; बस में मुख्य बैकबोन केबल टूटने पर पूरा नेटवर्क बंद होता है", "en": "In Star, failure of the central hub/switch downs the whole network; in Bus, breakage of the main backbone cable downs the whole network"}, {"hi": "दोनों टोपोलॉजी में एक केबल टूटने पर केवल वही विशिष्ट कंप्यूटर प्रभावित होता है, पूरा नेटवर्क कभी क्रैश नहीं होता", "en": "In both topologies, a cable break affects only that specific computer; the network never crashes completely"}], "answer": 2, "explanation_hi": "स्टार टोपोलॉजी में प्रत्येक कंप्यूटर स्वतंत्र रूप से केंद्रीय स्विच/हब से जुड़ा होता है। बस टोपोलॉजी में सभी कंप्यूटर एक ही साझा बैकबोन केबल से जुड़े होते हैं जिसके दोनों सिरों पर टर्मिनेटर होते हैं।", "explanation_en": "In a Star topology, all devices connect to a central hub/switch. In a Bus topology, devices connect to a single central cable (backbone); a break in this main cable halts the entire network."}, {"id": 44, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आईपी क्लास (IPv4 Classes) के मानकों के अनुसार, निम्नलिखित में से कौन-सा आईपी एड्रेस एक वैध 'प्राइवेट आईपी' (Private IP Address) है?", "question_en": "According to IPv4 standards, which of the following IP addresses is a valid 'Private IP Address'?", "options": [{"hi": "172.15.2.1", "en": ""}, {"hi": "172.18.5.10", "en": ""}, {"hi": "172.32.100.4", "en": ""}, {"hi": "192.169.1.5", "en": ""}], "answer": 1, "explanation_hi": "क्लास-B प्राइवेट आईपी की रेंज 172.16.0.0 से 172.31.255.255 होती है। अतः 172.18.x.x वैध प्राइवेट आईपी है। 172.15.x.x और 172.32.x.x पब्लिक आईपी हैं। क्लास-C प्राइवेट आईपी केवल 192.168.x.x है।", "explanation_en": "The Class-B private IP range is 172.16.0.0 to 172.31.255.255. Thus, 172.18.5.10 is private. 172.15.x.x and 172.32.x.x are public. Class-C private range is 192.168.x.x."}, {"id": 45, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "नेटवर्किंग में पोर्ट एड्रेस ट्रांसलेशन (PAT), जिसे 'NAT Overload' भी कहा जाता है, किस प्रकार हजारों आंतरिक प्राइवेट आईपी को इंटरनेट चलाने की अनुमति देता है?", "question_en": "In networking, how does Port Address Translation (PAT), also known as 'NAT Overload', allow thousands of internal private IPs to access the internet?", "options": [{"hi": "यह प्रत्येक प्राइवेट आईपी को बाहरी दुनिया के लिए एक समान पब्लिक आईपी के साथ अलग-अलग 'पोर्ट नंबर' (Port Number) आवंटित करता है", "en": "It maps multiple private IPs to a single public IP using unique source port numbers"}, {"hi": "यह प्रत्येक प्राइवेट आईपी को सीधे कई समानांतर पब्लिक आईपी एड्रेसों में विभाजित कर देता है", "en": "It directly splits each private IP into multiple parallel public IP addresses"}, {"hi": "यह प्राइवेट आईपी को सीधे मैक (MAC) एड्रेस में बदलकर राउटिंग करता है", "en": "It routes by directly converting private IPs into MAC addresses"}, {"hi": "यह बिना पब्लिक आईपी के सीधे पैकेटों को वैन (WAN) नेटवर्क पर भेज देता है", "en": "It routes packets directly to the WAN network without requiring any public IP"}], "answer": 0, "explanation_hi": "PAT (Many-to-One NAT) में आपके घरों के राउटर की तरह सैकड़ों प्राइवेट आईपी डिवाइस केवल एक ही पब्लिक आईपी पर इंटरनेट चलाते हैं, जिसमें प्रत्येक सेशन को अलग पहचान देने के लिए पोर्ट नंबर प्रयुक्त होता है।", "explanation_en": "PAT (NAT Overload) maps multiple private IP addresses to a single public IP address by assigning a unique temporary port number to each translation session."}, {"id": 46, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अपाचे हडूप (Apache Hadoop) के वितरित फाइल सिस्टम (HDFS) आर्किटेक्चर में 'NameNode' और 'DataNode' की भूमिकाओं में क्या अंतर है?", "question_en": "In the Apache Hadoop Distributed File System (HDFS) architecture, what is the difference between the roles of 'NameNode' and 'DataNode'?", "options": [{"hi": "DataNode मास्टर नोड होता है जो मेटाडेटा संभालता है, जबकि NameNode स्लेव होता है जो डेटा स्टोर करता है", "en": "DataNode is the master node handling metadata, while NameNode is the slave node storing actual blocks"}, {"hi": "NameNode केवल मेटाडेटा (Metadata) और निर्देशिका का प्रबंधन करता है, जबकि DataNode पर वास्तविक डेटा ब्लॉक स्टोर होते हैं", "en": "NameNode manages metadata and the file system directory, while DataNodes store the actual data blocks"}, {"hi": "NameNode केवल जावा (Java) कोड का निष्पादन करता है, जबकि DataNode केवल SQL क्वेरी चलाता है", "en": "NameNode executes only Java code, while DataNode runs only SQL queries"}, {"hi": "HDFS में NameNode का डेटा विलोपन (Deletion) की स्थिति में डेटा रिकवरी के लिए कोई उपयोग नहीं होता", "en": "In HDFS, the NameNode has no utility for data recovery in case of accidental data deletion"}], "answer": 1, "explanation_hi": "HDFS एक मास्टर-स्लेव आर्किटेक्चर है। NameNode मास्टर है जो फाइलों के टूटने, ब्लॉकों की स्थिति और पते (मेटाडेटा) की देखरेख करता है। DataNodes स्लेव हैं जहाँ वास्तविक बड़े डेटा ब्लॉक रखे जाते हैं।", "explanation_en": "HDFS follows a master-slave design. NameNode is the master node that maintains metadata (directory tree, block locations), while DataNodes are slaves storing data blocks."}, {"id": 47, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मशीन लर्निंग (Machine Learning) के सिद्धांतों के अनुसार, 'K-Means' एल्गोरिदम किस प्रकार के अधिगम (Learning) का उदाहरण है?", "question_en": "According to machine learning principles, what type of learning is the 'K-Means' algorithm an example of?", "options": [{"hi": "पर्यवेक्षित अधिगम (Supervised Learning); क्योंकि इसके लिए पहले से लेबल किए गए इनपुट-आउटपुट की आवश्यकता होती है", "en": "Supervised Learning; because it requires pre-labelled input-output pairs"}, {"hi": "अपर्यवेक्षित अधिगम (Unsupervised Learning); क्योंकि यह बिना लेबल वाले डेटा में क्लस्टर (समूह) खोजता है", "en": "Unsupervised Learning; because it finds clusters (groups) in unlabelled data"}, {"hi": "सुदृढ़ीकरण अधिगम (Reinforcement Learning); क्योंकि यह पुरस्कार और दंड के माध्यम से सीखता है", "en": "Reinforcement Learning; because it learns through rewards and punishments"}, {"hi": "अर्ध-पर्यवेक्षित अधिगम (Semi-supervised Learning); क्योंकि यह केवल चित्रों के वर्गीकरण हेतु प्रयुक्त होता है", "en": "Semi-supervised Learning; because it is used only for image classification"}], "answer": 1, "explanation_hi": "K-Means एल्गोरिदम बिना लेबल वाले डेटा (Unlabelled Data) में समानता के आधार पर समूहों का निर्माण करता है, अतः यह क्लस्टरिंग (Clustering) यानी अपर्यवेक्षित अधिगम (Unsupervised Learning) का उदाहरण है।", "explanation_en": "K-Means clustering automatically groups data points with similar characteristics from unlabelled datasets, classifying it under Unsupervised Learning."}, {"id": 48, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सॉफ़्टवेयर आर्किटेक्चर के संदर्भ में, बड़े पैमाने पर एप्लिकेशनों के विकास हेतु 'माइक्रोसर्विसेज' (Microservices) को 'मोनोलिथिक' (Monolithic) आर्किटेक्चर पर क्यों प्राथमिकता दी जाती है?", "question_en": "In software architecture, why are 'Microservices' preferred over a 'Monolithic' architecture for large-scale applications?", "options": [{"hi": "माइक्रोसर्विसेज प्रत्येक सेवा को स्वतंत्र रूप से स्केल (Scale) और डिप्लॉय करने की अनुमति देती हैं; एक सेवा बंद होने पर पूरा सिस्टम क्रैश नहीं होता", "en": "Microservices allow independent scaling and deployment of each service; failure of one service does not crash the entire system"}, {"hi": "मोनोलिथिक आर्किटेक्चर में सारा कोड अलग-अलग स्वतंत्र फाइलों में बंटा होता है जिससे त्रुटियाँ अधिक आती हैं", "en": "In a monolithic architecture, all code is split into independent files, leading to more errors"}, {"hi": "माइक्रोसर्विसेज में डेटा सुरक्षा हेतु किसी अतिरिक्त एन्क्रिप्शन या फायरवॉल की आवश्यकता नहीं होती है", "en": "Microservices do not require any additional encryption or firewall for data security"}, {"hi": "मोनोलिथिक आर्किटेक्चर केवल क्लाउड नेटवर्क पर चल सकता है, माइक्रोसर्विसेज सामान्य कंप्यूटर पर चलती हैं", "en": "Monolithic architecture can run only on cloud networks, while microservices run on standard computers"}], "answer": 0, "explanation_hi": "मोनोलिथिक में पूरा कोड एक ही ब्लॉक/फाइल में होता है, जिससे एक काउंटर बंद होने पर पूरी दुकान ठप हो जाती है। माइक्रोसर्विसेज में अलग-अलग स्वतंत्र मॉड्यूल होते हैं जो एपीआई (API) के जरिए बात करते हैं, जिससे स्वतंत्रता मिलती है।", "explanation_en": "In a monolithic system, everything is bundled together as one service. In microservices, the application is divided into small, loosely coupled services communicating via APIs, enhancing scalability and fault tolerance."}, {"id": 49, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "साइबर सुरक्षा की शब्दावली में, 'ज़ीरो-डे वल्नेरेबिलिटी' (Zero-Day Vulnerability) से क्या तात्पर्य है?", "question_en": "In cybersecurity terminology, what does the term 'Zero-Day Vulnerability' refer to?", "options": [{"hi": "ऐसी सुरक्षा खामी जो सिस्टम को केवल ज़ीरो-डेक्स (0-Days) के बाद पूरी तरह नष्ट कर देती है", "en": "A vulnerability that completely destroys the system only after exactly zero days"}, {"hi": "ऐसी खामी जो केवल कंप्यूटर बूट होने के पहले नैनोसेकंड (0वें सेकंड) में आती है", "en": "A bug that occurs only during the first nanosecond (0th second) of system boot"}, {"hi": "एंटीवायरस के डेटाबेस में पहले से अपडेटेड सिग्नेचर वाले वायरस की सूची", "en": "A database signature of a virus already updated in the antivirus database"}, {"hi": "ऐसी सुरक्षा खामी जिसके बारे में सॉफ्टवेयर कंपनी/डेवलपर को पता नहीं होता और जिसका सुधार (पैच) अभी उपलब्ध नहीं है", "en": "A security vulnerability unknown to the software vendor for which no patch is currently available"}], "answer": 3, "explanation_hi": "ज़ीरो-डे वल्नेरेबिलिटी का अर्थ है कि सुरक्षा खामी का पता कंपनी को लगने से पहले ही हैकर्स ने उसे ढूंढ लिया। कंपनी के पास पैच तैयार करने के लिए '0 दिन' का समय था क्योंकि हमला पहले ही शुरू हो गया।", "explanation_en": "A zero-day vulnerability is a software security flaw that is unknown to the software vendor and has no available patch, and is often exploited by attackers before a fix can be released."}, {"id": 50, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "डेटा विश्वसनीयता सुनिश्चित करने वाले 'RAID 5' स्टोरेज तकनीक में डेटा सुरक्षा और रिकवरी के लिए न्यूनतम कितनी डिस्क आवश्यक हैं और इसका क्या सिद्धांत है?", "question_en": "In 'RAID 5' storage technology which ensures data reliability, what is the minimum number of disks required for data protection, and what is its principle?", "options": [{"hi": "न्यूनतम 2 डिस्क; यह हूबहू डेटा मिररिंग (Mirroring) का उपयोग करता है", "en": "Minimum 2 disks; it utilizes exact data mirroring"}, {"hi": "न्यूनतम 5 डिस्क; यह केवल रीड-ओनली डेटा की कॉपियां बनाने पर आधारित है", "en": "Minimum 5 disks; it is based solely on creating copies of read-only data"}, {"hi": "न्यूनतम 3 डिस्क; यह डेटा स्ट्रिपिंग (Striping) के साथ पैरिटी (Parity) वितरण का उपयोग करता है", "en": "Minimum 3 disks; it utilizes data striping with distributed parity"}, {"hi": "न्यूनतम 1 डिस्क; इसमें पैरिटी की कोई आवश्यकता नहीं होती", "en": "Minimum 1 disk; it does not require any parity block"}], "answer": 2, "explanation_hi": "RAID 0 केवल स्ट्रिपिंग (तेज गति, शून्य सुरक्षा, मिनिमम 2 डिस्क), RAID 1 मिररिंग (100% सुरक्षा, आधा स्पेस, मिनिमम 2 डिस्क)। RAID 5 सबसे लोकप्रिय है, जिसमें कम से कम 3 डिस्क चाहिए और इसमें गणितीय कोड (पैरिटी) सभी डिस्क पर बांटा जाता है।", "explanation_en": "RAID 0 offers striping (speed, no fault tolerance). RAID 1 offers mirroring (exact copy, 50% storage loss). RAID 5 requires at least 3 disks and uses block-level striping with distributed parity, protecting data against a single drive failure."}]};
+
+/* ===== भाषा टॉगल + प्रश्न-प्रकार फ़ॉर्मैटर ===== */
+var JH_LANG = (function(){ try{ return localStorage.getItem("jaiho_lang")||"bi"; }catch(e){ return "bi"; } })();
+function langSegHTML(){
+  var L=JH_LANG, o=function(v,t){ return '<button type="button" class="lang-b'+(L===v?" on":"")+'" data-lang="'+v+'">'+t+'</button>'; };
+  return o("hi","हिंदी")+o("en","English")+o("bi","दोनों");
+}
+function paintLang(){
+  ["qLang","coverLang"].forEach(function(id){
+    var box=document.getElementById(id); if(!box) return;
+    box.innerHTML=langSegHTML();
+    box.querySelectorAll(".lang-b").forEach(function(b){
+      b.addEventListener("click",function(){ setJhLang(b.getAttribute("data-lang")); });
+    });
+  });
+}
+function setJhLang(l){
+  JH_LANG=l; try{ localStorage.setItem("jaiho_lang",l); }catch(e){}
+  paintLang();
+  try{ if(document.getElementById("testScreen").style.display==="block") renderQuestion(); }catch(e){}
+  try{ if(document.getElementById("resultScreen").style.display==="block") renderReview(); }catch(e){}
+}
+function jhEsc(t){ return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function _jhPoints(t){
+  t = String(t).replace(/\s*(कथन\s*\d+\s*[:：])/g,"\n$1")
+       .replace(/\s*(Statement\s*\d+\s*[:：])/gi,"\n$1")
+       .replace(/([।;?:,])\s*(\d+\.\s)/g,"$1\n$2");
+  return t.replace(/^\n+/,"").replace(/\n[ \t]+/g,"\n");
+}
+function _jhMatch(raw){
+  var t=String(raw);
+  var reI=/(सूची|List)[\s\-–—]*I(?!I)\s*(?:\([^)]*\))?\s*[:：]/i;
+  var reII=/(सूची|List)[\s\-–—]*II\s*(?:\([^)]*\))?\s*[:：]/i;
+  var mI=t.match(reI), mII=t.match(reII);
+  if(!mI||!mII||mII.index<=mI.index) return null;
+  var intro=t.slice(0,mI.index).trim();
+  var segI=t.slice(mI.index+mI[0].length,mII.index).trim().replace(/[;।,]\s*$/,"");
+  var rest=t.slice(mII.index+mII[0].length);
+  var mo=rest.match(/(सही\s*मिलान|नीचे\s*दिए|सुमेलित|Choose|Select|Match|कूट)/i);
+  var segII, outro="";
+  if(mo){ segII=rest.slice(0,mo.index).trim(); outro=rest.slice(mo.index).trim(); }
+  else segII=rest.trim();
+  segII=segII.replace(/[;।,]\s*$/,"");
+  var sp=function(seg,re){ return seg.split(re).map(function(x){return x.trim();}).filter(Boolean); };
+  var A=sp(segI,/\s*,\s*(?=[A-Z]\.)/), B=sp(segII,/\s*,\s*(?=\d+\.)/);
+  if(A.length<2||B.length<2) return null;
+  var n=Math.max(A.length,B.length), rows="";
+  for(var k=0;k<n;k++) rows+="<tr><td>"+jhEsc(A[k]||"")+"</td><td>"+jhEsc(B[k]||"")+"</td></tr>";
+  return (intro?jhEsc(intro)+"\n":"")
+    + '<table class="match-tbl"><tr><th>'+jhEsc(mI[1])+'-I</th><th>'+jhEsc(mII[1])+'-II</th></tr>'+rows+'</table>'
+    + (outro?jhEsc(outro):"");
+}
+function jhFmt(raw){ if(!raw) return ""; var mt=_jhMatch(raw); return mt?mt:jhEsc(_jhPoints(raw)); }
+
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  paintLang();
+    el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  var _hi=q.question_hi||"", _en=q.question_en||"";
+  if(JH_LANG==="en" && _en){ el("qtext").innerHTML = jhFmt(_en); el("qtextEn").classList.add("hidden"); }
+  else { el("qtext").innerHTML = jhFmt(_hi||_en);
+         if(JH_LANG==="bi" && _en && _hi){ el("qtextEn").innerHTML = jhFmt(_en); el("qtextEn").classList.remove("hidden"); }
+         else { el("qtextEn").innerHTML=""; el("qtextEn").classList.add("hidden"); } }
+  paintLang();
+  el("options").innerHTML = (q.options||[]).map((op,i)=>{var oh=(op&&op.hi)||"", oe=(op&&op.en)||"";var body = (JH_LANG==="en"&&oe) ? `<div class="op-hi">${jhEsc(oe)}</div>` : (JH_LANG==="bi"&&oe&&oe!==oh) ? `<div class="op-hi">${jhEsc(oh)}</div><div class="op-en">${jhEsc(oe)}</div>` : `<div class="op-hi">${jhEsc(oh||oe)}</div>`;return `<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div>${body}</div></button>`;}).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{
+  const user = answers[i];
+  const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad");
+  const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong");
+  const optTxt = function(o){ if(!o) return ""; var oh=o.hi||"", oe=o.en||"";
+    if(JH_LANG==="en" && oe) return oe;
+    if(JH_LANG==="bi" && oe && oe!==oh) return oh+" / "+oe;
+    return oh||oe; };
+  const utext = user===null ? "Not attempted" : `${letters[user]}. ${optTxt(q.options[user])}`;
+  const correctText = `${letters[q.answer]}. ${optTxt(q.options[q.answer])}`;
+  var qMain = (JH_LANG==="en" && q.question_en) ? q.question_en : (q.question_hi||q.question_en||"");
+  var qSub  = (JH_LANG==="bi" && q.question_en && q.question_hi) ? q.question_en : "";
+  var eMain = (JH_LANG==="en" && q.explanation_en) ? q.explanation_en : (q.explanation_hi||q.explanation_en||"");
+  var eSub  = (JH_LANG==="bi" && q.explanation_en && q.explanation_hi) ? q.explanation_en : "";
+  return `<div class="review-item"><div class="review-head">`
+    + `<strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong>`
+    + `<span class="badge ${status}">${statusText}</span></div>`
+    + `<div class="review-content"><div style="white-space:pre-line"><b>${jhFmt(qMain)}</b></div>`
+    + (qSub?`<div class="qtext-en" style="white-space:pre-line">${jhFmt(qSub)}</div>`:"")
+    + `<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div>`
+    + (eMain?`<div class="explain"><b>Explanation:</b> ${escapeHTML(eMain)}`
+        + (eSub?`<br><span style="color:#64748b">${escapeHTML(eSub)}</span>`:"")+`</div>`:"")
+    + `</div></div>`;
+}).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
