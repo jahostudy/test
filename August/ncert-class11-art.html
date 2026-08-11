@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  
+  .match-tbl{width:100%;border-collapse:collapse;margin:10px 0 4px}
+  .match-tbl th,.match-tbl td{border:1px solid #d8eaff;padding:8px 11px;text-align:left;vertical-align:top;font-size:.93em}
+  .match-tbl th{color:var(--navy);font-weight:950;font-size:.82em;letter-spacing:.5px;background:#eaf3ff}
+  .qtext-en .match-tbl th{color:#475569;background:#f1f5fb}
+  .lang-seg{display:inline-flex;background:#eef4fc;border:1px solid #d8eaff;border-radius:10px;padding:3px;gap:2px}
+  .lang-b{font-family:inherit;font-size:12.5px;font-weight:900;color:#5b6a83;background:transparent;border:0;
+    border-radius:8px;padding:5px 13px;cursor:pointer;transition:.15s}
+  .lang-b.on{background:linear-gradient(135deg,var(--royal),#0f6fd0);color:#fff}
+  .lang-choose{display:flex;align-items:center;gap:10px;margin:12px 0 0;flex-wrap:wrap}
+  .lc-label{font-size:13px;color:var(--muted);font-weight:900}
+
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="lang-choose"><span class="lc-label">पढ़ने की भाषा:</span><div class="lang-seg" id="coverLang"></div></div><div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap"><div class="topic" id="topic">Topic</div><div class="lang-seg" id="qLang"></div></div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title": "NCERT Class 11 • Art & Culture", "highlight": "Art & Culture", "shortTitle": "NCERT Class 11", "subtitle": "UPPCS Prelims 2026 / RO-ARO • GS Test • Art & Culture", "tag": "UPPCS Prelims 2026 / RO-ARO", "pill": "🏆 Live Daily Rank • Jai Ho Study", "description": "UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।", "durationMinutes": 25, "marksPerQuestion": 2.0, "negativeMarks": 0.66, "testId": "jaiho-uppcs-2026-gs-test-ncert-class-11-art-culture-ncert-class-11-20260811-im87v", "footerCredit": "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com", "rankingEnabled": true, "firebaseConfig": {"apiKey": "AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I", "authDomain": "jai-ho-1c1d7.firebaseapp.com", "projectId": "jai-ho-1c1d7", "storageBucket": "jai-ho-1c1d7.firebasestorage.app", "messagingSenderId": "472878277527", "appId": "1:472878277527:web:a62780ddadf60fd5e5dad2", "measurementId": "G-LV29VGHG6J"}, "publishDateStr": "2026-08-11", "questions": [{"id": 1, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत में रॉक पेंटिंग (शैलचित्रों) की पहली खोज वर्ष 1867-68 में निम्नलिखित में से किस पुरातत्वविद् द्वारा की गई थी?", "question_en": "The first discovery of rock paintings in India was made in the year 1867–68 by which of the following archaeologists?", "options": [{"hi": "अमरिंद्रनाथ घोष", "en": "A. Ghosh"}, {"hi": "आर्किबाल्ड कार्ललेल", "en": "Archibold Carlleyle"}, {"hi": "जे. कॉकबर्न", "en": "J. Cockburn"}, {"hi": "वी.एस. वाकणकर", "en": "V.S. Wakankar"}], "answer": 1, "explanation_hi": "भारत में शैलचित्रों की पहली खोज स्पेन में अल्तामीरा की खोज से 12 वर्ष पूर्व, 1867-68 में आर्किबाल्ड कार्ललेल द्वारा की गई थी।", "explanation_en": "The first discovery of rock paintings was made in India in 1867–68 by archaeologist Archibold Carlleyle, twelve years before the discovery of Altamira in Spain."}, {"id": 2, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "उत्तराखंड के कुमाऊं पहाड़ियों में स्थित लाखुदियाड़ के प्रागैतिहासिक शैलचित्र निम्नलिखित में से किस नदी के तट पर पाए गए हैं?", "question_en": "The prehistoric rock paintings of Lakhudiyar in the Kumaon hills of Uttarakhand have been found on the banks of which of the following rivers?", "options": [{"hi": "अलकनंदा नदी", "en": "River Alaknanda"}, {"hi": "कोसी नदी", "en": "River Kosi"}, {"hi": "सुयाल नदी", "en": "River Suyal"}, {"hi": "रामगंगा नदी", "en": "River Ramganga"}], "answer": 2, "explanation_hi": "उत्तराखंड में अल्मोड़ा-बरेछीना मार्ग पर सुयाल नदी के तट पर स्थित लाखुदियाड़ के शैलचित्र पाए गए हैं, जिसका अर्थ 'एक लाख गुफाएं' होता है।", "explanation_en": "The rock shelters on the banks of the River Suyal at Lakhudiyar, on the Almora–Barechina road, bear these prehistoric paintings."}, {"id": 3, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "लाखुदियाड़ (उत्तराखंड) के शैलचित्रों में सुपरइम्पोज़िशन (एक चित्र के ऊपर दूसरा चित्र) का सही ऐतिहासिक क्रम (प्राचीनतम से नवीनतम) क्या है?", "question_en": "What is the correct historical sequence of superimposition (from earliest to latest) of paintings found at Lakhudiyar, Uttarakhand?", "options": [{"hi": "पहले लाल गेरू के चित्र, फिर सफेद चित्र, और अंत में काले रंग के चित्र", "en": "Earliest in red ochre, followed by white, and the last group in black"}, {"hi": "पहले सफेद चित्र, फिर काले रंग के चित्र, और अंत में लाल गेरू के चित्र", "en": "Earliest in white, followed by black, and the last group in red ochre"}, {"hi": "पहले काले रंग के चित्र, फिर सफेद चित्र, और अंत में लाल गेरू के चित्र", "en": "Earliest in black, followed by white, and the last group in red ochre"}, {"hi": "पहले काले रंग के चित्र, फिर लाल गेरू के चित्र, और अंत में सफेद चित्र", "en": "Earliest in black, followed by red ochre, and the last group in white"}], "answer": 3, "explanation_hi": "लाखुदियाड़ में चित्रों के अधिरोपण में सबसे पहले काले रंग के, फिर उसके ऊपर लाल गेरू के और सबसे अंत में सफेद रंग के चित्र बने हैं।", "explanation_en": "At Lakhudiyar, there is some superimposition of paintings. The earliest are in black; over these are red ochre paintings and the last group comprises white paintings."}, {"id": 4, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कर्नाटक और आंध्र प्रदेश के नवपाषाणकालीन शैलचित्रों के संदर्भ में निम्नलिखित कथनों पर विचार करें: कथन 1: ग्रेनाइट चट्टानों ने यहाँ के नवपाषाणकालीन मानव को अपनी पेंटिंग के लिए उपयुक्त कैनवास प्रदान किया। कथन 2: कुपगल्लू, पिकलीहल और टेक्कलकोटा यहाँ के प्रसिद्ध नवपाषाणकालीन शैलचित्र स्थल हैं।", "question_en": "Consider the following statements regarding the Neolithic rock art sites of South India: Statement 1: The granite rocks of Karnataka and Andhra Pradesh provided suitable canvases to the Neolithic man for his paintings. Statement 2: Kupgallu, Piklihal, and Tekkalkota are famous Neolithic sites here.", "options": [{"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "दोनों", "en": "Both"}, {"hi": "केवल 1", "en": "Only 1"}], "answer": 2, "explanation_hi": "दोनों कथन बिल्कुल सही हैं। दक्षिण भारत में कर्नाटक और आंध्र प्रदेश के ग्रेनाइट शैल-आश्रय नवपाषाणकालीन शैलचित्रों (कुपगल्लू, पिकलीहल और टेक्कलकोटा) के लिए जाने जाते हैं।", "explanation_en": "Both statements are correct. The granite rocks of Karnataka and Andhra Pradesh provided suitable canvases to the Neolithic man, with famous sites being Kupgallu, Piklihal and Tekkalkota."}, {"id": 5, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मध्य प्रदेश के विंध्य पहाड़ियों में स्थित भीमबेटका के प्रसिद्ध रॉक शेल्टर्स की खोज किस वर्ष प्रख्यात पुरातत्वविद् वी.एस. वाकणकर द्वारा की गई थी?", "question_en": "In which year were the famous rock shelters of Bhimbetka in Madhya Pradesh discovered by the eminent archaeologist V.S. Wakankar?", "options": [{"hi": "1972–73", "en": ""}, {"hi": "1951–52", "en": ""}, {"hi": "1957–58", "en": ""}, {"hi": "1967–68", "en": ""}], "answer": 2, "explanation_hi": "भीमबेटका के शैल-आश्रयों की खोज वर्ष 1957-58 में प्रख्यात पुरातत्वविद् वी.एस. वाकणकर द्वारा की गई थी।", "explanation_en": "The caves of Bhimbetka were discovered in 1957–58 by eminent archaeologist V.S. Wakankar who spent years surveying them."}, {"id": 6, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भीमबेटका गुफाओं के भौगोलिक एवं सांख्यिकीय वितरण के संदर्भ में कौन सा विकल्प सही है?", "question_en": "Which of the following options is correct regarding the geographical and statistical distribution of Bhimbetka caves?", "options": [{"hi": "5 वर्ग किमी का क्षेत्र, लगभग 1000 शैल-आश्रय, जिनमें से 800 में चित्र हैं", "en": "An area of 5 square kilometres, having about 1000 rock shelters, 800 of which bear paintings"}, {"hi": "10 वर्ग किमी का क्षेत्र, लगभग 800 शैल-आश्रय, जिनमें से 500 में चित्र हैं", "en": "An area of 10 square kilometres, having about 800 rock shelters, 500 of which bear paintings"}, {"hi": "20 वर्ग किमी का क्षेत्र, लगभग 500 शैल-आश्रय, जिनमें से 300 में चित्र हैं", "en": "An area of 20 square kilometres, having about 500 rock shelters, 300 of which bear paintings"}, {"hi": "15 वर्ग किमी का क्षेत्र, लगभग 600 शैल-आश्रय, जिनमें से 400 में चित्र हैं", "en": "An area of 15 square kilometres, having about 600 rock shelters, 400 of which bear paintings"}], "answer": 1, "explanation_hi": "भीमबेटका भोपाल से 45 किमी दक्षिण में 10 वर्ग किमी के क्षेत्र में फैला है, जिसमें लगभग 800 शैल-आश्रय हैं और 500 में चित्र हैं।", "explanation_en": "Bhimbetka is located in an area of ten square kilometres, having about eight hundred rock shelters, five hundred of which bear paintings."}, {"id": 7, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भीमबेटका की उच्च पुरापाषाणकालीन (Upper Palaeolithic) चित्रकला के संदर्भ में निम्नलिखित कथनों पर विचार करें: कथन 1: इसमें नर्तकों को हरे रंग में और शिकारियों को लाल रंग में दर्शाया गया है। कथन 2: ये चित्र मुख्य रूप से विशाल जानवरों जैसे बाइसन, हाथी, बाघ और गैंडे के रैखिक रेखांकन हैं।", "question_en": "Consider the following statements regarding the Upper Palaeolithic paintings at Bhimbetka: Statement 1: The green paintings are of dancers and the red ones are of hunters. Statement 2: These paintings are linear representations of huge animal figures like bisons, elephants, tigers, and rhinos.", "options": [{"hi": "दोनों", "en": "Both"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 2", "en": "Only 2"}], "answer": 0, "explanation_hi": "दोनों कथन सत्य हैं। उच्च पुरापाषाणकाल में हरे रंग का प्रयोग नर्तकों तथा गहरे लाल का शिकारियों के लिए रैखिक रेखाचित्रों के रूप में किया गया था।", "explanation_en": "Both statements are correct. Upper Palaeolithic paintings are linear representations of huge animals, where green depicts dancers and red depicts hunters."}, {"id": 8, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भीमबेटका के आदिम कलाकारों द्वारा शैलचित्रों में प्रयुक्त किया जाने वाला हरा रंग (Green color) निम्नलिखित में से किस खनिज पत्थर से प्राप्त किया जाता था?", "question_en": "The green colour used by the primitive artists in Bhimbetka rock paintings was derived from which of the following mineral stones?", "options": [{"hi": "मैलाकाइट अयस्क", "en": "Malachite ore"}, {"hi": "हेमेटाइट खनिज", "en": "Haematite mineral"}, {"hi": "चूना पत्थर", "en": "Limestone"}, {"hi": "कैल्सेडोनी पत्थर की हरी किस्म", "en": "A green variety of chalcedony stone"}], "answer": 3, "explanation_hi": "भीमबेटका में लाल रंग हेमेटाइट (गेरू) से और हरा रंग कैल्सेडोनी (chalcedony) नामक पत्थर की हरी किस्म से पीसकर प्राप्त किया जाता था।", "explanation_en": "The red was obtained from haematite (geru), while the green came from a green variety of a stone called chalcedony."}, {"id": 9, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भीमबेटका के कुछ शैल-आश्रयों में एक के ऊपर एक बनी चित्रकलाओं की अधिकतम कितनी परतें (layers) पाई गई हैं?", "question_en": "At some rock-art sites of Bhimbetka, in some places, up to how many layers of paintings have been found painted one on top of another?", "options": [{"hi": "5 परतें", "en": "5 layers"}, {"hi": "10 परतें", "en": "10 layers"}, {"hi": "20 परतें", "en": "20 layers"}, {"hi": "35 परतें", "en": "35 layers"}], "answer": 2, "explanation_hi": "भीमबेटका में कला के क्रमिक विकास को दर्शाने वाली चित्रों की लगभग 20 परतें एक-दूसरे के ऊपर बनी पाई गई हैं।", "explanation_en": "At Bhimbetka, in some places, there are as many as 20 layers of paintings, one on top of another, reflecting use by different generations."}, {"id": 10, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मोहनजोदड़ो से प्राप्त सेलखड़ी (Soapstone) की 'दाढ़ी वाले पुजारी' (Bearded Priest) की मूर्ति के कंधे पर लिपटे शॉल को किस पैटर्न से सजाया गया है?", "question_en": "The shawl draped over the shoulder of the soapstone 'Bearded Priest' statue found at Mohenjodaro is decorated with which pattern?", "options": [{"hi": "पुष्प बेल पैटर्न", "en": "Floral vine patterns"}, {"hi": "तिपतिया पैटर्न", "en": "Trefoil patterns"}, {"hi": "ज्यामितीय रेखाएँ", "en": "Geometric lines"}, {"hi": "चेकरबोर्ड पैटर्न", "en": "Checkerboard patterns"}], "answer": 1, "explanation_hi": "दाढ़ी वाले पुजारी की मूर्ति में शॉल को बाएं कंधे को ढकते हुए दर्शाया गया है, जिसपर तिपतिया (trefoil) नक्काशीदार पैटर्न बने हैं।", "explanation_en": "The bust of the bearded priest in soapstone depicts him draped in a shawl decorated with trefoil patterns, covering the left shoulder."}, {"id": 11, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "हड़प्पाकालीन कांस्य ढलाई की 'लुप्त मोम' (Lost Wax) तकनीक के संदर्भ में निम्नलिखित कथनों पर विचार करें: कथन 1: इस तकनीक में पहले मोम की एक मूर्ति बनाई जाती थी जिसे मिट्टी की कोटिंग से ढक दिया जाता था। कथन 2: मिट्टी के सूखने के बाद मोम को गर्म करके पिघलाकर बाहर निकाला जाता था और खोखले सांचे में पिघली धातु भरी जाती थी।", "question_en": "Consider the following statements regarding the 'lost wax' technique of bronze casting practised by the Harappans: Statement 1: In this technique, a wax figure was first covered with clay and allowed to dry. Statement 2: The wax was then heated, drained out, and molten metal was filled into the hollow clay mould.", "options": [{"hi": "दोनों", "en": "Both"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}], "answer": 0, "explanation_hi": "दोनों कथन बिल्कुल सत्य हैं। हड़प्पा सभ्यता के शिल्पकार लुप्त मोम तकनीक से अत्यधिक निपुणता के साथ तांबे और कांसे की मूर्तियों का निर्माण करते थे।", "explanation_en": "Both statements are correct. The Harappans practised bronze casting extensively using the 'lost wax' (cire perdue) process."}, {"id": 12, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "उत्तर-हड़प्पाकालीन और ताम्रपाषाणकालीन धातु ढलाई के उत्कृष्ट उदाहरण पेश करने वाला स्थल 'दैमाबाद' भारत के किस राज्य में स्थित है?", "question_en": "The late Harappan and Chalcolithic site 'Daimabad', which yielded excellent examples of metal-cast sculptures, is located in which state of India?", "options": [{"hi": "गुजरात", "en": "Gujarat"}, {"hi": "महाराष्ट्र", "en": "Maharashtra"}, {"hi": "राजस्थान", "en": "Rajasthan"}, {"hi": "मध्य प्रदेश", "en": "Madhya Pradesh"}], "answer": 1, "explanation_hi": "महाराष्ट्र के दैमाबाद नामक उत्तर-हड़प्पाकालीन और ताम्रपाषाणकालीन स्थल से धातु ढलाई के उत्कृष्ट उदाहरण मिले हैं।", "explanation_en": "The late Harappan and Chalcolithic sites like Daimabad in Maharashtra yielded excellent examples of metal-cast sculptures."}, {"id": 13, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मोहनजोदड़ो से प्राप्त तांबे/कांसे की प्रसिद्ध 'नर्तकी की मूर्ति' (Dancing Girl) की ऊंचाई लगभग कितनी है?", "question_en": "What is the approximate height of the famous copper/bronze figure of the 'Dancing Girl' found at Mohenjodaro?", "options": [{"hi": "लगभग 8 इंच", "en": "Approximately eight inches"}, {"hi": "लगभग 6 इंच", "en": "Approximately six inches"}, {"hi": "लगभग 10 इंच", "en": "Approximately ten inches"}, {"hi": "लगभग 4 इंच", "en": "Approximately four inches"}], "answer": 3, "explanation_hi": "मोहनजोदड़ो से प्राप्त यह विश्वप्रसिद्ध नर्तकी की कांस्य मूर्ति लगभग चार इंच ऊंची है।", "explanation_en": "One of the best known artefacts from the Indus Valley is the approximately four-inch-high copper figure of a dancing girl."}, {"id": 14, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सेलखड़ी (Steatite) से बनी मानक हड़प्पा मोहर (Standard Harappan Seal) का आकार और माप कितना हुआ करता था?", "question_en": "What was the shape and size of the standard Harappan seal made from steatite?", "options": [{"hi": "आयताकार पट्टिका 3 गुणा 2 वर्ग इंच", "en": "A rectangular plaque of 3x2 square inches"}, {"hi": "वर्गाकार पट्टिका 2 गुणा 2 वर्ग इंच", "en": "A square plaque of 2x2 square inches"}, {"hi": "वर्गाकार पट्टिका 4 गुणा 4 वर्ग इंच", "en": "A square plaque of 4x4 square inches"}, {"hi": "वृत्ताकार पट्टिका 2 इंच व्यास", "en": "A circular plaque of 2 inches diameter"}], "answer": 1, "explanation_hi": "मानक हड़प्पा कालीन मोहरें मुख्य रूप से सेलखड़ी से वर्गाकार रूप में 2 गुणा 2 वर्ग इंच आकार की बनाई जाती थीं।", "explanation_en": "The standard Harappan seal was a square plaque of 2×2 square inches, made from steatite."}, {"id": 15, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मोहनजोदड़ो से प्राप्त प्रसिद्ध 'पशुपति मोहर' पर अंकित बैठी हुई आकृति के चारों ओर पाए जाने वाले जंतुओं का सही समूह कौन सा है?", "question_en": "Which of the following is the correct group of animals found depicted around the seated figure on the famous 'Pashupati Seal' of Mohenjodaro?", "options": [{"hi": "दाईं ओर सांड और शेर; बाईं ओर बकरी और चीता; नीचे दो घोड़े", "en": "A bull and a lion to the right; a goat and a cheetah to the left; and two horses below"}, {"hi": "दाईं ओर गेंडा और भैंसा; बाईं ओर हाथी और बाघ; नीचे दो बारहसिंगा", "en": "A rhinoceros and a buffalo to the right; an elephant and a tiger to the left; and two antelopes below"}, {"hi": "दाईं ओर हाथी और सांड; बाईं ओर गेंडा और शेर; नीचे दो हिरण", "en": "An elephant and a bull to the right; a rhinoceros and a lion to the left; and two deer below"}, {"hi": "दाईं ओर हाथी और बाघ; बाईं ओर गेंडा और भैंसा; नीचे दो बारहसिंगा", "en": "An elephant and a tiger to the right; a rhinoceros and a buffalo to the left; and two antelopes below"}], "answer": 3, "explanation_hi": "पशुपति मोहर पर दाईं ओर एक हाथी और बाघ, बाईं ओर एक गेंडा और भैंसा तथा सिंहासन के नीचे दो हिरण (antelopes) दर्शाए गए हैं।", "explanation_en": "The Pashupati seal depicts an elephant and a tiger to the right, a rhinoceros and a buffalo to the left, and two antelopes below the seat."}, {"id": 16, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "हड़प्पा सभ्यता का वह स्थल जहाँ एक प्राचीन कब्रिस्तान खोजा गया है जिसमें शवों को गहनों/आभूषणों के साथ दफनाया गया था, कौन सा है?", "question_en": "At which Harappan site has a cemetery been discovered where dead bodies were buried along with ornaments?", "options": [{"hi": "लोथल (गुजरात)", "en": "Lothal in Gujarat"}, {"hi": "राखीगढ़ी (हरियाणा)", "en": "Rakhigarhi in Haryana"}, {"hi": "फरमाना (हरियाणा)", "en": "Farmana in Haryana"}, {"hi": "कालीबंगन (राजस्थान)", "en": "Kalibangan in Rajasthan"}], "answer": 2, "explanation_hi": "हरियाणा के फरमाना नामक स्थल पर हड़प्पाकालीन कब्रिस्तान खोजा गया है, जहां शवों को उनके आभूषणों के साथ दफनाए जाने के साक्ष्य मिले हैं।", "explanation_en": "It may be noted that a cemetery has been found at Farmana in Haryana where dead bodies were buried with ornaments."}, {"id": 17, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "हड़प्पा सभ्यता के अंतर्गत मनके (Beads) बनाने के प्रसिद्ध कारखाने निम्नलिखित में से किन दो स्थलों पर खोजे गए हैं?", "question_en": "Under the Harappan civilization, well-developed factories for manufacturing beads have been discovered at which of the following two sites?", "options": [{"hi": "चन्हूदड़ो और लोथल", "en": "Chanhudaro and Lothal"}, {"hi": "हड़प्पा और मोहनजोदड़ो", "en": "Harappa and Mohenjodaro"}, {"hi": "कालीबंगन और रोपड़", "en": "Kalibangan and Ropar"}, {"hi": "धोलाविरा और राखीगढ़ी", "en": "Dholavira and Rakhigarhi"}], "answer": 0, "explanation_hi": "सिंधु घाटी सभ्यता में मनके बनाने का उद्योग अत्यंत विकसित था, इसके प्रमाण चन्हूदड़ो और लोथल में स्थित कारखानों से मिलते हैं।", "explanation_en": "The bead industry seems to have been well developed as evident from the factories discovered at Chanhudaro and Lothal."}, {"id": 18, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "हड़प्पा सभ्यता के कारीगरों द्वारा पिन-हेड्स और मोतियों के रूप में प्रयुक्त होने वाले किन जंतुओं के उत्कृष्ट प्राकृतिक मॉडल बनाए गए थे?", "question_en": "Brilliantly naturalistic models of which animals were produced by Harappan craftspersons to be used as pin-heads and beads?", "options": [{"hi": "बैल और भैंस", "en": "Bulls and buffaloes"}, {"hi": "हाथी और शेर", "en": "Elephants and lions"}, {"hi": "कुत्ता और बिल्ली", "en": "Dogs and cats"}, {"hi": "बंदर और गिलहरी", "en": "Monkeys and squirrels"}], "answer": 3, "explanation_hi": "हड़प्पा काल में बंदर और गिलहरी के छोटे आकार के अत्यंत सजीव धातु/मिट्टी के मॉडल बनाए जाते थे, जिनका उपयोग पिन के सिरों और मनकों के रूप में होता था।", "explanation_en": "The Harappan people made brilliantly naturalistic models of animals, especially monkeys and squirrels, used as pin-heads and beads."}, {"id": 19, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सिंधु घाटी सभ्यता के लोगों के फैशन और सौंदर्य प्रसाधनों के संदर्भ में निम्नलिखित कथनों पर विचार करें: कथन 1: सिंदूर (Cinnabar) का उपयोग सौंदर्य प्रसाधन और फेसपेंट के रूप में किया जाता था। कथन 2: वे लिपस्टिक और काजल (Collyrium) के उपयोग से भली-भांति परिचित थे।", "question_en": "Consider the following statements regarding the fashion and cosmetics of the Indus Valley people: Statement 1: Cinnabar was used as a cosmetic and facepaint. Statement 2: Lipstick and collyrium (eyeliner) were also known to them.", "options": [{"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 2", "en": "Only 2"}, {"hi": "दोनों", "en": "Both"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 2, "explanation_hi": "दोनों कथन बिल्कुल सत्य हैं। हड़प्पा सभ्यता के लोग सौंदर्य प्रसाधनों के प्रति सचेत थे, जिसमें सिंदूर (cinnabar), लिपस्टिक और कोलिरियम (काजल) का प्रयोग किया जाता था।", "explanation_en": "Both statements are correct as archeological finds indicate cinnabar was used as cosmetic/facepaint, and lipstick and collyrium were known."}, {"id": 20, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मौर्यकालीन एकाश्म स्तंभ (Monolithic Pillars) निम्नलिखित में से किस आधार पर हखामनी (Achamenian) स्तंभों से भिन्न हैं?", "question_en": "On which of the following grounds are the Mauryan monolithic pillars fundamentally different from the Achamenian pillars?", "options": [{"hi": "मौर्य स्तंभ केवल एक ही चट्टान को काटकर (एकाश्म) बनाए गए हैं, जबकि हखामनी स्तंभों को राजमिस्त्री द्वारा टुकड़ों में जोड़ा गया है", "en": "Mauryan pillars are rock-cut monolithic, whereas Achamenian pillars are constructed in pieces by a mason"}, {"hi": "मौर्य स्तंभों की सतह खुरदरी है, जबकि हखामनी स्तंभ अत्यंत चिकने हैं", "en": "Mauryan pillars have a rough surface, whereas Achamenian pillars are extremely smooth"}, {"hi": "मौर्य स्तंभों में कोई पशु आकृति नहीं है, जबकि हखामनी स्तंभों पर केवल सिंह अंकित हैं", "en": "Mauryan pillars have no animal figures, while Achamenian pillars depict only lions"}, {"hi": "मौर्य स्तंभ ईंटों से बने हैं, जबकि हखामनी स्तंभों को सफेद चूने से चमकाया गया है", "en": "Mauryan pillars are made of bricks, whereas Achamenian pillars are polished with white lime"}], "answer": 0, "explanation_hi": "मौर्य स्तंभ एकाश्म (चट्टान काटकर निर्मित) हैं जो शिल्पकार के कौशल को दर्शाते हैं, जबकि हखामनी स्तंभों को विभिन्न टुकड़ों को जोड़कर बनाया गया था।", "explanation_en": "The Mauryan pillars are rock-cut thus displaying the carver's skills, whereas the Achamenian pillars are constructed in pieces by a mason."}, {"id": 21, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अशोक के प्रसिद्ध पशु शीर्ष वाले एकाश्म स्तंभों के अवशेषों में से 'संकीसा' (Sankisa) स्तंभ शीर्ष भारत के किस राज्य में स्थित है?", "question_en": "Among the remains of Ashoka's famous animal-headed monolithic pillars, where is the 'Sankisa' pillar capital located in India?", "options": [{"hi": "बिहार", "en": "Bihar"}, {"hi": "ओडिशा", "en": "Odisha"}, {"hi": "उत्तर प्रदेश", "en": "Uttar Pradesh"}, {"hi": "मध्य प्रदेश", "en": "Madhya Pradesh"}], "answer": 2, "explanation_hi": "अशोक कालीन स्तंभों के अवशेष बिहार के बसाढ़-बखीरा, लौरिया-नंदनगढ़ और रामपुरवा में तथा उत्तर प्रदेश के संकीसा और सारनाथ में पाए गए हैं।", "explanation_en": "Some of the existing pillars with capital figures were found at Basarah-Bakhira, Lauriya-Nandangarh and Rampurva in Bihar, and Sankisa and Sarnath in UP."}, {"id": 22, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सारनाथ के प्रसिद्ध सिंह शीर्ष स्तंभ (Lion Capital) के गोल अबेकस (Abacus) पर उभरे हुए रूप में उकेरे गए चार पशुओं का सही समूह कौन सा है?", "question_en": "Which is the correct group of four animals carved in relief on the circular abacus of the famous Sarnath Lion Capital?", "options": [{"hi": "बैल, गेंडा, भैंसा और बारहसिंगा", "en": "A bull, a rhinoceros, a buffalo, and an antelope"}, {"hi": "घोड़ा, बैल, सिंह और हाथी", "en": "A horse, a bull, a lion, and an elephant"}, {"hi": "सिंह, हाथी, चीता और ऊंट", "en": "A lion, an elephant, a cheetah, and a camel"}, {"hi": "घोड़ा, गाय, बाघ और गेंडा", "en": "A horse, a cow, a tiger, and a rhinoceros"}], "answer": 1, "explanation_hi": "सारनाथ स्तंभ के गोल चक्राकार अबेकस पर एक घोड़ा, एक बैल, एक सिंह और एक हाथी को चक्रों के बीच गतिमान अवस्था में उकेरा गया है।", "explanation_en": "The Sarnath abacus is carved with the figures of a horse, a bull, a lion, and an elephant in vigorous movement, executed with precision."}, {"id": 23, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "दीदारगंज (पटना) से प्राप्त प्रसिद्ध 'यक्षिणी की मूर्ति' (Didarganj Yakshini) के संदर्भ में निम्नलिखित कथनों पर विचार करें: कथन 1: यह मौर्यकालीन मूर्ति अत्यधिक चमकीली पॉलिश वाली सतह और बलुआ पत्थर (Sandstone) से निर्मित है। कथन 2: यक्षिणी ने अपने बाएं हाथ में चामर (chauri/flywhisk) पकड़ा हुआ है जबकि दाहिना हाथ टूटा हुआ है।", "question_en": "Consider the following statements regarding the famous 'Didarganj Yakshini' statue found near Patna: Statement 1: It is a Mauryan sculpture made of sandstone with a highly polished surface. Statement 2: The Yakshini holds a chauri (flywhisk) in her left hand, whereas the right hand is broken.", "options": [{"hi": "दोनों", "en": "Both"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 2", "en": "Only 2"}], "answer": 2, "explanation_hi": "केवल पहला कथन सत्य है क्योंकि दीदारगंज यक्षिणी ने चामर (चैरी) अपने दाहिने हाथ (right hand) में पकड़ा हुआ है, जबकि उसका बायां हाथ टूटा हुआ है।", "explanation_en": "Only Statement 1 is correct. Statement 2 is incorrect because the chauri (flywhisk) is held in her right hand, whereas her left hand is broken."}, {"id": 24, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "बिहार के गया के निकट बराबर पहाड़ियों (Barabar hills) में स्थित 'लोमस ऋषि गुफा' (Lomus Rishi Cave) अशोक द्वारा निम्नलिखित में से किस संप्रदाय को दान में दी गई थी?", "question_en": "The 'Lomus Rishi cave' carved at Barabar hills near Gaya in Bihar was donated by Ashoka for which of the following sects?", "options": [{"hi": "आजीविका संप्रदाय", "en": "Ajivika sect"}, {"hi": "बौद्ध संघ", "en": "Buddhist sect"}, {"hi": "शैव पाशुपत संप्रदाय", "en": "Shaiva Pashupata sect"}, {"hi": "जैन दिगंबर संप्रदाय", "en": "Jaina Digambara sect"}], "answer": 0, "explanation_hi": "बराबर पहाड़ियों में स्थित एकाश्म चट्टान काटकर बनाई गई लोमस ऋषि गुफा को सम्राट अशोक द्वारा आजीविका संप्रदाय को दान में दिया गया था।", "explanation_en": "The rock-cut cave carved at Barabar hills near Gaya in Bihar, known as the Lomus Rishi cave, was donated by Ashoka for the Ajivika sect."}, {"id": 25, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "बुद्ध के अवशेषों पर निर्मित मौर्यकालीन स्तूपों के साक्ष्यों में से 'रामग्राम' (Ramagrama) स्तूप वर्तमान में किस देश की भौगोलिक सीमा में स्थित है?", "question_en": "Among the Mauryan stupas constructed over the relics of the Buddha, the 'Ramagrama' stupa is currently located in the geographical territory of which country?", "options": [{"hi": "भारत", "en": "India"}, {"hi": "नेपाल", "en": "Nepal"}, {"hi": "श्रीलंका", "en": "Sri Lanka"}, {"hi": "म्यांमार", "en": "Myanmar"}], "answer": 1, "explanation_hi": "बुद्ध के अवशेषों पर निर्मित स्तूपों में कपिलवस्तु और रामग्राम नेपाल में स्थित हैं, जबकि अन्य (वैशाली, राजगृह, कुशीनगर आदि) भारत में हैं।", "explanation_en": "The stupas were constructed over the relics of the Buddha at Kapilavastu and Ramagrama in Nepal, and other sites in Bihar and Uttar Pradesh."}, {"id": 26, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "महाराष्ट्र की प्रसिद्ध 'पीतलखोरा' (Pitalkhora) गुफाओं में मिले अभिलेखों में किस मूर्तिकार/कारीगर के नाम का उल्लेख मिलता है?", "question_en": "In the inscriptions discovered at the famous 'Pitalkhora' caves of Maharashtra, which artisan's name is explicitly mentioned?", "options": [{"hi": "कान्हा", "en": "Kanha"}, {"hi": "भगतराज", "en": "Bhagatrav"}, {"hi": "बालक", "en": "Balaka"}, {"hi": "उपेंद्रगुप्त", "en": "Upendragupta"}], "answer": 0, "explanation_hi": "पीतलखोरा गुफाओं में 'कान्हा' नामक शिल्पी का उल्लेख है तथा कोंडाने गुफाओं में उसके शिष्य 'बालक' का उल्लेख अभिलेखों में मिलता है।", "explanation_en": "There are very few inscriptions mentioning the names of artisans, such as Kanha at Pitalkhora and his disciple Balaka at Kondane caves."}, {"id": 27, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भरहुत (Bharhut) के स्तूप के नक्काशीदार पैनलों पर चित्रित प्रसिद्ध 'रुरु जातक' (Ruru Jataka) कथा का संबंध मुख्य रूप से किस जंतु के रूप में बोधिसत्व के अवतरण से है?", "question_en": "The famous 'Ruru Jataka' story carved on the relief panels of the Bharhut stupa is associated with the Bodhisattva's incarnation as which animal?", "options": [{"hi": "सिंह", "en": "A lion"}, {"hi": "हिरण (मृग)", "en": "A deer"}, {"hi": "बैल", "en": "A bull"}, {"hi": "हाथी", "en": "An elephant"}], "answer": 1, "explanation_hi": "रुरु जातक कथा में बोधिसत्व को एक सुनहरे हिरण के रूप में दर्शाया गया है जो नदी में बहते हुए एक व्यक्ति की जान बचाता है, जो बाद में विश्वासघात करता है।", "explanation_en": "The depiction of Ruru Jataka shows the Bodhisattva deer rescuing a man on his back, illustrating moral lessons in Buddhist art."}, {"id": 28, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भरहुत और अन्य समकालीन स्थलों से प्राप्त ईसा पूर्व पहली और दूसरी शताब्दी की सभी पुरुष आकृतियों (male images) की सबसे सुसंगत सामान्य विशेषता (consistent feature) क्या है?", "question_en": "What is the most consistent common characteristic observed in all the male images of the first-second centuries BCE from Bharhut and other contemporary sites?", "options": [{"hi": "गाँठदार पगड़ी/शीर्ष परिधान", "en": "A knotted headgear"}, {"hi": "चूड़ीदार बाजूबंद", "en": "Bangles covering the entire arm"}, {"hi": "गले में मोतियों का भारी हार", "en": "A heavy beaded necklace"}, {"hi": "तिपतिया पैटर्न वाली शॉल", "en": "A trefoil-patterned shawl"}], "answer": 0, "explanation_hi": "ईसा पूर्व पहली और दूसरी शताब्दी की भरहुत और सांची-2 की पुरुष आकृतियों की सबसे प्रमुख विशेषता उनके सिर पर बंधी गाँठदार पगड़ी (knotted headgear) है।", "explanation_en": "One main characteristic in all the male images of the first–second centuries BCE is the knotted headgear."}, {"id": 29, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पंजाब के 'संघोल' (Sanghol) से प्राप्त स्तूप के अवशेष और उत्कृष्ट मूर्तियाँ मुख्य रूप से प्राचीन भारत की किस मूर्तिकला शैली (School of Art) से संबद्ध हैं?", "question_en": "The stupa sculptures and remains excavated from 'Sanghol' in Punjab belong to which of the following traditional schools of art in ancient India?", "options": [{"hi": "सारनाथ कला शैली", "en": "Sarnath School of Art"}, {"hi": "मथुरा कला शैली", "en": "Mathura School of Art"}, {"hi": "गांधार कला शैली", "en": "Gandhara School of Art"}, {"hi": "अमरावती कला शैली", "en": "Amaravati School of Art"}], "answer": 1, "explanation_hi": "पंजाब के संघोल से प्राप्त स्तूप की मूर्तियाँ मथुरा कला शैली के उत्तर की ओर प्रसार का सर्वोत्तम उदाहरण हैं।", "explanation_en": "The local sculptural tradition at Mathura became so strong that it spread to other parts, a prime example being the stupa sculptures found at Sanghol, Punjab."}, {"id": 30, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "गुप्तकालीन बौद्ध मूर्तियों के संदर्भ में सारनाथ और मथुरा शैलियों के बीच के अंतर पर विचार करें: कथन 1: सारनाथ की बुद्ध मूर्तियों का प्रभामंडल (Halo) अत्यधिक अलंकृत है, जबकि मथुरा की मूर्तियों का प्रभामंडल सादा है। कथन 2: सारनाथ शैली में बुद्ध के वस्त्र पारदर्शी और बिना सिलवटों (folds) के हैं, जबकि मथुरा शैली में वस्त्रों में सिलवटें दिखाई गई हैं।", "question_en": "Consider the following statements comparing Sarnath and Mathura schools of Buddha sculptures during the Gupta period: Statement 1: Sarnath Buddha images have heavily ornamented halos, while Mathura ones have plain halos. Statement 2: Sarnath Buddha images have plain transparent drapery without folds, whereas Mathura ones continue to depict folds in the drapery.", "options": [{"hi": "केवल 2", "en": "Only 2"}, {"hi": "दोनों", "en": "Both"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई नहीं", "en": "None"}], "answer": 0, "explanation_hi": "केवल दूसरा कथन सत्य है। कथन 1 गलत है क्योंकि सारनाथ की बुद्ध मूर्तियों का प्रभामंडल सादा (plain) है जबकि मथुरा शैली का प्रभामंडल अत्यधिक अलंकृत (profusely decorated) है।", "explanation_en": "Only Statement 2 is correct. Statement 1 is incorrect because Sarnath Buddha images have plain halos, whereas Mathura Buddha images have profusely decorated halos."}, {"id": 31, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "हाल ही के उत्खनन के अनुसार, कर्नाटक के गुलबर्गा जिले में स्थित कौन सा स्थल अब तक खोजा गया सबसे बड़ा स्तूप स्थल (largest stupa site) है?", "question_en": "According to excavations, which site in the Gulbarga district of Karnataka is the largest stupa site discovered so far in the state?", "options": [{"hi": "बादामी", "en": "Badami"}, {"hi": "ऐहोल", "en": "Aihole"}, {"hi": "बनवासी", "en": "Banavasi"}, {"hi": "सन्नाती", "en": "Sannati"}], "answer": 3, "explanation_hi": "कर्नाटक के गुलबर्गा जिले में भीमा नदी के तट पर स्थित सन्नाती अब तक खोजा गया राज्य का सबसे बड़ा स्तूप स्थल है।", "explanation_en": "In Karnataka, Sannati in Gulbarga district is the largest stupa site excavated so far, decorated with sculptural relief."}, {"id": 32, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "महाराष्ट्र के 'कोंडिविते' (Kondivite) में बौद्ध वास्तुकला की किस विशिष्ट शैली की गुफा खोदी गई है?", "question_en": "In Kondivite, Maharashtra, which distinct architectural style of Buddhist cave has been excavated?", "options": [{"hi": "दो मंजिला चैत्य-विहार", "en": "A double-storeyed chaitya-vihara"}, {"hi": "अप्सिडल बिना खंभों वाला हॉल", "en": "An apsidal vault-roof pillarless hall"}, {"hi": "पीछे एक कंदरा कक्ष के साथ सपाट छत वाला चौकोर हॉल", "en": "A flat-roofed quadrangular hall with a circular chamber at the back"}, {"hi": "गुंबददार छत वाला अप्सिडल चैत्य हॉल", "en": "An apsidal vault-roof chaitya hall"}], "answer": 2, "explanation_hi": "पश्चिमी भारत में कोंडिविते में सपाट छत वाले चौकोर हॉल की अनूठी शैली पाई जाती है जिसके पीछे एक गोलाकार चैंबर है।", "explanation_en": "Kondivite features the flat-roofed quadrangular hall with a circular chamber at the back design of early rock-cut caves."}, {"id": 33, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पश्चिमी भारत में शैलकृत वास्तुकला के अंतर्गत चट्टान काटकर बनाया गया सबसे विशाल चैत्य गृह (biggest rock-cut chaitya hall) कहाँ स्थित है?", "question_en": "Under the rock-cut architecture of western India, where is the biggest rock-cut chaitya hall located?", "options": [{"hi": "कन्हेरी", "en": "Kanheri"}, {"hi": "कार्ला", "en": "Karla"}, {"hi": "भाजा", "en": "Bhaja"}, {"hi": "पीतलखोरा", "en": "Pitalkhora"}], "answer": 1, "explanation_hi": "लोनावला के निकट स्थित कार्ला चैत्य गृह भारत का सबसे बड़ा और सबसे शानदार शैलकृत चैत्य हॉल है।", "explanation_en": "In Karla, Maharashtra, the biggest rock-cut chaitya hall was excavated, decorated with human and animal figures."}, {"id": 34, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "महाराष्ट्र की नासिक गुफाओं (Nashik Caves - 3, 10, 17) के विहारों के सामने के खंभों को किस अनूठी कला शैली में तराशा गया है?", "question_en": "The front pillars of the viharas in Nashik Caves (Nos. 3, 10, and 17) are carved in which unique architectural style?", "options": [{"hi": "लोटस-बेल आधार और चौकोर अबेकस", "en": "Lotus-bell base and square abacus"}, {"hi": "बिना किसी आधार के सादे अष्टकोणीय स्तंभ", "en": "Plain octagonal shafts without any base"}, {"hi": "घट-आधार और घट-शीर्ष आकृतियाँ", "en": "Ghata-base and ghata-capital"}, {"hi": "सिंह-शीर्ष और वृषभ-शीर्ष स्तंभ", "en": "Lion-capital and bull-capital"}], "answer": 2, "explanation_hi": "नासिक गुफाओं के विहारों (विशेषकर गुफा 3, 10, 17) में स्तंभों के नीचे और ऊपर कलश जैसी नक्काशी है जिसे घट-आधार और घट-शीर्ष कहते हैं।", "explanation_en": "The vihara caves at Nashik were excavated with front pillars carved with ghata-base and ghata-capital with human figures."}, {"id": 35, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "महाराष्ट्र के 'जुन्नर' (Junnar) और 'कन्हेरी' (Kanheri) गुफा समूहों के संदर्भ में निम्नलिखित कथनों पर विचार करें: कथन 1: जुन्नर में पश्चिमी भारत का सबसे बड़ा गुफा उत्खनन है जिसमें 200 से अधिक गुफाएं हैं। कथन 2: मुंबई स्थित कन्हेरी में कुल 108 गुफाएं खोदी गई हैं।", "question_en": "Consider the following statements regarding 'Junnar' and 'Kanheri' cave sites in Maharashtra: Statement 1: Junnar has the largest cave excavations with more than two hundred caves. Statement 2: Kanheri in Mumbai has one hundred and eight excavated caves.", "options": [{"hi": "केवल 2", "en": "Only 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई नहीं", "en": "None"}, {"hi": "दोनों", "en": "Both"}], "answer": 3, "explanation_hi": "दोनों कथन बिल्कुल सही हैं। पश्चिमी भारत में जुन्नर में पहाड़ियों के चारों ओर 200 से अधिक गुफाएं हैं तथा मुंबई के कन्हेरी में 108 गुफाएं स्थित हैं।", "explanation_en": "Both statements are correct as Junnar has the largest excavations (more than 200 caves) and Kanheri in Mumbai has 108 caves."}, {"id": 36, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अजंता की गुफाओं के संदर्भ में कौन सा विकल्प सही ढंग से चैत्य गुफाओं (Chaitya caves) के शुरुआती और बाद के चरणों को दर्शाता है?", "question_en": "Regarding Ajanta Caves, which of the following options correctly classifies the early and later phases of chaitya caves?", "options": [{"hi": "सभी 29 गुफाएं विहार हैं और अजंता में कोई चैत्य गुफा मौजूद नहीं है", "en": "All 29 caves are viharas and there are no chaitya caves in Ajanta"}, {"hi": "प्रारंभिक चरण की चैत्य गुफाएं संख्या 9 और 10 हैं; बाद के चरण की गुफाएं संख्या 19 और 26 हैं", "en": "Early phase chaitya caves are Nos. 9 and 10; later phase are Nos. 19 and 26"}, {"hi": "प्रारंभिक चरण की चैत्य गुफाएं संख्या 1 और 2 हैं; बाद के चरण की गुफाएं संख्या 16 और 17 हैं", "en": "Early phase chaitya caves are Nos. 1 and 2; later phase are Nos. 16 and 17"}, {"hi": "प्रारंभिक चरण की चैत्य गुफाएं संख्या 19 और 26 हैं; बाद के चरण की गुफाएं संख्या 9 और 10 हैं", "en": "Early phase chaitya caves are Nos. 19 and 26; later phase are Nos. 9 and 10"}], "answer": 1, "explanation_hi": "अजंता में 29 गुफाएं हैं, जिनमें कुल 4 चैत्य गुफाएं हैं। इनमें गुफा 9 व 10 ईसा पूर्व पहली/दूसरे शताब्दी की हैं, तथा गुफा 19 व 26 पांचवीं शताब्दी की हैं।", "explanation_en": "Ajanta has 29 caves, with 4 chaitya caves. Early ones are Cave Nos. 9 and 10, while later ones are Cave Nos. 19 and 26."}, {"id": 37, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अजंता की गुफाओं के निर्माण के संरक्षणकर्ताओं के संदर्भ में, वाकाटक राजा हरीशेण के प्रधान मंत्री 'वराहदेव' ने निम्नलिखित में से किस गुफा को संरक्षण दिया था?", "question_en": "With reference to the patrons of Ajanta caves, 'Varahadeva', the prime minister of the Vakataka king Harishena, patronised which of the following caves?", "options": [{"hi": "गुफा संख्या 4", "en": "Cave No. 4"}, {"hi": "गुफा संख्या 26", "en": "Cave No. 26"}, {"hi": "गुफा संख्या 17", "en": "Cave No. 17"}, {"hi": "गुफा संख्या 16", "en": "Cave No. 16"}], "answer": 3, "explanation_hi": "वाकाटक शासक हरीशेण के प्रधान मंत्री वराहदेव ने गुफा संख्या 16 का तथा स्थानीय राजा उपेंद्रगुप्त ने गुफा 17 से 20 का संरक्षण किया था।", "explanation_en": "Among the important patrons at Ajanta were Varahadeva (patron of Cave No. 16), the prime minister of Vakataka king Harishena."}, {"id": 38, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अजंता की गुफा संख्या 26 में उत्कीर्ण प्रसिद्ध 'मार विजय' (Mara Vijaya) मूर्ति फलक के संदर्भ में निम्नलिखित कथनों पर विचार करें: कथन 1: यह अजंता का सबसे बड़ा और सबसे जटिल मूर्तिकला फलक है। कथन 2: इसमें बुद्ध को भूमिस्पर्श मुद्रा में दर्शाया गया है जहाँ वे अपनी उदारता के साक्षी के रूप में पृथ्वी की ओर इशारा कर रहे हैं।", "question_en": "Consider the following statements regarding the famous 'Mara Vijaya' sculptural relief panel in Ajanta Cave No. 26: Statement 1: This is the largest and most complex sculptural panel at Ajanta. Statement 2: The Buddha is shown with his right hand indicating towards earth as a witness to his generosity.", "options": [{"hi": "कोई नहीं", "en": "None"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "दोनों", "en": "Both"}, {"hi": "केवल 2", "en": "Only 2"}], "answer": 2, "explanation_hi": "दोनों कथन बिल्कुल सत्य हैं। मार विजय अजंता का सबसे बड़ा और सजीव पैनल है जो बुद्ध के ज्ञानोदय के समय मार के प्रलोभन और उनकी विजय की कहानी को दर्शाता है।", "explanation_en": "Both statements are correct. The Mara Vijaya is the largest sculptural panel at Ajanta depicting the dialogue and earth-witness gesture."}, {"id": 39, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "एलोरा (Ellora) की गुफाओं में से बौद्ध धर्म से संबंधित वह अनूठी तीन मंजिला (triple-storeyed) गुफा कौन सी है जिसमें वज्रयान बौद्ध धर्म की अनेक मूर्तियां स्थापित हैं?", "question_en": "Among the Buddhist caves at Ellora, which unique triple-storeyed cave houses several Vajrayana Buddhist deities like Tara and Avalokiteshwara?", "options": [{"hi": "गुफा संख्या 16", "en": "Cave No. 16"}, {"hi": "गुफा संख्या 10", "en": "Cave No. 10"}, {"hi": "गुफा संख्या 12", "en": "Cave No. 12"}, {"hi": "गुफा संख्या 15", "en": "Cave No. 15"}], "answer": 2, "explanation_hi": "एलोरा की बौद्ध गुफा संख्या 12 (तीन मंजिला गुफा) में वज्रयान धर्म के अनेक बौद्ध देवी-देवताओं जैसे तारा, महामायुरी आदि की मूर्तियां हैं।", "explanation_en": "Cave No. 12 at Ellora is a unique triple-storey excavation containing images of Vajrayana Buddhism like Tara and Avalokiteshwara."}, {"id": 40, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मध्य प्रदेश के प्रसिद्ध 'बाघ गुफा' (Bagh Caves) के दुर्लभ चित्रों को नष्ट होने से बचाने के लिए किस वर्ष सावधानीपूर्वक हटाकर ग्वालियर के पुरातात्विक संग्रहालय में स्थानांतरित किया गया था?", "question_en": "In which year were the historic mural paintings of Bagh Caves carefully removed to prevent loss and shifted to the Archaeological Museum of Gwalior?", "options": [{"hi": "1982", "en": ""}, {"hi": "1962", "en": ""}, {"hi": "1992", "en": ""}, {"hi": "1972", "en": ""}], "answer": 0, "explanation_hi": "बाघ गुफाओं के अनुपम चित्रों को सुरक्षित रखने के लिए वर्ष 1982 में पुरातत्वविदों द्वारा इन्हें गुफा की दीवारों से उतारकर ग्वालियर संग्रहालय में रखा गया था।", "explanation_en": "To prevent further loss of Bagh Cave paintings, most were carefully removed in 1982 and can now be seen in the Museum of Gwalior."}, {"id": 41, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (शैलचित्र स्थल): A. लाखुदियाड़, B. भीमबेटका, C. पिकलीहल; सूची-II (भौगोलिक अवस्थिति): 1. विंध्य पर्वतमाला, 2. कुमाऊं पहाड़ियां, 3. कर्नाटक के ग्रेनाइट क्षेत्र", "question_en": "Match List-I with List-II: List-I (Prehistoric site): A. Lakhudiyar, B. Bhimbetka, C. Piklihal; List-II (Geographical location): 1. Vindhya ranges, 2. Kumaon hills, 3. Granite rocks of Karnataka", "options": [{"hi": "A-2, B-3, C-1", "en": ""}, {"hi": "A-3, B-1, C-2", "en": ""}, {"hi": "A-1, B-2, C-3", "en": ""}, {"hi": "A-2, B-1, C-3", "en": ""}], "answer": 3, "explanation_hi": "लाखुदियाड़ उत्तराखंड की कुमाऊं पहाड़ियों (2) में, भीमबेटका मध्य प्रदेश की विंध्य पर्वतमाला (1) में, तथा पिकलीहल कर्नाटक (3) में स्थित है।", "explanation_en": "Lakhudiyar is in Kumaon hills (2), Bhimbetka is in Vindhya ranges (1), and Piklihal is on granite rocks of Karnataka (3)."}, {"id": 42, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (सिंधु घाटी की कलाकृति): A. लाल बलुआ पत्थर का धड़, B. दाढ़ी वाले पुजारी की मूर्ति, C. पीतल का सांड; सूची-II (प्राप्ति स्थल): 1. मोहनजोदड़ो, 2. हड़प्पा, 3. कालीबंगन", "question_en": "Match List-I with List-II: List-I (Indus Valley artefact): A. Torso in red sandstone, B. Bearded priest bust, C. Bronze figure of a bull; List-II (Finding site): 1. Mohenjodaro, 2. Harappa, 3. Kalibangan", "options": [{"hi": "A-2, B-1, C-3", "en": ""}, {"hi": "A-3, B-1, C-2", "en": ""}, {"hi": "A-2, B-3, C-1", "en": ""}, {"hi": "A-1, B-2, C-3", "en": ""}], "answer": 0, "explanation_hi": "लाल बलुआ पत्थर का पुरुष धड़ हड़प्पा (2) से, दाढ़ी वाले पुजारी की मूर्ति मोहनजोदड़ो (1) से, और कांसे/तांबे का बैल कालीबंगन (3) से मिला है।", "explanation_en": "Torso in red sandstone is from Harappa (2), Bearded priest in soapstone from Mohenjodaro (1), and bronze bull from Kalibangan (3)."}, {"id": 43, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (अशोक स्तंभ शीर्ष): A. सिंह शीर्ष, B. बैल शीर्ष (Bull Capital), C. हाथी शीर्ष; सूची-II (स्थान): 1. रामपुरवा, 2. सारनाथ, 3. संकीसा", "question_en": "Match List-I with List-II: List-I (Pillar capital): A. Lion Capital, B. Bull Capital, C. Elephant Capital; List-II (Site): 1. Rampurva, 2. Sarnath, 3. Sankisa", "options": [{"hi": "A-2, B-1, C-3", "en": ""}, {"hi": "A-1, B-2, C-3", "en": ""}, {"hi": "A-3, B-1, C-2", "en": ""}, {"hi": "A-2, B-3, C-1", "en": ""}], "answer": 0, "explanation_hi": "सिंह शीर्ष सारनाथ (2) में, वृषभ/बैल शीर्ष रामपुरवा (1) में, और हाथी शीर्ष संकीसा (3) में पाया गया है।", "explanation_en": "Lion capital is at Sarnath (2), Bull capital at Rampurva (1), and Elephant capital at Sankisa (3)."}, {"id": 44, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (अजंता गुफा संरक्षक): A. वराहदेव, B. उपेंद्रगुप्त, C. बुद्धभद्र; सूची-II (संबद्ध गुफा): 1. गुफा संख्या 17 से 20, 2. गुफा संख्या 16, 3. गुफा संख्या 26", "question_en": "Match List-I with List-II: List-I (Ajanta Cave Patron): A. Varahadeva, B. Upendragupta, C. Buddhabhadra; List-II (Associated Cave): 1. Cave Nos. 17 to 20, 2. Cave No. 16, 3. Cave No. 26", "options": [{"hi": "A-1, B-2, C-3", "en": ""}, {"hi": "A-3, B-1, C-2", "en": ""}, {"hi": "A-2, B-3, C-1", "en": ""}, {"hi": "A-2, B-1, C-3", "en": ""}], "answer": 3, "explanation_hi": "वराहदेव ने गुफा 16 (2), स्थानीय राजा उपेंद्रगुप्त ने गुफा 17-20 (1) तथा भिक्षु बुद्धभद्र ने गुफा 26 (3) का संरक्षण किया था।", "explanation_en": "Varahadeva patronised Cave 16 (2), Upendragupta patronised Caves 17-20 (1), and Buddhabhadra patronised Cave 26 (3)."}, {"id": 45, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (स्थापत्य शैली): A. अप्सिडल चैत्य हॉल, B. अप्सिडल बिना खंभों वाला हॉल, C. चौकोर सपाट छत वाला हॉल; सूची-II (प्राप्ति स्थल): 1. थाना-नादसुर, 2. भाजा, 3. कोंडिविते", "question_en": "Match List-I with List-II: List-I (Architectural Style): A. Apsidal vault-roof chaitya hall, B. Apsidal vault-roof pillarless hall, C. Flat-roofed quadrangular hall; List-II (Site): 1. Thana-Nadsur, 2. Bhaja, 3. Kondivite", "options": [{"hi": "A-2, B-1, C-3", "en": ""}, {"hi": "A-1, B-2, C-3", "en": ""}, {"hi": "A-2, B-3, C-1", "en": ""}, {"hi": "A-3, B-1, C-2", "en": ""}], "answer": 0, "explanation_hi": "अप्सिडल चैत्य हॉल भाजा/अजंता (2) में, अप्सिडल बिना खंभों वाला हॉल थाना-नादसुर (1) में, और चौकोर सपाट छत वाला हॉल कोंडिविते (3) में पाया गया है।", "explanation_en": "Apsidal vault-roof chaitya hall is in Bhaja (2), apsidal pillarless in Thana-Nadsur (1), and quadrangular flat-roofed in Kondivite (3)."}, {"id": 46, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत में विभिन्न ऐतिहासिक एवं पुरातात्विक खोजों को उनके खोजे जाने के वर्ष के कालक्रम (सबसे पहले से सबसे बाद) के अनुसार व्यवस्थित कीजिए: 1. अल्तामीरा (स्पेन) में रॉक पेंटिंग की खोज, 2. भारत में आर्किबाल्ड कार्ललेल द्वारा शैलचित्रों की खोज, 3. वाकणकर द्वारा भीमबेटका के शैल-आश्रयों की खोज, 4. अलेक्जेंडर वॉन हम्बोल्ट द्वारा व्यवस्थित भूगोल उपागम की शुरुआत", "question_en": "Arrange the following historical and archaeological discoveries in India/world in chronological order of their occurrence (from earliest to latest): 1. Discovery of Altamira paintings in Spain, 2. Archibald Carlleyle's discovery of rock art in India, 3. Wakankar's discovery of Bhimbetka caves, 4. Alexander Von Humboldt's introduction of systematic geography", "options": [{"hi": "4, 1, 2, 3", "en": ""}, {"hi": "4, 2, 1, 3", "en": ""}, {"hi": "2, 1, 4, 3", "en": ""}, {"hi": "1, 2, 4, 3", "en": ""}], "answer": 1, "explanation_hi": "हम्बोल्ट का जीवनकाल 1769-1859 (4) था, कार्ललेल की खोज 1867-68 (2) में हुई, अल्तामीरा की खोज 1879-80 (1) में हुई और भीमबेटका की खोज 1957-58 (3) में हुई।", "explanation_en": "Humboldt introduced systematic approach in early 1800s (4), Carlleyle discovered paintings in 1867-68 (2), Altamira was found in 1879 (1), and Bhimbetka in 1957-58 (3)."}, {"id": 47, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित में से कितने युग्म (हड़प्पा सभ्यता की सामग्री - स्रोत स्थान) सही सुमेलित हैं? 1. शंख (Shell) - लोथल और धोलाविरा, 2. तांबा (Copper) - राजस्थान का खेतड़ी अंचल, 3. लैपिस लाजुली (Lapis lazuli) - अफगानिस्तान में शोरतुघई", "question_en": "How many of the following pairs of Harappan material and its source site/region are correctly matched? 1. Shell - Lothal and Dholavira, 2. Copper - Khetri region of Rajasthan, 3. Lapis lazuli - Shortughai in Afghanistan", "options": [{"hi": "केवल दो युग्म", "en": "Only two pairs"}, {"hi": "सभी तीन युग्म", "en": "All three pairs"}, {"hi": "केवल एक युग्म", "en": "Only one pair"}, {"hi": "कोई भी नहीं", "en": "None of the pairs"}], "answer": 1, "explanation_hi": "सभी तीनों युग्म बिल्कुल सही हैं क्योंकि हड़प्पा सभ्यता में शंख लोथल-धोलाविरा से, तांबा खेतड़ी से और लाजवर्द (Lapis lazuli) शोरतुघई से प्राप्त होता था।", "explanation_en": "All three pairs are correct. Shell was sourced from Lothal/Dholavira, copper from Khetri, and lapis lazuli from Shortughai, Afghanistan."}, {"id": 48, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मूर्तिकला के विकास के निम्नलिखित चरणों को सबसे प्राचीन से आरंभ करते हुए सही कालक्रम में व्यवस्थित कीजिए: 1. दीदारगंज यक्षिणी (मौर्य शैली), 2. कटरा टीला (मथुरा) की बैठी हुई बुद्ध मूर्ति (कुषाण शैली), 3. सारनाथ स्कूल की बुद्ध मूर्ति (गुप्त शैली), 4. भीमबेटका के उच्च पुरापाषाणकालीन रैखिक शैलचित्र", "question_en": "Arrange the following stages of sculptural/artistic development in India in chronological order starting from the oldest: 1. Didarganj Yakshini (Mauryan), 2. Seated Buddha from Katra mound, Mathura (Kushana), 3. Sarnath Buddha (Gupta), 4. Upper Palaeolithic linear drawings at Bhimbetka", "options": [{"hi": "1, 4, 2, 3", "en": ""}, {"hi": "4, 2, 1, 3", "en": ""}, {"hi": "4, 1, 2, 3", "en": ""}, {"hi": "1, 2, 4, 3", "en": ""}], "answer": 2, "explanation_hi": "भीमबेटका के चित्र पुरापाषाणकाल (4) के हैं, दीदारगंज यक्षिणी तीसरी शताब्दी ईसा पूर्व (1) की है, कटरा बुद्ध दूसरी शताब्दी ईस्वी (2) के हैं और सारनाथ बुद्ध पांचवीं शताब्दी ईस्वी (3) के हैं।", "explanation_en": "Bhimbetka is Paleolithic (4), Didarganj is Mauryan (1), Katra Buddha is 2nd century AD Kushana (2), and Sarnath Buddha is late 5th century AD Gupta (3)."}, {"id": 49, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अजंता की गुफाओं के पुरातात्विक कालक्रम के अनुसार, निम्नलिखित युग्मों पर विचार कीजिए: 1. गुफा 9 और 10 - ईसा पूर्व पहली और दूसरी शताब्दी, 2. गुफा 19 और 26 - ईस्वी पांचवीं शताब्दी। उपर्युक्त में से कौन सा/से युग्म सही सुमेलित है/हैं?", "question_en": "According to the archaeological chronology of Ajanta caves, consider the following pairs: 1. Caves 9 and 10 - First and second centuries BCE, 2. Caves 19 and 26 - Fifth century CE. Which of the above pairs is/are correctly matched?", "options": [{"hi": "दोनों 1 और 2", "en": "Both 1 and 2"}, {"hi": "केवल 1", "en": "Only 1"}, {"hi": "कोई भी नहीं", "en": "Neither 1 nor 2"}, {"hi": "केवल 2", "en": "Only 2"}], "answer": 0, "explanation_hi": "दोनों युग्म सही हैं। गुफा 9 और 10 अजंता के हीनयान या प्रारंभिक चरण की हैं, तथा गुफा 19 और 26 महायान या उत्तरवर्ती चरण की अत्यंत अलंकृत चैत्य गुफाएं हैं।", "explanation_en": "Both pairs are correct. Caves 9 and 10 belong to the early Hinayana phase (2nd-1st BCE), while Caves 19 and 26 are Mahayana phase (5th CE)."}, {"id": 50, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "एलिफेंटा (Elephanta) की प्रसिद्ध 'महेशमूर्ति' (Maheshmurti/सदाशिव) के तीन मुखों और उनके रूपों के संदर्भ में निम्नलिखित युग्मों पर विचार कीजिए: 1. केंद्रीय मुख - शिव का शांत एवं सौम्य (तत्पुरुष) रूप, 2. एक पार्श्व मुख - उमा/वामदेव का कोमल स्त्रैण रूप, 3. दूसरा पार्श्व मुख (उभरी आँखें एवं मूंछों वाला) - अघोर-भैरव का क्रोधित रूप। उपर्युक्त में से कौन से युग्म सही सुमेलित हैं?", "question_en": "Consider the following pairs regarding the three heads and forms of the famous 'Maheshmurti' (Sadashiva) at Elephanta: 1. Central face - the calm and serene (Tatpurusha) form of Shiva, 2. One profile face - the gentle feminine form of Uma/Vamadeva, 3. The other profile face (with bulging eyes and a moustache) - the angry Aghora-Bhairava form. Which of the above pairs are correctly matched?", "options": [{"hi": "केवल 1", "en": "Only 1"}, {"hi": "केवल 1 और 3", "en": "Only 1 and 3"}, {"hi": "केवल 2 और 3", "en": "Only 2 and 3"}, {"hi": "सभी 1, 2 और 3", "en": "All 1, 2 and 3"}], "answer": 3, "explanation_hi": "तीनों युग्म सही हैं। एलिफेंटा की महेशमूर्ति (सदाशिव) में केंद्रीय मुख शिव का शांत, ध्यानमग्न रूप है; एक पार्श्व मुख उमा का कोमल स्त्रैण रूप तथा दूसरा पार्श्व मुख उभरी आँखों और मूंछों वाला क्रोधित अघोर-भैरव रूप है।", "explanation_en": "All three pairs are correct. In the Maheshmurti (Sadashiva) at Elephanta, the central face is the calm, meditative form of Shiva, one profile face is the gentle feminine Uma, and the other profile face — with bulging eyes and a moustache — is the angry Aghora-Bhairava."}]};
+
+/* ===== भाषा टॉगल + प्रश्न-प्रकार फ़ॉर्मैटर ===== */
+var JH_LANG = (function(){ try{ return localStorage.getItem("jaiho_lang")||"bi"; }catch(e){ return "bi"; } })();
+function langSegHTML(){
+  var L=JH_LANG, o=function(v,t){ return '<button type="button" class="lang-b'+(L===v?" on":"")+'" data-lang="'+v+'">'+t+'</button>'; };
+  return o("hi","हिंदी")+o("en","English")+o("bi","दोनों");
+}
+function paintLang(){
+  ["qLang","coverLang"].forEach(function(id){
+    var box=document.getElementById(id); if(!box) return;
+    box.innerHTML=langSegHTML();
+    box.querySelectorAll(".lang-b").forEach(function(b){
+      b.addEventListener("click",function(){ setJhLang(b.getAttribute("data-lang")); });
+    });
+  });
+}
+function setJhLang(l){
+  JH_LANG=l; try{ localStorage.setItem("jaiho_lang",l); }catch(e){}
+  paintLang();
+  try{ if(document.getElementById("testScreen").style.display==="block") renderQuestion(); }catch(e){}
+  try{ if(document.getElementById("resultScreen").style.display==="block") renderReview(); }catch(e){}
+}
+function jhEsc(t){ return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function _jhPoints(t){
+  t = String(t).replace(/\s*(कथन\s*\d+\s*[:：])/g,"\n$1")
+       .replace(/\s*(Statement\s*\d+\s*[:：])/gi,"\n$1")
+       .replace(/([।;?:,])\s*(\d+\.\s)/g,"$1\n$2");
+  return t.replace(/^\n+/,"").replace(/\n[ \t]+/g,"\n");
+}
+function _jhMatch(raw){
+  var t=String(raw);
+  var reI=/(सूची|List)[\s\-–—]*I(?!I)\s*(?:\([^)]*\))?\s*[:：]/i;
+  var reII=/(सूची|List)[\s\-–—]*II\s*(?:\([^)]*\))?\s*[:：]/i;
+  var mI=t.match(reI), mII=t.match(reII);
+  if(!mI||!mII||mII.index<=mI.index) return null;
+  var intro=t.slice(0,mI.index).trim();
+  var segI=t.slice(mI.index+mI[0].length,mII.index).trim().replace(/[;।,]\s*$/,"");
+  var rest=t.slice(mII.index+mII[0].length);
+  var mo=rest.match(/(सही\s*मिलान|नीचे\s*दिए|सुमेलित|Choose|Select|Match|कूट)/i);
+  var segII, outro="";
+  if(mo){ segII=rest.slice(0,mo.index).trim(); outro=rest.slice(mo.index).trim(); }
+  else segII=rest.trim();
+  segII=segII.replace(/[;।,]\s*$/,"");
+  var sp=function(seg,re){ return seg.split(re).map(function(x){return x.trim();}).filter(Boolean); };
+  var A=sp(segI,/\s*,\s*(?=[A-Z]\.)/), B=sp(segII,/\s*,\s*(?=\d+\.)/);
+  if(A.length<2||B.length<2) return null;
+  var n=Math.max(A.length,B.length), rows="";
+  for(var k=0;k<n;k++) rows+="<tr><td>"+jhEsc(A[k]||"")+"</td><td>"+jhEsc(B[k]||"")+"</td></tr>";
+  return (intro?jhEsc(intro)+"\n":"")
+    + '<table class="match-tbl"><tr><th>'+jhEsc(mI[1])+'-I</th><th>'+jhEsc(mII[1])+'-II</th></tr>'+rows+'</table>'
+    + (outro?jhEsc(outro):"");
+}
+function jhFmt(raw){ if(!raw) return ""; var mt=_jhMatch(raw); return mt?mt:jhEsc(_jhPoints(raw)); }
+
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  paintLang();
+    el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  var _hi=q.question_hi||"", _en=q.question_en||"";
+  if(JH_LANG==="en" && _en){ el("qtext").innerHTML = jhFmt(_en); el("qtextEn").classList.add("hidden"); }
+  else { el("qtext").innerHTML = jhFmt(_hi||_en);
+         if(JH_LANG==="bi" && _en && _hi){ el("qtextEn").innerHTML = jhFmt(_en); el("qtextEn").classList.remove("hidden"); }
+         else { el("qtextEn").innerHTML=""; el("qtextEn").classList.add("hidden"); } }
+  paintLang();
+  el("options").innerHTML = (q.options||[]).map((op,i)=>{var oh=(op&&op.hi)||"", oe=(op&&op.en)||"";var body = (JH_LANG==="en"&&oe) ? `<div class="op-hi">${jhEsc(oe)}</div>` : (JH_LANG==="bi"&&oe&&oe!==oh) ? `<div class="op-hi">${jhEsc(oh)}</div><div class="op-en">${jhEsc(oe)}</div>` : `<div class="op-hi">${jhEsc(oh||oe)}</div>`;return `<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div>${body}</div></button>`;}).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{
+  const user = answers[i];
+  const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad");
+  const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong");
+  const optTxt = function(o){ if(!o) return ""; var oh=o.hi||"", oe=o.en||"";
+    if(JH_LANG==="en" && oe) return oe;
+    if(JH_LANG==="bi" && oe && oe!==oh) return oh+" / "+oe;
+    return oh||oe; };
+  const utext = user===null ? "Not attempted" : `${letters[user]}. ${optTxt(q.options[user])}`;
+  const correctText = `${letters[q.answer]}. ${optTxt(q.options[q.answer])}`;
+  var qMain = (JH_LANG==="en" && q.question_en) ? q.question_en : (q.question_hi||q.question_en||"");
+  var qSub  = (JH_LANG==="bi" && q.question_en && q.question_hi) ? q.question_en : "";
+  var eMain = (JH_LANG==="en" && q.explanation_en) ? q.explanation_en : (q.explanation_hi||q.explanation_en||"");
+  var eSub  = (JH_LANG==="bi" && q.explanation_en && q.explanation_hi) ? q.explanation_en : "";
+  return `<div class="review-item"><div class="review-head">`
+    + `<strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong>`
+    + `<span class="badge ${status}">${statusText}</span></div>`
+    + `<div class="review-content"><div style="white-space:pre-line"><b>${jhFmt(qMain)}</b></div>`
+    + (qSub?`<div class="qtext-en" style="white-space:pre-line">${jhFmt(qSub)}</div>`:"")
+    + `<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div>`
+    + (eMain?`<div class="explain"><b>Explanation:</b> ${escapeHTML(eMain)}`
+        + (eSub?`<br><span style="color:#64748b">${escapeHTML(eSub)}</span>`:"")+`</div>`:"")
+    + `</div></div>`;
+}).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
