@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"GS","highlight":"GS","shortTitle":"GS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-gs-20260811-7r048","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-11","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1866 में लंदन में दादाभाई नौरोजी द्वारा स्थापित किस संस्था का मुख्य उद्देश्य भारतीय कल्याण के प्रति ब्रिटिश जनमत को जागृत करना था?","question_en":"Question 1: Which organization was founded by Dadabhai Naoroji in London in 1866 with the primary objective of sensitizing British public opinion towards Indian welfare?","options":[{"hi":"ईस्ट इंडिया एसोसिएशन","en":"East India Association"},{"hi":"इंडियन सोसाइटी","en":"Indian Society"},{"hi":"इंडियन एसोसिएशन","en":"Indian Association"},{"hi":"पूना सार्वजनिक सभा","en":"Poona Sarvajanik Sabha"}],"answer":0,"explanation_hi":"ईस्ट इंडिया एसोसिएशन की स्थापना 1866 में लंदन में दादाभाई नौरोजी द्वारा की गई थी। इंडियन सोसाइटी (1872) की स्थापना आनंद मोहन बोस ने की थी।","explanation_en":"The East India Association was established in London in 1866 by Dadabhai Naoroji. The Indian Society (1872) was founded by Anand Mohan Bose."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1876 में कोलकाता में 'इंडियन एसोसिएशन' (Indian Association) की स्थापना निम्नलिखित में से किन प्रमुख नेताओं द्वारा की गई थी?","question_en":"Question 2: By which of the following prominent leaders was the 'Indian Association' established in Kolkata in the year 1876?","options":[{"hi":"दादाभाई नौरोजी और फिरोजशाह मेहता","en":"Dadabhai Naoroji and Pherozeshah Mehta"},{"hi":"जी. वी. जोशी और एम. जी. रानाडे","en":"G. V. Joshi and M. G. Ranade"},{"hi":"आनंद मोहन बोस और एस. एन. बनर्जी","en":"Anand Mohan Bose and S. N. Banerjee"},{"hi":"आनंद मोहन बोस और एस. एच. चिपलुणकर","en":"Anand Mohan Bose and S. H. Chiplunkar"}],"answer":2,"explanation_hi":"कोलकाता में 1876 में इंडियन एसोसिएशन की स्थापना आनंद मोहन बोस और सुरेंद्रनाथ बनर्जी (एस. एन. बनर्जी) द्वारा की गई थी।","explanation_en":"The Indian Association was established in Kolkata in 1876 by Anand Mohan Bose and Surendranath Banerjee (S. N. Banerjee)."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1870 में स्थापित 'पूना सार्वजनिक सभा' (Poona Sarvajanik Sabha) के संस्थापकों में निम्नलिखित में से कौन शामिल नहीं थे?","question_en":"Question 3: Who among the following was NOT included among the founders of the 'Poona Sarvajanik Sabha' established in the year 1870?","options":[{"hi":"एस. एच. चिपलुणकर","en":"S. H. Chiplunkar"},{"hi":"जी. वी. जोशी","en":"G. V. Joshi"},{"hi":"दादाभाई नौरोजी","en":"Dadabhai Naoroji"},{"hi":"एम. जी. रानाडे","en":"M. G. Ranade"}],"answer":2,"explanation_hi":"पूना सार्वजनिक सभा (1870) के संस्थापकों में एस. एच. चिपलुणकर, जी. वी. जोशी और एम. जी. रानाडे शामिल थे; इसमें दादाभाई नौरोजी शामिल नहीं थे।","explanation_en":"The founders of Poona Sarvajanik Sabha (1870) included S. H. Chiplunkar, G. V. Joshi, and M. G. Ranade; Dadabhai Naoroji was not among them."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रथम आंग्ल-मराठा युद्ध के दौरान मराठों और अंग्रेजों के बीच 'बड़गाँव की संधि' (Treaty of Wadgaon) किस वर्ष संपन्न हुई थी?","question_en":"Question 4: In which year was the 'Treaty of Wadgaon' signed between the Marathas and the British during the First Anglo-Maratha War?","options":[{"hi":"वर्ष 1775","en":"Year 1775"},{"hi":"वर्ष 1776","en":"Year 1776"},{"hi":"वर्ष 1782","en":"Year 1782"},{"hi":"वर्ष 1779","en":"Year 1779"}],"answer":3,"explanation_hi":"प्रथम आंग्ल-मराठा संघर्ष के तहत सूरत की संधि 1775 में, पुरंधर की संधि 1776 में, बड़गाँव की संधि 1779 में तथा सालाबाई की संधि 1782 में हुई थी।","explanation_en":"Under the First Anglo-Maratha conflict, Treaty of Surat was signed in 1775, Purandhar in 1776, Wadgaon in 1779, and Salbai in 1782."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रसिद्ध सूफी संत निजामुद्दीन औलिया के कथनों और उपदेशों का संकलन 'फवाद-उल-फवाद' (Fawad-ul-Fawad) निम्नलिखित में से किसके द्वारा लिखा गया था?","question_en":"Question 5: The compilation of the sayings and discourses of Sufi saint Nizamuddin Auliya, 'Fawad-ul-Fawad', was written by whom among the following?","options":[{"hi":"हसन निजामी","en":"Hasan Nizami"},{"hi":"मिन्हाजुन सिराज","en":"Minhajus Siraj"},{"hi":"अमीर हसन देहलवी","en":"Amir Hasan Dehlavi"},{"hi":"जियाउद्दीन बरनी","en":"Ziauddin Barani"}],"answer":2,"explanation_hi":"फवाद-उल-फवाद के लेखक अमीर हसन देहलवी हैं, ताज-उल-मासिर के हसन निजामी तथा तबकात-ए-नासिरी के लेखक मिन्हाजुन सिराज हैं।","explanation_en":"The author of Fawad-ul-Fawad is Amir Hasan Dehlavi, Taj-ul-Masir is by Hasan Nizami, and Tabakat-e-Nasiri is by Minhajus Siraj."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सल्तनत काल के इतिहास को दर्शाने वाले प्रसिद्ध ग्रंथ 'फुतूह-उस-सलातीन' (Futuh-us-Salatin) के रचयिता निम्नलिखित में से कौन थे?","question_en":"Question 6: Who among the following was the author of 'Futuh-us-Salatin', a famous historical text depicting the Sultanate period?","options":[{"hi":"फिरोज शाह तुगलक","en":"Firoz Shah Tughlaq"},{"hi":"अब्दुल मलिक इसामी","en":"Abdul Malik Isami"},{"hi":"जियाउद्दीन बरनी","en":"Ziauddin Barani"},{"hi":"हसन निजामी","en":"Hasan Nizami"}],"answer":1,"explanation_hi":"फुतूह-उस-सलातीन के रचयिता अब्दुल मलिक इसामी हैं, जबकि फुतुहात-ए-फिरोजशाही स्वयं सुल्तान फिरोज शाह तुगलक की आत्मकथा है।","explanation_en":"The author of Futuh-us-Salatin is Abdul Malik Isami, whereas Futuhat-e-Firozshahi is the autobiography of Sultan Firoz Shah Tughlaq himself."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वैदिक कालीन भूगोल के अनुसार, अफ़गानिस्तान क्षेत्र से बहने वाली नदी 'कुभा' (Kubha) का आधुनिक नाम क्या है?","question_en":"Question 7: According to Rigvedic geography, what is the modern name of the river 'Kubha' which flowed through the Afghanistan region?","options":[{"hi":"झेलम","en":"Jhelum"},{"hi":"रावी","en":"Ravi"},{"hi":"काबुल","en":"Kabul"},{"hi":"चेनाब","en":"Chenab"}],"answer":2,"explanation_hi":"कुभा का आधुनिक नाम काबुल, वितस्ता का झेलम, परूष्णी का रावी तथा अकनी का आधुनिक नाम चेनाब नदी है।","explanation_en":"The modern name of Kubha is Kabul, Vitasta is Jhelum, Parushni is Ravi, and Askini is Chenab."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वैदिक काल की प्रसिद्ध नदी 'सदानीरा' (Sadanira) को वर्तमान भूगोल में किस नाम से जाना जाता है?","question_en":"Question 8: By what name is the famous Vedic river 'Sadanira' known in present-day geography?","options":[{"hi":"सतलज","en":"Sutlej"},{"hi":"व्यास","en":"Beas"},{"hi":"गोमल","en":"Gomal"},{"hi":"गंडक","en":"Gandak"}],"answer":3,"explanation_hi":"सदानीरा का आधुनिक नाम गंडक, सुतुद्रि का सतलज, विपाशा का व्यास तथा गोमती का आधुनिक नाम गोमल है।","explanation_en":"The modern name of Sadanira is Gandak, Sutudri is Sutlej, Vipasha is Beas, and Gomati is Gomal."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गौतम बुद्ध के जीवन से संबंधित घटनाओं के प्रतीकों में 'गृह त्याग' (Great Renunciation) का प्रतिनिधित्व कौन-सा प्रतीक करता है?","question_en":"Question 9: Among the symbols associated with the events of Gautama Buddha's life, which symbol represents 'Great Renunciation'?","options":[{"hi":"कमल","en":"Lotus"},{"hi":"पीपल (बोध वृक्ष)","en":"Peepal (Bodhi Tree)"},{"hi":"चक्र","en":"Wheel"},{"hi":"घोड़ा","en":"Horse"}],"answer":3,"explanation_hi":"बुद्ध के जन्म का प्रतीक कमल, गृह त्याग का घोड़ा, ज्ञान का प्रतीक पीपल (बोध वृक्ष) तथा प्रथम उपदेश का प्रतीक चक्र है।","explanation_en":"The symbol of Buddha's birth is Lotus, renunciation is Horse, wisdom is Peepal (Bodhi Tree), and first sermon is Wheel."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय ऐतिहासिक कथाओं का क्रमबद्ध विवरण देने वाले पुराणों में सबसे प्राचीन एवं प्रामाणिक ग्रंथ किसे माना जाता है?","question_en":"Question 10: Among the Puranas that provide a chronological account of Indian historical tales, which is considered the most ancient and authentic?","options":[{"hi":"विष्णु पुराण","en":"Vishnu Purana"},{"hi":"वायु पुराण","en":"Vayu Purana"},{"hi":"मत्स्य पुराण","en":"Matsya Purana"},{"hi":"अग्नि पुराण","en":"Agni Purana"}],"answer":2,"explanation_hi":"कुल 18 पुराणों में सबसे प्राचीन एवं प्रामाणिक मत्स्य पुराण है, जो सातवाहन वंश से संबंधित है। मौर्य वंश का उल्लेख विष्णु पुराण में तथा गुप्त वंश का वायु पुराण में मिलता है।","explanation_en":"Among the 18 Puranas, the oldest and most authentic is Matsya Purana, associated with Satavahana dynasty. Vishnu Purana mentions Maurya and Vayu Purana mentions Gupta."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय राष्ट्रीय कांग्रेस के किस प्रसिद्ध इलाहाबाद अधिवेशन (1888) में पहली बार किसी गैर-भारतीय अंग्रेज (जॉर्ज यूल) ने अध्यक्षता की थी?","question_en":"Question 11: In which famous Allahabad session of the Indian National Congress (1888) did a non-Indian British (George Yule) preside for the first time?","options":[{"hi":"तृतीय अधिवेशन","en":"Third Session"},{"hi":"चतुर्थ अधिवेशन","en":"Fourth Session"},{"hi":"पंचम अधिवेशन","en":"Fifth Session"},{"hi":"द्वितीय अधिवेशन","en":"Second Session"}],"answer":1,"explanation_hi":"कांग्रेस का चौथा अधिवेशन 1888 में इलाहाबाद में जॉर्ज यूल की अध्यक्षता में हुआ था। तीसरा अधिवेशन 1887 में मद्रास में बदरुद्दीन तैयब जी (प्रथम मुस्लिम अध्यक्ष) के तहत हुआ था।","explanation_en":"The 4th session of Congress was held in Allahabad in 1888 under George Yule. The 3rd session was in Madras in 1887 under Badruddin Tyabji."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उन्नीसवीं शताब्दी के प्रसिद्ध पारसी समाज सुधारक जिन्होंने बाल विवाह के विरुद्ध तीव्र संघर्ष प्रारंभ किया था, कौन थे?","question_en":"Question 12: Who was the famous 19th-century Parsi social reformer who initiated an intense struggle against child marriage?","options":[{"hi":"डी. के. कर्वे","en":"D. K. Karve"},{"hi":"बी. एम. मालाबारी","en":"B. M. Malabari"},{"hi":"जे. ई. डी. बेथुन","en":"J. E. D. Bethune"},{"hi":"ईश्वर चंद्र विद्यासागर","en":"Ishwar Chandra Vidyasagar"}],"answer":1,"explanation_hi":"पारसी समाज सुधारक बी. एम. मालाबारी ने बाल विवाह के विरुद्ध संघर्ष किया था। डी. के. कर्वे विडो री-मैरिज एसोसिएशन के सचिव थे।","explanation_en":"Parsi social reformer B. M. Malabari fought against child marriage. D. K. Karve was the secretary of the Widow Re-marriage Association."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण विज्ञान के अनुसार, कड़ी चट्टानों पर उगने वाली वनस्पतियों को किस विशिष्ट नाम से जाना जाता है?","question_en":"Question 13: According to environmental science, by what specific name is the vegetation growing on hard rocks known?","options":[{"hi":"लिथोफाइट","en":"Lithophyte"},{"hi":"हेलोफाइट","en":"Halophyte"},{"hi":"मेसोफाइट","en":"Mesophyte"},{"hi":"क्रायोफाइट","en":"Cryophyte"}],"answer":0,"explanation_hi":"कड़ी चट्टानों पर उगने वाली वनस्पति को लिथोफाइट (Lithophyte) तथा नमकीन क्षेत्र/दलदल में उगने वाली को हेलोफाइट कहते हैं।","explanation_en":"Plants growing on hard rocks are called Lithophytes, while those growing in saline environments are called Halophytes."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भूमध्यरेखीय आर्द्र जलवायु और दलदली क्षेत्रों में अत्यधिक आर्द्रता वाले वातावरण में उगने वाली वनस्पतियों को क्या कहा जाता है?","question_en":"Question 14: What is the vegetation that grows in equatorial wet climates and high humidity environments of marshy areas called?","options":[{"hi":"हाइड्रोफाइट","en":"Hydrophyte"},{"hi":"मेसोफाइट","en":"Mesophyte"},{"hi":"टोपोफाइट","en":"Topophyte"},{"hi":"हाइग्रोफाइट","en":"Hygrophyte"}],"answer":3,"explanation_hi":"दलदली एवं भूमध्यरेखीय उष्ण आर्द्रता वाली वनस्पति हाइग्रोफाइट (Hygrophyte) कहलाती है, जबकि जलप्लावित क्षेत्रों की वनस्पति हाइड्रोफाइट कहलाती है।","explanation_en":"Vegetation in marshy and equatorial hot-humid areas is called Hygrophyte, whereas waterlogged area vegetation is called Hydrophyte."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"यूएसए (USA) और कनाडा के विशाल मैदानी भागों में चलने वाली बर्फानी ठंडी ध्रुवीय हवाओं को किस नाम से जाना जाता है?","question_en":"Question 15: By what name are the freezing cold polar winds blowing over the vast plains of the USA and Canada known?","options":[{"hi":"ब्लिजार्ड","en":"Blizzard"},{"hi":"हबूब","en":"Haboob"},{"hi":"सांताआना","en":"Santa Ana"},{"hi":"बोरा","en":"Bora"}],"answer":0,"explanation_hi":"ब्लिजार्ड (Blizzard) ध्रुवीय ठंडी हवाएं हैं जो USA व कनाडा में चलती हैं। हबूब सूडान की तथा सांताआना कैलिफोर्निया की हवा है।","explanation_en":"Blizzards are icy polar winds blowing in the USA and Canada. Haboob belongs to Sudan and Santa Ana to California."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सक्रिय ज्वालामुखी पर्वतों के वर्गीकरण के तहत विश्व का प्रसिद्ध ज्वालामुखी 'कोटोपैक्सी' (Cotopaxi) किस देश में स्थित है?","question_en":"Question 16: Under the classification of active volcanic mountains, in which country is the world-famous 'Cotopaxi' located?","options":[{"hi":"इक्वाडोर","en":"Ecuador"},{"hi":"इटली","en":"Italy"},{"hi":"जापान","en":"Japan"},{"hi":"मलेशिया","en":"Malaysia"}],"answer":0,"explanation_hi":"कोटोपैक्सी इक्वाडोर में, माउंट एटना इटली में, फ्यूजीयामा जापान में तथा माउंट किनाबालु मलेशिया में स्थित ज्वालामुखी पर्वत हैं।","explanation_en":"Cotopaxi is located in Ecuador, Mt Etna in Italy, Fujiyama in Japan, and Mt Kinabalu in Malaysia."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्रिटिश भारत के इतिहास में वर्ष 1829 में सती प्रथा का पूर्ण उन्मूलन करने वाले पहले गवर्नर जनरल कौन थे?","question_en":"Question 17: Who was the first Governor-General in the history of British India to completely abolish the practice of Sati in the year 1829?","options":[{"hi":"लॉर्ड डलहौजी","en":"Lord Dalhousie"},{"hi":"लॉर्ड एलेनबरो","en":"Lord Ellenborough"},{"hi":"विलियम बेंटिक","en":"William Bentinck"},{"hi":"चार्ल्स मेटकॉफ","en":"Charles Metcalfe"}],"answer":2,"explanation_hi":"लॉर्ड विलियम बेंटिक ने 1829 में नियम 17 के तहत सती प्रथा का उन्मूलन किया तथा वह 1833 के चार्टर एक्ट द्वारा ब्रिटिश भारत के पहले गवर्नर जनरल बने।","explanation_en":"Lord William Bentinck abolished Sati in 1829 under Regulation XVII and became the first Governor-General of British India via Charter Act 1833."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1843 में ब्रिटिश साम्राज्य में 'सिंध का विलय' (Annexation of Sindh) करने वाले ब्रिटिश गवर्नर जनरल निम्नलिखित में से कौन थे?","question_en":"Question 18: Who among the following was the British Governor-General who carried out the 'Annexation of Sindh' into the British Empire in the year 1843?","options":[{"hi":"लॉर्ड ऑकलैंड","en":"Lord Auckland"},{"hi":"लॉर्ड हार्डिंग","en":"Lord Hardinge"},{"hi":"लॉर्ड डलहौजी","en":"Lord Dalhousie"},{"hi":"लॉर्ड एलेनबरो","en":"Lord Ellenborough"}],"answer":3,"explanation_hi":"सिंध का पूर्ण विलय वर्ष 1843 में लॉर्ड एलेनबरो के कार्यकाल के दौरान किया गया था। लॉर्ड ऑकलैंड के समय प्रथम आंग्ल-अफगान युद्ध हुआ था।","explanation_en":"The complete annexation of Sindh was executed in 1843 during the tenure of Lord Ellenborough. During Auckland's time, 1st Anglo-Afghan war occurred."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुप्तकालीन इतिहास को प्रमाणित करने वाला प्रसिद्ध 'मंदसौर अभिलेख' (Mandsaur Inscription) निम्नलिखित में से किस शासक से संबंधित है?","question_en":"Question 19: The famous 'Mandsaur Inscription' proving Gupta history is associated with which of the following rulers?","options":[{"hi":"समुद्रगुप्त","en":"Samudragupta"},{"hi":"कुमारगुप्त प्रथम","en":"Kumaragupta I"},{"hi":"चंद्रगुप्त द्वितीय","en":"Chandragupta II"},{"hi":"रुद्रसेन द्वितीय","en":"Rudrasen II"}],"answer":1,"explanation_hi":"मंदसौर अभिलेख कुमारगुप्त प्रथम से, उदयगिरि गुहा अभिलेख चंद्रगुप्त द्वितीय से तथा एरण अभिलेख समुद्रगुप्त से संबंधित है।","explanation_en":"Mandsaur inscription relates to Kumaragupta I, Udayagiri Cave to Chandragupta II, and Eran inscription to Samudragupta."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"स्वतंत्रता संग्राम के दौरान बंगाल के क्रांतिकारी आंदोलन को वैचारिक हवा देने वाला प्रसिद्ध समाचार पत्र 'सोम प्रकाश' किसके द्वारा निकाला गया था?","question_en":"Question 20: By whom was the famous newspaper 'Som Prakash' published, which gave ideological direction to the revolutionary movement of Bengal during the freedom struggle?","options":[{"hi":"एनी बेसेंट","en":"Annie Besant"},{"hi":"मोतीलाल नेहरू","en":"Motilal Nehru"},{"hi":"ईश्वर चंद्र विद्यासागर","en":"Ishwar Chandra Vidyasagar"},{"hi":"शिशिर कुमार घोष","en":"Shishir Kumar Ghosh"}],"answer":2,"explanation_hi":"सोम प्रकाश का प्रकाशन ईश्वर चंद्र विद्यासागर ने, कॉमनवील व न्यू इंडिया का एनी बेसेंट ने तथा इंडिपेंडेंट का मोतीलाल नेहरू ने किया था।","explanation_en":"Som Prakash was published by Ishwar Chandra Vidyasagar, Commonweal and New India by Annie Besant, and Independent by Motilal Nehru."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में पर्यावरण संरक्षण और संवर्धन के क्षेत्र में किसे 'डॉल्फिन मैन ऑफ इंडिया' (Dolphin Man of India) के उपनाम से सम्मानित किया गया है?","question_en":"Question 21: Who has been honored with the nickname 'Dolphin Man of India' in the field of environmental protection and promotion in India?","options":[{"hi":"कैलाश सांखला","en":"Kailash Sankhala"},{"hi":"डॉ. सलीम अली","en":"Dr. Salim Ali"},{"hi":"डॉ. रामदेव मिश्रा","en":"Dr. Ramdeo Misra"},{"hi":"रवीन्द्र कुमार सिन्हा","en":"Ravindra Kumar Sinha"}],"answer":3,"explanation_hi":"रवीन्द्र कुमार सिन्हा को डॉल्फिन मैन, कैलाश सांखला को टाइगर मैन, सलीम अली को पक्षी विशेषज्ञ तथा रामदेव मिश्रा को पारिस्थितिकी का जनक कहा जाता है।","explanation_en":"Ravindra Kumar Sinha is called Dolphin Man, Kailash Sankhala Tiger Man, Salim Ali ornithologist, and Ramdeo Misra Father of Ecology in India."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वैश्विक स्तर पर पर्यावरण आंदोलन और वृक्ष संरक्षण के प्रति समर्पित किस महान व्यक्तित्व को 'वृक्ष मानव' (Man of the Trees) के रूप में जाना जाता है?","question_en":"Question 22: Which great personality dedicated to the global environmental movement and tree conservation is known as the 'Man of the Trees'?","options":[{"hi":"ई. पी. ओडम","en":"E. P. Odum"},{"hi":"सुन्दर लाल बहुगुणा","en":"Sunderlal Bahuguna"},{"hi":"पांडुरंग हेगड़े","en":"Pandurang Hegde"},{"hi":"रिचर्ड सेंट बार्ब बेकर","en":"Richard St. Barbe Baker"}],"answer":3,"explanation_hi":"रिचर्ड सेंट बार्ब बेकर को वृक्ष मानव कहा जाता है। ई. पी. ओडम पारिस्थितिकी एवं पर्यावरण विज्ञान के अंतर्राष्ट्रीय जनक माने जाते हैं।","explanation_en":"Richard St. Barbe Baker is known as the Man of the Trees. E. P. Odum is considered the global father of ecology and environmental science."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के प्रशासनिक इतिहास में 'अवध और आगरा का संयुक्त प्रांत' (United Province of Agra and Oudh) नाम किस वर्ष अपनाया गया था?","question_en":"Question 23: In which year was the name 'United Province of Agra and Oudh' adopted in the administrative history of Uttar Pradesh?","options":[{"hi":"वर्ष 1836","en":"Year 1836"},{"hi":"वर्ष 1902","en":"Year 1902"},{"hi":"वर्ष 1937","en":"Year 1937"},{"hi":"वर्ष 1950","en":"Year 1950"}],"answer":1,"explanation_hi":"उत्तर प्रदेश को 1836 में उत्तर-पश्चिम प्रांत, 1877 में उत्तर-पश्चिम प्रांत एवं अवध, 1902 में आगरा और अवध का संयुक्त प्रांत (United Provinces of Agra and Oudh), 1937 में संयुक्त प्रांत तथा 1950 में उत्तर प्रदेश नाम दिया गया।","explanation_en":"UP was named North-Western Provinces in 1836, North-Western Provinces and Oudh in 1877, United Provinces of Agra and Oudh in 1902, United Provinces in 1937, and Uttar Pradesh in 1950."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1975 में जैवविविधता और तराई वनों के संरक्षण हेतु स्थापित 'कतरनिया घाट वन्य जीव विहार' उत्तर प्रदेश के किस जिले में स्थित है?","question_en":"Question 24: In which district of Uttar Pradesh is the 'Katarniaghat Wildlife Sanctuary' located, established in 1975 for biodiversity and Tarai forest conservation?","options":[{"hi":"बहराइच","en":"Bahraich"},{"hi":"चंदौली","en":"Chandauli"},{"hi":"लखीमपुर खीरी","en":"Lakhimpur Kheri"},{"hi":"बांदा","en":"Banda"}],"answer":0,"explanation_hi":"कतरनिया घाट बहराइच (1975) में, चंद्रप्रभा चंदौली (1957) में, किशनपुर लखीमपुर खीरी (1972) में तथा रानीपुर बांदा (1977) में स्थित है।","explanation_en":"Katarniaghat is in Bahraich (1975), Chandraprabha in Chandauli (1957), Kishanpur in Lakhimpur Kheri (1972), and Ranipur in Banda (1977)."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"क्षेत्रफल के आधार पर उत्तर प्रदेश का सबसे छोटा वन्यजीव अभयारण्य 'महावीर स्वामी वन्यजीव विहार' किस जिले में स्थित है?","question_en":"Question 25: Which district houses the 'Mahavir Swami Wildlife Sanctuary', which is the smallest wildlife sanctuary in Uttar Pradesh by area?","options":[{"hi":"ललितपुर","en":"Lalitpur"},{"hi":"झांसी","en":"Jhansi"},{"hi":"चित्रकूट","en":"Chitrakoot"},{"hi":"महोबा","en":"Mahoba"}],"answer":0,"explanation_hi":"महावीर स्वामी वन्यजीव विहार ललितपुर (1977) में स्थित है जो उत्तर प्रदेश का सबसे छोटा (लगभग 5 वर्ग किमी) वन्यजीव अभयारण्य है।","explanation_en":"Mahavir Swami Wildlife Sanctuary is located in Lalitpur (1977), being the smallest (approx 5 sq km) wildlife sanctuary in Uttar Pradesh."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के प्रसिद्ध ऐतिहासिक एवं सांस्कृतिक स्थलों में 'कौशांबी' (Kaushambi) किस नदी के किनारे स्थित एक प्रमुख शहर है?","question_en":"Question 26: Among the famous historical and cultural sites of Uttar Pradesh, 'Kaushambi' is a major city situated on the banks of which river?","options":[{"hi":"गोमती नदी","en":"Gomti River"},{"hi":"राप्ती नदी","en":"Rapti River"},{"hi":"गंगा नदी","en":"Ganga River"},{"hi":"यमुना नदी","en":"Yamuna River"}],"answer":3,"explanation_hi":"कौशांबी, आगरा और मथुरा यमुना के किनारे स्थित हैं। लखनऊ और जौनपुर गोमती के किनारे तथा गोरखपुर राप्ती नदी के किनारे स्थित है।","explanation_en":"Kaushambi, Agra, and Mathura are on Yamuna. Lucknow and Jaunpur are on Gomti, while Gorakhpur is on Rapti."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश नवीन एवं नवीकरणीय ऊर्जा विकास अभिकरण (NEDA) के मानकों के अनुसार प्रदेश में केवल 'गैस आधारित' ताप विद्युत परियोजनाएं कुल कितनी हैं?","question_en":"Question 27: According to the standards of UP New and Renewable Energy Development Agency, how many total 'gas-based' thermal power projects are in the state?","options":[{"hi":"3","en":"3"},{"hi":"5","en":"5"},{"hi":"2","en":"2"},{"hi":"1","en":"1"}],"answer":0,"explanation_hi":"उत्तर प्रदेश में केवल 3 एनटीपीसी गैस आधारित तापीय परियोजनाएं हैं: औरैया, आंवला (बरेली) और दादरी (गौतम बुद्ध नगर)।","explanation_en":"There are only 3 NTPC gas-based thermal projects in Uttar Pradesh: Auraiya, Aonla (Bareilly), and Dadri (Gautam Buddha Nagar)."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश की विद्युत अवसंरचना के विकास के इतिहास में राज्य की सबसे पुरानी तापीय परियोजना (1942) कौन-सी है?","question_en":"Question 28: In the history of development of Uttar Pradesh's power infrastructure, which is the oldest thermal project (1942) of the state?","options":[{"hi":"अनपरा ताप विद्युत गृह","en":"Anpara Thermal Power Station"},{"hi":"मेजा ताप विद्युत गृह","en":"Meja Thermal Power Station"},{"hi":"हरदुआगंज थर्मल पावर स्टेशन","en":"Harduaganj Thermal Power Station"},{"hi":"दादरी ताप विद्युत गृह","en":"Dadri Thermal Power Station"}],"answer":2,"explanation_hi":"उत्तर प्रदेश की सबसे पुरानी तापीय परियोजना हरदुआगंज थर्मल पावर स्टेशन (अलीगढ़) है, जिसकी स्थापना वर्ष 1942 में की गई थी।","explanation_en":"The oldest thermal project in Uttar Pradesh is Harduaganj Thermal Power Station (Aligarh), established in the year 1942."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जैव-प्रौद्योगिकी क्षेत्र के अनुसंधान को बढ़ावा देने हेतु स्थापित एशिया का पहला 'डीएनए बैंक' (DNA Bank) उत्तर प्रदेश के किस स्थान पर स्थित है?","question_en":"Question 29: Where is Asia's first 'DNA Bank' located, established in Uttar Pradesh to promote research in the biotechnology sector?","options":[{"hi":"फिल्म सेंटर, नोएडा","en":"Film Center, Noida"},{"hi":"हथकरघा संस्थान, वाराणसी","en":"Handloom Institute, Varanasi"},{"hi":"बायोटेक पार्क, लखनऊ","en":"Biotech Park, Lucknow"},{"hi":"दलहन अनुसंधान संस्थान, कानपुर","en":"Pulse Research Institute, Kanpur"}],"answer":2,"explanation_hi":"एशिया का पहला DNA बैंक लखनऊ के बख्शी तालाब स्थित बायोटेक पार्क में स्थापित किया गया है।","explanation_en":"Asia's first DNA Bank has been established at the Biotech Park located in Bakshi Ka Talab, Lucknow."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ऐतिहासिक रेलवे अवसंरचना विकास के तहत उत्तर प्रदेश में पहली ट्रेन किस वर्ष 'प्रयागराज से कानपुर' के बीच चलाई गई थी?","question_en":"Question 30: Under historical railway infrastructure development, in which year was the first train in Uttar Pradesh operated between 'Prayagraj and Kanpur'?","options":[{"hi":"वर्ष 1853","en":"Year 1853"},{"hi":"वर्ष 1856","en":"Year 1856"},{"hi":"वर्ष 1862","en":"Year 1862"},{"hi":"वर्ष 1859","en":"Year 1859"}],"answer":3,"explanation_hi":"उत्तर प्रदेश की पहली ट्रेन 1859 में प्रयागराज से कानपुर के बीच चलाई गई थी और इसी वर्ष कानपुर रेलवे स्टेशन भी बना था।","explanation_en":"The first train in Uttar Pradesh was run in 1859 between Prayagraj and Kanpur, the same year Kanpur railway station was built."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जनगणना 2011 के अनुसार, उत्तर प्रदेश के सर्वाधिक आबादी वाले जिलों के सही अवरोही क्रम (घटते हुए) की पहचान करें:","question_en":"Question 31: According to Census 2011, identify the correct descending order (decreasing) of the most populous districts of Uttar Pradesh:","options":[{"hi":"प्रयागराज > गाजियाबाद > मुरादाबाद > लखनऊ > आजमगढ़","en":"Prayagraj > Ghaziabad > Moradabad > Lucknow > Azamgarh"},{"hi":"मुरादाबाद > प्रयागराज > आजमगढ़ > गाजियाबाद > लखनऊ","en":"Moradabad > Prayagraj > Azamgarh > Ghaziabad > Lucknow"},{"hi":"प्रयागराज > मुरादाबाद > गाजियाबाद > आजमगढ़ > लखनऊ","en":"Prayagraj > Moradabad > Ghaziabad > Azamgarh > Lucknow"},{"hi":"प्रयागराज > मुरादाबाद > आजमगढ़ > लखनऊ > गाजियाबाद","en":"Prayagraj > Moradabad > Azamgarh > Lucknow > Ghaziabad"}],"answer":2,"explanation_hi":"उत्तर प्रदेश के शीर्ष 5 सर्वाधिक आबादी वाले जिले क्रमशः प्रयागराज, मुरादाबाद, गाजियाबाद, आजमगढ़ और लखनऊ हैं।","explanation_en":"The top 5 most populous districts of Uttar Pradesh are Prayagraj, Moradabad, Ghaziabad, Azamgarh, and Lucknow, respectively."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के वन संपदा आंकड़ों के अनुसार राज्य का न्यूनतम वन क्षेत्र (केवल 3.12 वर्ग किमी) वाला जिला कौन-सा है?","question_en":"Question 32: According to the forest resources data of Uttar Pradesh, which district of the state has the minimum forest area (only 3.12 sq km)?","options":[{"hi":"मऊ","en":"Mau"},{"hi":"मैनपुरी","en":"Mainpuri"},{"hi":"संत रविदास नगर (भदोही)","en":"Sant Ravidas Nagar (Bhadohi)"},{"hi":"संत कबीर नगर","en":"Sant Kabir Nagar"}],"answer":2,"explanation_hi":"उत्तर प्रदेश में न्यूनतम वन क्षेत्र भदोही (3.12 वर्ग किमी) में है, जिसके बाद मऊ (11.00 वर्ग किमी) का स्थान आता है।","explanation_en":"In UP, the minimum forest area is in Bhadohi (3.12 sq km), followed by Mau (11.00 sq km)."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पंचायती राज व्यवस्था से संबंधित विभिन्न समितियों में अशोक मेहता समिति का गठन किस वर्ष किया गया था?","question_en":"Question 33: Among various committees related to the Panchayati Raj system, in which year was the Ashok Mehta Committee constituted?","options":[{"hi":"वर्ष 1977","en":"Year 1977"},{"hi":"वर्ष 1957","en":"Year 1957"},{"hi":"वर्ष 1985","en":"Year 1985"},{"hi":"वर्ष 1986","en":"Year 1986"}],"answer":0,"explanation_hi":"बलवंत राय मेहता समिति 1957 में, अशोक मेहता समिति 1977 में, जी.वी.के. राव समिति 1985 में तथा एल.एम. सिंघवी समिति 1986 में गठित की गई थी।","explanation_en":"Balwant Rai Mehta Committee was set up in 1957, Ashok Mehta in 1977, GVK Rao in 1985, and LM Singhvi in 1986."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संवैधानिक प्रावधानों के अंतर्गत जिला स्तर पर एकीकृत विकास योजनाओं के निर्माण हेतु किस अनुच्छेद में 'जिला योजना समिति' (DPC) का उल्लेख है?","question_en":"Question 34: Under constitutional provisions, which article mentions the 'District Planning Committee' (DPC) for formulating integrated development plans at the district level?","options":[{"hi":"अनुच्छेद 243ZE","en":"Article 243ZE"},{"hi":"अनुच्छेद 243ZD","en":"Article 243ZD"},{"hi":"अनुच्छेद 243C","en":"Article 243C"},{"hi":"अनुच्छेद 243D","en":"Article 243D"}],"answer":1,"explanation_hi":"अनुच्छेद 243ZD के तहत जिला योजना समिति तथा अनुच्छेद 243ZE के तहत महानगरीय योजना समिति का गठन किया जाता है।","explanation_en":"Article 243ZD provides for the District Planning Committee, and Article 243ZE provides for the Metropolitan Planning Committee."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पंचायती राज संस्थाओं को वित्तीय सुदृढ़ता की समीक्षा एवं सिफारिशें देने हेतु प्रत्येक राज्य में राज्यपाल द्वारा 'वित्त आयोग' के गठन का प्रावधान किस अनुच्छेद में है?","question_en":"Question 35: Which article provides for the constitution of a 'Finance Commission' by the Governor in every state to review and recommend financial soundness of Panchayati Raj institutions?","options":[{"hi":"अनुच्छेद 243i","en":"Article 243i"},{"hi":"अनुच्छेद 243K","en":"Article 243K"},{"hi":"अनुच्छेद 243C","en":"Article 243C"},{"hi":"अनुच्छेद 243D","en":"Article 243D"}],"answer":0,"explanation_hi":"अनुच्छेद 243i के तहत राज्य वित्त आयोग तथा अनुच्छेद 243K के तहत राज्य निर्वाचन आयोग (पंचायतों के लिए) का गठन होता है।","explanation_en":"Article 243i provides for the State Finance Commission and Article 243K provides for the State Election Commission (for Panchayats)."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान की सातवीं अनुसूची के अंतर्गत कौन-सा विषय 'समवर्ती सूची' (Concurrent List) में शामिल है, जिस पर केंद्र व राज्य दोनों कानून बना सकते हैं?","question_en":"Question 36: Under the Seventh Schedule of the Indian Constitution, which subject is included in the 'Concurrent List' on which both the Center and State can legislate?","options":[{"hi":"पुलिस और जेल","en":"Police and Jail"},{"hi":"शिक्षा और वन","en":"Education and Forest"},{"hi":"कृषि और सिंचाई","en":"Agriculture and Irrigation"},{"hi":"डाक और तार","en":"Post and Telegraph"}],"answer":1,"explanation_hi":"शिक्षा, वन, विवाह-तलाक समवर्ती सूची में हैं। पुलिस, जेल, कृषि राज्य सूची के विषय हैं। डाक, तार और रक्षा संघ सूची में शामिल हैं।","explanation_en":"Education, forest, marriage-divorce are in Concurrent List. Police, jail, agriculture are State subjects. Post, telegraph, and defense are Union subjects."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय रिजर्व बैंक द्वारा प्रयुक्त मुद्रा आपूर्ति मापन के अंतर्गत सर्वाधिक तरल (Most Liquid) मुद्रा किसे माना जाता है?","question_en":"Question 37: Under the money supply measurements used by the Reserve Bank of India, which is considered the 'Most Liquid' form of money?","options":[{"hi":"M2","en":"M2"},{"hi":"M3","en":"M3"},{"hi":"M1","en":"M1"},{"hi":"M4","en":"M4"}],"answer":2,"explanation_hi":"M1 सबसे तरल मुद्रा (नकद व मांग जमाएं) है। M3 को विस्तृत मुद्रा कहते हैं जिसकी तरलता M1 व M2 से कम होती है।","explanation_en":"M1 is the most liquid money (currency and demand deposits). M3 is broad money, which is less liquid than M1 and M2."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण सुरक्षा मानकों के तहत भारत सरकार ने 'हाइड्रोफ्लोरोकार्बन' (HFC) के उपयोग को 80% तक कम करने का राष्ट्रीय लक्ष्य किस वर्ष तक निर्धारित किया है?","question_en":"Question 38: Under environmental safety standards, by which year has the Government of India set a national target to reduce the usage of Hydrofluorocarbons (HFC) by 80%?","options":[{"hi":"वर्ष 2030","en":"Year 2030"},{"hi":"वर्ष 2047","en":"Year 2047"},{"hi":"वर्ष 2050","en":"Year 2050"},{"hi":"वर्ष 2070","en":"Year 2070"}],"answer":1,"explanation_hi":"भारत ने HFC उपयोग को 80% घटाने का लक्ष्य 2047 तथा अर्थव्यवस्था को नेट जीरो (Net Zero) उत्सर्जन बनाने का लक्ष्य 2070 तय किया है।","explanation_en":"India has set a target of reducing HFC usage by 80% by 2047 and achieving Net Zero carbon emissions by 2070."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कर्क रेखा (Tropic of Cancer) विश्व के 3 महाद्वीपों के कुल कितने देशों से होकर गुजरती है?","question_en":"Question 39: The Tropic of Cancer passes through how many total countries across 3 continents of the world?","options":[{"hi":"13 देश","en":"13 Countries"},{"hi":"18 देश","en":"18 Countries"},{"hi":"15 देश","en":"15 Countries"},{"hi":"16 देश","en":"16 Countries"}],"answer":3,"explanation_hi":"कर्क रेखा 16 देशों से होकर गुजरती है, जबकि भूमध्य रेखा (Equator) विश्व के 13 देशों से गुजरती है।","explanation_en":"The Tropic of Cancer passes through 16 countries, whereas the Equator passes through 13 countries globally."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भूमध्य रेखा (Equator) दक्षिणी अमेरिका महाद्वीप के निम्नलिखित में से किस देश से होकर नहीं गुजरती है?","question_en":"Question 40: The Equator does NOT pass through which of the following countries of the South American continent?","options":[{"hi":"इक्वाडोर","en":"Ecuador"},{"hi":"अर्जेंटीना","en":"Argentina"},{"hi":"कोलंबिया","en":"Colombia"},{"hi":"ब्राजील","en":"Brazil"}],"answer":1,"explanation_hi":"भूमध्य रेखा दक्षिणी अमेरिका के केवल तीन देशों: इक्वाडोर, कोलंबिया और ब्राजील से गुजरती है; यह अर्जेंटीना से नहीं गुजरती।","explanation_en":"The Equator passes through only three South American countries: Ecuador, Colombia, and Brazil; it does not pass through Argentina."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1928 में गुजरात में लगान वृद्धि (22% टैक्स वृद्धि) के विरोध में सरदार पटेल के नेतृत्व में कौन-सा सफल किसान आंदोलन चलाया गया था?","question_en":"Question 41: Which successful peasant movement was led by Sardar Patel in Gujarat in 1928 against an unreasonable land tax hike of 22%?","options":[{"hi":"खेड़ा सत्याग्रह","en":"Kheda Satyagraha"},{"hi":"चंपारण सत्याग्रह","en":"Champaran Satyagraha"},{"hi":"बारदोली सत्याग्रह","en":"Bardoli Satyagraha"},{"hi":"तेभागा आंदोलन","en":"Tebhaga Movement"}],"answer":2,"explanation_hi":"बारदोली सत्याग्रह (1928) में अंग्रेजों द्वारा बढ़ाए गए 22% लगान के विरोध में हुआ, जिसके सफल नेतृत्व के कारण वल्लभभाई पटेल को 'सरदार' की उपाधि मिली।","explanation_en":"Bardoli Satyagraha (1928) occurred against a 22% tax increase, the success of which earned Vallabhbhai Patel the title of 'Sardar'."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रथम आंग्ल-मराठा युद्ध का अंत वॉरेन हेस्टिंग्स के समय में वर्ष 1782 में संपन्न किस प्रसिद्ध संधि के साथ हुआ था?","question_en":"Question 42: The First Anglo-Maratha War concluded with which famous treaty signed in the year 1782 during Warren Hastings' tenure?","options":[{"hi":"सालाबाई की संधि","en":"Treaty of Salbai"},{"hi":"पुरंधर की संधि","en":"Treaty of Purandhar"},{"hi":"बसीन की संधि","en":"Treaty of Bassein"},{"hi":"देवगाँव की संधि","en":"Treaty of Deogaon"}],"answer":0,"explanation_hi":"1782 में सालाबाई की संधि से प्रथम आंग्ल-मराठा युद्ध समाप्त हुआ तथा 1802 में बसीन की संधि हुई जिसके तहत पेशवा ने सहायक संधि स्वीकार की थी।","explanation_en":"The Treaty of Salbai in 1782 ended the First Anglo-Maratha War, and the Treaty of Bassein was signed in 1802 under which Peshwa accepted subsidiary alliance."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मुद्रा आपूर्ति के वर्गीकरण मानदंडों के अनुसार 'M3' संकेतक का कुल मूल्य क्या प्रदर्शित करता है?","question_en":"Question 43: According to money supply classification metrics, what does the total value of 'M3' indicator represent?","options":[{"hi":"M1 + डाकघर की बचत जमाएं","en":"M1 + Post office savings deposits"},{"hi":"नकद मुद्रा + मांग जमाएं","en":"Cash currency + Demand deposits"},{"hi":"M3 + डाकघर की कुल दीर्घकालिक जमाएं","en":"M3 + Total long-term deposits of post office"},{"hi":"M1 + व्यावसायिक बैंकों की सावधि (Long term) जमाएं","en":"M1 + Time deposits of commercial banks"}],"answer":3,"explanation_hi":"M3 प्रदर्शित करता है: M1 + व्यावसायिक बैंकों की सावधि (FIs Time/Long-term Deposits)। M1 में केवल नकद मुद्रा और मांग जमाएं शामिल होती हैं।","explanation_en":"M3 represents: M1 + Time deposits of commercial banks. M1 consists of only cash currency and demand deposits."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान के किस भाग के अंतर्गत 'निर्वाचन' (Elections) से जुड़े प्रमुख उपबंधों (अनुच्छेद 324-329A) का उल्लेख किया गया है?","question_en":"Question 44: Under which part of the Indian Constitution are the main provisions related to 'Elections' (Articles 324-329A) mentioned?","options":[{"hi":"भाग XIV","en":"Part XIV"},{"hi":"भाग XV","en":"Part XV"},{"hi":"भाग XVII","en":"Part XVII"},{"hi":"भाग XVIII","en":"Part XVIII"}],"answer":1,"explanation_hi":"भाग XV चुनाव से, भाग XIV संघ और राज्यों के अधीन सेवाओं से, भाग XVII भाषा से तथा भाग XVIII आपातकालीन उपबंधों से संबंधित है।","explanation_en":"Part XV relates to elections, Part XIV to services under Union/States, Part XVII to language, and Part XVIII to emergency provisions."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय राष्ट्रीय कांग्रेस के किस प्रसिद्ध अधिवेशन (1896) में पहली बार भारत का राष्ट्रीय गीत 'वन्दे मातरम्' गाया गया था?","question_en":"Question 45: In which famous session of the Indian National Congress (1896) was India's national song 'Vande Mataram' sung for the first time?","options":[{"hi":"मद्रास अधिवेशन (अध्यक्ष: बदरुद्दीन तैयबजी)","en":"Madras Session (President: Badruddin Tyabji)"},{"hi":"कोलकाता अधिवेशन (अध्यक्ष: रहीमतुल्ला सयानी)","en":"Kolkata Session (President: Rahimtulla Sayani)"},{"hi":"इलाहाबाद अधिवेशन (अध्यक्ष: जॉर्ज यूल)","en":"Allahabad Session (President: George Yule)"},{"hi":"बनारस अधिवेशन (अध्यक्ष: गोपाल कृष्ण गोखले)","en":"Banaras Session (President: Gopal Krishna Gokhale)"}],"answer":1,"explanation_hi":"1896 के कोलकाता अधिवेशन में पहली बार वन्दे मातरम् गाया गया जिसकी अध्यक्षता रहीमतुल्ला सयानी ने की थी।","explanation_en":"Vande Mataram was sung first in 1896 at Kolkata session presided over by Rahimtulla Sayani."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान निर्माण के दौरान प्रांतीय स्तर पर शासन व्यवस्था तय करने वाली 'प्रांतीय संविधान समिति' के अध्यक्ष कौन थे?","question_en":"Question 46: During the making of the Constitution, who was the chairman of the 'Provincial Constitution Committee' that decided the governance framework at the provincial level?","options":[{"hi":"जवाहरलाल नेहरू","en":"Jawaharlal Nehru"},{"hi":"डॉ. बी. आर. आंबेडकर","en":"Dr. B. R. Ambedkar"},{"hi":"जे. बी. कृपलानी","en":"J. B. Kripalani"},{"hi":"सरदार वल्लभभाई पटेल","en":"Sardar Vallabhbhai Patel"}],"answer":3,"explanation_hi":"प्रांतीय संविधान समिति के अध्यक्ष सरदार पटेल थे। संघ संविधान समिति के नेहरू तथा प्रारूप समिति के अध्यक्ष डॉ. आंबेडकर थे।","explanation_en":"Sardar Patel was the chairman of the Provincial Constitution Committee. Nehru chaired the Union Constitution Committee and Ambedkar chaired the Drafting Committee."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1872 में लंदन में आनंद मोहन बोस द्वारा भारतीय छात्रों और बुद्धिजीवियों को संगठित करने हेतु स्थापित संस्था कौन-सी थी?","question_en":"Question 47: Which organization was founded by Anand Mohan Bose in London in the year 1872 to organize Indian students and intellectuals?","options":[{"hi":"इंडियन सोसाइटी","en":"Indian Society"},{"hi":"ईस्ट इंडिया एसोसिएशन","en":"East India Association"},{"hi":"इंडियन एसोसिएशन","en":"Indian Association"},{"hi":"पूना सार्वजनिक सभा","en":"Poona Sarvajanik Sabha"}],"answer":0,"explanation_hi":"लंदन में 1872 में आनंद मोहन बोस ने इंडियन सोसाइटी की स्थापना की थी, जबकि कोलकाता में 1876 में उन्होंने इंडियन एसोसिएशन बनाया।","explanation_en":"In 1872, Anand Mohan Bose founded the Indian Society in London, whereas in 1876, he established the Indian Association in Kolkata."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दिल्ली सल्तनत के सुप्रसिद्ध इतिहासकार जियाउद्दीन बरनी द्वारा रचित महान ग्रंथ निम्नलिखित में से कौन-सा है?","question_en":"Question 48: Which of the following is the great historical treatise written by the prominent Delhi Sultanate historian Ziauddin Barani?","options":[{"hi":"फुतूह-उस-सलातीन","en":"Futuh-us-Salatin"},{"hi":"तारीख़-ए-फिरोजशाही","en":"Tarikh-e-Firozshahi"},{"hi":"ताज-उल-मासिर","en":"Taj-ul-Masir"},{"hi":"फवाद-उल-फवाद","en":"Fawad-ul-Fawad"}],"answer":1,"explanation_hi":"तारीख़-ए-फिरोजशाही के लेखक जियाउद्दीन बरनी हैं। फुतूह-उस-सलातीन इसामी ने तथा ताज-उल-मासिर हसन निजामी ने लिखा है।","explanation_en":"The author of Tarikh-e-Firozshahi is Ziauddin Barani. Futuh-us-Salatin was by Isami, and Taj-ul-Masir by Hasan Nizami."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1887 में मद्रास में आयोजित कांग्रेस के तीसरे अधिवेशन की अध्यक्षता करने वाले पहले मुस्लिम अध्यक्ष कौन थे?","question_en":"Question 49: Who was the first Muslim president of Congress, presiding over its third session held in Madras in 1887?","options":[{"hi":"बदरुद्दीन तैयबजी","en":"Badruddin Tyabji"},{"hi":"रहीमतुल्ला सयानी","en":"Rahimtulla Sayani"},{"hi":"मोहम्मद अली","en":"Mohammad Ali"},{"hi":"सर सैयद अहमद खान","en":"Sir Syed Ahmed Khan"}],"answer":0,"explanation_hi":"कांग्रेस के पहले मुस्लिम अध्यक्ष बदरुद्दीन तैयबजी थे जिन्होंने 1887 के मद्रास अधिवेशन की अध्यक्षता की थी।","explanation_en":"The first Muslim president of Congress was Badruddin Tyabji, who presided over the Madras session in 1887."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण विज्ञान वर्गीकरण के अनुसार, अत्यधिक लवणीय एवं नमकीन मिट्टी वाले तटीय क्षेत्रों में उगने वाली वनस्पति को क्या कहा जाता है?","question_en":"Question 50: According to environmental science classification, what is the vegetation that grows in coastal areas of highly saline soils called?","options":[{"hi":"हेलोफाइट","en":"Halophyte"},{"hi":"लिथोफाइट","en":"Lithophyte"},{"hi":"हाइग्रोफाइट","en":"Hygrophyte"},{"hi":"मेसोफाइट","en":"Mesophyte"}],"answer":0,"explanation_hi":"नमकीन मिट्टी/क्षेत्रों में हेलोफाइट (Halophyte), कड़ी चट्टानों पर लिथोफाइट तथा सामान्य शीतोष्ण वातावरण में मेसोफाइट उगते हैं।","explanation_en":"Plants in saline soils are Halophytes, on hard rocks are Lithophytes, and in normal temperate environments are Mesophytes."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
