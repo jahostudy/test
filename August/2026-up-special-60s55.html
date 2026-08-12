@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"UP SPECIAL","highlight":"UP SPECIAL","shortTitle":"UP SPECIAL","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-up-special-20260812-60s55","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-12","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के नामकरण के ऐतिहासिक विकासक्रम के अनुसार, 'आगरा और अवध का संयुक्त प्रांत' नाम किस वर्ष अस्तित्व में आया था?","question_en":"Question 1: According to the historical evolution of Uttar Pradesh's naming timeline, in which year did the name 'United Provinces of Agra and Oudh' come into existence?","options":[{"hi":"वर्ष 1877","en":"(A) Year 1877"},{"hi":"वर्ष 1902","en":"(B) Year 1902"},{"hi":"वर्ष 1937","en":"(C) Year 1937"},{"hi":"वर्ष 1950","en":"(D) Year 1950"}],"answer":1,"explanation_hi":"उत्तर प्रदेश के नामकरण की यात्रा इस प्रकार है: 1836 में उत्तर-पश्चिम प्रांत, 1877 में उत्तर-पश्चिमी प्रांत एवं अवध, 1902 में आगरा और अवध का संयुक्त प्रांत, 1937 में संयुक्त प्रांत तथा 24 जनवरी 1950 को उत्तर प्रदेश नाम मिला।","explanation_en":"The naming timeline of UP is: 1836 (North-Western Provinces), 1877 (North-Western Provinces and Oudh), 1902 (United Provinces of Agra and Oudh), 1937 (United Provinces), and January 24, 1950 (Uttar Pradesh)."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश की राजधानी के स्थानांतरण के इतिहास में, वर्ष 1858 में राजधानी को आगरा से हटाकर किस स्थान पर स्थानांतरित किया गया था?","question_en":"Question 2: In the history of the capital relocation of Uttar Pradesh, to which place was the capital shifted from Agra in the year 1858?","options":[{"hi":"लखनऊ","en":"(A) Lucknow"},{"hi":"वाराणसी","en":"(B) Varanasi"},{"hi":"प्रयागराज","en":"(C) Prayagraj"},{"hi":"कानपुर","en":"(D) Kanpur"}],"answer":2,"explanation_hi":"उत्तर प्रदेश की राजधानी 1836 में आगरा थी, जिसे 1858 के विद्रोह के बाद प्रयागराज स्थानांतरित किया गया। इसके बाद 1921 में लखनऊ को अस्थायी तथा 1935 में स्थायी राजधानी बनाया गया।","explanation_en":"The capital of UP was Agra in 1836, which was shifted to Prayagraj in 1858 following the 1857 revolt. Later, Lucknow became the temporary capital in 1921 and permanent in 1935."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश का कुल क्षेत्रफल (2,40,928 वर्ग किमी) भारत के कुल क्षेत्रफल का लगभग कितना प्रतिशत है, और क्षेत्रफल की दृष्टि से राज्यों में इसका क्या स्थान है?","question_en":"Question 3: What is the approximate percentage of Uttar Pradesh's total area (2,40,928 sq km) in relation to India's total area, and what is its rank among states in terms of area?","options":[{"hi":"7.33% और चौथा स्थान","en":"(A) 7.33% and 4th rank"},{"hi":"7.33% और तीसरा स्थान","en":"(B) 7.33% and 3rd rank"},{"hi":"6.88% और चौथा स्थान","en":"(C) 6.88% and 4th rank"},{"hi":"8.12% और पाँचवाँ स्थान","en":"(D) 8.12% and 5th rank"}],"answer":0,"explanation_hi":"उत्तर प्रदेश का क्षेत्रफल 2,40,928 वर्ग किमी है जो भारत के कुल क्षेत्रफल का लगभग 7.33% है। क्षेत्रफल की दृष्टि से राजस्थान, मध्य प्रदेश और महाराष्ट्र के बाद उत्तर प्रदेश का चौथा स्थान है।","explanation_en":"The area of UP is 2,40,928 sq km, which constitutes about 7.33% of India's total area. UP ranks 4th in terms of area, following Rajasthan, Madhya Pradesh, and Maharashtra."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के राजकीय प्रतीकों के संदर्भ में, निम्नलिखित में से कौन-सा युग्म सही सुमेलित नहीं है?","question_en":"Question 4: With reference to the state symbols of Uttar Pradesh, which of the following pairs is NOT correctly matched?","options":[{"hi":"राजकीय पक्षी - सारस क्रेन","en":"(A) State Bird - Sarus Crane"},{"hi":"राजकीय पुष्प - पलाश या टेसू","en":"(B) State Flower - Palash or Tesu"},{"hi":"राजकीय पशु - बारहसिंगा","en":"(C) State Animal - Swamp Deer"},{"hi":"राजकीय वृक्ष - बरगद","en":"(D) State Tree - Banyan"}],"answer":3,"explanation_hi":"उत्तर प्रदेश का राजकीय वृक्ष अशोक है, न कि बरगद (बरगद भारत का राष्ट्रीय वृक्ष है)। राजकीय पशु बारहसिंगा, राजकीय पक्षी सारस क्रेन तथा राजकीय पुष्प पलाश (टेसू) है।","explanation_en":"The state tree of UP is Ashoka, not Banyan (Banyan is the national tree of India). The state animal is Swamp Deer, state bird is Sarus Crane, and state flower is Palash (Tesu)."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश में हिंदी को राजभाषा के रूप में विधिक आधार 'उत्तर प्रदेश राजभाषा अधिनियम 1951' से मिला था। उर्दू को किस वर्ष राज्य की द्वितीय राजभाषा घोषित किया गया था?","question_en":"Question 5: In Uttar Pradesh, Hindi received its legal basis as the official language under the 'UP Official Language Act 1951'. In which year was Urdu declared the second official language of the state?","options":[{"hi":"वर्ष 1976","en":"(A) Year 1976"},{"hi":"वर्ष 1989","en":"(B) Year 1989"},{"hi":"वर्ष 1982","en":"(C) Year 1982"},{"hi":"वर्ष 1991","en":"(D) Year 1991"}],"answer":1,"explanation_hi":"उत्तर प्रदेश राजभाषा अधिनियम 1951 के माध्यम से हिंदी को विधिक राजभाषा का दर्जा मिला। वर्ष 1989 के राजभाषा संशोधन अधिनियम द्वारा उर्दू को द्वितीय राजभाषा के रूप में स्वीकार किया गया।","explanation_en":"Hindi was legally established as the official language through the UP Official Language Act 1951. Urdu was declared the second official language via an amendment in 1989."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश का अक्षांशीय और देशांतरीय विस्तार क्रमशः कितना है, और इसके दोनों विस्तारों का कुल अंतर लगभग कितने डिग्री के बराबर बैठता है?","question_en":"Question 6: What is the latitudinal and longitudinal extent of Uttar Pradesh respectively, and what is the approximate difference of both extents in degrees?","options":[{"hi":"23°52' N से 31°28' N और 77°03' E से 84°39' E; लगभग 7°36'","en":"(A) 23°52' N to 31°28' N and 77°03' E to 84°39' E; approx 7°36'"},{"hi":"24°30' N से 30°24' N और 78°05' E से 85°10' E; लगभग 5°54'","en":"(B) 24°30' N to 30°24' N and 78°05' E to 85°10' E; approx 5°54'"},{"hi":"23°52' N से 31°28' N और 75°03' E से 82°39' E; लगभग 7°36'","en":"(C) 23°52' N to 31°28' N and 75°03' E to 82°39' E; approx 7°36'"},{"hi":"22°50' N से 29°38' N और 77°03' E से 84°39' E; लगभग 6°48'","en":"(D) 22°50' N to 29°38' N and 77°03' E to 84°39' E; approx 6°48'"}],"answer":0,"explanation_hi":"उत्तर प्रदेश का अक्षांशीय विस्तार 23°52' N से 31°28' N तथा देशांतरीय विस्तार 77°03' E से 84°39' E है। दोनों का विस्तार अंतर लगभग 7°36' के बराबर बैठता है।","explanation_en":"The latitudinal extent of UP is 23°52' N to 31°28' N and longitudinal extent is 77°03' E to 84°39' E. The difference for both extents is approximately 7°36'."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के मानचित्र के चारों दिशा-बिंदुओं के आधार पर, सुदूर उत्तरी, पूर्वी, दक्षिणी और पश्चिमी जिलों की सही सुमेलित जोड़ी कौन-सी है?","question_en":"Question 7: Based on the four extreme points of Uttar Pradesh's map, which is the correctly matched set of the northernmost, easternmost, southernmost, and westernmost districts?","options":[{"hi":"उत्तरी: सहारनपुर, पूर्वी: गाजीपुर, दक्षिणी: सोनभद्र, पश्चिमी: बागपत","en":"(A) Northern: Saharanpur, Eastern: Ghazipur, Southern: Sonbhadra, Western: Baghpat"},{"hi":"उत्तरी: बिजनौर, पूर्वी: बलिया, दक्षिणी: मिर्जापुर, पश्चिमी: शामली","en":"(B) Northern: Bijnor, Eastern: Ballia, Southern: Mirzapur, Western: Shamli"},{"hi":"उत्तरी: सहारनपुर, पूर्वी: बलिया, दक्षिणी: सोनभद्र, पश्चिमी: शामली","en":"(C) Northern: Saharanpur, Eastern: Ballia, Southern: Sonbhadra, Western: Shamli"},{"hi":"उत्तरी: पीलीभीत, पूर्वी: देवरिया, दक्षिणी: ललितपुर, पश्चिमी: बागपत","en":"(D) Northern: Pilibhit, Eastern: Deoria, Southern: Lalitpur, Western: Baghpat"}],"answer":2,"explanation_hi":"उत्तर प्रदेश के चारों भौगोलिक छोरों पर स्थित जिले इस प्रकार हैं: सुदूर उत्तर में सहारनपुर, सुदूर पूर्व में बलिया, सुदूर दक्षिण में सोनभद्र तथा सुदूर पश्चिम में शामली।","explanation_en":"The districts situated at the four geographical extremes of UP are: Saharanpur in the extreme North, Ballia in the extreme East, Sonbhadra in the extreme South, and Shamli in the extreme West."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"क्षेत्रफल की दृष्टि से उत्तर प्रदेश का सबसे बड़ा और सबसे छोटा जिला क्रमशः कौन-सा है?","question_en":"Question 8: Which are the largest and smallest districts of Uttar Pradesh respectively by area?","options":[{"hi":"लखीमपुर खीरी और हापुड़","en":"(A) Lakhimpur Kheri and Hapur"},{"hi":"सोनभद्र और गाजियाबाद","en":"(B) Sonbhadra and Ghaziabad"},{"hi":"लखीमपुर खीरी और भदोही","en":"(C) Lakhimpur Kheri and Bhadohi"},{"hi":"हरदोई और शामली","en":"(D) Hardoi and Shamli"}],"answer":0,"explanation_hi":"क्षेत्रफल के आधार पर उत्तर प्रदेश का सबसे बड़ा जिला लखीमपुर खीरी है, जबकि सबसे छोटा जिला हापुड़ है।","explanation_en":"By area, the largest district of Uttar Pradesh is Lakhimpur Kheri, whereas the smallest district is Hapur."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश की अंतर्राष्ट्रीय सीमा नेपाल से लगभग 579 किमी लंबी है। इस सीमा को स्पर्श करने वाले उत्तर प्रदेश के 7 जिलों का पश्चिम से पूर्व की ओर सही क्रम कौन-सा है?","question_en":"Question 9: The international border of Uttar Pradesh with Nepal is about 579 km long. Which is the correct west-to-east sequence of the 7 UP districts touching this border?","options":[{"hi":"लखीमपुर खीरी, पीलीभीत, श्रावस्ती, बहराइच, बलरामपुर, महाराजगंज, सिद्धार्थनगर","en":"(A) Lakhimpur Kheri, Pilibhit, Shravasti, Bahraich, Balrampur, Maharajganj, Siddharthnagar"},{"hi":"पीलीभीत, लखीमपुर खीरी, बहराइच, श्रावस्ती, बलरामपुर, सिद्धार्थनगर, महाराजगंज","en":"(B) Pilibhit, Lakhimpur Kheri, Bahraich, Shravasti, Balrampur, Siddharthnagar, Maharajganj"},{"hi":"पीलीभीत, बहराइच, लखीमपुर खीरी, बलरामपुर, श्रावस्ती, सिद्धार्थनगर, महाराजगंज","en":"(C) Pilibhit, Bahraich, Lakhimpur Kheri, Balrampur, Shravasti, Siddharthnagar, Maharajganj"},{"hi":"महाराजगंज, सिद्धार्थनगर, बलरामपुर, श्रावस्ती, बहराइच, लखीमपुर खीरी, पीलीभीत","en":"(D) Maharajganj, Siddharthnagar, Balrampur, Shravasti, Bahraich, Lakhimpur Kheri, Pilibhit"}],"answer":1,"explanation_hi":"नेपाल सीमा को छूने वाले 7 जिलों का पश्चिम से पूर्व क्रम इस प्रकार है: पीलीभीत, लखीमपुर खीरी, बहराइच, श्रावस्ती, बलरामपुर, सिद्धार्थनगर और महाराजगंज।","explanation_en":"The west-to-east order of the 7 districts touching the Nepal border is: Pilibhit, Lakhimpur Kheri, Bahraich, Shravasti, Balrampur, Siddharthnagar, and Maharajganj."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश की सबसे लंबी अंतरराज्यीय सीमा मध्य प्रदेश के साथ लगती है। निम्नलिखित में से कौन-सा जिला मध्य प्रदेश की सीमा को स्पर्श नहीं करता है?","question_en":"Question 10: The longest interstate boundary of Uttar Pradesh is shared with Madhya Pradesh. Which of the following districts does NOT touch the border of Madhya Pradesh?","options":[{"hi":"आगरा और हमीरपुर","en":"(A) Agra and Hamirpur"},{"hi":"जालौन और चित्रकूट","en":"(B) Jalaun and Chitrakoot"},{"hi":"मिर्जापुर और महोबा","en":"(C) Mirzapur and Mahoba"},{"hi":"अलीगढ़ और जौनपुर","en":"(D) Aligarh and Jaunpur"}],"answer":3,"explanation_hi":"मध्य प्रदेश से उत्तर प्रदेश के 11 जिले (आगरा, इटावा, जालौन, झाँसी, ललितपुर, महोबा, बांदा, चित्रकूट, प्रयागराज, मिर्जापुर, सोनभद्र) लगते हैं। अलीगढ़ हरियाणा से और जौनपुर आंतरिक जिला है।","explanation_en":"11 districts of UP touch the MP border (Agra, Etawah, Jalaun, Jhansi, Lalitpur, Mahoba, Banda, Chitrakoot, Prayagraj, Mirzapur, Sonbhadra). Aligarh borders Haryana, and Jaunpur is landlocked."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का एकमात्र ऐसा जिला कौन-सा है जो चार राज्यों (मध्य प्रदेश, छत्तीसगढ़, झारखंड और बिहार) की सीमाओं को स्पर्श करता है?","question_en":"Question 11: Which is the only district in India that touches the boundaries of four states (Madhya Pradesh, Chhattisgarh, Jharkhand, and Bihar)?","options":[{"hi":"ललितपुर","en":"(A) Lalitpur"},{"hi":"मिर्जापुर","en":"(B) Mirzapur"},{"hi":"सोनभद्र","en":"(C) Sonbhadra"},{"hi":"सहारनपुर","en":"(D) Saharanpur"}],"answer":2,"explanation_hi":"सोनभद्र भारत का एकमात्र ऐसा जिला है जो चार राज्यों - मध्य प्रदेश, छत्तीसगढ़, झारखंड और बिहार की सीमाओं को स्पर्श करता है। सहारनपुर तीन राज्यों (उत्तराखंड, हिमाचल और हरियाणा) को छूता है।","explanation_en":"Sonbhadra is the only district in India that borders four states - Madhya Pradesh, Chhattisgarh, Jharkhand, and Bihar. Saharanpur touches three states (Uttarakhand, Himachal, and Haryana)."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश का कौन-सा जिला राज्य के भीतर सर्वाधिक 9 जिलों की सीमाओं को स्पर्श करता है?","question_en":"Question 12: Which district of Uttar Pradesh touches the boundaries of the maximum number of 9 districts within the state?","options":[{"hi":"बदायूँ","en":"(A) Budaun"},{"hi":"हरदोई","en":"(B) Hardoi"},{"hi":"सीतापुर","en":"(C) Sitapur"},{"hi":"कानपुर नगर","en":"(D) Kanpur Nagar"}],"answer":0,"explanation_hi":"उत्तर प्रदेश का बदायूँ जिला राज्य के सर्वाधिक 9 जिलों की सीमाओं को साझा करता है, जो प्रशासनिक मानचित्र में एक अनूठा भौगोलिक तथ्य है।","explanation_en":"Budaun district of Uttar Pradesh shares boundaries with the highest number of 9 districts in the state, which is a unique geographical fact in the administrative map."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के प्रशासनिक विभाजन के अंतर्गत, निम्नलिखित में से कौन-सा मंडल जिलों की संख्या के आधार पर सबसे बड़ा नहीं है?","question_en":"Question 13: Under the administrative divisions of Uttar Pradesh, which of the following divisions is NOT among the largest based on the number of districts?","options":[{"hi":"मेरठ मंडल","en":"(A) Meerut Division"},{"hi":"अयोध्या मंडल","en":"(B) Ayodhya Division"},{"hi":"कानपुर मंडल","en":"(C) Kanpur Division"},{"hi":"लखनऊ मंडल","en":"(D) Lucknow Division"}],"answer":1,"explanation_hi":"कानपुर, लखनऊ और मेरठ मंडल उत्तर प्रदेश के सबसे बड़े मंडल हैं क्योंकि इनमें 6-6 जिले आते हैं। अयोध्या मंडल में 5 जिले आते हैं, इसलिए वह सर्वाधिक संख्या वाले मंडलों में शामिल नहीं है।","explanation_en":"Kanpur, Lucknow, and Meerut divisions are the largest in UP, each containing 6 districts. Ayodhya division contains 5 districts, hence it is not among the largest."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के नगरीय स्थानीय निकायों के संदर्भ में, सर्वाधिक वैधानिक नगरों (23) वाला जिला कौन-सा है, तथा न्यूनतम वैधानिक नगर (2) किस जिले में हैं?","question_en":"Question 14: With reference to the urban local bodies of Uttar Pradesh, which district has the maximum number of statutory towns (23) and which has the minimum (2)?","options":[{"hi":"गाजियाबाद और श्रावस्ती","en":"(A) Ghaziabad and Shravasti"},{"hi":"बदायूँ और ललितपुर","en":"(B) Budaun and Lalitpur"},{"hi":"मेरठ और महोबा","en":"(C) Meerut and Mahoba"},{"hi":"बदायूँ और श्रावस्ती","en":"(D) Budaun and Shravasti"}],"answer":3,"explanation_hi":"उत्तर प्रदेश में सर्वाधिक वैधानिक नगर बदायूँ (23) जिले में हैं, जबकि न्यूनतम वैधानिक नगरों की संख्या श्रावस्ती (2) जिले में दर्ज की गई है।","explanation_en":"In UP, the maximum number of statutory towns is in Budaun district (23), while the minimum number of statutory towns is recorded in Shravasti district (2)."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भौतिक भूगोल के नियमों के अनुसार, भाबर क्षेत्र की उस विशेषता को क्या कहा जाता है जिसके कारण पर्वतों से उतरने वाली नदियाँ सतह से गायब होकर भूमिगत बहने लगती हैं?","question_en":"Question 15: According to the principles of physical geography, what is the characteristic of the Bhabar region that causes rivers descending from mountains to disappear from the surface and flow underground?","options":[{"hi":"अत्यधिक कठोरता","en":"(A) Extreme Hardness"},{"hi":"मृदा की गाद युक्त प्रकृति","en":"(B) Silty nature of the soil"},{"hi":"अत्यधिक सरंध्रता","en":"(C) Extreme Porosity"},{"hi":"उच्च ढाल प्रवणता","en":"(D) High Gradient Slope"}],"answer":2,"explanation_hi":"भाबर क्षेत्र मोटे कंकड़, पत्थर और बजरी से बना है। इसकी भूमि अत्यधिक सरंध्र (Porous) होती है, जिसके कारण पहाड़ों से उतरने वाली नदियाँ सतह के नीचे रिस जाती हैं और अदृश्य हो जाती हैं।","explanation_en":"The Bhabar region is composed of coarse gravel, stones, and pebbles. Its soil is highly porous, causing descending mountain rivers to seep below the surface and disappear."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भाबर क्षेत्र के दक्षिण में स्थित समतल, नम और दलदली मिट्टी की उपजाऊ पट्टी को क्या कहा जाता है, जो धान और गन्ने की सघन खेती के लिए प्रसिद्ध है?","question_en":"Question 16: What is the flat, moist, and swampy fertile soil belt located south of the Bhabar region called, which is famous for the intensive cultivation of paddy and sugarcane?","options":[{"hi":"तराई क्षेत्र","en":"(A) Terai Region"},{"hi":"बाँगर क्षेत्र","en":"(B) Bhangar Region"},{"hi":"खादर क्षेत्र","en":"(C) Khadar Region"},{"hi":"दक्षिणी विंध्यन क्षेत्र","en":"(D) Southern Vindhyan Region"}],"answer":0,"explanation_hi":"तराई क्षेत्र भाबर के ठीक दक्षिण में स्थित समतल, दलदली और अत्यधिक नम जलोढ़ पट्टी है। यहाँ नदियाँ पुनः धरातल पर आती हैं और यह गन्ना व धान की उत्कृष्ट खेती हेतु प्रसिद्ध है।","explanation_en":"The Terai region is a flat, swampy, and highly moist alluvial belt located just south of Bhabar. Here, rivers reappear, and it is famous for excellent sugarcane and paddy cultivation."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मैदानी भाग की जलोढ़ मृदा के संदर्भ में, नदियों के बाढ़ प्रभावित निचले भागों में प्रतिवर्ष नई गाद जमा होने से बनने वाली अत्यंत उपजाऊ मिट्टी को क्या कहा जाता है?","question_en":"Question 17: With reference to the alluvial soil of the plains, what is the highly fertile soil formed by the annual deposition of new silt in the low-lying flood-prone areas of rivers called?","options":[{"hi":"बाँगर मिट्टी","en":"(A) Bhangar Soil"},{"hi":"खादर मिट्टी","en":"(B) Khadar Soil"},{"hi":"ऊसर मिट्टी","en":"(C) Usar Soil"},{"hi":"राकर मिट्टी","en":"(D) Rakar Soil"}],"answer":1,"explanation_hi":"नदियों के बाढ़ क्षेत्र में प्रतिवर्ष जमा होने वाली नवीन जलोढ़ मिट्टी को 'खादर' कहा जाता है। यह अत्यंत महीन गाद वाली और बिना खाद के भी अत्यधिक उपजाऊ होती है। पुरानी जलोढ़ को 'बाँगर' कहते हैं।","explanation_en":"The new alluvial soil deposited annually in the floodplains of rivers is called 'Khadar'. It has very fine silt and is highly fertile even without fertilizer. Old alluvium is 'Bhangar'."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के दक्षिणी पहाड़ी-पठारी भूभाग (प्रायद्वीपीय पठार का उत्तरी विस्तार) की औसत ऊँचाई कितनी है, और इसकी सुदूर कैमूर पहाड़ियाँ मिर्जापुर-सोनभद्र में लगभग कितने मीटर तक ऊँची हैं?","question_en":"Question 18: What is the average elevation of the southern hilly-plateau region of UP (northern extension of Peninsular Plateau), and how high are its extreme Kaimur hills in Mirzapur-Sonbhadra in meters?","options":[{"hi":"औसत लगभग 150 मीटर और पहाड़ियाँ लगभग 450 मीटर","en":"(A) Average approx 150 meters and hills approx 450 meters"},{"hi":"औसत लगभग 500 मीटर और पहाड़ियाँ लगभग 900 मीटर","en":"(B) Average approx 500 meters and hills approx 900 meters"},{"hi":"औसत लगभग 200 मीटर और पहाड़ियाँ लगभग 500 मीटर","en":"(C) Average approx 200 meters and hills approx 500 meters"},{"hi":"औसत लगभग 300 मीटर और पहाड़ियाँ लगभग 600 मीटर","en":"(D) Average approx 300 meters and hills approx 600 meters"}],"answer":3,"explanation_hi":"दक्षिणी पहाड़ी-पठारी भाग की औसत ऊँचाई लगभग 300 मीटर है, परंतु मिर्जापुर और सोनभद्र जिलों में कैमूर और सोनाकर जैसी पहाड़ियाँ लगभग 600 मीटर तक ऊँची पाई जाती हैं।","explanation_en":"The average elevation of the southern plateau is around 300 meters, but in Mirzapur and Sonbhadra districts, hills like Kaimur and Sonakar reach up to 600 meters."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जलवायु वर्गीकरण के प्रसिद्ध कोपेन पद्धति (Koeppen Classification) के अनुसार, उत्तर प्रदेश का अधिकांश भौगोलिक विस्तार किस प्रकार के जलवायु क्षेत्र के अंतर्गत आता है?","question_en":"Question 19: According to the famous Koeppen climate classification, most of the geographical extent of Uttar Pradesh falls under which type of climatic zone?","options":[{"hi":"As प्रकार","en":"(A) As type"},{"hi":"Aw प्रकार","en":"(B) Aw type"},{"hi":"Cwg प्रकार","en":"(C) Cwg type"},{"hi":"Bsh प्रकार","en":"(D) Bsh type"}],"answer":2,"explanation_hi":"कोपेन के जलवायु वर्गीकरण के अनुसार, उत्तर प्रदेश का अधिकांश भाग 'Cwg' (शुष्क शीत ऋतु वाला उष्णकटिबंधीय मानसूनी प्रकार) के अंतर्गत वर्गीकृत किया गया है।","explanation_en":"According to Koeppen's climate classification, the majority of Uttar Pradesh falls under the 'Cwg' (warm temperate rainy climate with dry winters) type."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश में मानसूनी वर्षा का मुख्य स्रोत बंगाल की खाड़ी की मानसूनी शाखा है, जिसे स्थानीय रूप से 'पूरवा' कहते हैं। राज्य में सर्वाधिक और न्यूनतम औसत वार्षिक वर्षा क्रमशः किस जिले में दर्ज की जाती है?","question_en":"Question 20: The primary source of monsoon rainfall in UP is the Bay of Bengal branch, locally called 'Purwa'. In which districts are the maximum and minimum average annual rainfall recorded respectively?","options":[{"hi":"गोरखपुर (लगभग 184.7 सेमी) और मथुरा (लगभग 54.4 सेमी)","en":"(A) Gorakhpur (approx 184.7 cm) and Mathura (approx 54.4 cm)"},{"hi":"देवरिया (लगभग 150 सेमी) और आगरा (लगभग 60 सेमी)","en":"(B) Deoria (approx 150 cm) and Agra (approx 60 cm)"},{"hi":"गोरखपुर (लगभग 184.7 सेमी) और आगरा (लगभग 54.4 सेमी)","en":"(C) Gorakhpur (approx 184.7 cm) and Agra (approx 54.4 cm)"},{"hi":"सोनभद्र (लगभग 120 सेमी) और मथुरा (लगभग 45 सेमी)","en":"(D) Sonbhadra (approx 120 cm) and Mathura (approx 45 cm)"}],"answer":0,"explanation_hi":"उत्तर प्रदेश में सर्वाधिक वार्षिक वर्षा पूर्वी तराई के गोरखपुर (लगभग 184.7 सेमी) जिले में तथा सबसे कम वर्षा पश्चिमी मरुस्थलीय प्रभाव वाले मथुरा (लगभग 54.4 सेमी) जिले में होती है।","explanation_en":"In UP, the highest annual rainfall is in Gorakhpur in the eastern Terai (approx 184.7 cm), while the lowest is in Mathura in the dry west (approx 54.4 cm)."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बुंदेलखंड और विंध्य क्षेत्र की उस विशिष्ट काली मिट्टी को स्थानीय स्तर पर किस नाम से जाना जाता है, जो अत्यधिक महीन-चिपचिपी होती है तथा सूखने पर जिसमें गहरी दरारें पड़ जाती हैं?","question_en":"Question 21: By what local name is the specific black soil of the Bundelkhand and Vindhyan region known, which is extremely fine-sticky and develops deep cracks upon drying?","options":[{"hi":"राकर मृदा","en":"(A) Rakar Soil"},{"hi":"मार या माड़ मृदा","en":"(B) Maar or Mad Soil"},{"hi":"भोंटा मृदा","en":"(C) Bhonta Soil"},{"hi":"परुआ या पड़वा मृदा","en":"(D) Parua or Padwa Soil"}],"answer":1,"explanation_hi":"बुंदेलखंड की काली कपास मिट्टी का एक रूप 'मार' (या माड़) है। यह महीन, काली और अत्यधिक चिपचिपी होती है; गीली होने पर फूलती है और सूखने पर इसमें बड़ी दरारें पड़ जाती हैं।","explanation_en":"A form of black cotton soil in Bundelkhand is 'Maar' (or Mad). It is fine, black, and highly sticky; it swells when wet and develops deep cracks when dry."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश में चंबल और यमुना नदी के तटीय क्षेत्रों में जल द्वारा तीव्र अवनालिका कटाव (Gully Erosion) होता है। इस कटाव से सर्वाधिक प्रभावित होने वाला उत्तर प्रदेश का जिला कौन-सा है?","question_en":"Question 22: In Uttar Pradesh, intense gully erosion occurs due to water in the coastal tracts of Chambal and Yamuna rivers. Which district of UP is the most affected by this erosion?","options":[{"hi":"आगरा","en":"(A) Agra"},{"hi":"जालौन","en":"(B) Jalaun"},{"hi":"इटावा","en":"(C) Etawah"},{"hi":"मिर्जापुर","en":"(D) Mirzapur"}],"answer":2,"explanation_hi":"चंबल एवं यमुना के पानी से होने वाले अवनालिका कटाव (खड्ड एवं बीहड़) से उत्तर प्रदेश का इटावा जिला सर्वाधिक प्रभावित है, जिसके बाद आगरा और जालौन आते हैं।","explanation_en":"Etawah district is the most affected by gully erosion (ravines and badlands) formed by the water of Chambal and Yamuna rivers, followed by Agra and Jalaun."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश की जीवन रेखा मानी जाने वाली पवित्र गंगा नदी राज्य के किस जिले से प्रवेश करती है, तथा किस जिले से होकर बिहार राज्य की ओर निकल जाती है?","question_en":"Question 23: The holy Ganga River, considered the lifeline of UP, enters the state through which district and exits towards Bihar through which district?","options":[{"hi":"सहारनपुर और बलिया","en":"(A) Saharanpur and Ballia"},{"hi":"बिजनौर और देवरिया","en":"(B) Bijnor and Deoria"},{"hi":"पीलीभीत और गाजीपुर","en":"(C) Pilibhit and Ghazipur"},{"hi":"बिजनौर and बलिया","en":"(D) Bijnor and Ballia"}],"answer":3,"explanation_hi":"गंगा नदी उत्तराखंड के देवप्रयाग के बाद उत्तर प्रदेश के बिजनौर जिले से प्रवेश करती है, लगभग 28 जिलों से बहती हुई बलिया जिले के समीप बिहार में प्रवेश कर जाती है।","explanation_en":"The Ganga River, after forming at Devprayag in Uttarakhand, enters UP at Bijnor district, flows through about 28 districts, and enters Bihar near Ballia district."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"यमुना नदी उत्तर प्रदेश में किस स्थान/जिले से प्रवेश करती है, और इसके दाएँ तट से मिलने वाली तीन मुख्य पठारी नदियाँ कौन-सी हैं?","question_en":"Question 24: Through which place/district does the Yamuna River enter Uttar Pradesh, and which are the three main plateau rivers joining it from its right bank?","options":[{"hi":"सहारनपुर से; चंबल, बेतवा और केन","en":"(A) From Saharanpur; Chambal, Betwa, and Ken"},{"hi":"बिजनौर से; रामगंगा, गोमती और सरयू","en":"(B) From Bijnor; Ramganga, Gomti, and Saryu"},{"hi":"सहारनपुर से; हिंडन, सिंध और वरुणा","en":"(C) From Saharanpur; Hindon, Sindh, and Varuna"},{"hi":"पीलीभीत से; चंबल, टोंस और सोन","en":"(D) From Pilibhit; Chambal, Tons, and Son"}],"answer":0,"explanation_hi":"यमुना नदी बंदरपूंछ क्षेत्र से निकलकर सहारनपुर जिले से उत्तर प्रदेश में प्रवेश करती है। इसके दाएँ तट से चंबल, सिंध, बेतवा और केन जैसी पठारी सहायक नदियाँ मिलती हैं।","explanation_en":"The Yamuna River originates from the Bandarpoonch range and enters UP at Saharanpur. Plateau tributaries joining its right bank include Chambal, Sindh, Betwa, and Ken."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गोमती नदी उत्तर प्रदेश की ऐसी प्रसिद्ध नदी है जिसका उद्गम और अंत पूरी तरह राज्य के भीतर होता है। इसका उद्गम स्थल गोमत ताल (फुलहर झील) किस जिले में स्थित है?","question_en":"Question 25: Gomti is a famous river of Uttar Pradesh whose origin and end occur entirely within the state. In which district is its source Gomat Taal (Fulhar Lake) located?","options":[{"hi":"शाहजहाँपुर","en":"(A) Shahjahanpur"},{"hi":"पीलीभीत","en":"(B) Pilibhit"},{"hi":"लखीमपुर खीरी","en":"(C) Lakhimpur Kheri"},{"hi":"हरदोई","en":"(D) Hardoi"}],"answer":1,"explanation_hi":"गोमती नदी का उद्गम पीलीभीत जिले की कलीनगर तहसील के माधोटांडा में स्थित फुलहर झील (गोमत ताल) से होता है। यह गाजीपुर के कैथी के पास गंगा में मिल जाती है।","explanation_en":"The Gomti River originates from Fulhar Lake (Gomat Taal) in Madhotanda in the Pilibhit district. It merges with the Ganga near Kaithi in Ghazipur."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नदियों के संगम स्थलों के संदर्भ में, निम्नलिखित में से कौन-सा युग्म सही सुमेलित नहीं है?","question_en":"Question 26: With reference to the confluences of rivers in UP, which of the following pairs is NOT correctly matched?","options":[{"hi":"यमुना और बेतवा - हमीरपुर","en":"(A) Yamuna and Betwa - Hamirpur"},{"hi":"यमुना और केन - बांदा (चिल्ला क्षेत्र)","en":"(B) Yamuna and Ken - Banda (Chilla area)"},{"hi":"गंगा और गोमती - वाराणसी","en":"(C) Ganga and Gomti - Varanasi"},{"hi":"यमुना और चंबल - पंचनद (इटावा सीमा)","en":"(D) Yamuna and Chambal - Panchanada (Etawah border)"}],"answer":2,"explanation_hi":"गंगा और गोमती का संगम गाजीपुर जिले के कैथी नामक स्थान पर होता है, न कि वाराणसी में। यमुना में बेतवा हमीरपुर में, केन बांदा के चिल्ला में तथा चंबल इटावा पंचनद में मिलती है।","explanation_en":"The confluence of Ganga and Gomti is at Kaithi in Ghazipur district, not Varanasi. Betwa meets Yamuna at Hamirpur, Ken at Chilla in Banda, and Chambal at Panchanada in Etawah."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"झीलों और उनके संबंधित जिलों के जोड़ों के संदर्भ में, निम्नलिखित में से कौन-सा जोड़ा सही सुमेलित है?","question_en":"Question 27: With reference to the pairs of lakes and their respective districts, which of the following pairs is correctly matched?","options":[{"hi":"सूर सरोवर या कीठम झील - पीलीभीत","en":"(A) Sur Sarovar or Keetham Lake - Pilibhit"},{"hi":"सुरहा ताल - महाराजगंज","en":"(B) Surha Tal - Maharajganj"},{"hi":"रामगढ़ ताल - बलिया","en":"(C) Ramgarh Tal - Ballia"},{"hi":"बखिरा झील - संतकबीर नगर","en":"(D) Bakhira Lake - Sant Kabir Nagar"}],"answer":3,"explanation_hi":"बखिरा झील संतकबीर नगर में स्थित प्रसिद्ध मीठे पानी की आर्द्रभूमि है। सूर सरोवर (कीठम) आगरा में है, सुरहा ताल बलिया में है तथा रामगढ़ ताल गोरखपुर में स्थित है।","explanation_en":"Bakhira Lake is a famous freshwater wetland located in Sant Kabir Nagar. Sur Sarovar (Keetham) is in Agra, Surha Tal is in Ballia, and Ramgarh Tal is in Gorakhpur."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सिंचाई व्यवस्था के अंतर्गत, उत्तर प्रदेश की सबसे पुरानी और सबसे लंबी नहर प्रणाली क्रमशः कौन-सी है?","question_en":"Question 28: Under the irrigation network, which are the oldest and longest canal systems of Uttar Pradesh respectively?","options":[{"hi":"पूर्वी यमुना नहर (1830) और शारदा नहर","en":"(A) Eastern Yamuna Canal (1830) and Sharda Canal"},{"hi":"ऊपरी गंगा नहर और शारदा नहर","en":"(B) Upper Ganga Canal and Sharda Canal"},{"hi":"पूर्वी यमुना नहर (1830) और निचली गंगा नहर","en":"(C) Eastern Yamuna Canal (1830) and Lower Ganga Canal"},{"hi":"शारदा नहर और केन नहर","en":"(D) Sharda Canal and Ken Canal"}],"answer":0,"explanation_hi":"उत्तर प्रदेश की सबसे पुरानी नहर पूर्वी यमुना नहर (1830) है जिसे शाहजहाँ के काल में शुरू किया गया था। सबसे लंबी नहर प्रणाली शारदा नहर (लंबाई शाखाओं सहित लगभग 12,368 किमी) है।","explanation_en":"The oldest canal in UP is the Eastern Yamuna Canal (1830), initiated during Shah Jahan's reign. The longest canal system is the Sharda Canal (approx 12,368 km with branches)."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सोनभद्र जिले के पिपरी नामक स्थान पर रिहंद नदी पर बने प्रसिद्ध बाँध के जलाशय को किस नाम से जाना जाता है, जो भारत की सबसे बड़ी कृत्रिम झीलों में गिना जाता है?","question_en":"Question 29: By what name is the reservoir of the famous dam built on the Rihand River at Pipri in Sonbhadra district known, which is counted among the largest artificial lakes in India?","options":[{"hi":"गोविंद सागर","en":"(A) Govind Sagar"},{"hi":"गोविंद बल्लभ पंत सागर","en":"(B) Govind Ballabh Pant Sagar"},{"hi":"माताटीला जलाशय","en":"(C) Matatila Reservoir"},{"hi":"बाणसागर जलाशय","en":"(D) Bansagar Reservoir"}],"answer":1,"explanation_hi":"रिहंद बाँध परियोजना (पिपरी, सोनभद्र) के विशाल जलाशय का नाम उत्तर प्रदेश के प्रथम मुख्यमंत्री के नाम पर 'गोविंद बल्लभ पंत सागर' रखा गया है, जो देश की सबसे बड़ी कृत्रिम झील है।","explanation_en":"The massive reservoir of Rihand Dam (Pipri, Sonbhadra) is named 'Govind Ballabh Pant Sagar' after UP's first Chief Minister, and is the largest artificial lake in India."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रतापगढ़ जिले में स्थित किस प्रसिद्ध मध्यपाषाणकालीन स्थल से 41 मानव शवाधान मिले हैं, जिनमें से एक कब्र में 3 मानव कंकाल एक साथ दफनाए जाने के दुर्लभ साक्ष्य मिले हैं?","question_en":"Question 30: From which famous Mesolithic site located in Pratapgarh district were 41 human burials discovered, including rare evidence of 3 human skeletons buried together in a single grave?","options":[{"hi":"सराय नाहर राय","en":"(A) Sarai Nahar Rai"},{"hi":"महदहा","en":"(B) Mahadaha"},{"hi":"दमदमा","en":"(C) Damdama"},{"hi":"चोपानीमांडो","en":"(D) Chopanimando"}],"answer":2,"explanation_hi":"दमदमा (प्रतापगढ़) से मध्यपाषाणकालीन 41 मानव शवाधान और सींग के उपकरण मिले हैं। यहाँ एक कब्र में तीन मानव कंकाल एक साथ दफनाए जाने का अनूठा साक्ष्य मिला है।","explanation_en":"From Damdama (Pratapgarh), 41 Mesolithic human burials and horn tools were found. It contains unique evidence of three human skeletons buried together in a single grave."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संतकबीर नगर जिले में स्थित वह कौन-सा प्रसिद्ध नवपाषाणकालीन पुरास्थल है जहाँ से लगभग 8000 से 9000 ईसा पूर्व के धान की खेती के प्राचीनतम वैश्विक साक्ष्य प्राप्त हुए हैं?","question_en":"Question 31: Which famous Neolithic archaeological site located in Sant Kabir Nagar district has yielded the oldest global evidence of paddy cultivation dating back to around 8000 to 9000 BC?","options":[{"hi":"कोल्डिहवा","en":"(A) Koldihwa"},{"hi":"महगरा","en":"(B) Mahagara"},{"hi":"अतरंजीखेड़ा","en":"(C) Atranjikhera"},{"hi":"लहुरादेव","en":"(D) Lahuradeva"}],"answer":3,"explanation_hi":"लहुरादेव (संतकबीर नगर) से भारतीय उपमहाद्वीप ही नहीं बल्कि संपूर्ण विश्व में प्राचीनतम धान की खेती के साक्ष्य (8000-9000 ई.पू.) प्राप्त हुए हैं, जिसने कोल्डिहवा (6500 ई.पू.) के रिकॉर्ड को पीछे छोड़ दिया।","explanation_en":"Lahuradeva (Sant Kabir Nagar) yielded the earliest global evidence of paddy cultivation (8000-9000 BC), pushing back the timeline previously held by Koldihwa (6500 BC)."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सिंधु घाटी सभ्यता (हड़प्पा संस्कृति) का सबसे पूर्वी विस्तार उत्तर प्रदेश के किस जिले में हिंडन नदी के तट पर स्थित प्रसिद्ध पुरास्थल 'आलमगीरपुर' के रूप में मिलता है?","question_en":"Question 32: Through which famous archaeological site named 'Alamgirpur', located on the banks of the Hindon River, is the easternmost extent of the Indus Valley Civilization represented in UP?","options":[{"hi":"मेरठ","en":"(A) Meerut"},{"hi":"गाजियाबाद","en":"(B) Ghaziabad"},{"hi":"सहारनपुर","en":"(C) Saharanpur"},{"hi":"बागपत","en":"(D) Baghpat"}],"answer":0,"explanation_hi":"सिंधु घाटी सभ्यता का सबसे पूर्वी विस्तार मेरठ जिले में हिंडन नदी के तट पर स्थित 'आलमगीरपुर' में पाया गया है, जहाँ से कपास के साक्ष्य और हड़प्पाई मिट्टी के बर्तन मिले हैं।","explanation_en":"The easternmost limit of the Indus Valley Civilization was discovered at 'Alamgirpur' on the banks of the Hindon River in the Meerut district, yielding cotton and Harappan pottery."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"छठी शताब्दी ईसा पूर्व के 16 महाजनपदों में से 8 महाजनपद उत्तर प्रदेश की भौगोलिक सीमा के भीतर स्थित थे। इनमें से पांचाल महाजनपद की उत्तरी और दक्षिणी राजधानियाँ क्रमशः कौन-सी थीं?","question_en":"Question 33: Among the 16 Mahajanapadas of the 6th century BC, 8 were located within the geographical limits of Uttar Pradesh. Which were the northern and southern capitals of the Panchala Mahajanapada?","options":[{"hi":"इंद्रप्रस्थ और काम्पिल्य","en":"(A) Indraprastha and Kampilya"},{"hi":"अहिच्छत्र (रामनगर, बरेली) और काम्पिल्य (फर्रुखाबाद)","en":"(B) Ahichchatra (Ramnagar, Bareilly) and Kampilya (Farrukhabad)"},{"hi":"साकेत और श्रावस्ती","en":"(C) Saket and Shravasti"},{"hi":"मथुरा और शुक्तिमती","en":"(D) Mathura and Shuktimati"}],"answer":1,"explanation_hi":"पांचाल महाजनपद (बरेली-बदायूँ-फर्रुखाबाद) दो भागों में विभाजित था। उत्तरी पांचाल की राजधानी अहिच्छत्र (बरेली) तथा दक्षिणी पांचाल की राजधानी काम्पिल्य (फर्रुखाबाद) थी।","explanation_en":"Panchala Mahajanapada (Bareilly-Budaun-Farrukhabad) was split into two. The northern capital was Ahichchatra (Bareilly) and the southern capital was Kampilya (Farrukhabad)."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भगवान बुद्ध ने ज्ञान प्राप्ति के उपरांत अपना पहला उपदेश सारनाथ में दिया था, जिसे धर्मचक्रप्रवर्तन कहा गया। बुद्ध ने अपने जीवनकाल के सर्वाधिक वर्षावास (लगभग 25 वर्ष) किस स्थान पर व्यतीत किए थे?","question_en":"Question 34: Lord Buddha delivered his first sermon at Sarnath, known as Dharmachakrapravartana. At which place did Buddha spend the maximum number of his life's rain retreats (approx 25 years)?","options":[{"hi":"कुशीनगर","en":"(A) Kushinagar"},{"hi":"संकिसा","en":"(B) Sankisa"},{"hi":"श्रावस्ती","en":"(C) Shravasti"},{"hi":"कपिलवस्तु","en":"(D) Kapilvastu"}],"answer":2,"explanation_hi":"बुद्ध ने सर्वाधिक उपदेश और सर्वाधिक वर्षावास कोशल महाजनपद की राजधानी श्रावस्ती (सहेत-महेत) में व्यतीत किए थे, जबकि उनका महापरिनिर्वाण मल्ल गणराज्य के कुशीनगर में हुआ था।","explanation_en":"Buddha delivered the most sermons and spent the maximum rain retreats in Shravasti (Saheth-Maheth), capital of Kosala, while his Mahaparinirvana occurred in Kushinagar."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश जैन परंपरा के लिए अत्यंत पवित्र भूमि है। प्रथम तीर्थंकर भगवान आदिनाथ (ऋषभदेव) सहित कुल कितने जैन तीर्थंकरों की जन्मभूमि पावन अयोध्या धाम मानी जाती है?","question_en":"Question 35: Uttar Pradesh is a highly sacred land for Jain traditions. The holy Ayodhya Dham is considered the birthplace of how many Jain Tirthankaras, including the 1st Tirthankara Lord Adinath?","options":[{"hi":"3 तीर्थंकरों","en":"(A) 3 Tirthankaras"},{"hi":"7 तीर्थंकरों","en":"(B) 7 Tirthankaras"},{"hi":"24 तीर्थंकरों","en":"(C) 24 Tirthankaras"},{"hi":"5 तीर्थंकरों","en":"(D) 5 Tirthankaras"}],"answer":3,"explanation_hi":"अयोध्या जैन मान्यता के अनुसार अत्यंत पावन स्थल है क्योंकि प्रथम तीर्थंकर आदिनाथ सहित 5 प्रमुख तीर्थंकरों (आदिनाथ, अजितनाथ, अभिनन्दननाथ, सुमतिनाथ और अनन्तनाथ) की जन्मभूमि अयोध्या है।","explanation_en":"Ayodhya is a highly sacred site in Jainism as it is the birthplace of 5 major Tirthankaras including the 1st Tirthankara Adinath (Adinath, Ajitnath, Abhinandannath, Sumatinath, Anantnath)."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गोरखपुर जिले से प्राप्त किस मौर्यकालीन अभिलेख से अकाल या दुर्भिक्ष की स्थिति में राजकीय अन्नागारों से अनाज वितरण और लोक कल्याणकारी प्रशासनिक व्यवस्था का प्रथम पुरातात्विक साक्ष्य मिलता है?","question_en":"Question 36: Which Maurya period inscription discovered in Gorakhpur district provides the first archaeological evidence of food grain distribution from state granaries during a famine?","options":[{"hi":"सोहगौरा ताम्रलेख","en":"(A) Sohgaura Copper Plate Inscription"},{"hi":"अह्रौरा लघु शिलालेख","en":"(B) Ahraura Rock Inscription"},{"hi":"भीतरी स्तंभ लेख","en":"(C) Bhitari Pillar Inscription"},{"hi":"प्रयाग प्रशस्ति","en":"(D) Prayag Prashasti"}],"answer":0,"explanation_hi":"गोरखपुर से प्राप्त सोहगौरा ताम्रलेख मौर्य काल का है, जिससे दुर्भिक्ष (अकाल) के समय जनता को राजकीय कोष्ठागारों (अन्नागारों) से अन्न वितरण किए जाने का ऐतिहासिक साक्ष्य मिलता है।","explanation_en":"The Sohgaura Copper Plate from Gorakhpur dates to the Maurya era, providing historical evidence of grain distribution from state granaries to the public during a famine."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गुप्तकालीन स्थापत्य कला के संदर्भ में, पूरी तरह लाल ईंटों और टेराकोटा कलाकृतियों से निर्मित भीतरगाँव का प्रसिद्ध गुप्तकालीन मंदिर उत्तर प्रदेश के किस जिले में स्थित है?","question_en":"Question 37: With reference to the Gupta period architecture, in which district of Uttar Pradesh is the famous brick-built Bhitargaon temple located, constructed entirely of red bricks and terracotta?","options":[{"hi":"ललितपुर","en":"(A) Lalitpur"},{"hi":"कानपुर नगर","en":"(B) Kanpur Nagar"},{"hi":"गाजीपुर","en":"(C) Ghazipur"},{"hi":"वाराणसी","en":"(D) Varanasi"}],"answer":1,"explanation_hi":"भीतरगाँव का ईंटों से निर्मित गुप्तकालीन मंदिर कानपुर नगर जिले में स्थित है, जबकि देवगढ़ का पत्थरों से निर्मित प्रसिद्ध पंचायतन शैली का दशावतार मंदिर ललितपुर जिले में स्थित है।","explanation_en":"The brick-built Bhitargaon temple of the Gupta era is located in Kanpur Nagar district, whereas the famous stone-built Panchayatana-style Dashavatara temple is in Lalitpur."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सम्राट हर्षवर्धन ने अपनी राजधानी थानेसर से कहाँ स्थानांतरित की थी, तथा वह प्रत्येक 5 वर्ष में महामोक्ष परिषद का आयोजन किस पावन संगम तट पर कराता था?","question_en":"Question 38: Where did Emperor Harshavardhana shift his capital from Thanesar, and on which holy confluence did he organize the Mahamoksha Parishad every 5 years?","options":[{"hi":"अयोध्या और वाराणसी","en":"(A) Ayodhya and Varanasi"},{"hi":"कन्नौज और हरिद्वार","en":"(B) Kannauj and Haridwar"},{"hi":"मथुरा और प्रयागराज","en":"(C) Mathura and Prayagraj"},{"hi":"कन्नौज और प्रयागराज","en":"(D) Kannauj and Prayagraj"}],"answer":3,"explanation_hi":"हर्षवर्धन ने अपनी बहन राज्यश्री के सहयोग से राजधानी कन्नौज (कन्यकुब्ज) स्थानांतरित की। वह प्रत्येक पाँचवें वर्ष प्रयागराज के त्रिवेणी संगम तट पर महामोक्ष परिषद आयोजित कर सर्वस्व दान करता था।","explanation_en":"Harshavardhana shifted his capital to Kannauj (Kanyakubja) with the support of his sister Rajyashri. Every fifth year, he held the Mahamoksha Parishad at the Triveni Sangam in Prayagraj."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1194 में प्रसिद्ध चंदावर का युद्ध मोहम्मद गोरी और किस गहड़वाल राजा के बीच लड़ा गया था, जिसमें गहड़वाल शासक की पराजय के बाद उत्तर भारत में तुर्क शासन का मार्ग प्रशस्त हुआ था?","question_en":"Question 39: In 1194, the famous Battle of Chandawar was fought between Muhammad Ghori and which Gahadavala king, whose defeat paved the way for Turkish rule in Northern India?","options":[{"hi":"पृथ्वीराज चौहान","en":"(A) Prithviraj Chauhan"},{"hi":"राजा कीरत सिंह","en":"(B) Raja Kirat Singh"},{"hi":"राजा जयचंद","en":"(C) Raja Jayachandra"},{"hi":"वीर सिंह बुंदेला","en":"(D) Veer Singh Bundela"}],"answer":2,"explanation_hi":"1194 के चंदावर के युद्ध में मोहम्मद गोरी ने कन्नौज के गहड़वाल राजा जयचंद को पराजित किया था। चंदावर का युद्ध स्थल आधुनिक फिरोजाबाद और इटावा के निकट स्थित माना जाता है।","explanation_en":"In the 1194 Battle of Chandawar, Muhammad Ghori defeated the Gahadavala King Jayachandra of Kannauj. The battle site is located near modern Firozabad and Etawah."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इतिहास प्रसिद्ध नगर कड़ा (प्रयागराज-कौशांबी सीमा) खिलजी वंश के उदय का साक्षी है। वर्ष 1296 में अलाउद्दीन खिलजी ने अपने चाचा और सुल्तान जलालुद्दीन खिलजी की हत्या किस स्थान पर की थी?","question_en":"Question 40: The historically famous town of Kara (Prayagraj-Kaushambi border) witnessed the rise of the Khilji dynasty. At which place did Alauddin Khilji assassinate his uncle and Sultan Jalaluddin Khilji in 1296?","options":[{"hi":"कड़ा","en":"(A) Kara"},{"hi":"बदायूँ","en":"(B) Budaun"},{"hi":"जौनपुर","en":"(C) Jaunpur"},{"hi":"आगरा","en":"(D) Agra"}],"answer":0,"explanation_hi":"1296 ईस्वी में कड़ा के सूबेदार अलाउद्दीन खिलजी ने अपने सगे चाचा और सुल्तान जलालुद्दीन खिलजी की हत्या कड़ा नामक स्थान पर ही की थी तथा स्वयं को दिल्ली का नया सुल्तान घोषित किया था।","explanation_en":"In 1296 AD, Alauddin Khilji, then governor of Kara, assassinated his uncle and Sultan Jalaluddin Khilji at Kara, declaring himself the new Sultan of Delhi."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सल्तनत कालीन नगर जौनपुर की स्थापना वर्ष 1359 में फिरोजशाह तुगलक ने किसकी स्मृति में की थी, जो आगे चलकर शर्की राजवंश के अधीन कला और संस्कृति का विख्यात केंद्र 'शिराज-ए-हिन्द' बना?","question_en":"Question 41: In whose memory did Firoz Shah Tughlaq establish the Sultanate town of Jaunpur in 1359, which later became 'Shiraz-i-Hind', the famous center of art and culture under the Sharqi dynasty?","options":[{"hi":"गयासुद्दीन तुगलक","en":"(A) Ghiyasuddin Tughlaq"},{"hi":"अलाउद्दीन खिलजी","en":"(B) Alauddin Khalji"},{"hi":"सिकंदर लोदी","en":"(C) Sikandar Lodi"},{"hi":"मुहम्मद बिन तुगलक (जौना खाँ)","en":"(D) Muhammad bin Tughlaq (Jauna Khan)"}],"answer":3,"explanation_hi":"जौनपुर की स्थापना 1359 में फिरोजशाह तुगलक ने अपने चचेरे भाई मुहम्मद बिन तुगलक (जौना खाँ) की स्मृति में की थी। शर्की सुल्तानों के काल में यह पूर्व का शिराज या शिराज-ए-हिन्द कहलाया।","explanation_en":"Jaunpur was founded in 1359 by Firoz Shah Tughlaq in memory of his cousin Muhammad bin Tughlaq (Jauna Khan). Under the Sharqi sultans, it was called the 'Shiraz of the East'."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सामरिक सामर्थ्य और दोआब-राजपूताना नियंत्रण हेतु दिल्ली के किस सुल्तान ने वर्ष 1504 में यमुना के बाएं तट पर आगरा शहर बसाया तथा 1506 में इसे अपनी राजधानी घोषित किया था?","question_en":"Question 42: For strategic strength and control over Oudh-Rajputana, which Sultan of Delhi founded the city of Agra on the banks of Yamuna in 1504 and declared it his capital in 1506?","options":[{"hi":"बहलोल लोदी","en":"(A) Bahlul Lodi"},{"hi":"इब्राहिम लोदी","en":"(B) Ibrahim Lodi"},{"hi":"सिकंदर लोदी","en":"(C) Sikandar Lodi"},{"hi":"बाबर","en":"(D) Babur"}],"answer":2,"explanation_hi":"आगरा शहर की स्थापना 1504 ईस्वी में सिकंदर लोदी ने की थी तथा उसने 1506 में इसे अपनी स्थायी राजधानी बनाया ताकि वह पश्चिमी सीमाओं और व्यापारिक मार्गों पर सुदृढ़ नियंत्रण रख सके।","explanation_en":"The city of Agra was founded in 1504 AD by Sikandar Lodi, who made it his permanent capital in 1506 to exert strong control over western borders and trade routes."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"फतेहपुर सीकरी अकबर की स्थापत्य कला और नियोजित नगर योजना का प्रमुख उदाहरण है। यहाँ स्थित पाँच मंजिला पिरामिड जैसी इमारत कौन-सी है जो बौद्ध विहार संरचना पर आधारित मानी जाती है?","question_en":"Question 43: Fatehpur Sikri is a prime example of Akbar's architecture and planned town layout. Which is the five-storey pyramid-like building located here, believed to be based on Buddhist Vihara plans?","options":[{"hi":"बुलंद दरवाजा","en":"(A) Buland Darwaza"},{"hi":"जोधाबाई महल","en":"(B) Jodhabai Palace"},{"hi":"बीरबल महल","en":"(C) Birbal Palace"},{"hi":"पंचमहल","en":"(D) Panch Mahal"}],"answer":3,"explanation_hi":"पंचमहल फतेहपुर सीकरी में स्थित हवादार और पाँच मंजिला स्तंभ-आधारित संरचना है। यह एक पिरामिड जैसी योजना पर निर्मित है जो प्राचीन बौद्ध विहारों (विहारों की शैली) से अत्यधिक प्रेरित है।","explanation_en":"Panch Mahal is a well-ventilated, five-storey pillar-supported structure in Fatehpur Sikri. It is built in a pyramid design highly inspired by ancient Buddhist Viharas."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मुगल वास्तुकला में पूर्णतः सफेद संगमरमर और बड़े पैमाने पर संगमरमर में कीमती पत्थरों की जड़ाई (Pietra Dura) का पहला ऐतिहासिक प्रयोग किस स्मारक में हुआ था, जिसे नूरजहाँ ने बनवाया था?","question_en":"Question 44: In Mughal architecture, in which monument was the first historical use of pure white marble and large-scale inlay of semi-precious stones (Pietra Dura) executed, commissioned by Nur Jahan?","options":[{"hi":"एत्मादुद्दौला का मकबरा (आगरा)","en":"(A) Tomb of Itmad-ud-Daulah (Agra)"},{"hi":"ताजमहल (आगरा)","en":"(B) Taj Mahal (Agra)"},{"hi":"सलीम चिश्ती का मकबरा (फतेहपुर सीकरी)","en":"(C) Tomb of Salim Chishti (Fatehpur Sikri)"},{"hi":"अकबर का मकबरा (सिकंदरा)","en":"(D) Tomb of Akbar (Sikandara)"}],"answer":0,"explanation_hi":"एत्मादुद्दौला का मकबरा नूरजहाँ ने अपने पिता मिर्जा गयास बेग (एत्मादुद्दौला) की याद में बनवाया था। यह पूर्णतः सफेद संगमरमर तथा संगमरमर जड़ाई की नक्काशी (Pietra dura) का भारत का पहला उदाहरण है।","explanation_en":"The Tomb of Itmad-ud-Daulah was built by Nur Jahan for her father Mirza Ghiyas Beg. It is the first Indian monument fully in white marble showcasing extensive Pietra Dura inlay."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अंग्रेजों ने अवध के नवाबों को सहायक संधियों में बाँधने के बाद, अंततः किस वर्ष लॉर्ड डलहौजी के काल में 'कुशासन का आरोप' (Outram Report) लगाकर अवध का पूर्ण विलय कंपनी साम्राज्य में कर लिया था?","question_en":"Question 45: After bounding the Nawabs of Awadh in subsidiary alliances, in which year did the British under Lord Dalhousie finally annex Awadh on the pretext of 'misgovernance'?","options":[{"hi":"वर्ष 1765","en":"(A) Year 1765"},{"hi":"वर्ष 1856","en":"(B) Year 1856"},{"hi":"वर्ष 1801","en":"(C) Year 1801"},{"hi":"वर्ष 1857","en":"(D) Year 1857"}],"answer":1,"explanation_hi":"लॉर्ड डलहौजी ने कर्नल आउट्रम की रिपोर्ट के आधार पर 'कुशासन का आरोप' लगाकर फरवरी 1856 में अवध का विलय कर लिया, जिसके असंतोष ने ही आगे 1857 के विद्रोह की मजबूत पृष्ठभूमि बनाई।","explanation_en":"Based on the Outram Report, Lord Dalhousie annexed Awadh in February 1856 on charges of 'misgovernance', which created a solid background of discontent for the 1857 revolt."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1857 के विद्रोह के आरंभ होने के उपरांत, गवर्नर जनरल लॉर्ड कैनिंग ने विद्रोह का दमन करने और प्रशासनिक पकड़ बनाए रखने के लिए उत्तर प्रदेश के किस जिले को 'आपातकालीन मुख्यालय' बनाया था?","question_en":"Question 46: Following the outbreak of the Revolt of 1857, which district of Uttar Pradesh was made the 'Emergency Headquarters' by Governor General Lord Canning to suppress the rebellion?","options":[{"hi":"मेरठ","en":"(A) Meerut"},{"hi":"कानपुर","en":"(B) Kanpur"},{"hi":"इलाहाबाद (प्रयागराज)","en":"(C) Allahabad (Prayagraj)"},{"hi":"लखनऊ","en":"(D) Lucknow"}],"answer":2,"explanation_hi":"1857 के भयंकर विद्रोह की परिस्थितियों से निपटने और त्वरित सैन्य फैसले लेने के लिए तत्कालीन गवर्नर जनरल लॉर्ड कैनिंग ने इलाहाबाद (प्रयागराज) को आपातकालीन मुख्यालय घोषित किया था।","explanation_en":"To handle the crisis of the 1857 rebellion and take rapid military decisions, the then Governor General Lord Canning declared Allahabad (Prayagraj) as the emergency headquarters."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1857 के महासंग्राम के प्रमुख विद्रोही नेताओं और उनके मुख्य विद्रोह स्थलों के जोड़ों में से कौन-सा सुमेलन गलत है?","question_en":"Question 47: Among the pairs of prominent rebel leaders and their main centers of rebellion during 1857, which matching is incorrect?","options":[{"hi":"बेगम हज़रत महल - लखनऊ","en":"(A) Begum Hazrat Mahal - Lucknow"},{"hi":"नाना साहेब और तात्या टोपे - कानपुर","en":"(B) Nana Saheb and Tatya Tope - Kanpur"},{"hi":"मौलवी लियाकत अली - प्रयागराज (इलाहाबाद)","en":"(C) Maulvi Liyaqat Ali - Prayagraj (Allahabad)"},{"hi":"मौलवी अहमदुल्लाह शाह - बरेली","en":"(D) Maulvi Ahmadullah Shah - Bareilly"}],"answer":3,"explanation_hi":"मौलवी अहमदुल्लाह शाह फैजाबाद (अयोध्या) में विद्रोह के मुख्य नेता थे, जिन पर अंग्रेजों ने ₹50,000 का इनाम घोषित किया था। बरेली में विद्रोह का नेतृत्व खान बहादुर खान ने संभाला था।","explanation_en":"Maulvi Ahmadullah Shah was the prominent leader of the revolt in Faizabad (Ayodhya), carrying a ₹50,000 British bounty. In Bareilly, the revolt was led by Khan Bahadur Khan."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"स्वतंत्रता से पूर्व उत्तर प्रदेश में कांग्रेस के कुल 9 अधिवेशन हुए थे। इनमें से वर्ष 1925 का प्रसिद्ध 'कानपुर अधिवेशन' किस ऐतिहासिक निर्णय/तथ्य के कारण विशेष रूप से जाना जाता है?","question_en":"Question 48: Prior to independence, a total of 9 INC sessions were held in Uttar Pradesh. Due to which historical decision/fact is the famous 1925 'Kanpur Session' specifically known?","options":[{"hi":"श्रीमती सरोजिनी नायडू प्रथम भारतीय महिला अध्यक्ष बनीं","en":"(A) Mrs. Sarojini Naidu became the first Indian Woman President"},{"hi":"जॉर्ज यूल कांग्रेस के प्रथम ब्रिटिश अध्यक्ष बने","en":"(B) George Yule became the first British President of Congress"},{"hi":"नरम दल और गरम दल का पुनर्मिलन और समझौता हुआ","en":"(C) Reunion and pact of Moderates and Extremists occurred"},{"hi":"जे.बी. कृपलानी कांग्रेस के नए अध्यक्ष चुने गए","en":"(D) J.B. Kripalani was elected the new Congress President"}],"answer":0,"explanation_hi":"1925 के कानपुर में आयोजित कांग्रेस के 40वें अधिवेशन की अध्यक्षता सरोजिनी नायडू ने की थी, जिससे वे कांग्रेस की पहली 'भारतीय' महिला अध्यक्ष बनीं (पहली महिला अध्यक्ष एनी बेसेंट थीं, 1917)।","explanation_en":"The 40th INC session held in Kanpur in 1925 was presided over by Sarojini Naidu, making her the first 'Indian' woman president of Congress (Annie Besant was the first woman president in 1917)."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"9 अगस्त 1925 के ऐतिहासिक 'काकोरी ट्रेन एक्शन' के बाद क्रांतिकारी रामप्रसाद बिस्मिल, अशफाक उल्ला खाँ और रोशन सिंह को क्रमशः उत्तर प्रदेश की किन अलग-अलग जेलों में फाँसी दी गई थी?","question_en":"Question 49: Following the historic 'Kakori Train Action' of August 9, 1925, in which different jails of UP were revolutionaries Ram Prasad Bismil, Ashfaqulla Khan, and Roshan Singh hanged respectively?","options":[{"hi":"फैजाबाद, गोरखपुर और गोंडा","en":"(A) Faizabad, Gorakhpur, and Gonda"},{"hi":"गोरखपुर, फैजाबाद और इलाहाबाद","en":"(B) Gorakhpur, Faizabad, and Allahabad"},{"hi":"इलाहाबाद, गोंडा और फैजाबाद","en":"(C) Allahabad, Gonda, and Faizabad"},{"hi":"गोरखपुर, गोंडा और इलाहाबाद","en":"(D) Gorakhpur, Gonda, and Allahabad"}],"answer":1,"explanation_hi":"काकोरी ट्रेन एक्शन के बाद रामप्रसाद बिस्मिल को गोरखपुर जेल में, अशफाक उल्ला खाँ को फैजाबाद (अयोध्या) जेल में, रोशन सिंह को इलाहाबाद जेल में तथा राजेंद्र लाहिड़ी को गोंडा जेल में फाँसी दी गई थी।","explanation_en":"Following Kakori, Ram Prasad Bismil was hanged in Gorakhpur jail, Ashfaqulla Khan in Faizabad (Ayodhya) jail, Roshan Singh in Allahabad jail, and Rajendra Lahiri in Gonda jail."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अवध के किस नवाब ने वर्ष 1775 में अवध की प्रशासनिक राजधानी को फैजाबाद से हटाकर लखनऊ स्थानांतरित किया था तथा 1784 में अकाल राहत कार्य के रूप में भव्य 'बड़ा इमामबाड़ा' निर्मित कराया था?","question_en":"Question 50: Which Nawab of Awadh shifted the administrative capital from Faizabad to Lucknow in 1775 and built the grand 'Bara Imambara' in 1784 as a famine relief work?","options":[{"hi":"नवाब शुजाउद्दौला","en":"(A) Nawab Shuja-ud-Daulah"},{"hi":"नवाब सआदत अली खान","en":"(B) Nawab Saadat Ali Khan"},{"hi":"नवाब आसफउद्दौला","en":"(C) Nawab Asaf-ud-Daulah"},{"hi":"नवाब वाजिद अली शाह","en":"(D) Nawab Wajid Ali Shah"}],"answer":2,"explanation_hi":"नवाब आसफउद्दौला ने 1775 में राजधानी को फैजाबाद से लखनऊ स्थानांतरित किया था तथा 1784 में अकाल पीड़ितों को रोजगार देने हेतु 'बड़ा इमामबाड़ा' (बिना खंभे का विशाल हॉल) और रूमी दरवाजा बनवाया।","explanation_en":"Nawab Asaf-ud-Daulah shifted the capital from Faizabad to Lucknow in 1775 and constructed the 'Bara Imambara' (a columnless hall) and Rumi Darwaza in 1784 as famine relief work."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
