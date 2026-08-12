@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"LOWER • Gs","highlight":"Gs","shortTitle":"LOWER","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • Gs","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-lower-gs-20260812-14lw0","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-12","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चीन में लगभग 3000-4000 वर्ष पूर्व आविष्कृत दुनिया के पहले गणना यंत्र (First Calculating Device) का नाम क्या है?","question_en":"Question 2: What is the name of the world's first calculating device invented in China about 3000-4000 years ago?","options":[{"hi":"पास्कलाइन (Pascaline)","en":"(A) Pascaline"},{"hi":"डिफरेंस इंजन (Difference Engine)","en":"(B) Difference Engine"},{"hi":"अबेकस (Abacus)","en":"(C) Abacus"},{"hi":"एनालिटिकल इंजन (Analytical Engine)","en":"(D) Analytical Engine"}],"answer":2,"explanation_hi":"अबेकस (Abacus) का आविष्कार चीन में हुआ था और इसे दुनिया का पहला गणना यंत्र माना जाता है।","explanation_en":"Abacus was invented in China and is considered the world's first calculating device."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1642 में फ्रांस के गणितज्ञ ब्लेज पास्कल द्वारा बनाई गई पहली यांत्रिक जोड़ने वाली मशीन (First Mechanical Adding Machine) का नाम क्या था?","question_en":"Question 3: What was the name of the first mechanical adding machine created by French mathematician Blaise Pascal in 1642?","options":[{"hi":"पास्कलाइन (Pascaline)","en":"(A) Pascaline"},{"hi":"नेपियर बोन्स (Napier's Bones)","en":"(B) Napier's Bones"},{"hi":"अबेकस (Abacus)","en":"(C) Abacus"},{"hi":"एनालिटिकल इंजन (Analytical Engine)","en":"(D) Analytical Engine"}],"answer":0,"explanation_hi":"ब्लेज पास्कल ने 1642 में पहली यांत्रिक जोड़ने वाली मशीन बनाई जिसे 'पास्कलाइन' कहा गया।","explanation_en":"Blaise Pascal created the first mechanical adding machine in 1642, which was called 'Pascaline'."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चार्ल्स बैबेज को 'कंप्यूटर का जनक' (Father of Computer) कहा जाता है। उन्होंने वर्ष 1833 में किस महत्वपूर्ण यंत्र का आविष्कार किया जो आधुनिक कंप्यूटर का आधार बना?","question_en":"Question 4: Charles Babbage is known as the 'Father of Computer'. Which important machine did he invent in 1833 that became the foundation of modern computers?","options":[{"hi":"डिफरेंस इंजन (Difference Engine)","en":"(A) Difference Engine"},{"hi":"पास्कलाइन (Pascaline)","en":"(B) Pascaline"},{"hi":"सेंसस टैबुलेटर (Census Tabulator)","en":"(C) Census Tabulator"},{"hi":"एनालिटिकल इंजन (Analytical Engine)","en":"(D) Analytical Engine"}],"answer":3,"explanation_hi":"चार्ल्स बैबेज ने 1822 में 'डिफरेंस इंजन' और 1833 में 'एनालिटिकल इंजन' का आविष्कार किया, जो आधुनिक कंप्यूटर का आधार बना।","explanation_en":"Charles Babbage invented the 'Difference Engine' in 1822 and the 'Analytical Engine' in 1833, which became the foundation of modern computers."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर इतिहास में चार्ल्स बैबेज के एनालिटिकल इंजन के लिए पहला प्रोग्राम लिखने वाली दुनिया की 'प्रथम प्रोग्रामर' (First Programmer) कौन थीं?","question_en":"Question 5: Who was the 'first programmer' in computer history to write the first program for Charles Babbage's Analytical Engine?","options":[{"hi":"लेडी एडा लवलेस (Lady Ada Lovelace)","en":"(A) Lady Ada Lovelace"},{"hi":"ग्रेस हॉपर (Grace Hopper)","en":"(B) Grace Hopper"},{"hi":"मार्गरेट हैमिल्टन (Margaret Hamilton)","en":"(C) Margaret Hamilton"},{"hi":"एनी कूपर (Annie Cooper)","en":"(D) Annie Cooper"}],"answer":0,"explanation_hi":"लेडी एडा लवलेस को दुनिया की पहली प्रोग्रामर माना जाता है, जिन्होंने एनालिटिकल इंजन के लिए पहला प्रोग्राम लिखा था।","explanation_en":"Lady Ada Lovelace is considered the world's first programmer, having written the first program for the Analytical Engine."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर की पहली पीढ़ी (First Generation: 1942-1955) के कंप्यूटरों में मुख्य हार्डवेयर घटक (सक्रिय स्विचिंग तकनीक) के रूप में किसका उपयोग किया गया था?","question_en":"Question 6: What was used as the primary hardware component (active switching technology) in the first generation of computers (1942-1955)?","options":[{"hi":"ट्रांजिस्टर (Transistors)","en":"(A) Transistors"},{"hi":"इंटीग्रेटेड सर्किट (Integrated Circuits)","en":"(B) Integrated Circuits"},{"hi":"माइक्रोप्रोसेसर (Microprocessor)","en":"(C) Microprocessor"},{"hi":"वैक्यूम ट्यूब (Vacuum Tubes)","en":"(D) Vacuum Tubes"}],"answer":3,"explanation_hi":"पहली पीढ़ी के कंप्यूटरों में वैक्यूम ट्यूब या निर्वात नलियों का मुख्य स्विचिंग घटक के रूप में उपयोग किया जाता था।","explanation_en":"First-generation computers used vacuum tubes as the primary switching hardware component."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पहली पीढ़ी के प्रसिद्ध इलेक्ट्रॉनिक कंप्यूटर ENIAC (Electronic Numerical Integrator and Computer) का कुल वजन लगभग कितना था?","question_en":"Question 7: What was the approximate total weight of the famous first-generation electronic computer ENIAC?","options":[{"hi":"30 टन (30 Tons)","en":"(A) 30 Tons"},{"hi":"10 टन (10 Tons)","en":"(B) 10 Tons"},{"hi":"50 टन (50 Tons)","en":"(C) 50 Tons"},{"hi":"5 टन (5 Tons)","en":"(D) 5 Tons"}],"answer":0,"explanation_hi":"ENIAC विश्व का पहला इलेक्ट्रॉनिक डिजिटल कंप्यूटर था, जिसका वजन लगभग 30 टन था और इसमें 18,000 वैक्यूम ट्यूब्स लगी थीं।","explanation_en":"ENIAC was the world's first electronic digital computer, weighing approximately 30 tons and containing 18,000 vacuum tubes."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर की पहली पीढ़ी के कंप्यूटरों में डेटा स्टोरेज के लिए निम्नलिखित में से किस मुख्य स्टोरेज डिवाइस का उपयोग किया जाता था?","question_en":"Question 8: Which of the following main storage devices was used for data storage in first-generation computers?","options":[{"hi":"मैग्नेटिक कोर (Magnetic Cores)","en":"(A) Magnetic Cores"},{"hi":"मैग्नेटिक टेप (Magnetic Tapes)","en":"(B) Magnetic Tapes"},{"hi":"सेमीकंडक्टर रैम (Semiconductor RAM)","en":"(C) Semiconductor RAM"},{"hi":"मैग्नेटिक ड्रम (Magnetic Drums)","en":"(D) Magnetic Drums"}],"answer":3,"explanation_hi":"पहली पीढ़ी में इनपुट के लिए पंच कार्ड/पेपर टेप और डेटा स्टोरेज के लिए मैग्नेटिक ड्रम का प्रयोग किया जाता था।","explanation_en":"First-generation computers utilized punch cards/paper tape for input and magnetic drums for storage."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर की दूसरी पीढ़ी (Second Generation: 1956-1964) में वैक्यूम ट्यूब के स्थान पर किस छोटे, सस्ते और तेज हार्डवेयर घटक का उपयोग किया गया था?","question_en":"Question 9: Which smaller, cheaper, and faster hardware component replaced vacuum tubes in the second generation of computers (1956-1964)?","options":[{"hi":"इंटीग्रेटेड सर्किट (Integrated Circuits)","en":"(A) Integrated Circuits"},{"hi":"ट्रांजिस्टर (Transistors)","en":"(B) Transistors"},{"hi":"वैक्यूम डायोड (Vacuum Diodes)","en":"(C) Vacuum Diodes"},{"hi":"सिलिकॉन चिप्स (Silicon Chips)","en":"(D) Silicon Chips"}],"answer":1,"explanation_hi":"दूसरी पीढ़ी के कंप्यूटरों में स्विचिंग तकनीक के रूप में ट्रांजिस्टर का उपयोग किया गया, जिसने वैक्यूम ट्यूब की जगह ली।","explanation_en":"Transistors replaced vacuum tubes as the primary switching technology in second-generation computers."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर की दूसरी पीढ़ी के कंप्यूटरों में मुख्य प्राथमिक मेमोरी (Primary Memory) के रूप में किसका उपयोग किया गया था?","question_en":"Question 10: What was used as the main primary memory in the second generation of computers?","options":[{"hi":"मैग्नेटिक ड्रम (Magnetic Drum)","en":"(A) Magnetic Drum"},{"hi":"मैग्नेटिक कोर (Magnetic Core)","en":"(B) Magnetic Core"},{"hi":"सेमीकंडक्टर मेमोरी (Semiconductor Memory)","en":"(C) Semiconductor Memory"},{"hi":"फ्लैश मेमोरी (Flash Memory)","en":"(D) Flash Memory"}],"answer":1,"explanation_hi":"दूसरी पीढ़ी में प्राइमरी मेमोरी के रूप में मैग्नेटिक कोर तथा सेकेंडरी स्टोरेज के रूप में मैग्नेटिक टेप और डिस्क का विकास हुआ।","explanation_en":"Second-generation computers utilized magnetic cores as primary memory and magnetic tape/disk as secondary storage."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर की तीसरी पीढ़ी (Third Generation: 1965-1975) में प्रयुक्त इंटीग्रेटेड सर्किट (IC) का आविष्कार मुख्य रूप से किसने किया था?","question_en":"Question 11: Who primarily invented the Integrated Circuit (IC) used in the third generation of computers (1965-1975)?","options":[{"hi":"चार्ल्स बैबेज (Charles Babbage)","en":"(A) Charles Babbage"},{"hi":"अजय भट्ट (Ajay Bhatt)","en":"(B) Ajay Bhatt"},{"hi":"जैक किलबी (Jack Kilby)","en":"(C) Jack Kilby"},{"hi":"रे टॉमलिंसन (Ray Tomlinson)","en":"(D) Ray Tomlinson"}],"answer":2,"explanation_hi":"तीसरी पीढ़ी के कंप्यूटरों में इंटीग्रेटेड सर्किट (IC - Integrated Circuits) का प्रयोग हुआ, जिसके आविष्कारक जैक किलबी थे।","explanation_en":"The third generation of computers introduced Integrated Circuits (ICs), invented by Jack Kilby."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर के विकास के इतिहास में, पहली बार कीबोर्ड (Keyboard) और मॉनिटर (Monitor) का प्रयोग किस पीढ़ी के कंप्यूटरों में शुरू हुआ था?","question_en":"Question 12: In the history of computer development, in which generation of computers was the use of keyboards and monitors introduced for the first time?","options":[{"hi":"तीसरी पीढ़ी (Third Generation)","en":"(A) Third Generation"},{"hi":"पहली पीढ़ी (First Generation)","en":"(B) First Generation"},{"hi":"दूसरी पीढ़ी (Second Generation)","en":"(C) Second Generation"},{"hi":"चौथी पीढ़ी (Fourth Generation)","en":"(D) Fourth Generation"}],"answer":0,"explanation_hi":"तीसरी पीढ़ी के कंप्यूटरों में पहली बार इनपुट और आउटपुट के लिए कीबोर्ड (Keyboard) और मॉनिटर (Monitor) का प्रयोग शुरू हुआ।","explanation_en":"The use of keyboards and monitors for input and output was introduced for the first time during the third generation of computers."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चौथी पीढ़ी (1976-1989) में VLSI तकनीक का उपयोग करके माइक्रोप्रोसेसर का आगमन हुआ। दुनिया का पहला व्यावसायिक माइक्रोप्रोसेसर 'Intel 4004' किस वर्ष बना था?","question_en":"Question 13: The fourth generation (1976-1989) saw the advent of microprocessors using VLSI technology. In which year was the world's first commercial microprocessor 'Intel 4004' created?","options":[{"hi":"वर्ष 1971 (Year 1971)","en":"(A) Year 1971"},{"hi":"वर्ष 1968 (Year 1968)","en":"(B) Year 1968"},{"hi":"वर्ष 1975 (Year 1975)","en":"(C) Year 1975"},{"hi":"वर्ष 1980 (Year 1980)","en":"(D) Year 1980"}],"answer":0,"explanation_hi":"दुनिया का पहला माइक्रोप्रोसेसर Intel 4004 था, जो वर्ष 1971 में बना था और यह एक 4-बिट सीपीयू था।","explanation_en":"The world's first microprocessor, Intel 4004, was developed in the year 1971 and was a 4-bit CPU."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर की पांचवीं पीढ़ी (1980/वर्तमान से भविष्य) में प्रयुक्त 'ULSI' हार्डवेयर तकनीक का पूर्ण रूप क्या है?","question_en":"Question 14: What is the full form of the 'ULSI' hardware technology utilized in the fifth generation of computers (1980/Present to Future)?","options":[{"hi":"यूनिवर्सल लाइट सिस्टम इंटीग्रेशन (Universal Light System Integration)","en":"(A) Universal Light System Integration"},{"hi":"यूनिफाइड लॉजिक स्केल इंटीग्रेशन (Unified Logic Scale Integration)","en":"(B) Unified Logic Scale Integration"},{"hi":"अल्ट्रा लॉजिकल सिस्टम इंटीग्रेशन (Ultra Logical System Integration)","en":"(C) Ultra Logical System Integration"},{"hi":"अल्ट्रा लार्ज स्केल इंटीग्रेशन (Ultra Large Scale Integration)","en":"(D) Ultra Large Scale Integration"}],"answer":3,"explanation_hi":"पांचवीं पीढ़ी में प्रयुक्त हार्डवेयर घटक ULSI (Ultra Large Scale Integration) तकनीक और AI (कृत्रिम बुद्धिमत्ता) पर आधारित है।","explanation_en":"The fifth generation uses ULSI (Ultra Large Scale Integration) and Artificial Intelligence (AI) as core technologies."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पुराने समय के कंप्यूटरों में प्रयुक्त होने वाले पंच कार्ड (Punch Card) की कार्यप्रणाली के संदर्भ में 'छिद्र होने' (Holes) का क्या अर्थ होता था?","question_en":"Question 15: In the context of the working principle of punch cards used in older computers, what did the presence of 'holes' represent?","options":[{"hi":"डेटा मौजूद नहीं है (0 या Off)","en":"(A) Data is not present (0 or Off)"},{"hi":"सिस्टम क्रैश एरर","en":"(B) System Crash Error"},{"hi":"डेटा मौजूद है (1 या On)","en":"(C) Data is present (1 or On)"},{"hi":"बफर ओवरफ़्लो एरर","en":"(D) Buffer Overflow Error"}],"answer":2,"explanation_hi":"punch cards में डेटा को छेदों के माध्यम से दर्शाया जाता था, जहाँ छेद होने का मतलब '1 या On' और छेद न होने का मतलब '0 या Off' होता था।","explanation_en":"In punch cards, holes represented '1 or On' (data present) and no punch represented '0 or Off' (data absent)."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर डेटा Processing के लिए पंच कार्ड का सफल प्रयोग हरमन होलेरिथ ने किस वर्ष की अमेरिकी जनगणना (US Census) में किया था, जिससे उनकी कंपनी आगे चलकर IBM बनी?","question_en":"Question 16: In which year's US Census did Herman Hollerith successfully use punch cards for data processing, leading to his company eventually becoming IBM?","options":[{"hi":"वर्ष 1801 (Year 1801)","en":"(A) Year 1801"},{"hi":"वर्ष 1890 (Year 1890)","en":"(B) Year 1890"},{"hi":"वर्ष 1902 (Year 1902)","en":"(C) Year 1902"},{"hi":"वर्ष 1946 (Year 1946)","en":"(D) Year 1946"}],"answer":1,"explanation_hi":"हरमन होलेरिथ ने 1890 की अमेरिकी जनगणना में पंच कार्ड का सफल उपयोग किया। बाद में उनकी कंपनी ही IBM बनी।","explanation_en":"Herman Hollerith used punch cards in the 1890 US Census, and his company later became IBM."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूचना प्रौद्योगिकी (IT) के विकास के इतिहास के अनुसार, वर्ष 1840 से 1940 तक का समय किस युग (Age) के रूप में जाना जाता है, जिसमें टेलीग्राफ, टेलीफोन और रेडियो का आविष्कार हुआ?","question_en":"Question 17: According to the history of IT development, which era from 1840 to 1940 is known as the age of telegraph, telephone, and radio?","options":[{"hi":"विद्युत-यांत्रिक युग (Electromechanical Age)","en":"(A) Electromechanical Age"},{"hi":"पूर्व-यांत्रिक युग (Pre-Mechanical Age)","en":"(B) Pre-Mechanical Age"},{"hi":"यांत्रिक युग (Mechanical Age)","en":"(C) Mechanical Age"},{"hi":"इलेक्ट्रॉनिक युग (Electronic Age)","en":"(D) Electronic Age"}],"answer":0,"explanation_hi":"1840 से 1940 तक का दौर विद्युत-यांत्रिक युग (Electromechanical Age) कहलाता है, जिसमें संचार के लिए टेलीग्राफ, टेलीफोन और रेडियो का आविष्कार हुआ।","explanation_en":"The era from 1840 to 1940 is the Electromechanical Age, which brought the telegraph, telephone, and radio."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1969 में नासा (NASA) के अपोलो चंद्र मिशन में प्रयुक्त होने वाले अपोलो गाइडेंस कंप्यूटर (AGC) के संबंध में कौन सा तथ्य सही है?","question_en":"Question 18: Which fact is correct regarding the Apollo Guidance Computer (AGC) used in NASA's Apollo lunar mission in 1969?","options":[{"hi":"यह एकीकृत सर्किट (IC) का उपयोग करने वाला दुनिया का पहला कंप्यूटर था","en":"(A) It was the world's first computer to use Integrated Circuits (ICs)"},{"hi":"इसके प्रोसेसर की गति 3 GHz थी","en":"(B) Its processor speed was 3 GHz"},{"hi":"इसकी रैम क्षमता 16 GB थी","en":"(C) Its RAM capacity was 16 GB"},{"hi":"इसमें कमांड देने के लिए माउस का उपयोग किया जाता था","en":"(D) It used a mouse to input commands"}],"answer":0,"explanation_hi":"AGC एकीकृत सर्किट (IC) का उपयोग करने वाला दुनिया का पहला कंप्यूटर था। इसकी गति केवल 0.043 MHz थी और इसकी रैम 4 KB थी।","explanation_en":"AGC was the first computer to utilize ICs. Its processor speed was 0.043 MHz and had a RAM of 4 KB."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर प्रोसेसर के संदर्भ में, एक 'कोर' (Core) किसे कहा जाता है, जो सीपीयू की मूल कंप्यूटिंग इकाई है?","question_en":"Question 19: In the context of computer processors, what is defined as a 'Core', which is the basic computing unit of a CPU?","options":[{"hi":"प्रोसेसर के बाहर स्थित कैश मेमोरी का बफर क्षेत्र","en":"(A) A cache memory buffer area located outside the processor"},{"hi":"एक स्वतंत्र सीपीयू इकाई जिसमें स्वयं का ALU, CU और रजिस्टर्स होते हैं","en":"(B) An independent CPU unit containing its own ALU, CU, and Registers"},{"hi":"डेटा स्थानांतरण करने वाली मुख्य बस प्रणाली","en":"(C) The main bus system utilized to transfer data"},{"hi":"सिस्टम क्लॉक द्वारा उत्पन्न होने वाले पल्स सिग्नल्स","en":"(D) Pulse signals generated by the system clock"}],"answer":1,"explanation_hi":"एक 'कोर' अपने आप में एक पूरा CPU होता है जिसके अंदर अपना खुद का ALU, Control Unit (CU) और Registers होते हैं।","explanation_en":"A 'core' is an independent CPU unit containing its own ALU, Control Unit (CU), and Registers."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर आर्किटेक्चर के अनुसार, प्रोसेसर (CPU) के अंदर ALU, रजिस्टर्स (Registers) और बसेस (Buses) के समूह को सामूहिक रूप से क्या कहा जाता है?","question_en":"Question 20: According to computer architecture, what is the collective group of ALU, Registers, and Buses inside the processor (CPU) called?","options":[{"hi":"कंट्रोल पाथ (Control Path)","en":"(A) Control Path"},{"hi":"डेटा पाथ (Data Path)","en":"(B) Data Path"},{"hi":"मेमोरी पाथ (Memory Path)","en":"(C) Memory Path"},{"hi":"इंस्ट्रक्शन पाथ (Instruction Path)","en":"(D) Instruction Path"}],"answer":1,"explanation_hi":"प्रोसेसर के अंदर ALU + Registers + Buses के समूह को सामूहिक रूप से Data Path कहा जाता है, जिसका काम डेटा को ढोना और प्रोसेस करना है।","explanation_en":"The combination of ALU, Registers, and Buses inside the CPU is collectively called the Data Path."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर के सीपीयू में 'कंट्रोल यूनिट' (Control Unit) के संबंध में निम्नलिखित में से कौन सा कथन पूरी तरह सत्य है?","question_en":"Question 21: Which of the following statements about the 'Control Unit' in a computer's CPU is completely true?","options":[{"hi":"यह सभी जटिल तार्किक और गणितीय गणनाओं को निष्पादित करता है","en":"(A) It performs all complex logical and mathematical calculations"},{"hi":"यह सीपीयू के अंदर सबसे तेज गति वाली अस्थायी डेटा स्टोरेज मेमोरी है","en":"(B) It is the fastest temporary data storage memory inside the CPU"},{"hi":"यह बिजली के उतार-चढ़ाव को रोककर डायरेक्ट करंट को नियंत्रित करता है","en":"(C) It controls direct current by preventing power fluctuations"},{"hi":"यह स्वयं डेटा प्रोसेस नहीं करता, बल्कि डेटा के प्रवाह और निर्देशों को नियंत्रित करता है","en":"(D) It does not process data itself, but controls data flow and instructions"}],"answer":3,"explanation_hi":"कंट्रोल यूनिट (CU) सीपीयू का मैनेजर/ट्रैफिक पुलिस है। यह खुद डेटा प्रोसेस नहीं करता, बल्कि निर्देश डिकोडिंग और डेटा प्रवाह को नियंत्रित करता है।","explanation_en":"The Control Unit (CU) acts as the manager. It does not process data itself but manages instruction decoding and data routing."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सीपीयू के अंदर स्थित सबसे तेज अस्थायी मेमोरी रजिस्टर्स (Registers) किस इलेक्ट्रॉनिक सर्किट के समूह से बने होते हैं जो केवल 1 बिट डेटा स्टोर कर सकता है?","question_en":"Question 22: Which electronic circuit, capable of storing only 1 bit of data, forms the building block of CPU registers?","options":[{"hi":"फ्लिप-फ्लॉप (Flip-Flops)","en":"(A) Flip-Flops"},{"hi":"कैपेसिटर (Capacitors)","en":"(B) Capacitors"},{"hi":"ऑप्टिकल सेंसर (Optical Sensors)","en":"(C) Optical Sensors"},{"hi":"क्वार्ट्ज क्रिस्टल (Quartz Crystals)","en":"(D) Quartz Crystals"}],"answer":0,"explanation_hi":"रजिस्टर्स फ्लिप-फ्लॉप्स (Flip-Flops) से बने होते हैं। एक फ्लिप-फ्लॉप केवल 1 बिट (0 या 1) जानकारी को स्टोर कर सकता है।","explanation_en":"Registers are made of Flip-Flops, each capable of storing exactly 1 bit of data (0 or 1)."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सीपीयू के 'सामान्य उद्देश्य रजिस्टर्स' में से उस सबसे प्रमुख रजिस्टर का नाम क्या है जिसमें ALU की किसी भी गणितीय गणना का पहला इनपुट और फाइनल रिजल्ट आता है?","question_en":"Question 23: What is the name of the primary CPU register which holds the first input and final result of any ALU operation?","options":[{"hi":"एक्युमुलेटर (Accumulator)","en":"(A) Accumulator"},{"hi":"डेटा रजिस्टर (Data Register)","en":"(B) Data Register"},{"hi":"प्रोग्राम काउंटर (Program Counter)","en":"(C) Program Counter"},{"hi":"इंडेक्स रजिस्टर (Index Register)","en":"(D) Index Register"}],"answer":0,"explanation_hi":"Accumulator (AC/AX) सबसे प्रमुख रजिस्टर है। ALU में होने वाली किसी भी गणना का पहला इनपुट और फाइनल रिजल्ट इसी में आता है।","explanation_en":"The Accumulator (AC/AX) holds the initial input and the final output of any arithmetic and logic operation."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर सीपीयू में 'प्रोग्राम काउंटर' (Program Counter - PC) रजिस्टर का क्या कार्य होता है, जिसके बिना सीपीयू अगला निर्देश नहीं ला सकता?","question_en":"Question 24: What is the function of the 'Program Counter' (PC) register in a computer CPU, without which the CPU cannot fetch the next instruction?","options":[{"hi":"यह वर्तमान में निष्पादित हो रहे निर्देश (Current Instruction) को होल्ड करता है","en":"(A) It holds the instruction currently being executed"},{"hi":"यह उस अगले निर्देश का मेमोरी पता (Address) रखता है जिसे लाया जाना है","en":"(B) It holds the memory address of the next instruction to be fetched"},{"hi":"यह रैम में सहेजे जा रहे वास्तविक डेटा को अस्थाई रूप से स्टोर करता है","en":"(C) It temporarily stores the actual data being saved into the RAM"},{"hi":"यह मेमोरी के स्टैक क्षेत्र की वर्तमान स्थिति को ट्रैक करता है","en":"(D) It tracks the current state of the stack area of memory"}],"answer":1,"explanation_hi":"Program Counter (PC) सीपीयू का नेविगेटर है। यह उस अगले निर्देश का पता (Address) रखता है जिसे मेमोरी से लाया जाना है।","explanation_en":"The Program Counter (PC) acts as a navigator, holding the memory address of the next instruction to be fetched."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मेमोरी से लाया गया 'वर्तमान' निर्देश (Current Instruction) सबसे पहले सीपीयू के किस विशिष्ट रजिस्टर में डिकोड होने के लिए सहेजा जाता है?","question_en":"Question 25: In which specific CPU register is the fetched 'current' instruction temporarily held for decoding?","options":[{"hi":"प्रोग्राम काउंटर (Program Counter - PC)","en":"(A) Program Counter - PC"},{"hi":"मेमोरी एड्रेस रजिस्टर (Memory Address Register - MAR)","en":"(B) Memory Address Register - MAR"},{"hi":"इंस्ट्रक्शन रजिस्टर (Instruction Register - IR)","en":"(C) Instruction Register - IR"},{"hi":"मेमोरी डेटा रजिस्टर (Memory Data Register - MDR)","en":"(D) Memory Data Register - MDR"}],"answer":2,"explanation_hi":"मेमोरी से आया हुआ निर्देश सबसे पहले इंस्ट्रक्शन रजिस्टर (IR) में आता है, जहाँ डिकोडर इसे डिकोड करता है।","explanation_en":"The fetched instruction is first stored in the Instruction Register (IR), where it is interpreted by the decoder."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर सीपीयू के अंतर्गत MAR (Memory Address Register) और MDR (Memory Data Register) के संबंध में क्या अंतर है?","question_en":"Question 26: What is the primary difference between MAR (Memory Address Register) and MDR (Memory Data Register) inside a CPU?","options":[{"hi":"MAR दो-तरफा (Bidirectional) होता है जबकि MDR केवल एक-तरफा होता है","en":"(A) MAR is bidirectional while MDR is unidirectional"},{"hi":"MAR सीपीयू के बाहर होता है जबकि MDR सीधे सीपीयू कोर के अंदर होता है","en":"(B) MAR is located outside the CPU while MDR is inside the CPU core"},{"hi":"दोनों पूरी तरह समान हैं और इनमें कोई व्यावहारिक अंतर नहीं है","en":"(C) Both are absolutely identical and have no practical difference"},{"hi":"MAR केवल मेमोरी पता (Address) रखता है जबकि MDR वास्तविक डेटा (Data) को रखता है","en":"(D) MAR holds only the memory address while MDR holds the actual data value"}],"answer":3,"explanation_hi":"MAR उस स्थान का पता (Address) रखता है जहाँ डेटा है, जबकि MDR (या MBR) उस पते पर मौजूद वास्तविक डेटा को रखता है। MAR एकतरफा तथा MDR दोतरफा होता है।","explanation_en":"MAR holds the memory address where the data is located, whereas MDR holds the actual data. MAR is unidirectional and MDR is bidirectional."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सीपीयू किसी भी कार्य/निर्देश को 4 चरणों में पूरा करता है, जिसे 'मशीन साइकिल' कहते हैं। इन चरणों का सही क्रम कौन सा है?","question_en":"Question 27: The CPU completes any instruction in 4 sequential steps collectively known as the 'Machine Cycle'. What is the correct sequence of these steps?","options":[{"hi":"फेच -> डिकोड -> एक्जीक्यूट -> स्टोर (Fetch -> Decode -> Execute -> Store)","en":"(A) Fetch -> Decode -> Execute -> Store"},{"hi":"स्टोर -> फेच -> डिकोड -> एक्जीक्यूट (Store -> Fetch -> Decode -> Execute)","en":"(B) Store -> Fetch -> Decode -> Execute"},{"hi":"फेच -> एक्जीक्यूट -> डिकोड -> स्टोर (Fetch -> Execute -> Decode -> Store)","en":"(C) Fetch -> Execute -> Decode -> Store"},{"hi":"डिकोड -> फेच -> एक्जीक्यूट -> स्टोर (Decode -> Fetch -> Execute -> Store)","en":"(D) Decode -> Fetch -> Execute -> Store"}],"answer":0,"explanation_hi":"मशीन साइकिल के 4 बुनियादी चरण हैं: फेच (Fetch - निर्देश लाना), डिकोड (Decode - समझना), एक्जीक्यूट (Execute - करना) और स्टोर (Store - वापस लिखना)।","explanation_en":"The 4 basic steps of a machine cycle are: Fetch (bring instruction) -> Decode (interpret) -> Execute (perform) -> Store (save result)."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सीपीयू परफॉरमेंस को मापने के लिए प्रयुक्त 'थ्रूपुट' (Throughput) का क्या अर्थ होता है?","question_en":"Question 28: What is the meaning of 'Throughput' used to measure CPU performance?","options":[{"hi":"एक निश्चित समय में सीपीयू द्वारा पूरे किए गए कुल कार्यों (Tasks) की संख्या","en":"(A) The total number of tasks completed by the CPU in a given time period"},{"hi":"किसी कमांड को देने के बाद पहली प्रतिक्रिया मिलने में लगा कुल समय","en":"(B) The time taken to receive the first response after issuing a command"},{"hi":"डेटा के एक स्थान से दूसरे स्थान तक जाने में लगने वाली देरी","en":"(C) The delay in transit when data travels from one location to another"},{"hi":"कार्य को सबमिट करने से लेकर समाप्त होने तक का कुल समय","en":"(D) The total time elapsed from task submission to its complete execution"}],"answer":0,"explanation_hi":"थ्रूपुट (Throughput) का अर्थ है एक निश्चित समय में सीपीयू कितने कार्य (Tasks) पूरे कर सकता है। प्रतिक्रिया में लगा समय रिस्पांस टाइम कहलाता है।","explanation_en":"Throughput is the count of tasks completed per unit of time, whereas Response Time is the time taken to get the first response."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आधुनिक सीपीयू के अंदर खरबों छोटे ट्रांजिस्टर (MOSFETs) होते हैं। एक ट्रांजिस्टर के तीन टर्नलों (टांगों) का नाम क्या है?","question_en":"Question 29: There are billions of tiny transistors (MOSFETs) inside a modern CPU. What are the names of the three terminals of a transistor?","options":[{"hi":"कैपेसिटर, इलेक्ट्रोड और एनोड","en":"(A) Capacitor, Electrode, Anode"},{"hi":"सोर्स, ड्रेन और गेट (Source, Drain, Gate)","en":"(B) Source, Drain, Gate"},{"hi":"कैथोड, ग्रिड और फिलामेंट","en":"(C) Cathode, Grid, Filament"},{"hi":"रजिस्टर, बस और क्लॉक","en":"(D) Register, Bus, Clock"}],"answer":1,"explanation_hi":"MOSFET ट्रांजिस्टर के तीन टर्मिनल होते हैं: सोर्स (इलेक्ट्रॉन अंदर आते हैं), ड्रेन (बाहर निकलते हैं) और गेट (कंट्रोलर/दरवाजा)।","explanation_en":"A MOSFET transistor consists of three terminals: Source (input), Drain (output), and Gate (control switch)."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ऑपरेटिंग सिस्टम के प्रोसेस मैनेजमेंट में, किस शेड्यूलिंग एल्गोरिदम के अंतर्गत 'प्रोसेस के काम के बीच में ही जबरदस्ती रोककर सीपीयू वापस लिया जा सकता है'?","question_en":"Question 30: In operating system process management, under which scheduling type can the OS forcibly interrupt a running process to reclaim the CPU?","options":[{"hi":"नॉन-प्रीएम्पटिव शेड्यूलिंग (Non-Preemptive Scheduling)","en":"(A) Non-Preemptive Scheduling"},{"hi":"बैच शेड्यूलिंग (Batch Scheduling)","en":"(B) Batch Scheduling"},{"hi":"क्रमानुसार शेड्यूलिंग (Sequential Scheduling)","en":"(C) Sequential Scheduling"},{"hi":"प्रीएम्पटिव शेड्यूलिंग (Preemptive Scheduling)","en":"(D) Preemptive Scheduling"}],"answer":3,"explanation_hi":"प्रीएम्पटिव शेड्यूलिंग (Preemptive) में OS चलते हुए प्रोसेस से किसी भी समय सीपीयू वापस लेकर दूसरे प्रोसेस को दे सकता है।","explanation_en":"Preemptive scheduling allows the OS to forcibly stop a running process and assign the CPU to another task."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"फर्स्ट कम फर्स्ट सर्व (FCFS) शेड्यूलिंग एल्गोरिदम में आने वाले 'कॉन्वॉय इफेक्ट' (Convoy Effect) का क्या कारण होता है?","question_en":"Question 31: What is the primary cause of the 'Convoy Effect' in First Come First Serve (FCFS) CPU scheduling?","options":[{"hi":"सिस्टम का बार-बार रीस्टार्ट होकर बूटलूप में फंस जाना","en":"(A) The system repeatedly restarting and getting trapped in a boot loop"},{"hi":"मेमोरी में उपलब्ध कुल कैपेसिटर्स का अत्यधिक चार्ज लीक हो जाना","en":"(B) Total available capacitors in memory leaking excessive charge"},{"hi":"शुरुआत में उच्च बस्ट टाइम (Burst Time) वाले बड़े प्रोसेस के आने से पीछे खड़े छोटे प्रोसेस का अटकना","en":"(C) A large process with a high Burst Time running first, blocking subsequent small processes"},{"hi":"सैमसंग के फोन्स में MST तकनीक का पूरी तरह फेल हो जाना","en":"(D) Total failure of MST technology in Samsung phones"}],"answer":2,"explanation_hi":"FCFS में यदि पहला प्रोसेस बहुत बड़ा है (High Burst Time), तो उसके पीछे खड़े छोटे प्रोसेस को बहुत देर तक इंतज़ार करना पड़ता है। इसे Convoy Effect कहते हैं।","explanation_en":"Convoy Effect occurs in FCFS when a long process occupies the CPU first, making several short processes wait for a long time."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आधुनिक टाइम-शेयरिंग ऑपरेटिंग सिस्टम में प्रयुक्त होने वाली 'राउंड रॉबिन' (Round Robin) शेड्यूलिंग किस विशिष्ट सिद्धांत पर कार्य करती है?","question_en":"Question 32: On which specific principle does the 'Round Robin' CPU scheduling used in modern time-sharing operating systems operate?","options":[{"hi":"सबसे छोटे काम (SJF) वाले प्रोसेस को पहले मौका देना","en":"(A) Giving the highest priority to the shortest job first"},{"hi":"प्रोसेस के महत्व (Priority Number) के आधार पर निर्णय लेना","en":"(B) Scheduling processes based on their assigned priority numbers"},{"hi":"टाइम क्वांटम (Time Quantum) के आधार पर प्रत्येक प्रोसेस को बारी-बारी से समय देना","en":"(C) Assigning CPU to each process in turn for a fixed time slice called Time Quantum"},{"hi":"प्रोसेस के आकार के अनुसार बिना रोके लगातार पूरा करना","en":"(D) Continuously executing processes without interruption based on their sizes"}],"answer":2,"explanation_hi":"राउंड रॉबिन शेड्यूलिंग एक प्रीएम्पटिव शेड्यूलिंग है, जो टाइम शेयरिंग पर आधारित है। इसमें एक निश्चित समय 'Time Quantum' तय किया जाता है।","explanation_en":"Round Robin is a preemptive CPU scheduling algorithm where each process is assigned a fixed time slice called Time Quantum."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर की रैम के दो मुख्य प्रकारों - स्टेटिक रैम (SRAM) और डायनामिक रैम (DRAM) के बीच मूलभूत अंतर क्या है?","question_en":"Question 33: What is the fundamental hardware difference between Static RAM (SRAM) and Dynamic RAM (DRAM)?","options":[{"hi":"DRAM बहुत महंगी और तेज गति वाली होती है जबकि SRAM बहुत सस्ती और धीमी होती है","en":"(A) DRAM is highly expensive and fast, whereas SRAM is very cheap and slow"},{"hi":"SRAM फ्लिप-फ्लॉप (ट्रांजिस्टर) पर आधारित है और रिफ्रेश नहीं मांगती, जबकि DRAM कैपेसिटर पर आधारित है और बार-बार रिफ्रेश मांगती है","en":"(B) SRAM is based on flip-flops (transistors) and needs no refresh, while DRAM is based on capacitors and requires constant refreshing"},{"hi":"SRAM को बार-बार रिफ्रेश करने की जरूरत होती है जबकि DRAM को रिफ्रेश नहीं करना पड़ता","en":"(C) SRAM requires constant refreshing, whereas DRAM requires no refresh cycles"},{"hi":"DRAM का उपयोग सीपीयू के अंदर कैश मेमोरी बनाने में किया जाता है","en":"(D) DRAM is utilized to construct cache memory inside the CPU core"}],"answer":1,"explanation_hi":"SRAM फ्लिप-फ्लॉप (6 ट्रांजिस्टर) से बनती है, इसमें चार्ज लीक नहीं होता अतः रिफ्रेश नहीं करना पड़ता। DRAM कैपेसिटर से बनती है, इसका चार्ज लीक होता है अतः रिफ्रेश करना पड़ता है।","explanation_en":"SRAM uses transistors configured as flip-flops to retain data, avoiding refresh cycles. DRAM uses capacitors which leak charge and need constant refreshing."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर आर्किटेक्चर के अनुसार, सीपीयू प्रोसेसर चिप के बिल्कुल अंदर (Inside the Core) स्थित सबसे तेज और सबसे छोटे आकार की कैश मेमोरी कौन सी है?","question_en":"Question 34: According to computer architecture, which is the fastest and smallest level of cache memory located directly inside the CPU core?","options":[{"hi":"L2 कैश (Level 2 Cache)","en":"(A) L2 Cache"},{"hi":"L3 कैश (Level 3 Cache)","en":"(B) L3 Cache"},{"hi":"रजिस्टर कैश (Register Cache)","en":"(C) Register Cache"},{"hi":"L1 कैश (Level 1 Cache)","en":"(D) L1 Cache"}],"answer":3,"explanation_hi":"L1 कैश प्रोसेसर चिप के बिल्कुल अंदर होती है। यह सबसे तेज और सबसे छोटे आकार (2KB से 64KB) की होती है।","explanation_en":"L1 Cache is built directly inside the CPU core, making it the fastest and smallest level of cache memory."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जैसे ही आप कंप्यूटर का पावर बटन दबाते हैं, रोम (ROM) में सहेजा गया कौन सा छोटा फर्मवेयर प्रोग्राम सक्रिय होकर सबसे पहले POST (Power-On Self-Test) प्रक्रिया चलाता है?","question_en":"Question 35: As soon as you turn on a computer, which small firmware program stored in ROM is activated to execute the POST (Power-On Self-Test) routine?","options":[{"hi":"बायोस (BIOS - Basic Input/Output System)","en":"(A) BIOS"},{"hi":"बूटस्ट्रैप लोडर (Bootstrap Loader)","en":"(B) Bootstrap Loader"},{"hi":"ऑपरेटिंग सिस्टम कर्नल (OS Kernel)","en":"(C) OS Kernel"},{"hi":"मास्टर बूट रिकॉर्ड (MBR)","en":"(D) MBR"}],"answer":0,"explanation_hi":"BIOS (Basic Input/Output System) मडरबोर्ड की ROM चिप में स्टोर होता है। चालू होने पर यह सबसे पहले POST प्रक्रिया चलाकर हार्डवेयर की जांच करता है।","explanation_en":"The BIOS (Basic Input/Output System) is firmware stored in ROM that runs first, initiating the POST routine to check hardware."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर की बूटिंग प्रक्रिया (Booting Process) के दौरान, BIOS द्वारा बूट डिवाइस ढूंढने के बाद हार्ड डिस्क के सबसे पहले सेक्टर (Sector 0) को पढ़ा जाता है। इस सेक्टर को क्या कहते हैं?","question_en":"Question 36: During the computer boot process, after the BIOS finds the bootable device, the first sector (Sector 0) of the hard disk is read. What is this sector called?","options":[{"hi":"रीसेट वेक्टर (Reset Vector)","en":"(A) Reset Vector"},{"hi":"फाइल एलोकेशन टेबल (FAT)","en":"(B) FAT"},{"hi":"मास्टर बूट रिकॉर्ड (MBR)","en":"(C) MBR"},{"hi":"सिस्टम डायरेक्टरी (System Directory)","en":"(D) System Directory"}],"answer":2,"explanation_hi":"हार्ड डिस्क के सबसे पहले सेक्टर (Sector 0) को MBR (Master Boot Record) कहते हैं, जिसमें बूटस्ट्रैप लोडर प्रोग्राम होता है जो कर्नल को रैम में लोड करता है।","explanation_en":"The very first sector (Sector 0) of a bootable hard drive is called the Master Boot Record (MBR), which contains the bootloader."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 2021-22 से प्रचलन में आई आधुनिक रैम तकनीक 'DDR5' के संबंध में कौन सा विनिर्देश (Specification) सत्य है?","question_en":"Question 37: Which specification is true regarding the modern 'DDR5' RAM technology introduced around 2021-22?","options":[{"hi":"यह चलने के लिए न्यूनतम 5 Volts बिजली लेती है","en":"(A) It requires a minimum of 5 Volts of power to operate"},{"hi":"इसकी वोल्टेज खपत कम होकर 1.1 Volts हो गई है और इसमें ऑन-डाई ईसीसी (On-die ECC) की सुविधा है","en":"(B) Its voltage consumption has reduced to 1.1 Volts and it features On-die ECC"},{"hi":"इसमें डेटा ट्रांसफर के लिए मैग्नेटिक कोर तकनीक का प्रयोग होता है","en":"(C) It utilizes magnetic core technology for data transmission"},{"hi":"इसकी क्लॉक स्पीड केवल 100 MHz तक सीमित होती है","en":"(D) Its clock speed is strictly limited to 100 MHz"}],"answer":1,"explanation_hi":"DDR5 रैम बिजली कम खाती है (1.1 Volts) और इसमें एरर को खुद ठीक करने के लिए ऑन-डाई ईसीसी (On-die ECC) की सुविधा चिप के अंदर दी गई है।","explanation_en":"DDR5 operates at a lower voltage of 1.1V and features On-die ECC to correct errors within the chip automatically."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आईबीएम द्वारा निर्मित कंप्यूटर इतिहास की प्रसिद्ध 3.5 इंच की माइक्रो फ्लॉपी डिस्क (Floppy Disk) की कुल डेटा संग्रहण क्षमता कितनी होती थी?","question_en":"Question 38: What was the total data storage capacity of the famous 3.5-inch micro floppy disk manufactured by IBM?","options":[{"hi":"1.2 MB (1.2 Megabytes)","en":"(A) 1.2 MB"},{"hi":"1.44 MB (1.44 Megabytes)","en":"(B) 1.44 MB"},{"hi":"700 MB (700 Megabytes)","en":"(C) 700 MB"},{"hi":"4.7 GB (4.7 Gigabytes)","en":"(D) 4.7 GB"}],"answer":1,"explanation_hi":"फ्लॉपी डिस्क में 5.25 इंच की क्षमता 1.2 MB तथा सबसे लोकप्रिय 3.5 इंच की क्षमता 1.44 MB होती थी।","explanation_en":"The 3.5-inch micro floppy disk had a storage capacity of 1.44 MB, while the 5.25-inch disk stored 1.2 MB."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पारंपरिक हार्ड डिस्क ड्राइव (HDD) के अंदर डेटा स्टोर करने के लिए एल्युमिनियम या कांच की गोल डिस्क (Platters) को संकेंद्रित वृत्तों (Concentric Circles) में विभाजित किया जाता है, इन्हें क्या कहते हैं?","question_en":"Question 39: To store data inside a traditional Hard Disk Drive (HDD), the circular aluminum or glass plates (Platters) are divided into concentric circles. What are these called?","options":[{"hi":"सेक्टर्स (Sectors)","en":"(A) Sectors"},{"hi":"सिलेंडर (Cylinders)","en":"(B) Cylinders"},{"hi":"ट्रैक्स (Tracks)","en":"(C) Tracks"},{"hi":"पिट्स और लैंड्स (Pits and Lands)","en":"(D) Pits and Lands"}],"answer":2,"explanation_hi":"हार्ड डिस्क के गोल प्लैटर्स की सतह पर बने संकेंद्रित वृत्तों को ट्रैक्स (Tracks) तथा ट्रैक्स के छोटे-छोटे टुकड़ों को सेक्टर्स (Sectors) कहते हैं। सबसे छोटा भाग सेक्टर (512 बाइट्स) होता है।","explanation_en":"The concentric circles on HDD platters are called Tracks, and their smaller subdivisions are known as Sectors (typically 512 bytes)."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डेटा विश्वसनीयता (Data Reliability) और सुरक्षा सुनिश्चित करने वाली लोकप्रिय मास स्टोरेज तकनीक 'RAID 5' (Striping with Parity) को स्थापित करने के लिए न्यूनतम कितनी हार्ड डिस्क होना अनिवार्य है?","question_en":"Question 40: What is the minimum number of hard disks required to set up the popular 'RAID 5' (Striping with Parity) storage technology?","options":[{"hi":"कम से कम 2 डिस्क (Minimum 2 Disks)","en":"(A) Minimum 2 Disks"},{"hi":"कम से कम 3 डिस्क (Minimum 3 Disks)","en":"(B) Minimum 3 Disks"},{"hi":"कम से कम 5 डिस्क (Minimum 5 Disks)","en":"(C) Minimum 5 Disks"},{"hi":"केवल 1 डिस्क (Only 1 Disk)","en":"(D) Only 1 Disk"}],"answer":1,"explanation_hi":"RAID 5 (स्ट्रिपिंग विथ पैरिटी) में कम से कम 3 डिस्क होना अनिवार्य है। यह गति और डेटा सुरक्षा दोनों का संतुलित मिश्रण प्रदान करता है।","explanation_en":"RAID 5 requires a minimum of 3 hard drives. It distributes data and parity across all drives to provide fault tolerance."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"क्रिस्टोफर लैथम शोल्स द्वारा आविष्कृत सामान्य 'QWERTY' कीबोर्ड लेआउट के मानक कीबोर्ड (Standard Keyboard) में कुल कितने बटन (Keys) होते हैं?","question_en":"Question 41: How many total keys are present in a standard 'QWERTY' keyboard layout, which was invented by Christopher Latham Sholes?","options":[{"hi":"84 बटन (84 Keys)","en":"(A) 84 Keys"},{"hi":"108 बटन (108 Keys)","en":"(B) 108 Keys"},{"hi":"104 बटन (104 Keys)","en":"(C) 104 Keys"},{"hi":"120 बटन (120 Keys)","en":"(D) 120 Keys"}],"answer":2,"explanation_hi":"कीबोर्ड का आविष्कार क्रिस्टोफर लैथम शोल्स ने किया था। एक मानक कीबोर्ड में लगभग 104 बटन होते हैं।","explanation_en":"The keyboard layout was invented by Christopher Sholes, and a standard keyboard has approximately 104 keys."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर मॉनिटर (Monitor) की गुणवत्ता को मापने के संदर्भ में 'डॉट पिच' (Dot Pitch) से क्या तात्पर्य है?","question_en":"Question 42: In the context of measuring computer monitor quality, what does 'Dot Pitch' refer to?","options":[{"hi":"स्क्रीन की चौड़ाई और ऊंचाई का अनुपात","en":"(A) The ratio of the width to the height of the display screen"},{"hi":"स्क्रीन प्रति सेकंड कितनी बार बदलती या रिफ्रेश होती है","en":"(B) The number of times the screen is redrawn or refreshed per second"},{"hi":"दो आसन्न पिक्सल (Pixels) के बीच की न्यूनतम दूरी, जो जितनी कम होगी तस्वीर उतनी ही शार्प दिखेगी","en":"(C) The distance between two adjacent pixels, where a smaller distance yields a sharper image"},{"hi":"मॉनिटर की स्क्रीन पर उपस्थित कुल पिक्सलों की संख्या","en":"(D) The total count of pixels available on the monitor's screen area"}],"answer":2,"explanation_hi":"डॉट पिच दो पिक्सलों के बीच की दूरी को दर्शाता है। यह दूरी जितनी कम होगी (जैसे 0.25mm), स्क्रीन पर तस्वीर उतनी ही शार्प और स्पष्ट दिखेगी।","explanation_en":"Dot Pitch is the distance between two adjacent pixels of same color. A smaller dot pitch results in a sharper, crisper display."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मदरबोर्ड के पिछले हिस्से में प्रिंटर जोड़ने के लिए प्रयुक्त होने वाले पुराने 'पैरेलल पोर्ट' (Parallel Port / LPT Port) में पिनों की कुल संख्या कितनी होती थी?","question_en":"Question 43: What was the total number of pin holes present in the older 'Parallel Port' (LPT Port) on the motherboard, primarily used to connect printers?","options":[{"hi":"9 पिन (9 Pins)","en":"(A) 9 Pins"},{"hi":"15 पिन (15 Pins)","en":"(B) 15 Pins"},{"hi":"6 पिन (6 Pins)","en":"(C) 6 Pins"},{"hi":"25 पिन (25 Pins)","en":"(D) 25 Pins"}],"answer":3,"explanation_hi":"पैरेलल पोर्ट (LPT) में 25 पिन (holes) होते हैं और यह एक बार में 8 बिट (1 बाइट) डेटा समानांतर रूप से भेजता है, जबकि सीरियल पोर्ट में 9 या 25 पिन होते हैं।","explanation_en":"Parallel Ports (LPT) utilize 25 pins and transfer 8 bits (1 byte) of data simultaneously, whereas Serial Ports have 9 pins."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"USB पोर्ट से पहले कीबोर्ड और माउस को मदरबोर्ड से जोड़ने के लिए प्रयुक्त गोल 'PS/2' पोर्ट के रंग कोडिंग के अनुसार, माउस (Mouse) के लिए कौन सा रंग निर्धारित था?","question_en":"Question 44: Before USB ports, the round 'PS/2' ports were used for connecting keyboards and mice. According to its color coding, which color was designated for the mouse?","options":[{"hi":"बैंगनी रंग (Purple)","en":"(A) Purple"},{"hi":"हरा रंग (Green)","en":"(B) Green"},{"hi":"नीला रंग (Blue)","en":"(C) Blue"},{"hi":"गुलाबी रंग (Pink)","en":"(D) Pink"}],"answer":1,"explanation_hi":"PS/2 पोर्ट में कीबोर्ड के लिए बैंगनी रंग (Purple) तथा माउस के लिए हरा रंग (Green) निर्धारित किया गया था।","explanation_en":"In PS/2 ports, the color designated for the keyboard is Purple, while the color designated for the mouse is Green."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नेटवर्किंग के अंतर्गत, असुरक्षित रिमोट कंट्रोल सेवा 'Telnet' और सुरक्षित रिमोट कंट्रोल सेवा 'SSH' क्रमशः किस डिफ़ॉल्ट पोर्ट नंबर का उपयोग करते हैं?","question_en":"Question 45: In networking, which default port numbers are utilized by the unsecured 'Telnet' and secured 'SSH' remote services, respectively?","options":[{"hi":"पोर्ट 80 और पोर्ट 443 (Port 80 and Port 443)","en":"(A) Port 80 and Port 443"},{"hi":"पोर्ट 21 और पोर्ट 20 (Port 21 and Port 20)","en":"(B) Port 21 and Port 20"},{"hi":"पोर्ट 23 और पोर्ट 22 (Port 23 and Port 22)","en":"(C) Port 23 and Port 22"},{"hi":"पोर्ट 110 और पोर्ट 143 (Port 110 and Port 143)","en":"(D) Port 110 and Port 143"}],"answer":2,"explanation_hi":"असुरक्षित रिमोट एक्सेस प्रोटोकॉल Telnet पोर्ट 23 का उपयोग करता है, जबकि सुरक्षित रिमोट एक्सेस SSH पोर्ट 22 का उपयोग करता है।","explanation_en":"Unsecured Telnet uses Port 23, while secured SSH uses Port 22 for remote connections."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1971 में ARPANET पर फैला दुनिया का पहला कंप्यूटर वायरस कौन सा था, जिसे हटाने के लिए 'रेपर' (Reaper) नामक पहला एंटीवायरस बनाया गया था?","question_en":"Question 46: Which was the world's first computer virus that spread on ARPANET in 1971, and was subsequently targeted by the first antivirus program 'Reaper'?","options":[{"hi":"ब्रेन (Brain)","en":"(A) Brain"},{"hi":"मेलिसा (Melissa)","en":"(B) Melissa"},{"hi":"आई लव यू (ILOVEYOU)","en":"(C) ILOVEYOU"},{"hi":"क्रीपर (Creeper)","en":"(D) Creeper"}],"answer":3,"explanation_hi":"दुनिया का पहला वायरस क्रीपर (Creeper - 1971) था, जिसे बॉब थॉमस ने बनाया था। इसे हटाने के लिए रे टॉमलिंसन ने पहला एंटीवायरस 'रीपर' बनाया।","explanation_en":"The world's first computer virus was Creeper (1971), and the first antivirus created to delete it was Reaper."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कंप्यूटर इतिहास में वर्ष 1949 में 'स्व-प्रतिकृति' करने वाले स्वतः चालित यंत्रों (Self-Reproducing Automata) का गणितीय सिद्धांत किसने दिया था, जो कंप्यूटर वायरस का आधार बना?","question_en":"Question 47: In 1949, who proposed the mathematical theory of 'Self-Reproducing Automata', which later became the conceptual foundation for computer viruses?","options":[{"hi":"एलन ट्यूरिंग (Alan Turing)","en":"(A) Alan Turing"},{"hi":"चार्ल्स बैबेज (Charles Babbage)","en":"(B) Charles Babbage"},{"hi":"टिम बर्नर्स-ली (Tim Berners-Lee)","en":"(C) Tim Berners-Lee"},{"hi":"जानी वॉन न्यूमैन (John von Neumann)","en":"(D) John von Neumann"}],"answer":3,"explanation_hi":"जॉन वॉन न्यूमैन ने 1949 में 'Self-Reproducing Automata' का सिद्धांत दिया था, जो कंप्यूटर वायरस की पहली परिकल्पना थी।","explanation_en":"John von Neumann proposed the theory of 'Self-Reproducing Automata' in 1949, conceptually outlining computer viruses."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जब कई अलग-अलग एप्लीकेशन सॉफ्टवेयर को एक साथ एक बंडल (Bundle) के रूप में बेचा या वितरित किया जाता है, तो उसे क्या कहा जाता है?","question_en":"Question 48: What is it called when multiple separate application softwares are bundled and distributed together as a single product?","options":[{"hi":"सॉफ्टवेयर सुइट या पैकेज (Software Suite or Package)","en":"(A) Software Suite or Package"},{"hi":"फर्मवेयर सुइट (Firmware Suite)","en":"(B) Firmware Suite"},{"hi":"ऑपरेटिंग सिस्टम सुइट (OS Suite)","en":"(C) OS Suite"},{"hi":"डिवाइस ड्राइवर सुइट (Driver Suite)","en":"(D) Device Driver Suite"}],"answer":0,"explanation_hi":"जब कई अलग एप्लीकेशन को एक साथ बंडल में बेचा जाता है, तो उसे सॉफ्टवेयर पैकेज या 'सॉफ्टवेयर सुइट' (जैसे MS Office, Adobe CC) कहते हैं।","explanation_en":"When multiple separate applications are sold together as a bundle, it is referred to as a Software Suite/Package."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ऐसे एप्लीकेशन सॉफ्टवेयर (जैसे MS Word या Excel) जो कई अलग-अलग उद्योगों (Industries) और व्यवसायों में समान रूप से उपयोग किए जाते हैं, क्या कहलाते हैं?","question_en":"Question 49: What are application softwares (such as MS Word or Excel) called that are used across multiple different industries and businesses?","options":[{"hi":"वर्टिकल एप्लीकेशन (Vertical Application)","en":"(A) Vertical Application"},{"hi":"यूटिलिटी एप्लीकेशन (Utility Application)","en":"(B) Utility Application"},{"hi":"हॉरिजॉन्टल एप्लीकेशन (Horizontal Application)","en":"(C) Horizontal Application"},{"hi":"एंबेडेड एप्लीकेशन (Embedded Application)","en":"(D) Embedded Application"}],"answer":2,"explanation_hi":"हॉरिजॉन्टल सॉफ्टवेयर कई अलग-अलग उद्योगों में समान रूप से इस्तेमाल होते हैं, जबकि वर्टिकल सॉफ्टवेयर किसी एक विशिष्ट उद्योग के लिए बनते हैं (जैसे Finacle)।","explanation_en":"Horizontal applications are widely used across various industries, while Vertical applications are tailored for a specific industry."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय स्टेट बैंक (SBI) और पंजाब नेशनल बैंक (PNB) जैसे सरकारी बैंकों में प्रयुक्त होने वाला प्रसिद्ध वर्टिकल कोर बैंकिंग सॉफ्टवेयर 'Finacle' किस कंपनी द्वारा विकसित किया गया है?","question_en":"Question 50: Which company has developed the famous vertical core banking software 'Finacle' utilized by major banks like SBI and PNB?","options":[{"hi":"टीसीएस (TCS)","en":"(A) TCS"},{"hi":"विप्रो (Wipro)","en":"(B) Wipro"},{"hi":"ओरेकल (Oracle)","en":"(C) Oracle"},{"hi":"इन्फोसिस (Infosys)","en":"(D) Infosys"}],"answer":3,"explanation_hi":"प्रसिद्ध कोर बैंकिंग सॉफ्टवेयर 'Finacle' भारतीय आईटी कंपनी इन्फोसिस (Infosys) द्वारा विकसित किया गया था।","explanation_en":"The famous Core Banking Solution software 'Finacle' was developed by the Indian IT giant Infosys."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
