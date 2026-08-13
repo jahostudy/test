@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"HEO","highlight":"HEO","shortTitle":"HEO","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-heo-20260813-1c3m4","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-13","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"इतिहासकार और समाजशास्त्री उमा चक्रवर्ती के अनुसार, किस अवधारणा के तहत भारतीय समाज में जाति की 'पवित्रता' बनाए रखने के लिए महिलाओं की स्वतंत्रता का दमन किया जाता है और उच्च जाति की महिलाओं पर सबसे कड़े नियम लागू किए जाते हैं?","question_en":"Question 1: According to historian and sociologist Uma Chakravarti, under which concept is women's freedom suppressed in Indian society to maintain caste 'purity', with the strictest rules applied to upper-caste women?","options":[{"hi":"ब्राह्मणीय पितृसत्ता","en":"Brahmanical Patriarchy"},{"hi":"उपनिवेशवादी पितृसत्ता","en":"Colonial Patriarchy"},{"hi":"वर्ग-आधारित लिंगभेद","en":"Class-based Gender Bias"},{"hi":"सांस्कृतिक सापेक्षवाद","en":"Cultural Relativism"}],"answer":0,"explanation_hi":"उमा चक्रवर्ती के अनुसार, 'ब्राह्मणीय पितृसत्ता' (Brahmanical Patriarchy) के तहत जाति की 'पवित्रता' बनाए रखने के लिए महिलाओं की स्वतंत्रता का दमन किया जाता है और उच्च जाति की महिलाओं पर कड़े नियम (जैसे पर्दा प्रथा, शुद्धता) लागू होते हैं।","explanation_en":"According to Uma Chakravarti, under 'Brahmanical Patriarchy', women's freedom is suppressed to maintain caste 'purity', and the strictest rules (such as purdah, purity rules) are applied to upper-caste women as they are seen as carriers of caste purity."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्रिटेन के सरकारी कर्मचारियों पर किए गए प्रसिद्ध 'व्हाइटहॉल स्टडीज' (Whitehall Studies) के आधार पर माइकल मर्मोट ने किस सिद्धांत को प्रतिपादित किया, जो यह दर्शाता है कि सामाजिक पदानुक्रम में व्यक्ति का स्थान जितना नीचे होगा, उसका स्वास्थ्य उतना ही खराब होगा?","question_en":"Question 2: Based on the famous 'Whitehall Studies' on British civil servants, which concept did Michael Marmot formulate, demonstrating that the lower an individual's position in the social hierarchy, the poorer their health?","options":[{"hi":"चिकित्सकीय बहुलवाद","en":"Medical Pluralism"},{"hi":"स्वास्थ्य का सामाजिक ढाल","en":"Social Gradient in Health"},{"hi":"चिकित्सकीय दरिद्रता","en":"Medical Impoverishment"},{"hi":"चिकित्साकरण का संघर्ष","en":"Conflict of Medicalization"}],"answer":1,"explanation_hi":"माइकल मर्मोट ने 'व्हाइटहॉल स्टडीज' के आधार पर पाया कि सामाजिक पदानुक्रम में नीचे होने से व्यक्ति का स्वास्थ्य खराब और जीवन प्रत्याशा कम होती है, जिसे 'स्वास्थ्य का सामाजिक ढाल' (Social Gradient in Health) कहा जाता है।","explanation_en":"Michael Marmot found in the 'Whitehall Studies' that the lower an individual's position in the social hierarchy, the poorer their health and lower their life expectancy, termed the 'Social Gradient in Health'."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1976 में किए गए ऐतिहासिक प्रशासनिक और विधिक सुधार के तहत, किस संवैधानिक पद को केंदीय स्तर पर लेखांकन (Accounting) के कार्यों से पूरी तरह मुक्त कर दिया गया, जिसके बाद केंदीय खाते तैयार करने का कार्य 'महालेखा नियंत्रक' (CGA) को सौंप दिया गया?","question_en":"Question 3: Under the historic administrative and legal reforms implemented in 1976, which constitutional post was completely relieved of accounting duties at the Central level, after which the task of preparing central accounts was handed over to the 'Controller General of Accounts' (CGA)?","options":[{"hi":"संघ लोक सेवा आयोग के अध्यक्ष","en":"Chairman of UPSC"},{"hi":"भारत के महान्यायवादी","en":"Attorney General of India"},{"hi":"भारत के नियंत्रक एवं महालेखापरीक्षक (कैग)","en":"Comptroller and Auditor General of India (CAG)"},{"hi":"राष्ट्रीय वित्त आयोग के अध्यक्ष","en":"Chairman of Finance Commission"}],"answer":2,"explanation_hi":"वर्ष 1976 में कैग को केंदीय स्तर पर लेखांकन (Accounting) से मुक्त कर दिया गया ताकि हितों के टकराव को रोका जा सके। केंदीय खाते तैयार करने का कार्य वित्त मंत्रालय के अधीन 'महालेखा नियंत्रक' (CGA) को सौंपा गया, जबकि कैग केवल अंकेक्षण (Auditing) करता है।","explanation_en":"In 1976, the CAG was relieved of accounting duties at the Central level to prevent conflict of interest. Preparing central accounts was given to the 'Controller General of Accounts' (CGA) under the Ministry of Finance, leaving CAG with auditing duties only."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय नियंत्रक एवं महालेखापरीक्षक (CAG) और यूनाइटेड किंगडम (UK) के कैग के विधिक अधिकारों में एक मुख्य अंतर क्या है, जिसके कारण भारतीय कैग को वास्तविक अर्थों में 'नियंत्रक' नहीं माना जाता?","question_en":"Question 4: What is a major difference between the legal powers of the Indian CAG and the UK CAG, because of which the Indian CAG is not considered a 'Comptroller' in the true sense?","options":[{"hi":"भारतीय कैग को संसद का सदस्य होने का अधिकार प्राप्त है","en":"Indian CAG has the right to be a member of Parliament"},{"hi":"भारतीय कैग की मंजूरी के बिना भी केंदीय सरकार संचित निधि से पैसा निकाल सकती है और कैग की भूमिका केवल खर्चे के बाद (Post-Facto) अंकेक्षण के समय शुरू होती है","en":"The Central Government can withdraw money from the Consolidated Fund without the Indian CAG's approval, and CAG's role starts only after expenditure (Post-Facto) during auditing"},{"hi":"भारतीय कैग की नियुक्ति प्रधानमंत्री द्वारा सीधे की जाती है","en":"Indian CAG is directly appointed by the Prime Minister"},{"hi":"भारतीय कैग के पास वित्तीय नीतियों को पूरी तरह बदलने का संप्रभु अधिकार है","en":"Indian CAG has the sovereign power to completely alter financial policies"}],"answer":1,"explanation_hi":"ब्रिटेन की सरकार कैग की पूर्व अनुमति (Prior Approval) के बिना राजकोष से एक भी पाउंड नहीं निकाल सकती, जबकि भारतीय कैग की मंजूरी के बिना भी भारतीय सरकार संचित निधि से पैसा निकाल सकती है। भारतीय कैग केवल खर्चे के बाद (Post-Facto) अंकेक्षण का कार्य करता है।","explanation_en":"Unlike the UK where the government cannot withdraw any funds without the CAG's prior approval, the Indian government can withdraw money from the Consolidated Fund without the CAG's prior consent, and the Indian CAG only conducts post-facto auditing."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हाल के वर्षों में (जैसे टू-जी स्पेक्ट्रम या कोयला ब्लॉक आवंटन मामलों में) कैग द्वारा शुरू किए गए किस विशेष अंकेक्षण पर विवाद हुआ है, जिसके तहत खजाने को होने वाले 'वैचारिक नुकसान' (Notional Loss) की गणना की जाती है और इसे कार्यपालिका के नीतिगत निर्णयों में हस्तक्षेप माना गया है?","question_en":"Question 5: In recent years (such as in the 2G Spectrum or Coal Block allocation cases), which special audit initiated by the CAG has been controversial, under which 'Notional Loss' to the treasury is calculated, and which has been criticized as interference in the executive's policy-making?","options":[{"hi":"विधिक अंकेक्षण","en":"Legal Audit"},{"hi":"तकनीकी अंकेक्षण","en":"Technical Audit"},{"hi":"औचित्य अंकेक्षण","en":"Propriety Audit"},{"hi":"राजस्व संकलन अंकेक्षण","en":"Revenue Collection Audit"}],"answer":2,"explanation_hi":"'औचित्य अंकेक्षण' (Propriety Audit) के तहत कैग केवल बिलों की विधिक जांच न करके यह गणना करता है कि यदि सरकार अलग तरीके से नीलामी करती तो कितना नुकसान टल सकता था। इसे आलोचकों द्वारा 'नीतिगत अपंगता' (Policy Paralysis) का कारण माना गया है।","explanation_en":"Under 'Propriety Audit', the CAG goes beyond formal legal checks to evaluate the wisdom of decisions, calculating 'Notional Loss' if alternative auction methods had been used, which critics argue leads to policy paralysis."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गैर-सरकारी संगठनों (NGOs) को विदेशों से मिलने वाले चंदे या वित्तीय सहायता की पारदर्शिता और नियमन सुनिश्चित करने के लिए भारत सरकार का गृह मंत्रालय किस विधिक अधिनियम को लागू करता है?","question_en":"Question 6: Which legal act is administered by the Ministry of Home Affairs of the Government of India to ensure transparency and regulation of foreign donations or financial aid received by Non-Governmental Organizations (NGOs)?","options":[{"hi":"विदेशी अंशदान (विनियमन) अधिनियम (FCRA)","en":"Foreign Contribution (Regulation) Act (FCRA)"},{"hi":"विदेशी मुद्रा प्रबंधन अधिनियम (FEMA)","en":"Foreign Exchange Management Act (FEMA)"},{"hi":"धन शोधन निवारण अधिनियम (PMLA)","en":"Prevention of Money Laundering Act (PMLA)"},{"hi":"सोसाइटी पंजीकरण अधिनियम, 1860","en":"Societies Registration Act, 1860"}],"answer":0,"explanation_hi":"विदेशों से मिलने वाली सहायता और अंशदान के विनियमन के लिए गृह मंत्रालय द्वारा 'विदेशी अंशदान (विनियमन) अधिनियम' (FCRA) को लागू किया जाता है, जो एनजीओ की वित्तीय पारदर्शिता को नियंत्रित करता है।","explanation_en":"The Foreign Contribution (Regulation) Act (FCRA) is administered by the Ministry of Home Affairs to regulate and monitor foreign funding received by NGOs in India."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"15वें वित्त आयोग द्वारा राज्यों के बीच राजस्व के क्षैतिज हस्तांतरण (Horizontal Devolution) के लिए 1971 की जनगणना के स्थान पर 2011 की जनगणना के आंकड़ों का उपयोग करने के निर्देश का किस क्षेत्र के राज्यों ने कड़ा विरोध किया था?","question_en":"Question 7: Which region's states strongly opposed the directive of the 15th Finance Commission to use the 2011 Census population data instead of the 1971 Census for horizontal devolution of revenue among states?","options":[{"hi":"पूर्वोत्तर भारत के राज्य","en":"Northeast Indian States"},{"hi":"उत्तर भारत के राज्य","en":"North Indian States"},{"hi":"दक्षिण भारत के राज्य","en":"South Indian States"},{"hi":"पश्चिम भारत के औद्योगिक राज्य","en":"West Indian Industrial States"}],"answer":2,"explanation_hi":"दक्षिण भारत के राज्यों (जैसे केरल, तमिलनाडु) ने इसका कड़ा विरोध किया क्योंकि उन्होंने जनसंख्या नियंत्रण की राष्ट्रीय नीतियों को कड़ाई से लागू किया था। 2011 की जनगणना के आधार पर अधिक आबादी वाले उत्तर भारतीय राज्यों को अधिक फंड मिलना उनके लिए 'सजा मिलने' जैसा माना गया।","explanation_en":"Southern Indian states strongly protested because they had effectively implemented population control policies. Using 2011 population data penalized them and rewarded high-population northern states, which they felt punished their good performance."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस आयोग की सिफारिशों के आधार पर भारत में पहली बार 1 अक्टूबर 1926 को 'केंदीय लोक सेवा आयोग' (Central Public Service Commission) की स्थापना की गई थी, जिसके प्रथम अध्यक्ष सर रोज बाकर बने थे?","question_en":"Question 8: Based on the recommendations of which commission was the 'Central Public Service Commission' established in India for the first time on October 1, 1926, with Sir Ross Barker as its first chairman?","options":[{"hi":"ली आयोग (1924)","en":"Lee Commission (1924)"},{"hi":"मैकाले समिति (1854)","en":"Macaulay Committee (1854)"},{"hi":"सार्जेंट समिति (1944)","en":"Sargent Committee (1944)"},{"hi":"रॉबर्टसन आयोग (1921)","en":"Robertson Commission (1921)"}],"answer":0,"explanation_hi":"वर्ष 1924 में गठित 'ली आयोग' (Lee Commission) की सिफारिश पर 1 अक्टूबर 1926 को 'केंदीय लोक सेवा आयोग' की स्थापना की गई थी, जिसके प्रथम अध्यक्ष सर रोज बाकर थे।","explanation_en":"On the recommendation of the Lee Commission (formed in 1924), the Central Public Service Commission of India was established on October 1, 1926, with Sir Ross Barker as its first chairman."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संवैधानिकता और निष्पक्षता बनाए रखने के लिए, संविधान के किस अनुच्छेद के तहत यह कड़ा विधिक प्रतिबंध लगाया गया है कि संघ लोक सेवा आयोग (UPSC) के अध्यक्ष सेवामुक्त होने के बाद भारत सरकार या किसी राज्य सरकार के अधीन किसी भी सरकारी नौकरी (Employment) के पात्र नहीं होंगे?","question_en":"Question 9: To maintain constitutional independence and neutrality, under which article of the Constitution is there a strict legal prohibition stating that the Chairman of the Union Public Service Commission (UPSC) shall not be eligible for any further employment under the Government of India or any State Government after retirement?","options":[{"hi":"अनुच्छेद 316","en":"Article 316"},{"hi":"अनुच्छेद 318","en":"Article 318"},{"hi":"अनुच्छेद 319","en":"Article 319"},{"hi":"अनुच्छेद 323","en":"Article 323"}],"answer":2,"explanation_hi":"अनुच्छेद 319 के तहत यह प्रावधान किया गया है कि सेवामुक्ति के बाद यूपीएससी के अध्यक्ष भारत सरकार या राज्य सरकार के अधीन किसी भी अन्य पद या सरकारी नौकरी के पात्र नहीं होंगे, ताकि भविष्य के लालच में आकर वे निष्पक्षता से समझौता न करें।","explanation_en":"Under Article 319, the Chairman of the UPSC is ineligible for any further employment under the Government of India or a state government, ensuring that they perform their duties impartially without looking forward to future executive appointments."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दिलीप सिंह भूरिया समिति (1995) की सिफारिशों के आधार पर अनुसूचित क्षेत्रों के आदिवासी समुदायों की पारंपरिक संस्कृति, रीति-रिवाजों और प्राकृतिक संसाधनों के संरक्षण के लिए संसद ने किस विधिक अधिनियम को 1996 में पारित किया था?","question_en":"Question 10: Based on the recommendations of the Dilip Singh Bhuria Committee (1995), which legal act was passed by Parliament in 1996 to protect the traditional culture, customs, and natural resources of tribal communities in Scheduled Areas?","options":[{"hi":"वन संरक्षण अधिनियम","en":"Forest Conservation Act"},{"hi":"अनुसूचित क्षेत्र वन अधिकार अधिनियम","en":"Scheduled Areas Forest Rights Act"},{"hi":"पेसा अधिनियम (पंचायत अनुसूचित क्षेत्रों में विस्तार अधिनियम)","en":"PESA Act (Provisions on the Extension to the Scheduled Areas Act)"},{"hi":"अवैध खनन निषेध अधिनियम","en":"Prohibition of Illegal Mining Act"}],"answer":2,"explanation_hi":"आदिवासियों के हितों की रक्षा के लिए भूरिया समिति की सिफारिशों के आधार पर संसद ने 1996 में 'पेसा अधिनियम' (PESA Act) पारित किया, जो वर्तमान में भारत के 10 राज्यों के आदिवासी अनुसूचित क्षेत्रों में लागू है।","explanation_en":"Based on the recommendations of the Bhuria Committee to safeguard tribal self-governance, Parliament enacted the PESA Act in 1996, which currently extends to Scheduled Areas across 10 states."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पेसा कानून (PESA Act, 1996) के तहत आदिवासी क्षेत्रों की किस लोकतांत्रिक संस्था को संप्रभु, व्यापक और सर्वोच्च शक्तियां प्रदान की गई हैं, ताकि वे अपनी पारंपरिक संस्कृति और जल, जंगल, जमीन की रक्षा कर सकें?","question_en":"Question 11: Under the PESA Act (1996), which democratic institution in tribal areas is granted sovereign, comprehensive, and supreme powers to protect their traditional culture and land, forest, and water resources?","options":[{"hi":"जिला पंचायत","en":"Zila Panchayat"},{"hi":"ग्राम सभा","en":"Gram Sabha"},{"hi":"मंडल पंचायत","en":"Mandal Panchayat"},{"hi":"ब्लॉक विकास समिति","en":"Block Development Committee"}],"answer":1,"explanation_hi":"पेसा कानून के तहत 'ग्राम सभा' (Gram Sabha) को आदिवासी अनुसूचित क्षेत्रों में सवाधिक संप्रभु शक्तियां दी गई हैं, जिससे स्थानीय आदिवासी लोग अपनी संस्कृति और प्राकृतिक संसाधनों की सुरक्षा स्वयं कर सकें।","explanation_en":"Under the PESA Act, the 'Gram Sabha' is endowed with supreme and sovereign powers in tribal Scheduled Areas to protect community resources, local traditions, and customs from external exploitation."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संवैधानिक प्रावधान के अनुसार, प्रत्येक जिले में पंचायतों और नगरपालिकाओं द्वारा तैयार की गई योजनाओं को समेकित करने के लिए गठित होने वाली 'जिला योजना समिति' (DPC - अनुच्छेद 243ZD) के कितने प्रतिशत सदस्य जिले की पंचायतों और नगरपालिकाओं के निर्वाचित सदस्यों द्वारा स्वयं में से चुने जाने अनिवार्य हैं?","question_en":"Question 12: According to constitutional provisions, what percentage of members of the 'District Planning Committee' (DPC - Article 243ZD), formed to consolidate plans prepared by panchayats and municipalities in each district, must be elected from and by the elected members of the district's panchayats and municipalities?","options":[{"hi":"कम से कम 50 प्रतिशत","en":"Minimum 50 percentage"},{"hi":"कम से कम 66 प्रतिशत (दो-तिहाई)","en":"Minimum 66 percentage (two-thirds)"},{"hi":"कम से कम 80 प्रतिशत (चार-तिहाई या 4/5)","en":"Minimum 80 percentage (four-fifths)"},{"hi":"शत-प्रतिशत (100 प्रतिशत)","en":"Hundred percentage (100 percentage)"}],"answer":2,"explanation_hi":"अनुच्छेद 243ZD के अनुसार, जिला योजना समिति (DPC) के कम से कम 4/5 (अथात 80 प्रतिशत) सदस्य जिला पंचायत और नगरपालिकाओं के निर्वाचित सदस्यों द्वारा अपने बीच में से ही चुने जाने अनिवार्य हैं।","explanation_en":"According to Article 243ZD, at least four-fifths (80 percentage) of the members of the District Planning Committee (DPC) must be elected by and from among the elected members of the district panchayat and urban municipalities."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"73वें संविधान संशोधन अधिनियम, 1992 के तहत देश भर में त्रि-स्तरीय पंचायती राज व्यवस्था स्थापित की गई है। परंतु, इस अधिनियम के किस अपवाद के तहत कम जनसंख्या वाले राज्यों को मध्यवर्ती स्तर (Block Level) पर पंचायत का गठन न करने की छूट दी गई है?","question_en":"Question 13: Under the 73rd Constitutional Amendment Act of 1992, a three-tier Panchayati Raj system was established nationwide. However, under what exception are states with smaller populations exempted from constituting panchayats at the intermediate (Block) level?","options":[{"hi":"जिन राज्यों की जनसंख्या 10 लाख से कम हो","en":"States having a population of less than 10 lakhs"},{"hi":"जिन राज्यों की जनसंख्या 20 लाख से कम हो","en":"States having a population of less than 20 lakhs"},{"hi":"जिन राज्यों की जनसंख्या 30 लाख से कम हो","en":"States having a population of less than 30 lakhs"},{"hi":"जिन राज्यों की जनसंख्या 50 लाख से कम हो","en":"States having a population of less than 50 lakhs"}],"answer":1,"explanation_hi":"अनुच्छेद 243B के अनुसार, जिन राज्यों की कुल जनसंख्या 20 लाख से कम है, वे मध्यवर्ती (ब्लॉक) स्तर पर पंचायतों का गठन न करने के लिए विधिक रूप से स्वतंत्र हैं।","explanation_en":"According to Article 243B, states with a total population of less than 20 lakhs are exempted from the mandatory creation of panchayats at the intermediate (block) level."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उच्चतम न्यायालय (अनुच्छेद 129) और उच्च न्यायालयों (अनुच्छेद 215) को संविधान के तहत 'अभिलेख न्यायालय' (Court of Record) का दर्जा प्राप्त है। इसके दो मुख्य विधिक अर्थों में कौन सा तथ्य शामिल है?","question_en":"Question 14: The Supreme Court (Article 129) and High Courts (Article 215) are designated as 'Courts of Record' under the Constitution. Which of the following is included in the two primary legal meanings of this status?","options":[{"hi":"न्यायालयों के सभी फैसले लिखित रूप में सुरक्षित रखे जाते हैं जो अधीनस्थ अदालतों के लिए कानूनन बाध्यकारी नजीर (Precedent) माने जाते हैं, तथा न्यायालयों को अपनी अवमानना (Contempt of Court) के लिए दंड देने की पूर्ण शक्ति है","en":"All decisions of the courts are preserved in written form, serving as legally binding precedents for subordinate courts, and the courts have full power to punish for their contempt"},{"hi":"न्यायालय केवल राष्ट्रपति के लिखित निर्देशों के अनुसार ही कार्य कर सकते हैं","en":"The courts can only act according to written directives of the President"},{"hi":"अधीनस्थ अदालतों के न्यायाधीशों के तबादलों का लिखित रिकॉर्ड संसद द्वारा रखा जाता है","en":"Written records of transfers of lower court judges are maintained by Parliament"},{"hi":"न्यायालयों को केवल दीवानी (Civil) मामलों के रिकॉर्ड दर्ज करने का अधिकार है, आपराधिक मामलों के नहीं","en":"The courts only have the power to record civil cases, not criminal cases"}],"answer":0,"explanation_hi":"अभिलेख न्यायालय के दो अर्थ हैं: पहला, इसके फैसले भविष्य के संदर्भ के लिए सुरक्षित रखे जाते हैं और उनकी प्रमाणिकता पर अधीनस्थ अदालतों में कोई सवाल नहीं उठाया जा सकता। दूसरा, इन्हें अपनी अवमानना के लिए दंड देने की शक्ति प्राप्त है।","explanation_en":"A Court of Record has two legal components: first, its proceedings and decisions are preserved for perpetual memory and testimony as binding precedents; second, it has the inherent power to punish for its contempt."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अनुच्छेद 143 के तहत राष्ट्रपति को उच्चतम न्यायालय से विधिक राय (Advisory Jurisdiction) मांगने का अधिकार है। इसके तहत उठने वाले दो प्रकार के मामलों में उच्चतम न्यायालय के विधिक उत्तरदायित्व के संदर्भ में कौन सा कथन सही है?","question_en":"Question 15: Under Article 143, the President has the right to seek advisory opinion from the Supreme Court. Which of the following is correct regarding the Supreme Court's legal obligation concerning the two types of matters that may arise under this jurisdiction?","options":[{"hi":"सार्वजनिक महत्व के किसी सामान्य कानून या तथ्य के प्रश्न पर उच्चतम न्यायालय राय देने के लिए बाध्य नहीं है, परंतु स्वतंत्रता-पूर्व की किसी संधि या समझौते से जुड़े विवाद पर राय देना उसके लिए अनिवार्य (Obligatory) है","en":"On general questions of law or fact of public importance, the Supreme Court is not bound to give an opinion, but on disputes arising out of pre-constitutional treaties or agreements, it is mandatory (obligatory) for the court to respond"},{"hi":"उच्चतम न्यायालय दोनों प्रकार के मामलों में राय देने के लिए पूरी तरह बाध्य है","en":"The Supreme Court is fully bound to give an opinion in both types of cases"},{"hi":"उच्चतम न्यायालय किसी भी स्थिति में राष्ट्रपति को राय देने से इनकार नहीं कर सकता","en":"Under no circumstance can the Supreme Court refuse to advise the President"},{"hi":"स्वतंत्रता-पूर्व के मामलों पर उच्चतम न्यायालय राय देने से मना कर सकता है, लेकिन नए मामलों पर नहीं","en":"The Supreme Court can refuse to advise on pre-constitutional matters, but not on new matters"}],"answer":0,"explanation_hi":"अनुच्छेद 143(1) के तहत सार्वजनिक महत्व के प्रश्नों पर उच्चतम न्यायालय राय देने से मना कर सकता है (जैसे राम जन्मभूमि मामले में किया था)। परंतु, अनुच्छेद 143(2) के तहत पूर्व-संवैधानिक संधियों से जुड़े विवादों पर उच्चतम न्यायालय को अनिवार्य रूप से राय देनी होती है, हालांकि यह राय राष्ट्रपति के लिए केवल सलाह मात्र होती है।","explanation_en":"Under Article 143(1) regarding general matters of public importance, the Supreme Court may refuse to give an opinion. Under Article 143(2) regarding pre-constitutional treaties/agreements, it is obligatory for the Supreme Court to deliver its opinion, though it remains non-binding."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस ऐतिहासिक मुकदमे में उच्चतम न्यायालय ने यह सिद्धांत प्रतिपादित किया कि 'भारतीय संविधान की नींव मौलिक अधिकारों (भाग-III) और राज्य के नीति निदेशक सिद्धांतों (भाग-IV) के बीच संतुलन' पर टिकी है, जो एक रथ के दो पहियों के समान हैं?","question_en":"Question 16: In which landmark case did the Supreme Court formulate the principle that 'the bedrock of the Indian Constitution lies in the harmony and balance between Fundamental Rights (Part-III) and Directive Principles (Part-IV)', comparing them to two wheels of a chariot?","options":[{"hi":"केशवानंद भारती बनाम केरल राज्य (1973)","en":"Kesavananda Bharati v. State of Kerala (1973)"},{"hi":"चंपकम दोराइराजन बनाम मद्रास राज्य (1951)","en":"Champakam Dorairajan v. State of Madras (1951)"},{"hi":"मिनर्वा मिल्स बनाम भारत संघ (1980)","en":"Minerva Mills v. Union of India (1980)"},{"hi":"सज्जन सिंह बनाम राजस्थान राज्य (1965)","en":"Sajjan Singh v. State of Rajasthan (1965)"}],"answer":2,"explanation_hi":"मिनर्वा मिल्स मामले (1980) में न्यायालय ने यह सुप्रसिद्ध सिद्धांत दिया कि मौलिक अधिकार और नीति निदेशक तत्व दोनों एक रथ के दो पहियों के समान हैं, और एक को दूसरे पर पूर्ण सर्वोच्चता देना संविधान के मूल ढांचे को नष्ट करना होगा।","explanation_en":"In the Minerva Mills case (1980), the Supreme Court ruled that the Constitution is founded on the bedrock of harmony and balance between Part III and Part IV, and giving absolute primacy to one over the other destroys the basic structure."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"25वें संविधान संशोधन अधिनियम (1971) के तहत जोड़े गए अनुच्छेद 31C के अनुसार, किन दो समाजवादी नीति निदेशक तत्वों को प्रभावी करने के लिए संसद द्वारा बनाए गए कानूनों को इस आधार पर अमान्य घोषित नहीं किया जा सकता कि वे अनुच्छेद 14 और 19 का उल्लंघन करते हैं?","question_en":"Question 17: According to Article 31C added by the 25th Constitutional Amendment Act (1971), laws made by Parliament to implement which two socialistic Directive Principles cannot be declared invalid on the ground that they violate Articles 14 and 19?","options":[{"hi":"अनुच्छेद 39(b) और 39(c) (भौतिक संसाधनों का उचित वितरण और धन के संकेंद्गीकरण पर रोक)","en":"Articles 39(b) and 39(c) (fair distribution of material resources and prevention of concentration of wealth)"},{"hi":"अनुच्छेद 40 और 43 (ग्राम पंचायतें और कुटीर उद्योग)","en":"Articles 40 and 43 (Gram Panchayats and cottage industries)"},{"hi":"अनुच्छेद 45 और 48A (मुफ्त शिक्षा और पर्यावरण संरक्षण)","en":"Articles 45 and 48A (free education and environmental protection)"},{"hi":"अनुच्छेद 38 और 46 (असमानताओं को कम करना और कमजोर वर्गों का संरक्षण)","en":"Articles 38 and 46 (minimizing inequalities and protecting weaker sections)"}],"answer":0,"explanation_hi":"अनुच्छेद 31C यह असाधारण अपवाद प्रदान करता है कि अनुच्छेद 39(b) और 39(c) में दिए गए लोक कल्याणकारी लक्ष्यों को पूरा करने के लिए बने कानून मौलिक अधिकार अनुच्छेद 14 (समता) और 19 (स्वतंत्रता) के उल्लंघन के आधार पर रद्द नहीं होंगे।","explanation_en":"Article 31C provides an extraordinary exception stating that laws enacted to realize the socialistic goals under Articles 39(b) and 39(c) cannot be struck down even if they partially encroach upon the fundamental rights in Articles 14 and 19."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान के अनुच्छेद 12 के तहत केंदीय व राज्य विधायिका और स्थानीय निकायों को 'राज्य' (State) की श्रेणी में रखा गया है। इसके अंतर्गत न्यायपालिका (Judiciary) की विधिक स्थिति के संदर्भ में कौन सा कथन सही है?","question_en":"Question 18: Under Article 12 of the Constitution, central and state legislatures and local bodies are classified under the definition of 'State'. Which of the following is correct regarding the legal status of the Judiciary under this definition?","options":[{"hi":"न्यायपालिका को सभी परिस्थितियों में पूर्णतः राज्य माना जाता है","en":"The judiciary is considered 'State' under all circumstances"},{"hi":"न्यायपालिका को किसी भी परिस्थिति में राज्य नहीं माना जाता","en":"The judiciary is never considered 'State' under any circumstance"},{"hi":"जब न्यायपालिका प्रशासनिक या नियम बनाने वाले कार्य करती है, तो वह राज्य के दायरे में आती है, परंतु न्यायिक निर्णय देते समय वह अनुच्छेद 12 के तहत राज्य नहीं मानी जाती","en":"When the judiciary performs administrative or rule-making functions, it falls under the purview of 'State', but while delivering judicial decisions, it is not considered 'State' under Article 12"},{"hi":"न्यायपालिका केवल तभी राज्य मानी जाती है जब वह केंदीय बजट के लिए वित्तीय लेखांकन करती है","en":"The judiciary is considered 'State' only when it performs financial accounting for the Central budget"}],"answer":2,"explanation_hi":"अनुच्छेद 12 के तहत न्यायपालिका के संबंध में यह स्पष्ट किया गया है कि प्रशासनिक या नियम बनाने वाले कार्यों में न्यायपालिका 'राज्य' है। परंतु जब वह विशुद्ध न्यायिक निर्णय (Judicial Adjudication) देती है, तब वह राज्य नहीं मानी जाती।","explanation_en":"In the context of Article 12, when the judiciary performs administrative or quasi-legislative tasks, it qualifies as 'State'. However, when it acts in its core judicial/adjudicative capacity, it does not fall under the definition of 'State'."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गोलकनाथ मामले (1967) के प्रभाव को समाप्त करने के लिए संसद ने किस संविधान संशोधन द्वारा अनुच्छेद 13(4) जोड़कर घोषित किया था कि संविधान संशोधनों को अनुच्छेद 13 के तहत 'कानून' (Law) के विधिक दायरे से बाहर रखा गया है?","question_en":"Question 19: To neutralize the impact of the Golaknath case (1967), through which constitutional amendment did Parliament add Article 13(4) to declare that constitutional amendments are placed outside the legal definition of 'Law' under Article 13?","options":[{"hi":"24वां संशोधन (1971)","en":"24th Amendment (1971)"},{"hi":"25वां संशोधन (1971)","en":"25th Amendment (1971)"},{"hi":"42वां संशोधन (1976)","en":"42nd Amendment (1976)"},{"hi":"44वां संशोधन (1978)","en":"44th Amendment (1978)"}],"answer":0,"explanation_hi":"वर्ष 1971 में संसद ने 24वां संविधान संशोधन पारित कर अनुच्छेद 13(4) जोड़ा, जिसमें घोषित किया गया कि संविधान संशोधन अनुच्छेद 13 के दायरे से बाहर है। हालांकि, केशवानंद भारती मामले (1973) में न्यायालय ने इसे स्वीकार किया लेकिन 'मूल ढांचे' का सिद्धांत लागू कर दिया।","explanation_en":"Through the 24th Amendment in 1971, Article 13(4) was added to ensure that constitutional amendments under Article 368 are not treated as 'law' under Article 13, in order to circumvent the Golaknath ruling."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान का अनुच्छेद 27 किसी विशेष धर्म को बढ़ावा देने के लिए 'कर' (Taxes) लगाने पर रोक लगाता है। इस संदर्भ में 'कर' (Tax) और 'शुल्क' (Fee) के विधिक अंतर के आधार पर निम्नलिखित में से क्या विधिक रूप से वैध है?","question_en":"Question 20: Article 27 of the Constitution prohibits the imposition of 'Taxes' to promote any specific religion. In this context, based on the legal distinction between 'Taxes' and 'Fees', which of the following is legally valid?","options":[{"hi":"राज्य द्वारा किसी विशिष्ट धर्म के प्रसार के लिए सीधे अनिवार्य कर वसूलना","en":"Direct collection of compulsory taxes by the State to propagate a specific religion"},{"hi":"राज्य द्वारा धार्मिक मेलों या तीर्थयात्राओं (जैसे कुंभ मेला या अमरनाथ यात्रा) में तीर्थयात्रियों की सुरक्षा, स्वास्थ्य और स्वच्छता सुनिश्चित करने के लिए 'शुल्क' (Fee) लेना","en":"Imposition of a 'Fee' by the State on pilgrims to provide services like security, health, and sanitation during religious fairs or pilgrimages (such as Kumbh Mela or Amarnath Yatra)"},{"hi":"राज्य द्वारा धार्मिक पूजा स्थलों की जमीनों को पूरी तरह से जब्त करना","en":"Total confiscation of religious worship lands by the State"},{"hi":"राज्य द्वारा सभी नागरिकों के लिए समान धार्मिक कर लागू करना","en":"Uniform application of a religious tax on all citizens by the State"}],"answer":1,"explanation_hi":"अनुच्छेद 27 केवल 'कर' (Tax) लगाने पर रोक लगाता है, 'शुल्क' (Fee) पर नहीं। शुल्क सेवा के बदले लिया जाता है, इसलिए कुंभ मेला या तीर्थयात्राओं में सुविधाओं, सुरक्षा और स्वास्थ्य के लिए शुल्क वसूलना विधिक रूप से पूरी तरह वैध है।","explanation_en":"Article 27 only prohibits the levy of a tax, not a fee. A fee can be collected for rendering a service, which is why charging fees for providing safety, sanitation, and health amenities during pilgrimages like Kumbh or Amarnath is legally valid."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय ध्वज और राष्ट्रगान का सम्मान मौलिक कर्तव्य (अनुच्छेद 51A(a)) है। वर्ष 1986 के प्रसिद्ध 'बिजोय इमैनुएल बनाम केरल राज्य' मामले में राष्ट्रगान के संबंध में उच्चतम न्यायालय ने क्या ऐतिहासिक विधिक निर्णय दिया था?","question_en":"Question 21: Respect for the National Flag and National Anthem is a fundamental duty (Article 51A(a)). In the famous 'Bijoe Emmanuel v. State of Kerala' case of 1986, what landmark legal decision did the Supreme Court deliver concerning the National Anthem?","options":[{"hi":"सभी नागरिकों को प्रत्येक परिस्थिति में राष्ट्रगान गाना अनिवार्य है","en":"Singing the national anthem is mandatory for all citizens under all circumstances"},{"hi":"राष्ट्रगान के समय केवल खड़े रहना ही पर्याप्त सम्मान है, अपने धार्मिक विश्वासों के कारण राष्ट्रगान गाने के लिए किसी को विवश करना उसकी व्यक्तिगत स्वतंत्रता का हनन होगा","en":"Standing silently during the national anthem is sufficient respect, and forcing someone to sing against their religious beliefs violates their personal liberty"},{"hi":"राष्ट्रगान न गाने वाले व्यक्तियों को देश से निष्कासित कर देना चाहिए","en":"Persons refusing to sing the national anthem should be deported"},{"hi":"स्कूलों में धार्मिक प्रार्थनाएं और राष्ट्रगान दोनों पर पूर्ण प्रतिबंध है","en":"Both religious prayers and the national anthem are completely banned in schools"}],"answer":1,"explanation_hi":"बिजोय इमैनुएल मामले में यहोवा के साक्षी (Jehovah's Witnesses) संप्रदाय के बच्चों को वापस स्कूल में शामिल करने का आदेश देते हुए न्यायालय ने निर्णय दिया कि राष्ट्रगान के समय सम्मानपूर्वक मौन खड़े रहना अनादर नहीं है और उन्हें गाने के लिए मजबूर करना व्यक्तिगत स्वतंत्रता का उल्लंघन है।","explanation_en":"In the Bijoe Emmanuel case, ordering the reinstatement of Jehovah's Witnesses children, the Supreme Court ruled that standing respectfully and silently during the national anthem is sufficient respect, and forcing someone to sing violates their fundamental right to freedom of conscience."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पियरे बोर्दो (Pierre Bourdieu) के स्वाद और खान-पान संबंधी समाजशास्त्रीय विश्लेषण के अनुसार, हमारे खाने-पीने की आदतें, पसंद-नापसंद और स्वाद जन्मजात नहीं होते, बल्कि हमारे किस सामाजिक परिवेश और वर्ग-आधारित पालन-पोषण की प्रणाली से तय होते हैं?","question_en":"Question 22: According to Pierre Bourdieu's sociological analysis of taste and food preferences, our eating habits, likes-dislikes, and taste are not innate, but are determined by which of our social environment and class-based upbringing systems?","options":[{"hi":"बायो-पॉवर (जैव-सत्ता)","en":"Bio-power"},{"hi":"हैबिटस (Habitus)","en":"Habitus"},{"hi":"अनौपचारिक नियंत्रण","en":"Informal Control"},{"hi":"चिकित्सीय बहुलवाद","en":"Medical Pluralism"}],"answer":1,"explanation_hi":"पियरे बोर्दो ने अपनी पुस्तक 'Distinction' में खान-पान और वर्ग के संबंध का विश्लेषण करते हुए 'हैबिटस' (Habitus) की अवधारणा दी, जो यह बताती है कि हमारी पसंद-नापसंद हमारे सामाजिक परिवेश और वर्ग से निर्धारित होती है।","explanation_en":"In his book 'Distinction', Pierre Bourdieu introduced the concept of 'Habitus' to show that our preferences, tastes, and lifestyle habits are socio-culturally structured and inherited from our class-based social environment."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय जाति व्यवस्था के अंतर्गत खान-पान और पदानुक्रम के पारंपरिक सामाजिक नियमों के तहत किस भोजन को पारंपरिक रूप से क्षत्रियों या शासक वर्ग का भोजन माना गया, जिसमें अत्यधिक ऊर्जा और शक्ति का संचय माना जाता था?","question_en":"Question 23: Under the traditional social rules of food and hierarchy in the Indian caste system, which food was traditionally considered the food of Kshatriyas or the ruling class, associated with high energy and power?","options":[{"hi":"सात्त्विक भोजन","en":"Sattvik Food"},{"hi":"राजसिक भोजन","en":"Rajsik Food"},{"hi":"तामसिक भोजन","en":"Tamsik Food"},{"hi":"शाकाहारी सादा भोजन","en":"Plain Vegetarian Food"}],"answer":1,"explanation_hi":"जातिगत खान-पान के तहत भोजन को तीन श्रेणियों में बांटा गया है: ब्राह्मणों का सात्त्विक भोजन (शुद्धतम), क्षत्रियों का राजसिक भोजन (ऊर्जा व मसालों से युक्त) और दलितों का तामसिक भोजन (बासी, मांस, शराब)।","explanation_en":"Under caste-based dietary classifications, food is divided into three states: Sattvik (pure, associated with Brahmins), Rajsik (energy-rich and spicy, associated with Kshatriyas), and Tamsik (stale, meat, or alcohol, associated with lower castes)."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में स्वच्छता और स्वास्थ्य जोखिमों के संदर्भ में 'मैन्युअल स्केवेंजिंग' (हाथ से मैला उठाना) का गंभीर मुद्दा सीधे तौर पर किन दो सामाजिक पहलुओं के विनाशकारी अंतःप्रतिच्छेदन (Intersection) को दर्शाता है?","question_en":"Question 24: In the context of sanitation and health risks in India, the serious issue of 'Manual Scavenging' (hand-carrying of human excreta) directly illustrates the devastating intersection of which two social aspects?","options":[{"hi":"शहरीकरण की तीव्र गति और आधुनिक जीवनशैली का तनाव","en":"Rapid pace of urbanization and modern lifestyle stress"},{"hi":"औद्योगिक कारखानों से निकलने वाला रासायनिक प्रदूषण और गरीबी","en":"Chemical pollution from industrial factories and poverty"},{"hi":"जाति-आधारित श्रम विभाजन और अत्यधिक गंभीर त्वचा एवं श्वसन संबंधी स्वास्थ्य जोखिम","en":"Caste-based division of labor and severe skin and respiratory health risks"},{"hi":"केवल महिलाओं के रोजगार की कमी और कुपोषण","en":"Only lack of employment for women and malnutrition"}],"answer":2,"explanation_hi":"हाथ से मैला उठाने (Manual Scavenging) का अमानवीय कार्य जातिगत संस्तरण (अछूत प्रथा) से बंधा हुआ है, जो श्रमिकों को अत्यधिक गंभीर गैसों के संपर्क में लाकर त्वचा और श्वसन रोगों जैसे घातक स्वास्थ्य जोखिमों में धकेलता है।","explanation_en":"Manual scavenging represents a direct intersection of caste-based social stratification (where lower castes are forced into this work) and severe somatic health hazards (dermatological and respiratory diseases due to toxic sewer gases)."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"स्वास्थ्य शिक्षा और व्यावहारिक सामाजिक मनोविज्ञान के सिद्धांतों के तहत, किसी समुदाय के स्वास्थ्य व्यवहार का मूल्यांकन करने के लिए उपयोग किया जाने वाला प्रसिद्ध 'KAP' मॉडल का पूर्ण रूप क्या है?","question_en":"Question 25: Under the principles of health education and practical social psychology, what is the full form of the famous 'KAP' model used to evaluate the health behavior of a community?","options":[{"hi":"Knowledge, Attitude, and Practice (ज्ञान, दृष्टिकोण और अभ्यास)","en":"Knowledge, Attitude, and Practice"},{"hi":"Kinship, Association, and Population (नातेदारी, संघ और जनसंख्या)","en":"Kinship, Association, and Population"},{"hi":"Kidney, Anemia, and Pediatrics (गुर्दा, रक्तअल्पता और बाल चिकित्सा)","en":"Kidney, Anemia, and Pediatrics"},{"hi":"Kala-azar, Asthma, and Polio (कालाजार, अस्थमा और पोलियो)","en":"Kala-azar, Asthma, and Polio"}],"answer":0,"explanation_hi":"स्वास्थ्य व्यवहार के मापन के लिए 'KAP' का अर्थ 'Knowledge' (ज्ञान), 'Attitude' (दृष्टिकोण या मनोवृत्ति) और 'Practice' (अभ्यास या व्यावहारिक आचरण) है, जो यह मापता है कि लोग स्वास्थ्य संदेशों को कैसे समझते और जीवन में लागू करते हैं।","explanation_en":"In public health and social psychology studies, 'KAP' stands for Knowledge, Attitude, and Practice, which evaluates what communities know, how they feel, and what actions they perform regarding health behaviors."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
