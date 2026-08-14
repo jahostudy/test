@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  
+  .match-tbl{width:100%;border-collapse:collapse;margin:10px 0 4px}
+  .match-tbl th,.match-tbl td{border:1px solid #d8eaff;padding:8px 11px;text-align:left;vertical-align:top;font-size:.93em}
+  .match-tbl th{color:var(--navy);font-weight:950;font-size:.82em;letter-spacing:.5px;background:#eaf3ff}
+  .qtext-en .match-tbl th{color:#475569;background:#f1f5fb}
+  .lang-seg{display:inline-flex;background:#eef4fc;border:1px solid #d8eaff;border-radius:10px;padding:3px;gap:2px}
+  .lang-b{font-family:inherit;font-size:12.5px;font-weight:900;color:#5b6a83;background:transparent;border:0;
+    border-radius:8px;padding:5px 13px;cursor:pointer;transition:.15s}
+  .lang-b.on{background:linear-gradient(135deg,var(--royal),#0f6fd0);color:#fff}
+  .lang-choose{display:flex;align-items:center;gap:10px;margin:12px 0 0;flex-wrap:wrap}
+  .lc-label{font-size:13px;color:var(--muted);font-weight:900}
+
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="lang-choose"><span class="lc-label">पढ़ने की भाषा:</span><div class="lang-seg" id="coverLang"></div></div><div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap"><div class="topic" id="topic">Topic</div><div class="lang-seg" id="qLang"></div></div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title": "LOWER PCS Test 3", "highlight": "LOWER PCS Test 3", "shortTitle": "LOWER PCS Test 3", "subtitle": "UPPCS Prelims 2026 / RO-ARO • GS Test", "tag": "UPPCS Prelims 2026 / RO-ARO", "pill": "🏆 Live Daily Rank • Jai Ho Study", "description": "UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।", "durationMinutes": 25, "marksPerQuestion": 2.0, "negativeMarks": 0.66, "testId": "jaiho-uppcs-2026-gs-test-lower-pcs-test-3-20260814-ba94n", "footerCredit": "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com", "rankingEnabled": true, "firebaseConfig": {"apiKey": "AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I", "authDomain": "jai-ho-1c1d7.firebaseapp.com", "projectId": "jai-ho-1c1d7", "storageBucket": "jai-ho-1c1d7.firebasestorage.app", "messagingSenderId": "472878277527", "appId": "1:472878277527:web:a62780ddadf60fd5e5dad2", "measurementId": "G-LV29VGHG6J"}, "publishDateStr": "2026-08-14", "questions": [{"id": 1, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कश्मीर में डोगरा राजवंश (Dogra Dynasty) का शासनकाल कब से कब तक रहा, जिसके अंतिम महाराजा हरि सिंह थे?", "question_en": "What was the period of reign of the Dogra Dynasty in Kashmir, whose last ruling Maharaja was Hari Singh?", "options": [{"hi": "वर्ष 1846 से 1947 तक", "en": "Year 1846 to 1947"}, {"hi": "वर्ष 1819 से 1947 तक", "en": "Year 1819 to 1947"}, {"hi": "वर्ष 1857 से 1950 तक", "en": "Year 1857 to 1950"}, {"hi": "वर्ष 1802 से 1947 तक", "en": "Year 1802 to 1947"}], "answer": 0, "explanation_hi": "कश्मीर में डोगरा राजवंश ने वर्ष 1846 से 1947 तक शासन किया, जब महाराजा हरि सिंह ने कश्मीर के विलय के समय भारत को सौंपा।", "explanation_en": "The Dogra Dynasty ruled Kashmir from the year 1846 to 1947, when Maharaja Hari Singh signed the accession to India."}, {"id": 2, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "अनुसंधान नेशनल रिसर्च फाउंडेशन (ANRF) अधिनियम, 2023 के तहत स्थापित किए गए इस फाउंडेशन के शासी निकाय (Governing Board) के पदेन अध्यक्ष (President) कौन होते हैं?", "question_en": "Who is the ex-officio President of the Governing Board of the Anusandhan National Research Foundation (ANRF) established under the ANRF Act, 2023?", "options": [{"hi": "केंद्रीय विज्ञान एवं प्रौद्योगिकी मंत्री", "en": "The Union Minister of Science and Technology"}, {"hi": "भारत सरकार के प्रधान वैज्ञानिक सलाहकार (PSA)", "en": "The Principal Scientific Adviser (PSA) to the Government of India"}, {"hi": "विश्वविद्यालय अनुदान आयोग (UGC) के अध्यक्ष", "en": "The Chairman of the University Grants Commission (UGC)"}, {"hi": "भारत के प्रधानमंत्री", "en": "The Prime Minister of India"}], "answer": 3, "explanation_hi": "ANRF अधिनियम 2023 के तहत स्थापित इस फाउंडेशन के पदेन अध्यक्ष भारत के प्रधानमंत्री होते हैं, तथा केंद्रीय विज्ञान एवं प्रौद्योगिकी मंत्री व शिक्षा मंत्री इसके उपाध्यक्ष होते हैं।", "explanation_en": "Under the ANRF Act 2023, the Prime Minister of India serves as the ex-officio President, while the Union Minister of S&T and the Minister of Education serve as Vice Presidents."}, {"id": 3, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "दूरसंचार विभाग की किस अनूठी तकनीकी पहल को प्रतिष्ठित 'सूचना समाज पर विश्व शिखर सम्मेलन' (WSIS) पुरस्कार 2026 के लिए 'एक्शन लाइन AL C6: पर्यावरण को सक्षम करना' (Enabling Environment) श्रेणी के अंतर्गत नामांकित किया गया है?", "question_en": "Which unique technical initiative of the Department of Telecommunications has been nominated for the prestigious 'World Summit on the Information Society' (WSIS) Award 2026 under the category 'Action Line AL C6: Enabling Environment'?", "options": [{"hi": "डिजिटल ग्रामः 5जी कनेक्टिविटी मॉडल", "en": "Digital Gram: 5G connectivity model"}, {"hi": "समृद्ध ग्रामः भारतनेट द्वारा समर्थित एकीकृत फिजीटल (Phygital) सेवा वितरण मॉडल", "en": "Samridhi Gram: Integrated Phygital service delivery model supported by BharatNet"}, {"hi": "ग्राम तरंगः राष्ट्रीय ब्रॉडबैंड मिशन 2026", "en": "Gram Tarang: National Broadband Mission 2026"}, {"hi": "भारतनेट सुदूर कनेक्टिविटी और सशक्तिकरण ढांचा", "en": "BharatNet remote connectivity and empowerment framework"}], "answer": 1, "explanation_hi": "इस 'समृद्ध ग्राम' मॉडल के तहत भारतनेट के उच्च गति वाले ब्रॉडबैंड बुनियादी ढांचे का उपयोग करके अंतिम छोर के गांवों तक सरकारी सेवाओं, स्वास्थ्य, शिक्षा और वित्तीय समावेशन को सुलभ बनाया जा रहा है।", "explanation_en": "Under this 'Samridhi Gram' model, government services, healthcare, education, and financial inclusion are made accessible to last-mile villages using BharatNet's high-speed broadband infrastructure."}, {"id": 4, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "निम्नलिखित कथनों पर विचार करें: कथन 1: योकोहामा रणनीति वर्ष 1994 में जापान में आयोजित की गई थी। कथन 2: ह्योगो फ्रेमवर्क की अवधि वर्ष 2015 से 2030 तक थी।", "question_en": "Consider the following statements: Statement 1: The Yokohama Strategy was held in Japan in the year 1994. Statement 2: The duration of the Hyogo Framework was from the year 2015 to 2030.", "options": [{"hi": "केवल कथन 1 सही है", "en": "Only Statement 1 is correct"}, {"hi": "केवल कथन 2 सही है", "en": "Only Statement 2 is correct"}, {"hi": "कथन 1 और 2 दोनों सही हैं", "en": "Both Statement 1 and 2 are correct"}, {"hi": "कोई भी कथन सही नहीं है", "en": "Neither Statement 1 nor 2 is correct"}], "answer": 0, "explanation_hi": "योकोहामा रणनीति वर्ष 1994 में हुई थी, जबकि ह्योगो फ्रेमवर्क की अवधि वर्ष 2005-2015 थी और सेन्दाई की 2015-2030 है।", "explanation_en": "Yokohama Strategy took place in 1994, while the Hyogo Framework period was 2005-2015 and Sendai is 2015-2030."}, {"id": 5, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "हिंदी वर्णमाला में 'व' ध्वनि का उच्चारण स्थान क्या है?", "question_en": "What is the pronunciation place of the sound 'va' in the Hindi alphabet?", "options": [{"hi": "कंठोष्ठ्य", "en": "Kanthoshthya"}, {"hi": "मूर्धन्य", "en": "Murdhanya"}, {"hi": "तालव्य", "en": "Talavya"}, {"hi": "दंतोष्ठ्य", "en": "Dantoshthya"}], "answer": 3, "explanation_hi": "'व' और 'फ़' दंतोष्ठ्य वर्ण हैं, जिनका उच्चारण दाँत और होंठ के सहयोग से होता है।", "explanation_en": "'va' and 'fa' are Dantoshthya characters, which are pronounced with the help of teeth and lips."}, {"id": 6, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "रामसर आर्द्रभूमि स्थल के रूप में अंतरराष्ट्रीय पहचान रखने वाली प्रसिद्ध 'बखिरा झील' उत्तर प्रदेश के किस जिले में अवस्थित है?", "question_en": "In which district of Uttar Pradesh is the famous 'Bakhira Lake' located, which holds international recognition as a protected Ramsar wetland site?", "options": [{"hi": "गोंडा", "en": "Gonda"}, {"hi": "इटावा", "en": "Itawah"}, {"hi": "उन्नाव", "en": "Unnao"}, {"hi": "संतकबीर नगर", "en": "Sant Kabir Nagar"}], "answer": 3, "explanation_hi": "बखिरा झील और पक्षी विहार संतकबीर नगर जिले में स्थित है, जो पूर्वी उत्तर प्रदेश की एक बड़ी प्राकृतिक मीठे पानी की झील है।", "explanation_en": "Bakhira Lake and Wildlife Sanctuary is located in Sant Kabir Nagar district, representing a major natural freshwater wetland of eastern UP."}, {"id": 7, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पर्सनल एरिया नेटवर्क (PAN) बनाने वाली लघु तरंग रेडियो तकनीक 'ब्लूटूथ' (Bluetooth) का आईईईई (IEEE) मानक कोड क्या है?", "question_en": "What is the standard IEEE code for 'Bluetooth' technology utilized in creating Personal Area Network (PAN) systems?", "options": [{"hi": "IEEE 802.11", "en": ""}, {"hi": "IEEE 802.15.1", "en": ""}, {"hi": "IEEE 802.3", "en": ""}, {"hi": "IEEE 802.16", "en": ""}], "answer": 1, "explanation_hi": "ब्लूटूथ का तकनीकी आईईईई मानक 802.15.1 है, जबकि वाई-फाई का 802.11 और ईथरनेट का 802.3 है।", "explanation_en": "The standard IEEE code for Bluetooth is IEEE 802.15.1, while Wi-Fi is 802.11 and Ethernet is 802.3."}, {"id": 8, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "डेटा विश्वसनीयता और गति का सर्वोत्तम संतुलन प्रदान करने वाली लोकप्रिय 'RAID 5' तकनीक स्थापित करने हेतु कम से कम कितनी डिस्क की आवश्यकता अनिवार्य है?", "question_en": "What is the minimum number of disks mandatory to establish the popular 'RAID 5' storage technology, which balances reliability and speed?", "options": [{"hi": "2 डिस्क", "en": "2 disks"}, {"hi": "4 डिस्क", "en": "4 disks"}, {"hi": "3 डिस्क", "en": "3 disks"}, {"hi": "5 डिस्क", "en": "5 disks"}], "answer": 2, "explanation_hi": "RAID 5 तकनीक (स्ट्रिपिंग विथ पैरिटी) को संचालित करने हेतु कम से कम 3 डिस्क होना अनिवार्य है, जिससे एक डिस्क खराब होने पर भी डेटा सुरक्षित रहता है।", "explanation_en": "To run a RAID 5 system (striping with parity), a minimum of 3 disks is mandatory for recovery capabilities."}, {"id": 9, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "हरियाणा के पंचकूला में 6 से 9 दिसंबर 2025 तक आयोजित होने वाले 11वें 'भारत अंतर्राष्ट्रीय विज्ञान महोत्सव' (IISF 2025) का आधिकारिक मुख्य विषय (Theme) क्या निर्धारित किया गया है?", "question_en": "What is the official theme specified for the 11th 'India International Science Festival' (IISF 2025) to be held in Panchkula, Haryana, from December 6 to 9, 2025?", "options": [{"hi": "आत्मनिर्भर भारत और वैश्विक कल्याण के लिए विज्ञान", "en": "Science for Self-Reliant India and Global Welfare"}, {"hi": "विज्ञान से समृद्धिः आत्मनिर्भर भारत के लिए", "en": "Science for Prosperity: For Self-Reliant India"}, {"hi": "अमृत काल में विज्ञान एवं प्रौद्योगिकी, जन संपर्क", "en": "Science and Technology in Amrit Kaal, Public Outreach"}, {"hi": "सतत विकास के लिए विज्ञान, प्रौद्योगिकी और नवाचार", "en": "Science, Technology, and Innovation for Sustainable Development"}], "answer": 1, "explanation_hi": "11वें भारत अंतर्राष्ट्रीय विज्ञान महोत्सव (IISF 2025) का मुख्य विषय 'विज्ञान से समृद्धिः आत्मनिर्भर भारत के लिए' रखा गया है तथा इसके सफल आयोजन की जिम्मेदारी पृथ्वी विज्ञान मंत्रालय को दी गई है।", "explanation_en": "The official theme of the 11th India International Science Festival (IISF 2025) is 'Science for Prosperity: For Self-Reliant India', with MoES responsible for its organization."}, {"id": 10, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत के जैव विविधता बजट 2025-26 के तहत पर्यावरण, वन एवं जलवायु परिवर्तन मंत्रालय (MoEFCC) को कुल कितना बजट आवंटित किया गया है, जो 2024-25 से 9% की वृद्धि दर्शाता है?", "question_en": "Under India's Biodiversity Budget 2025-26, what is the total budget allocated to the Ministry of Environment, Forest, and Climate Change (MoEFCC), representing a 9% increase over 2024-25?", "options": [{"hi": "₹2,500.80 करोड़", "en": "₹2,500.80 crore"}, {"hi": "₹1,500.00 करोड़", "en": "₹1,500.00 crore"}, {"hi": "₹5,000.45 करोड़", "en": "₹5,000.45 crore"}, {"hi": "₹3,412.82 करोड़", "en": "₹3,412.82 crore"}], "answer": 3, "explanation_hi": "बजट 2025-26 के अनुसार, MoEFCC का कुल आवंटन ₹3,412.82 करोड़ है, जिसमें से राजस्व व्यय ₹3,276.82 करोड़ और पूंजीगत व्यय ₹136 करोड़ है।", "explanation_en": "According to the 2025-26 budget, the total allocation for MoEFCC is ₹3,412.82 crore, with revenue expenditure at ₹3,276.82 crore and capital expenditure at ₹136 crore."}, {"id": 11, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पृथ्वी के लिए पलायन वेग (Escape Velocity) का मान कितना निर्धारित है, जिससे कम वेग पर फेंकी गई वस्तु वापस पृथ्वी के गुरुत्वाकर्षण क्षेत्र में गिर जाएगी?", "question_en": "What is the designated value of the escape velocity for Earth, below which any projected object will fall back into Earth's gravitational field?", "options": [{"hi": "11.2 मीटर/सेकंड", "en": "11.2 m/s"}, {"hi": "9.8 किमी/सेकंड", "en": "9.8 km/s"}, {"hi": "11.2 किमी/सेकंड", "en": "11.2 km/s"}, {"hi": "15.0 किमी/सेकंड", "en": "15.0 km/s"}], "answer": 2, "explanation_hi": "पृथ्वी का पलायन वेग वह न्यूनतम वेग है जिससे कोई वस्तु पृथ्वी के गुरुत्वाकर्षण से बाहर चली जाती है और इसका मान 11.2 किमी/सेकंड है।", "explanation_en": "The escape velocity of Earth is the minimum velocity required for an object to escape Earth's gravity, and its value is 11.2 km/s."}, {"id": 12, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "'सुभाष चंद्र बोस आपदा प्रबंधन पुरस्कार' के नियमों के अनुसार, संस्थागत श्रेणी (Institutional Category) के विजेता को कितनी पुरस्कार राशि दी जाती है और उसका उपयोग किस प्रकार किया जा सकता है?", "question_en": "According to the rules of the 'Subhash Chandra Bose Aapda Prabandhan Puraskar', how much prize money is awarded to the institutional category winner, and how can it be utilized?", "options": [{"hi": "₹51 लाख; जिसका उपयोग संस्थान के अधिकारी अपने व्यक्तिगत बोनस के रूप में कर सकते हैं", "en": "₹51 lakh; which can be used by institutional officers as personal bonus"}, {"hi": "₹25 लाख; जिसका उपयोग केवल अनुसंधान परियोजनाओं को प्रायोजित करने में किया जा सकता है", "en": "₹25 lakh; which can be used only to sponsor research projects"}, {"hi": "₹50 लाख; जिसे राज्य के आपदा शमन कोष में जमा करना अनिवार्य है", "en": "₹50 lakh; which must be deposited in the state's disaster mitigation fund"}, {"hi": "₹51 लाख; जिसका उपयोग केवल आपदा प्रबंधन से संबंधित गतिविधियों में किया जा सकता है", "en": "₹51 lakh; which can be utilized only for disaster management related activities"}], "answer": 3, "explanation_hi": "संस्थागत श्रेणी में विजेता संस्थान को ₹51 लाख की नकद राशि दी जाती है, जिसका उपयोग अनिवार्य रूप से केवल आपदा प्रबंधन से संबंधित गतिविधियों में ही किया जा सकता है।", "explanation_en": "In the institutional category, the winning institution receives a cash prize of ₹51 lakh, which must be utilized strictly for disaster management related activities."}, {"id": 13, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "विटामिन A (रेटिनॉल) की कमी के प्राथमिक लक्षण 'रतौंधी' (Nyctalopia) का मुख्य जैविक कारण आँख के रेटिना में किस प्रकाश-संवेदी वर्णक (Pigment) के पुनर्निर्माण का न हो पाना है?", "question_en": "The primary symptom of Vitamin A deficiency, 'Night Blindness' (Nyctalopia), is biologically caused by the failure to reconstruct which light-sensitive pigment in the retina?", "options": [{"hi": "आयोडोप्सिन (Iodopsin)", "en": "Iodopsin"}, {"hi": "मेलानिन (Melanin)", "en": "Melanin"}, {"hi": "रोडोप्सिन (Rhodopsin)", "en": "Rhodopsin"}, {"hi": "केरोटीन (Carotene)", "en": "Carotene"}], "answer": 2, "explanation_hi": "विटामिन A की कमी से रेटिना की 'रॉड' कोशिकाओं में रोडोप्सिन (Rhodopsin) वर्णक का पुनर्निर्माण रुक जाता है, जिससे मंद प्रकाश या रात में दिखना बंद हो जाता है।", "explanation_en": "Vitamin A deficiency halts the resynthesis of Rhodopsin, a pigment in retinal rod cells, leading to impaired vision in dim light (Nyctalopia)."}, {"id": 14, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "शासकीय पत्र में पत्र संख्या के ठीक नीचे बाईं ओर क्या लिखा जाता है?", "question_en": "In an official letter, what is written exactly below the letter number on the left side?", "options": [{"hi": "दिनांक", "en": "Date"}, {"hi": "सेवा में", "en": "To"}, {"hi": "प्रेषक पदाधिकारी का नाम और पदनाम", "en": "Name and designation of the sender officer"}, {"hi": "प्राप्तकर्ता का पदनाम", "en": "Designation of the recipient"}], "answer": 2, "explanation_hi": "शासकीय अथवा सरकारी पत्र में पत्र संख्या के नीचे बाईं ओर भेजने वाले प्रेषक अधिकारी का नाम और पदनाम लिखा जाता है।", "explanation_en": "In an official or government letter, the name and designation of the sender officer is written below the letter number on the left side."}, {"id": 15, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आईबीएम फ्रेमवर्क के अंतर्गत, अत्यंत शक्तिशाली और 'शून्य डाउनटाइम' (Zero Downtime) की विशेषता वाला 64-बिट ऑपरेटिंग सिस्टम 'z/OS' किस कंप्यूटर हेतु डिजाइन किया गया है?", "question_en": "Under the IBM framework, for which type of computers is the highly powerful, 64-bit 'z/OS' operating system with 'Zero Downtime' capability designed?", "options": [{"hi": "सुपरकंप्यूटर (Supercomputers)", "en": "Supercomputers"}, {"hi": "मिनीकंप्यूटर (Minicomputers)", "en": "Minicomputers"}, {"hi": "मेनफ्रेम (Mainframe) कंप्यूटर", "en": "Mainframe Computers"}, {"hi": "माइक्रोप्रोसेसर आधारित पर्सनल कंप्यूटर", "en": "Microprocessor-based Personal Computers"}], "answer": 2, "explanation_hi": "z/OS एक 64-बिट ऑपरेटिंग सिस्टम है जिसे विशेष रूप से भारी डेटा प्रोसेसिंग and शून्य डाउनटाइम हेतु आईबीएम मेनफ्रेम (Mainframe) कंप्यूटरों के लिए बनाया गया है।", "explanation_en": "z/OS is a robust 64-bit operating system designed specifically for IBM Mainframe computers, offering high transaction security and zero downtime."}, {"id": 16, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "उच्चतम न्यायालय के किस ऐतिहासिक वाद में यह निर्णय दिया गया था कि 'उद्देश्यिका (प्रस्तावना) संविधान का भाग नहीं है'?", "question_en": "In which landmark judgment of the Supreme Court was it held that 'The Preamble is not a part of the Constitution'?", "options": [{"hi": "केशवानंद भारती मामला, 1973", "en": "Kesavananda Bharati Case, 1973"}, {"hi": "एल.आई.सी. ऑफ इंडिया मामला, 1995", "en": "L.I.C. of India Case, 1995"}, {"hi": "बेरूबाड़ी संघ मामला, 1960", "en": "Berubari Union Case, 1960"}, {"hi": "गोलकनाथ मामला, 1967", "en": "Golaknath Case, 1967"}], "answer": 2, "explanation_hi": "बेरूबाड़ी वाद (1960) में उद्देशिका को संविधान का भाग नहीं माना गया था, जिसे बाद में केशवानंद भारती वाद (1973) में पलटकर संविधान का अंग स्वीकार किया गया।", "explanation_en": "In the Berubari Case (1960), Preamble was held not to be part of the Constitution, which was later reversed in the Kesavananda Bharati Case (1973)."}, {"id": 17, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय संविधान का कौन-सा विशिष्ट अनुच्छेद प्राथमिक स्तर पर मातृभाषा में शिक्षा की पर्याप्त सुविधाएँ प्रदान करने का निर्देश देता है?", "question_en": "Which specific Article of the Indian Constitution directs the provision of adequate facilities for instruction in the mother-tongue at the primary stage?", "options": [{"hi": "अनुच्छेद 343", "en": "Article 343"}, {"hi": "अनुच्छेद 351", "en": "Article 351"}, {"hi": "अनुच्छेद 350B", "en": "Article 350B"}, {"hi": "अनुच्छेद 350A", "en": "Article 350A"}], "answer": 3, "explanation_hi": "अनुच्छेद 350A प्राथमिक स्तर पर मातृभाषा में शिक्षा की सुविधाओं का प्रावधान करता है, जबकि अनुच्छेद 350B भाषाई अल्पसंख्यकों के लिए विशेष अधिकारी का प्रावधान करता है।", "explanation_en": "Article 350A provides for instruction in mother-tongue at the primary stage, whereas Article 350B provides for a special officer for linguistic minorities."}, {"id": 18, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय मौसम विभाग के मानकों के अनुसार पर्वतीय अथवा पहाड़ी क्षेत्रों में लू (Heat Wave) घोषित करने के लिए न्यूनतम तापमान कितना होना आवश्यक है?", "question_en": "According to the standards of the India Meteorological Department, what must be the minimum temperature to declare a Heat Wave in hilly or mountainous regions?", "options": [{"hi": "25°C अथवा अधिक", "en": "25°C or more"}, {"hi": "28°C अथवा अधिक", "en": "28°C or more"}, {"hi": "35°C अथवा अधिक", "en": "35°C or more"}, {"hi": "30°C अथवा अधिक", "en": "30°C or more"}], "answer": 3, "explanation_hi": "पहाड़ी क्षेत्रों में स्थानीय तापमान 30°C या उससे अधिक होने पर ही लू (हीट वेव) की स्थिति घोषित की जाती है।", "explanation_en": "In hilly regions, a heat wave is declared only when the local temperature reaches 30°C or more."}, {"id": 19, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "बाढ़ नियंत्रण योजनाओं को बनाने और आपदा शमन प्रयासों में मदद करने के लिए 'असम बाढ़ जोखिम क्षेत्रीकरण एटलस' (Assam Flood Hazard Zoning Atlas) को किन दो संस्थाओं ने संयुक्त रूप से विकसित किया है?", "question_en": "Which two entities jointly developed the 'Assam Flood Hazard Zoning Atlas' to aid in formulating flood control schemes and disaster mitigation efforts?", "options": [{"hi": "भारतीय मौसम विज्ञान विभाग (IMD) और केंद्रीय जल आयोग (CWC)", "en": "India Meteorological Department (IMD) and Central Water Commission (CWC)"}, {"hi": "राष्ट्रीय आपदा प्रबंधन प्राधिकरण (NDMA) और भारतीय सेना", "en": "National Disaster Management Authority (NDMA) and Indian Army"}, {"hi": "असम राज्य आपदा प्रबंधन प्राधिकरण (ASDMA) और राष्ट्रीय सुदूर संवेदन केंद्र (ISRO-NRSC)", "en": "Assam State Disaster Management Authority (ASDMA) and ISRO-NRSC"}, {"hi": "आईआईटी गुवाहाटी और नीति आयोग", "en": "IIT Guwahati and NITI Aayog"}], "answer": 2, "explanation_hi": "इस महत्वपूर्ण एटलस को असम राज्य आपदा प्रबंधन प्राधिकरण (ASDMA) और इसरो के राष्ट्रीय सुदूर संवेदन केंद्र (NRSC) ने संयुक्त रूप से पिछले कई दशकों के उपग्रह डेटा का उपयोग करके तैयार किया है।", "explanation_en": "This critical atlas was jointly prepared by the Assam State Disaster Management Authority (ASDMA) and ISRO's National Remote Sensing Centre (NRSC) using satellite data from past decades."}, {"id": 20, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय राष्ट्रीय आंदोलन के प्रसिद्ध नेता सुरेन्द्रनाथ बनर्जी द्वारा लिखित महत्वपूर्ण पुस्तक कौन-सी है?", "question_en": "Which important book was written by the famous Indian National Movement leader Surendranath Banerjee?", "options": [{"hi": "इंडिया विन्स फ्रीडम", "en": "India Wins Freedom"}, {"hi": "ए नेशन इन मेकिंग", "en": "A Nation in Making"}, {"hi": "इंडिया डिवाइडेड", "en": "India Divided"}, {"hi": "हिंद स्वराज", "en": "Hind Swaraj"}], "answer": 1, "explanation_hi": "सुरेन्द्रनाथ बनर्जी ने 'ए नेशन इन मेकिंग' लिखी थी। अबुल कलाम आजाद ने 'इंडिया विन्स फ्रीडम' और राजेंद्र प्रसाद ने 'इंडिया डिवाइडेड' लिखी थी।", "explanation_en": "Surendranath Banerjee wrote 'A Nation in Making'. Abul Kalam Azad authored 'India Wins Freedom' and Rajendra Prasad wrote 'India Divided'."}, {"id": 21, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत के भूकंपीय क्षेत्रों के वर्गीकरण के अनुसार, अत्यधिक उच्च जोखिम वाले 'Zone V' के अंतर्गत कौन सा क्षेत्र प्रमुख रूप से शामिल है?", "question_en": "According to the classification of seismic zones in India, which region is primarily included under the extremely high-risk 'Zone V'?", "options": [{"hi": "पूर्वोत्तर और जम्मू-कश्मीर", "en": "Northeast and Jammu & Kashmir"}, {"hi": "दिल्ली और गंगा के मैदान", "en": "Delhi and Gangetic plains"}, {"hi": "दक्षिणी प्रायद्वीप", "en": "Southern peninsula"}, {"hi": "मध्य भारत के बड़े हिस्से", "en": "Large parts of central India"}], "answer": 0, "explanation_hi": "भारत के अत्यधिक जोखिम वाले भूकंपीय क्षेत्र (ज़ोन V) के अंतर्गत पूर्वोत्तर राज्य, जम्मू-कश्मीर, लद्दाख, हिमाचल प्रदेश, उत्तराखंड, कच्छ और अंडमान-निकोबार शामिल हैं।", "explanation_en": "Under the extremely high-risk seismic Zone V, Northeastern states, Jammu & Kashmir, Ladakh, Himachal Pradesh, Uttarakhand, Kutch, and Andaman & Nicobar are included."}, {"id": 22, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मेमोरी पदानुक्रम (Hierarchy) के अनुसार, सीपीयू प्रोसेसर चिप के बिल्कुल अंदर स्थित सबसे तेज L1 (लेवल 1) कैश मेमोरी का सामान्य आकार कितना होता है?", "question_en": "According to the memory hierarchy, what is the typical size of the fastest L1 (Level 1) cache memory located inside the CPU core?", "options": [{"hi": "256KB से 512KB", "en": "256KB to 512KB"}, {"hi": "1MB से 8MB", "en": "1MB to 8MB"}, {"hi": "2KB से 64KB", "en": "2KB to 64KB"}, {"hi": "16GB से 32GB", "en": "16GB to 32GB"}], "answer": 2, "explanation_hi": "L1 कैश प्रोसेसर कोर के बिल्कुल अंदर होती है जिसकी गति सबसे तेज और आकार सबसे छोटा (आमतौर पर 2KB से 64KB) होता है।", "explanation_en": "L1 cache is integrated directly inside the CPU core, making it the fastest cache layer, with sizes ranging typically from 2KB to 64KB."}, {"id": 23, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय संविधान के विभिन्न भागों के संदर्भ में, संघ-राज्य क्षेत्रों (UTs) के प्रशासन से संबंधित प्रावधान किस भाग में उल्लेखित हैं?", "question_en": "In the context of the various Parts of the Indian Constitution, the provisions relating to the administration of Union Territories (UTs) are mentioned in which Part?", "options": [{"hi": "भाग VI में", "en": "Part VI"}, {"hi": "भाग V में", "en": "Part V"}, {"hi": "भाग VIII में", "en": "Part VIII"}, {"hi": "भाग X में", "en": "Part X"}], "answer": 2, "explanation_hi": "भाग VIII (अनुच्छेद 239-242) संघ-राज्य क्षेत्रों से संबंधित है। भाग V संघ सरकार, भाग VI राज्य सरकारों और भाग IX पंचायतों से संबंधित है।", "explanation_en": "Part VIII (Articles 239-242) deals with Union Territories. Part V deals with the Union, Part VI with States, and Part IX with Panchayats."}, {"id": 24, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "पंचायती राज संस्थाओं में समुदाय आधारित आपदा जोखिम न्यूनीकरण (DRR) पहलों को सुदृढ़ करने के लिए केंद्र सरकार द्वारा स्वीकृत ₹507.37 करोड़ की राष्ट्रीय परियोजना भारत के कुल कितने राज्यों और जिलों में लागू की जा रही है?", "question_en": "In how many total states and districts of India is the ₹507.37 crore national project approved by the central government to strengthen community-based disaster risk reduction (DRR) initiatives in PRIs being implemented?", "options": [{"hi": "15 राज्य और 50 जिले", "en": "15 states and 50 districts"}, {"hi": "20 राज्य और 81 जिले", "en": "20 states and 81 districts"}, {"hi": "28 राज्य और 100 जिले", "en": "28 states and 100 districts"}, {"hi": "12 राज्य and 65 जिले", "en": "12 states and 65 districts"}], "answer": 1, "explanation_hi": "यह समुदाय आधारित आपदा जोखिम न्यूनीकरण परियोजना पूरे भारत के 20 राज्यों के कुल 81 आपदा-प्रवण (Disaster-Prone) जिलों में एक साथ लागू की जा रही है, जिसमें कुल 1,620 ग्राम पंचायतें सीधे कवर होंगी।", "explanation_en": "This community-based disaster risk reduction project is being implemented simultaneously across 81 disaster-prone districts in 20 states of India, directly covering 1,620 Gram Panchayats."}, {"id": 25, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "उत्तर प्रदेश का वह कौन-सा जिला है जो तीन तरफ से मध्य प्रदेश राज्य से घिरा हुआ है और उत्तर प्रदेश की मुख्य भूमि से केवल झाँसी द्वारा जुड़ा है?", "question_en": "Which district of Uttar Pradesh is surrounded on three sides by the state of Madhya Pradesh and is connected to the mainland of UP only by Jhansi?", "options": [{"hi": "सोनभद्र", "en": "Sonbhadra"}, {"hi": "जालौन", "en": "Jalaun"}, {"hi": "ललितपुर", "en": "Lalitpur"}, {"hi": "महोबा", "en": "Mahoba"}], "answer": 2, "explanation_hi": "ललितपुर जिला तीन तरफ से मध्य प्रदेश से घिरा हुआ है और उत्तर प्रदेश के केवल झाँसी जिले से अपनी भूमि सीमा साझा करता है।", "explanation_en": "Lalitpur district is surrounded by Madhya Pradesh on three sides and shares its domestic boundary in UP solely with Jhansi district."}, {"id": 26, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "वर्ष 1963 में निर्मित बहुउद्देशीय रिहंद परियोजना का जलाशय 'गोविंद बल्लभ पंत सागर' भारत की सबसे बड़ी कृत्रिम झीलों में गिना जाता है। यह परियोजना सोनभद्र के किस विशिष्ट स्थान पर स्थित है?", "question_en": "The reservoir 'Govind Ballabh Pant Sagar' of the multipurpose Rihand project, built in 1963, is counted among the largest artificial lakes in India. At which specific location in Sonbhadra is this project situated?", "options": [{"hi": "पिपरी", "en": "Pipri"}, {"hi": "राबर्ट्सगंज", "en": "Robertsganj"}, {"hi": "ओबरा", "en": "Obra"}, {"hi": "चुनार", "en": "Chunar"}], "answer": 0, "explanation_hi": "बहुउद्देशीय रिहंद बाँध परियोजना सोनभद्र जिले के पिपरी नामक स्थान पर रिहंद नदी पर स्थित है, जिसका जलाशय गोविंद बल्लभ पंत सागर कहलाता है।", "explanation_en": "The Rihand Dam project is located at Pipri in Sonbhadra on the Rihand river, and its reservoir represents the largest artificial lake in India."}, {"id": 27, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "लक्षद्वीप के कदमत द्वीप के दक्षिण-पूर्वी समुद्री क्षेत्र में खोजे गए पावोना क्लेवस (Pavona clavus) नामक विशाल प्रवाल उपनिवेश का कुल क्षेत्रफल लगभग कितना है, जिसे स्थानीय रूप से 'पोटैटो पैच' कहा जाता है?", "question_en": "What is the total area of the giant coral colony named Pavona clavus, locally called 'Potato Patch', discovered in the south-eastern marine region of Kadmat Island in Lakshadweep?", "options": [{"hi": "लगभग 4,250 वर्ग मीटर", "en": "Approximately 4,250 square meters"}, {"hi": "लगभग 1,250 वर्ग मीटर", "en": "Approximately 1,250 square meters"}, {"hi": "लगभग 6,800 वर्ग मीटर", "en": "Approximately 6,800 square meters"}, {"hi": "लगभग 2,500 वर्ग मीटर", "en": "Approximately 2,500 square meters"}], "answer": 0, "explanation_hi": "यह संरचना पावोना क्लेवस (Pavona clavus) नाम की कठोर प्रवाल प्रजाति की है, जिसका क्षेत्रफल लगभग 4,250 वर्ग मीटर है तथा इसका लगभग 58.47 प्रतिशत हिस्सा जीवित प्रवाल ऊतकों से ढका हुआ है।", "explanation_en": "This structure belongs to the stony coral species Pavona clavus, covering an area of approximately 4,250 square meters, with about 58.47 percent of it covered by living coral tissue."}, {"id": 28, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "विजयनगर साम्राज्य के शासक देवराय द्वितीय (Devaraya II) के शासनकाल में किस फारसी यात्री ने विजयनगर की यात्रा की थी?", "question_en": "Which Persian traveler visited the Vijayanagara Empire during the reign of ruler Devaraya II?", "options": [{"hi": "निकोलो कोंटी", "en": "Nicolo Conti"}, {"hi": "अब्दुर रज्जाक", "en": "Abdur Razzaq"}, {"hi": "निकितिन", "en": "Nikitin"}, {"hi": "दुआर्ते बारबोसा", "en": "Duarte Barbosa"}], "answer": 1, "explanation_hi": "फारस के अब्दुर रज्जाक ने देवराय द्वितीय के काल में यात्रा की थी। निकोलो कोंटी (इटली) और निकितिन (रूस) देवराय प्रथम के काल में आए थे।", "explanation_en": "Abdur Razzaq from Persia visited during the reign of Devaraya II. Nicolo Conti (Italy) and Nikitin (Russia) visited during Devaraya I."}, {"id": 29, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "हिमालयी क्षेत्र में जलवायु परिवर्तन के कारण चर्चा में रहने वाले शब्द 'GLOF' का पूर्ण रूप क्या है?", "question_en": "What is the full form of the term 'GLOF' which is frequently discussed in relation to climate change in the Himalayan region?", "options": [{"hi": "ग्लेशियल लेक आउटबर्स्ट फ्लड", "en": "Glacial Lake Outburst Flood"}, {"hi": "जियोथर्मल लेक आउटफ्लो फ्लड", "en": "Geothermal Lake Outflow Flood"}, {"hi": "ग्लेशियल लैंडस्लाइड ओवरफ्लो फ्लड", "en": "Glacial Landslide Overflow Flood"}, {"hi": "ग्रीनलैंड लेक आउटबर्स्ट फ्लड", "en": "Greenland Lake Outburst Flood"}], "answer": 0, "explanation_hi": "GLOF का पूर्ण रूप ग्लेशियल लेक आउटबर्स्ट फ्लड है, जिसका अर्थ हिमानी झील टूटने से अचानक आने वाली बाढ़ है।", "explanation_en": "The full form of GLOF is Glacial Lake Outburst Flood, which refers to sudden flooding caused by the bursting of a glacial lake."}, {"id": 30, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "चिकित्सा विज्ञान के अनुसार, जब शरीर का अस्थि मज्जा (Bone Marrow) पर्याप्त मात्रा में नई रक्त कोशिकाओं (RBC, WBC, Platelets) का निर्माण करना पूरी तरह बंद कर देता है, तो इस गंभीर एनीमिया को क्या कहा जाता है?", "question_en": "According to medical science, when the bone marrow completely stops producing sufficient new blood cells (RBCs, WBCs, and Platelets), what is this severe type of anemia called?", "options": [{"hi": "अपलास्टिक एनीमिया (Aplastic Anemia)", "en": "Aplastic Anemia"}, {"hi": "पर्निसियस एनीमिया (Pernicious Anemia)", "en": "Pernicious Anemia"}, {"hi": "हेमोलिटिक एनीमिया (Hemolytic Anemia)", "en": "Hemolytic Anemia"}, {"hi": "मेगालोब्लास्टिक एनीमिया (Megaloblastic Anemia)", "en": "Megaloblastic Anemia"}], "answer": 0, "explanation_hi": "अप्लास्टिक एनीमिया एक दुर्लभ एवं गंभीर स्थिति है जिसमें अस्थि मज्जा नई रक्त कोशिकाओं (तीनों प्रकार की) का निर्माण करना बंद कर देता है।", "explanation_en": "Aplastic anemia is a rare and life-threatening condition in which the bone marrow fails to produce all three types of new blood cells."}, {"id": 31, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "परमाणु रियेक्टर में अतिरिक्त न्यूट्रॉनों को अवशोषित कर श्रृंखला अभिक्रिया (Chain Reaction) को नियंत्रित करने वाली नियंत्रक छड़ें किसकी बनी होती हैं?", "question_en": "In a nuclear reactor, what material are the control rods made of, which absorb excess neutrons to control the chain reaction?", "options": [{"hi": "कैडमियम अथवा बोरॉन", "en": "Cadmium or boron"}, {"hi": "भारी जल ($D_2O$)", "en": "Heavy water ($D_2O$)"}, {"hi": "ग्रेफाइट अथवा बेरिलियम", "en": "Graphite or beryllium"}, {"hi": "यूरेनियम-235", "en": "Uranium-235"}], "answer": 0, "explanation_hi": "कैडमियम या बोरॉन की छड़ें अत्यधिक कुशलता से अतिरिक्त न्यूट्रॉन अवशोषित करती हैं, जिससे इनका उपयोग नाभिकीय नियंत्रक छड़ों के रूप में होता है।", "explanation_en": "Cadmium or boron rods absorb excess neutrons highly efficiently, making them suitable for use as nuclear control rods."}, {"id": 32, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "मुग़ल काल में जिला स्तर पर कानून-व्यवस्था बनाए रखने, मूल्य नियंत्रण और आपराधिक मामलों के निपटान हेतु कौन-सा अधिकारी मुख्य रूप से उत्तरदायी था?", "question_en": "In the Mughal period, which officer was primarily responsible for maintaining law and order, price control, and criminal dispute resolution at the district level?", "options": [{"hi": "कोतवाल", "en": "Kotwal"}, {"hi": "फौजदार", "en": "Faujdar"}, {"hi": "अमलगुजार", "en": "Amalguzar"}, {"hi": "बख्शी", "en": "Bakshi"}], "answer": 0, "explanation_hi": "जिला स्तर पर कोतवाल कानून-व्यवस्था बनाए रखने, आपराधिक मामलों के निपटान और मूल्य नियंत्रण हेतु उत्तरदायी था। फौजदार प्रशासनिक प्रधान था।", "explanation_en": "At the district level, Kotwal was responsible for maintaining law and order, criminal dispute resolution, and price control."}, {"id": 33, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "राष्ट्रीय आपदा प्रबंधन संस्थान (NIDM) का मुख्यालय भारत के किस शहर अथवा केंद्र शासित प्रदेश में स्थित है?", "question_en": "In which city or Union Territory of India is the headquarters of the National Institute of Disaster Management (NIDM) located?", "options": [{"hi": "मुंबई", "en": "Mumbai"}, {"hi": "नई दिल्ली", "en": "New Delhi"}, {"hi": "हैदराबाद", "en": "Hyderabad"}, {"hi": "बेंगलुरु", "en": "Bengaluru"}], "answer": 1, "explanation_hi": "राष्ट्रीय आपदा प्रबंधन संस्थान (NIDM) का मुख्यालय नई दिल्ली में स्थित है, जो प्रशिक्षण और अनुसंधान का कार्य करता है।", "explanation_en": "The headquarters of the National Institute of Disaster Management (NIDM) is situated in New Delhi, functioning for training and research."}, {"id": 34, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "शारदा/काली नदी से बनवासा (पीलीभीत-नेपाल सीमा) के निकट से निकाली गई 'शारदा नहर' उत्तर प्रदेश की सबसे लंबी नहर प्रणाली है। इसका निर्माण कार्य किस अवधि के बीच कराया गया था?", "question_en": "The 'Sharda Canal', drawn from the Sharda/Kali river near Banbasa (Pilibhit-Nepal border), is the longest canal system in UP. During which period was its construction carried out?", "options": [{"hi": "वर्ष 1920 से 1928 के बीच", "en": "Years 1920 to 1928"}, {"hi": "वर्ष 1842 से 1854 के बीच", "en": "Years 1842 to 1854"}, {"hi": "वर्ष 1870 से 1878 के बीच", "en": "Years 1870 to 1878"}, {"hi": "वर्ष 1930 से 1938 के बीच", "en": "Years 1930 to 1938"}], "answer": 0, "explanation_hi": "शारदा नहर उत्तर प्रदेश की सबसे लंबी नहर प्रणाली है जिसका निर्माण वर्ष 1920 से 1928 के बीच किया गया था। इसकी कुल शाखाओं सहित लंबाई लगभग 12,368 किमी है।", "explanation_en": "The Sharda Canal is the longest canal system in UP, constructed between 1920 and 1928, spanning approximately 12,368 km including branches."}, {"id": 35, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कंप्यूटर की हार्ड डिस्क ड्राइव (HDD) की ज्यामितीय बनावट के अनुसार, डेटा को संगृहीत करने वाले सबसे छोटे भौतिक ब्लॉक 'सेक्टर' (Sector) का डिफ़ॉल्ट आकार कितना होता है?", "question_en": "According to the geometric structure of a computer's hard disk drive (HDD), what is the default physical size of a 'Sector', the smallest storage block?", "options": [{"hi": "1024 बाइट्स (Bytes)", "en": "1024 Bytes"}, {"hi": "4 किलोबाइट्स (KB)", "en": "4 Kilobytes (KB)"}, {"hi": "8 बिट्स (Bits)", "en": "8 Bits"}, {"hi": "512 बाइट्स (Bytes)", "en": "512 Bytes"}], "answer": 3, "explanation_hi": "हार्ड डिस्क में डेटा ट्रैक के छोटे हिस्सों में संगृहीत होता है जिन्हें सेक्टर कहते हैं, और प्रत्येक पारंपरिक सेक्टर का मानक आकार 512 बाइट्स होता है।", "explanation_en": "Data on HDDs is saved in sector blocks, where each traditional sector physically holds exactly 512 Bytes of user data."}, {"id": 36, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "प्राचीन काल के 16 प्रसिद्ध महाजनपदों में से 8 महाजनपद उत्तर प्रदेश में स्थित थे। इनमें से 'वत्स' महाजनपद की ऐतिहासिक राजधानी निम्नलिखित में से कौन-सी थी?", "question_en": "Out of the 16 famous Mahajanapadas of ancient India, 8 were located in Uttar Pradesh. Which of the following was the historical capital of the 'Vatsa' Mahajanapada?", "options": [{"hi": "श्रावस्ती", "en": "Shravasti"}, {"hi": "अहिच्छत्र", "en": "Ahichhatra"}, {"hi": "कौशाम्बी", "en": "Kosambi"}, {"hi": "शुक्तिमती", "en": "Shuktimati"}], "answer": 2, "explanation_hi": "वत्स महाजनपद का क्षेत्र प्रयागराज-कौशाम्बी के निकट था और इसकी राजधानी कौशाम्बी थी, जहाँ के पौरव शासक उदयन काफी प्रसिद्ध थे।", "explanation_en": "The Vatsa Mahajanapada was located near Allahabad-Kosambi, and its historical capital was Kosambi, associated with the famous ruler Udayan."}, {"id": 37, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "ऑपरेटिंग सिस्टम में थ्रेड (Thread) को 'लाइट वेट प्रोसेस' (LWP) कहा जाता है। एक नई प्रोसेस बनाने की तुलना में थ्रेड का क्या मुख्य लाभ है?", "question_en": "In operating systems, a thread is called a Light Weight Process (LWP). What is the primary advantage of a thread over creating a new process?", "options": [{"hi": "यह सीपीयू के बिना स्वतंत्र रूप से हार्ड डिस्क पर सीधे रन कर सकता है", "en": "It can run independently on the hard disk without the CPU"}, {"hi": "इसके निर्माण के समय मल्टिपल थ्रेड टेबल्स की आवश्यकता नहीं होती है", "en": "It does not require multiple thread tables during its execution"}, {"hi": "यह अपने पेरेंट प्रोसेस की मेमोरी और रिसोर्स को आपस में साझा (Share) करता है", "en": "It shares the memory and resources of its parent process"}, {"hi": "यह केवल 64-बिट मेनफ्रेम आर्किटेक्चर पर ही बूट प्रक्रिया को गति देता है", "en": "It speeds up the boot process solely on 64-bit mainframe architectures"}], "answer": 2, "explanation_hi": "थ्रेड अपने पेरेंट प्रोसेस की मेमोरी और रिसोर्स को साझा करता है, जिससे नई प्रोसेस बनाने में लगने वाली अतिरिक्त मेमोरी और समय की बचत होती है।", "explanation_en": "A thread shares the memory space and resources of its parent process, minimizing context switching overhead and memory consumption."}, {"id": 38, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "उत्तर प्रदेश राज्य के किस विशिष्ट शहर में राष्ट्रीय आपदा मोचन बल (NDRF) की 11वीं बटालियन का मुख्यालय स्थित है?", "question_en": "In which specific city of Uttar Pradesh state is the headquarters of the 11th Battalion of the National Disaster Response Force (NDRF) located?", "options": [{"hi": "गाजियाबाद", "en": "Ghaziabad"}, {"hi": "लखनऊ", "en": "Lucknow"}, {"hi": "वाराणसी", "en": "Varanasi"}, {"hi": "प्रयागराज", "en": "Prayagraj"}], "answer": 2, "explanation_hi": "उत्तर प्रदेश में एनडीआरएफ की 8वीं बटालियन गाजियाबाद में और 11वीं बटालियन वाराणसी में स्थित है।", "explanation_en": "In Uttar Pradesh, the 8th Battalion of the NDRF is located in Ghaziabad and the 11th Battalion is located in Varanasi."}, {"id": 39, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आपदा प्रबंधन अधिनियम, 2005 की किस विशिष्ट धारा के तहत राष्ट्रीय आपदा प्रबंधन प्राधिकरण (NDMA) की स्थापना का वैधानिक प्रावधान है?", "question_en": "Under which specific section of the Disaster Management Act, 2005 is the statutory provision for the establishment of the National Disaster Management Authority (NDMA) made?", "options": [{"hi": "धारा 2", "en": "Section 2"}, {"hi": "धारा 3", "en": "Section 3"}, {"hi": "धारा 6", "en": "Section 6"}, {"hi": "धारा 14", "en": "Section 14"}], "answer": 1, "explanation_hi": "आपदा प्रबंधन अधिनियम, 2005 की धारा 3 राष्ट्रीय स्तर पर प्रधानमंत्री की अध्यक्षता में एनडीएमए (NDMA) की स्थापना का प्रावधान करती है।", "explanation_en": "Section 3 of the Disaster Management Act, 2005 provides for the establishment of the NDMA at the national level under the chairmanship of the Prime Minister."}, {"id": 40, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय सुनामी पूर्व चेतावनी प्रणाली से संबंधित प्रमुख संस्थान INCOIS भारत के किस शहर में स्थित है?", "question_en": "In which city of India is INCOIS, the primary institution related to the Indian Tsunami Early Warning System, located?", "options": [{"hi": "नई दिल्ली", "en": "New Delhi"}, {"hi": "चेन्नई", "en": "Chennai"}, {"hi": "हैदराबाद", "en": "Hyderabad"}, {"hi": "कोलकाता", "en": "Kolkata"}], "answer": 2, "explanation_hi": "हैदराबाद में स्थित भारतीय राष्ट्रीय महासागर सूचना सेवा केंद्र (INCOIS) सुनामी पूर्व चेतावनी प्रणाली का संचालन करता है।", "explanation_en": "The Indian National Centre for Ocean Information Services (INCOIS) located in Hyderabad operates the tsunami early warning system."}, {"id": 41, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "आपदा प्रबंधन अधिनियम, 2005 की किस धारा के अंतर्गत राष्ट्रीय आपदा प्रबंधन संस्थान (NIDM) के गठन का वैधानिक प्रावधान है?", "question_en": "Under which section of the Disaster Management Act, 2005 is the statutory provision for the constitution of the National Institute of Disaster Management (NIDM) made?", "options": [{"hi": "धारा 40", "en": "Section 40"}, {"hi": "धारा 42", "en": "Section 42"}, {"hi": "धारा 44", "en": "Section 44"}, {"hi": "धारा 46", "en": "Section 46"}], "answer": 1, "explanation_hi": "आपदा प्रबंधन अधिनियम की धारा 42 के तहत राष्ट्रीय आपदा प्रबंधन संस्थान (NIDM) का गठन किया गया है।", "explanation_en": "The National Institute of Disaster Management (NIDM) has been constituted under Section 42 of the Disaster Management Act."}, {"id": 42, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय संविधान का कौन-सा अनुच्छेद किसी भी पूरी तरह से राज्य वित्त पोषित शैक्षिक संस्थान में 'धार्मिक शिक्षा' दिए जाने का पूर्णतः निषेध करता है?", "question_en": "Which Article of the Indian Constitution completely prohibits imparting 'religious instruction' in any educational institution wholly maintained out of State funds?", "options": [{"hi": "अनुच्छेद 25", "en": "Article 25"}, {"hi": "अनुच्छेद 28", "en": "Article 28"}, {"hi": "अनुच्छेद 26", "en": "Article 26"}, {"hi": "अनुच्छेद 27", "en": "Article 27"}], "answer": 1, "explanation_hi": "अनुच्छेद 28 के तहत राज्य निधि से पूरी तरह वित्त पोषित शैक्षिक संस्थानों में धार्मिक शिक्षा नहीं दी जा सकती।", "explanation_en": "Under Article 28, no religious instruction shall be provided in any educational institution wholly maintained out of State funds."}, {"id": 43, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारतीय मौसम विभाग के वर्गीकरण के अनुसार सुपर चक्रवाती तूफान (Super Cyclonic Storm) घोषित करने के लिए न्यूनतम वायु गति कितनी होनी चाहिए?", "question_en": "According to the India Meteorological Department classification, what must be the minimum wind speed to declare a Super Cyclonic Storm?", "options": [{"hi": "118 किमी/घंटा", "en": "118 km/h"}, {"hi": "167 किमी/घंटा", "en": "167 km/h"}, {"hi": "180 किमी/घंटा", "en": "180 km/h"}, {"hi": "222 किमी/घंटा अथवा अधिक", "en": "222 km/h or more"}], "answer": 3, "explanation_hi": "भारतीय मौसम विभाग (IMD) के अनुसार जब हवा की गति 222 किमी/घंटा या उससे अधिक होती है, तब उसे सुपर चक्रवात की श्रेणी में रखा जाता है।", "explanation_en": "According to the IMD, a storm is classified as a Super Cyclonic Storm when wind speeds reach 222 km/h or more."}, {"id": 44, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "भारत सरकार ने दीर्घकालिक स्वच्छ ऊर्जा सुरक्षा और नेट-ज़ीरो लक्ष्यों के तहत वर्ष 2047 (आजादी के शताब्दी वर्ष) तक कितने गीगावाट (GW) परमाणु ऊर्जा (Nuclear Power) क्षमता हासिल करने का महत्वाकांक्षी लक्ष्य रखा है?", "question_en": "The Government of India, under its long-term clean energy security and net-zero targets, has set an ambitious goal to achieve how many gigawatts (GW) of nuclear power capacity by 2047 (the centenary year of independence)?", "options": [{"hi": "50 GW", "en": ""}, {"hi": "100 GW", "en": ""}, {"hi": "140 GW", "en": ""}, {"hi": "500 GW", "en": ""}], "answer": 1, "explanation_hi": "भारत की स्थापित परमाणु क्षमता जो 2014 में 4.78 GW थी, वह जून 2025 तक बढ़कर 8.78 GW हो चुकी है तथा सरकार ने वर्ष 2047 तक इसे 100 GW करने का लक्ष्य रखा है।", "explanation_en": "India's installed nuclear capacity, which was 4.78 GW in 2014, increased to 8.78 GW by June 2025, and the government aims to reach 100 GW by the year 2047."}, {"id": 45, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "रोगाणुनाशक और ब्लीचिंग उद्योगों में प्रयुक्त होने वाले प्रसिद्ध ब्लीचिंग पाउडर (Bleaching Powder) का रासायनिक नाम और रासायनिक सूत्र क्या है?", "question_en": "What is the chemical name and chemical formula of the famous bleaching powder used in disinfectant and bleaching industries?", "options": [{"hi": "सोडियम बाइकार्बोनेट ($NaHCO_3$)", "en": "Sodium bicarbonate ($NaHCO_3$)"}, {"hi": "कैल्शियम ऑक्सीक्लोराइड ($CaOCl_2$)", "en": "Calcium oxychloride ($CaOCl_2$)"}, {"hi": "कैल्शियम सल्फेट हेमीहाइड्रेट ($CaSO_4 \\cdot 1/2 H_2O$)", "en": "Calcium sulfate hemihydrate ($CaSO_4 \\cdot 1/2 H_2O$)"}, {"hi": "सोडियम कार्बोनेट ($Na_2CO_3$)", "en": "Sodium carbonate ($Na_2CO_3$)"}], "answer": 1, "explanation_hi": "ब्लीचिंग पाउडर का रासायनिक नाम कैल्शियम ऑक्सीक्लोराइड ($CaOCl_2$) है; $NaHCO_3$ बेकिंग सोडा है और $CaSO_4 \\cdot 1/2 H_2O$ है।", "explanation_en": "The chemical name of bleaching powder is Calcium oxychloride ($CaOCl_2$); $NaHCO_3$ is baking soda and $CaSO_4 \\cdot 1/2 H_2O$ is POP."}, {"id": 46, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "कार्यालय आदेश में सक्षम अधिकारी का हस्ताक्षर किस स्थान पर आता है?", "question_en": "In an office order, at which place does the signature of the competent authority appear?", "options": [{"hi": "नीचे बाईं ओर", "en": "Bottom left"}, {"hi": "ऊपर दाईं ओर", "en": "Top right"}, {"hi": "ऊपर बाईं ओर", "en": "Top left"}, {"hi": "नीचे दाईं ओर", "en": "Bottom right"}], "answer": 3, "explanation_hi": "कार्यालय आदेश के प्रारूप में सक्षम अधिकारी का हस्ताक्षर पत्र के अंत में नीचे दाहिनी ओर अंकित किया जाता है।", "explanation_en": "In the format of an office order, the signature of the competent authority is marked at the end at the bottom right."}, {"id": 47, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "उत्तर मुग़लकालीन इतिहास के अनुसार, सम्राट फर्रुखशियर ने जजिया कर को समाप्त करने के बाद किस वर्ष इसे पुनः लागू कर दिया था?", "question_en": "According to Later Mughal history, in which year did Emperor Farrukhsiyar re-impose the Jizya tax after initially abolishing it?", "options": [{"hi": "वर्ष 1713 में", "en": "Year 1713"}, {"hi": "वर्ष 1719 में", "en": "Year 1719"}, {"hi": "वर्ष 1721 में", "en": "Year 1721"}, {"hi": "वर्ष 1717 में", "en": "Year 1717"}], "answer": 3, "explanation_hi": "फर्रुखशियर ने 1713 में जजिया कर समाप्त किया, लेकिन 1717 में इसे पुनः लागू किया। अंततः 1719 में मुहम्मद शाह ने इसे पूरी तरह समाप्त कर दिया।", "explanation_en": "Farrukhsiyar abolished Jizya in 1713 but re-imposed it in 1717. Finally, Muhammad Shah permanently abolished it in 1719."}, {"id": 48, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "सितंबर 2022 में प्रधानमंत्री द्वारा कमीशन किए गए भारत के पहले पूर्णतः स्वदेशी विमानवाहक पोत (IAC-1) का नाम क्या है, जिसे कोचीन शिपयार्ड लिमिटेड द्वारा डिजाइन और निर्मित किया गया है?", "question_en": "What is the name of India's first fully indigenous aircraft carrier (IAC-1), designed and built by Cochin Shipyard Limited, which was commissioned in September 2022?", "options": [{"hi": "आईएनएस विक्रमादित्य (INS Vikramaditya)", "en": "INS Vikramaditya"}, {"hi": "आईएनएस अरिहंत (INS Arihant)", "en": "INS Arihant"}, {"hi": "आईएनएस विशाल (INS Vishal)", "en": "INS Vishal"}, {"hi": "आईएनएस विक्रांत (INS Vikrant)", "en": "INS Vikrant"}], "answer": 3, "explanation_hi": "आईएनएस विक्रांत भारत का पहला स्वदेशी विमानवाहक पोत (IAC-1) है जिसमें लगभग 76% स्वदेशी सामग्री और विशेष 'वारशिप ग्रेड स्टील' का उपयोग किया गया है।", "explanation_en": "INS Vikrant is India's first indigenous aircraft carrier (IAC-1), incorporating about 76% domestic components and warship-grade steel."}, {"id": 49, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "हाल ही में केंद्रीय पर्यावरण, वन और जलवायु परिवर्तन मंत्री श्री भूपेंद्र यादव की अध्यक्षता में राजस्थान के पहले 'नमो बायोडायवर्सिटी पार्क' (Namo Biodiversity Park) का उद्घाटन किस स्थान पर किया गया है?", "question_en": "Recently, under the chairmanship of Union Minister for Environment, Forest, and Climate Change Shri Bhupender Yadav, where was Rajasthan's first 'Namo Biodiversity Park' inaugurated?", "options": [{"hi": "कायलाना झील, जोधपुर", "en": "Kaylana Lake, Jodhpur"}, {"hi": "आनासागर झील, अजमेर", "en": "Anasagar Lake, Ajmer"}, {"hi": "प्रताप बांध, अलवर", "en": "Pratap Bandh, Alwar"}, {"hi": "केवलादेव राष्ट्रीय उद्यान, भरतपुर", "en": "Keoladeo National Park, Bharatpur"}], "answer": 2, "explanation_hi": "राजस्थान राज्य के पारिस्थितिकी तंत्र को मजबूत करने के लिए अलवर के प्रताप बांध में राज्य के पहले 'नमो बायोडायवर्सिटी पार्क' का उद्घाटन एक प्रतीकात्मक वृक्षारोपण समारोह के साथ किया गया है।", "explanation_en": "To strengthen Rajasthan's ecosystem, the state's first 'Namo Biodiversity Park' was inaugurated at Pratap Bandh, Alwar, with a ceremonial tree plantation."}, {"id": 50, "topic_hi": "सामान्य अध्ययन", "topic_en": "General Studies", "question_hi": "दिल्ली सल्तनत काल के प्रशासनिक सुधारों के अंतर्गत सैन्य विभाग 'दीवान-ए-अर्ज' (Diwan-i-Arz) की स्थापना किस शासक ने की थी?", "question_en": "Under the administrative reforms of the Delhi Sultanate, which ruler established the military department named 'Diwan-i-Arz'?", "options": [{"hi": "बलबन", "en": "Balban"}, {"hi": "बहरामशाह", "en": "Bahramshah"}, {"hi": "अलाउद्दीन खिलजी", "en": "Alauddin Khalji"}, {"hi": "फिरोजशाह तुगलक", "en": "Firoz Shah Tughlaq"}], "answer": 0, "explanation_hi": "सैन्य विभाग दीवान-ए-अर्ज की स्थापना बलबन ने की थी। नायब-ए-मामलिकात बहरामशाह द्वारा और बाजार नियंत्रण हेतु दीवान-ए-रियासत अलाउद्दीन खिलजी द्वारा बनाया गया।", "explanation_en": "The military department Diwan-i-Arz was established by Balban. Bahramshah created Naayab-i-Mamlikat and Alauddin created Diwan-i-Riyasat."}]};
+
+/* ===== भाषा टॉगल + प्रश्न-प्रकार फ़ॉर्मैटर ===== */
+var JH_LANG = (function(){ try{ return localStorage.getItem("jaiho_lang")||"bi"; }catch(e){ return "bi"; } })();
+function langSegHTML(){
+  var L=JH_LANG, o=function(v,t){ return '<button type="button" class="lang-b'+(L===v?" on":"")+'" data-lang="'+v+'">'+t+'</button>'; };
+  return o("hi","हिंदी")+o("en","English")+o("bi","दोनों");
+}
+function paintLang(){
+  ["qLang","coverLang"].forEach(function(id){
+    var box=document.getElementById(id); if(!box) return;
+    box.innerHTML=langSegHTML();
+    box.querySelectorAll(".lang-b").forEach(function(b){
+      b.addEventListener("click",function(){ setJhLang(b.getAttribute("data-lang")); });
+    });
+  });
+}
+function setJhLang(l){
+  JH_LANG=l; try{ localStorage.setItem("jaiho_lang",l); }catch(e){}
+  paintLang();
+  try{ if(document.getElementById("testScreen").style.display==="block") renderQuestion(); }catch(e){}
+  try{ if(document.getElementById("resultScreen").style.display==="block") renderReview(); }catch(e){}
+}
+function jhEsc(t){ return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function _jhPoints(t){
+  t = String(t).replace(/\s*(कथन\s*\d+\s*[:：])/g,"\n$1")
+       .replace(/\s*(Statement\s*\d+\s*[:：])/gi,"\n$1")
+       .replace(/([।;?:,])\s*(\d+\.\s)/g,"$1\n$2");
+  return t.replace(/^\n+/,"").replace(/\n[ \t]+/g,"\n");
+}
+function _jhMatch(raw){
+  var t=String(raw);
+  var reI=/(सूची|List)[\s\-–—]*I(?!I)\s*(?:\([^)]*\))?\s*[:：]/i;
+  var reII=/(सूची|List)[\s\-–—]*II\s*(?:\([^)]*\))?\s*[:：]/i;
+  var mI=t.match(reI), mII=t.match(reII);
+  if(!mI||!mII||mII.index<=mI.index) return null;
+  var intro=t.slice(0,mI.index).trim();
+  var segI=t.slice(mI.index+mI[0].length,mII.index).trim().replace(/[;।,]\s*$/,"");
+  var rest=t.slice(mII.index+mII[0].length);
+  var mo=rest.match(/(सही\s*मिलान|नीचे\s*दिए|सुमेलित|Choose|Select|Match|कूट)/i);
+  var segII, outro="";
+  if(mo){ segII=rest.slice(0,mo.index).trim(); outro=rest.slice(mo.index).trim(); }
+  else segII=rest.trim();
+  segII=segII.replace(/[;।,]\s*$/,"");
+  var sp=function(seg,re){ return seg.split(re).map(function(x){return x.trim();}).filter(Boolean); };
+  var A=sp(segI,/\s*,\s*(?=[A-Z]\.)/), B=sp(segII,/\s*,\s*(?=\d+\.)/);
+  if(A.length<2||B.length<2) return null;
+  var n=Math.max(A.length,B.length), rows="";
+  for(var k=0;k<n;k++) rows+="<tr><td>"+jhEsc(A[k]||"")+"</td><td>"+jhEsc(B[k]||"")+"</td></tr>";
+  return (intro?jhEsc(intro)+"\n":"")
+    + '<table class="match-tbl"><tr><th>'+jhEsc(mI[1])+'-I</th><th>'+jhEsc(mII[1])+'-II</th></tr>'+rows+'</table>'
+    + (outro?jhEsc(outro):"");
+}
+function jhFmt(raw){ if(!raw) return ""; var mt=_jhMatch(raw); return mt?mt:jhEsc(_jhPoints(raw)); }
+
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  paintLang();
+    el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  var _hi=q.question_hi||"", _en=q.question_en||"";
+  if(JH_LANG==="en" && _en){ el("qtext").innerHTML = jhFmt(_en); el("qtextEn").classList.add("hidden"); }
+  else { el("qtext").innerHTML = jhFmt(_hi||_en);
+         if(JH_LANG==="bi" && _en && _hi){ el("qtextEn").innerHTML = jhFmt(_en); el("qtextEn").classList.remove("hidden"); }
+         else { el("qtextEn").innerHTML=""; el("qtextEn").classList.add("hidden"); } }
+  paintLang();
+  el("options").innerHTML = (q.options||[]).map((op,i)=>{var oh=(op&&op.hi)||"", oe=(op&&op.en)||"";var body = (JH_LANG==="en"&&oe) ? `<div class="op-hi">${jhEsc(oe)}</div>` : (JH_LANG==="bi"&&oe&&oe!==oh) ? `<div class="op-hi">${jhEsc(oh)}</div><div class="op-en">${jhEsc(oe)}</div>` : `<div class="op-hi">${jhEsc(oh||oe)}</div>`;return `<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div>${body}</div></button>`;}).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{
+  const user = answers[i];
+  const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad");
+  const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong");
+  const optTxt = function(o){ if(!o) return ""; var oh=o.hi||"", oe=o.en||"";
+    if(JH_LANG==="en" && oe) return oe;
+    if(JH_LANG==="bi" && oe && oe!==oh) return oh+" / "+oe;
+    return oh||oe; };
+  const utext = user===null ? "Not attempted" : `${letters[user]}. ${optTxt(q.options[user])}`;
+  const correctText = `${letters[q.answer]}. ${optTxt(q.options[q.answer])}`;
+  var qMain = (JH_LANG==="en" && q.question_en) ? q.question_en : (q.question_hi||q.question_en||"");
+  var qSub  = (JH_LANG==="bi" && q.question_en && q.question_hi) ? q.question_en : "";
+  var eMain = (JH_LANG==="en" && q.explanation_en) ? q.explanation_en : (q.explanation_hi||q.explanation_en||"");
+  var eSub  = (JH_LANG==="bi" && q.explanation_en && q.explanation_hi) ? q.explanation_en : "";
+  return `<div class="review-item"><div class="review-head">`
+    + `<strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong>`
+    + `<span class="badge ${status}">${statusText}</span></div>`
+    + `<div class="review-content"><div style="white-space:pre-line"><b>${jhFmt(qMain)}</b></div>`
+    + (qSub?`<div class="qtext-en" style="white-space:pre-line">${jhFmt(qSub)}</div>`:"")
+    + `<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div>`
+    + (eMain?`<div class="explain"><b>Explanation:</b> ${escapeHTML(eMain)}`
+        + (eSub?`<br><span style="color:#64748b">${escapeHTML(eSub)}</span>`:"")+`</div>`:"")
+    + `</div></div>`;
+}).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
