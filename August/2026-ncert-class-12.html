@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"UPSC/PCS • NCERT CLASS 12 • History book 1","highlight":"NCERT CLASS 12","shortTitle":"UPSC/PCS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • NCERT CLASS 12 • History book 1","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-upsc-pcs-ncert-class-12-history-book-1-ncert-history-class-12-20260818-1xqw8","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-18","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हड़प्पा सभ्यता का कुल कालखंड क्या माना जाता है?","question_en":"Question 1: What is the total time span of the Harappan Civilisation?","options":[{"hi":"6000 ईसा पूर्व से 1300 ईसा पूर्व","en":"6000 BCE to 1300 BCE"},{"hi":"2600 ईसा पूर्व से 1900 ईसा पूर्व","en":"2600 BCE to 1900 BCE"},{"hi":"1900 ईसा पूर्व से 1300 ईसा पूर्व","en":"1900 BCE to 1300 BCE"},{"hi":"7000 ईसा पूर्व से 1900 ईसा पूर्व","en":"7000 BCE to 1900 BCE"}],"answer":0,"explanation_hi":"हड़प्पा सभ्यता का कुल कालखंड 6000 ईसा पूर्व से 1300 ईसा पूर्व तक है, जिसमें प्रारंभिक, परिपक्व और उत्तर चरण शामिल हैं।","explanation_en":"The total time span of the Harappan civilisation ranges from 6000 BCE to 1300 BCE, encompassing the Early, Mature, and Late phases."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हड़प्पा सभ्यता की सबसे विशिष्ट पुरावस्तु, हड़प्पाई मुहर, मुख्य रूप से किस पत्थर से बनाई गई थी?","question_en":"Question 2: The most distinctive artefact of the Harappan civilisation, the Harappan seal, was primarily made of which stone?","options":[{"hi":"कार्नेलियन","en":"Carnelian"},{"hi":"सेलखड़ी","en":"Steatite"},{"hi":"जैस्पर","en":"Jasper"},{"hi":"स्फटिक","en":"Crystal"}],"answer":1,"explanation_hi":"हड़प्पाई मुहरें अक्सर सेलखड़ी नामक पत्थर से बनाई जाती थीं और इन पर जानवरों के रूपांकन और लिपि के चिह्न होते थे।","explanation_en":"Harappan seals were made of a stone called steatite and often contained animal motifs and signs from a script."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अब तक खोजे गए हड़प्पाई स्थलों में से किन पांच प्रमुख शहरों की पहचान की गई है?","question_en":"Question 3: Among the Harappan sites discovered so far, which five major cities have been identified?","options":[{"hi":"लोथल, धोलावीरा, कालीबंगा, हड़प्पा, मोहनजोदड़ो","en":"Lothal, Dholavira, Kalibangan, Harappa, Mohenjodaro"},{"hi":"राखीगढ़ी, कालीबंगा, चन्हूदड़ो, बनावली, लोथल","en":"Rakhigarhi, Kalibangan, Chanhudaro, Banawali, Lothal"},{"hi":"राखीगढ़ी, मोहनजोदड़ो, हड़प्पा, धोलावीरा, गनवेरीवाला","en":"Rakhigarhi, Mohenjodaro, Harappa, Dholavira, Ganweriwala"},{"hi":"हड़प्पा, मोहनजोदड़ो, सुरकोटदा, रंगपुर, कोट दीजी","en":"Harappa, Mohenjodaro, Surkotada, Rangpur, Kot Diji"}],"answer":2,"explanation_hi":"भारतीय उपमहाद्वीप में खोजे गए दो हजार से अधिक स्थलों में से इन पांच प्रमुख शहरों की पहचान की गई है।","explanation_en":"Out of more than 2000 sites discovered in the Indian subcontinent, these five major cities have been identified."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अलेक्जेंडर कनिंघम के अनुसार, हड़प्पा से निकाली गई ईंटों की मात्रा लाहौर और मुल्तान के बीच लगभग कितनी लंबी रेलवे लाइन बिछाने के लिए पर्याप्त थी?","question_en":"Question 4: According to Alexander Cunningham, the amount of brick taken from Harappa was enough to lay bricks for about how long a railway line between Lahore and Multan?","options":[{"hi":"50 मील","en":"50 miles"},{"hi":"200 मील","en":"200 miles"},{"hi":"150 मील","en":"150 miles"},{"hi":"100 मील","en":"100 miles"}],"answer":3,"explanation_hi":"कनिंघम ने 1875 में उल्लेख किया था कि ईंट चुराने वालों ने हड़प्पा से 100 मील लंबी रेलवे लाइन बिछाने के लिए पर्याप्त ईंटें निकाल ली थीं।","explanation_en":"Cunningham noted in 1875 that brick robbers had taken enough bricks from Harappa to lay about 100 miles of railway line."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मोहनजोदड़ो में विशाल स्नानागार (Great Bath) को जलरोधी बनाने के लिए ईंटों को जमाने में किस गारे का उपयोग किया गया था?","question_en":"Question 5: What mortar was used to set the bricks on edge to make the Great Bath at Mohenjodaro watertight?","options":[{"hi":"जिप्सम","en":"Gypsum"},{"hi":"चूना पत्थर","en":"Limestone"},{"hi":"डामर","en":"Bitumen"},{"hi":"चिकनी मिट्टी","en":"Mud"}],"answer":0,"explanation_hi":"स्नानागार को जिप्सम के गारे का उपयोग करके और ईंटों को किनारे पर स्थापित करके जलरोधी बनाया गया था।","explanation_en":"The tank was made watertight by setting bricks on edge and using a mortar of gypsum."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चन्हूदड़ो बस्ती का आकार कितना था, जो लगभग पूरी तरह से शिल्प उत्पादन के लिए समर्पित थी?","question_en":"Question 6: What was the size of the Chanhudaro settlement, which was almost exclusively devoted to craft production?","options":[{"hi":"125 हेक्टेयर से अधिक","en":"More than 125 hectares"},{"hi":"25 हेक्टेयर से कम","en":"Less than 25 hectares"},{"hi":"7 हेक्टेयर से कम","en":"Less than 7 hectares"},{"hi":"10 हेक्टेयर से कम","en":"Less than 10 hectares"}],"answer":2,"explanation_hi":"चन्हूदड़ो मोहनजोदड़ो (125 हेक्टेयर) की तुलना में 7 हेक्टेयर से कम की एक छोटी बस्ती थी, जो शिल्प उत्पादन को समर्पित थी।","explanation_en":"Chanhudaro was a tiny settlement of less than 7 hectares compared to Mohenjodaro (125 hectares), devoted to craft production."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"तीसरी सहस्राब्दी ईसा पूर्व के मेसोपोटामियाई ग्रंथों में किस क्षेत्र को 'मगन' कहा गया है, जहां से तांबा आता था?","question_en":"Question 7: Which region is referred to as 'Magan' in Mesopotamian texts datable to the third millennium BCE, from where copper arrived?","options":[{"hi":"मेलुहा","en":"Meluhha"},{"hi":"ओमान","en":"Oman"},{"hi":"दिलमुन","en":"Dilmun"},{"hi":"बहरीन","en":"Bahrain"}],"answer":1,"explanation_hi":"मेसोपोटामियाई ग्रंथों में तांबे के स्रोत के रूप में मगन का उल्लेख है, जो संभवतः ओमान का नाम था।","explanation_en":"Mesopotamian texts refer to copper coming from Magan, which was perhaps a name for Oman."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हड़प्पाई बाटों की निचली और ऊपरी मूल्यवर्ग प्रणालियाँ क्रमशः किस प्रकार की थीं?","question_en":"Question 8: What were the lower and higher denomination systems of Harappan weights, respectively?","options":[{"hi":"केवल दशमलव प्रणाली","en":"Only decimal system"},{"hi":"केवल द्विआधारी प्रणाली","en":"Only binary system"},{"hi":"निचली दशमलव, ऊपरी द्विआधारी","en":"Lower decimal, higher binary"},{"hi":"निचली द्विआधारी, ऊपरी दशमलव","en":"Lower binary, higher decimal"}],"answer":3,"explanation_hi":"हड़प्पाई बाटों के निचले मूल्यवर्ग द्विआधारी (1, 2, 4...) थे, जबकि उच्च मूल्यवर्ग दशमलव प्रणाली (160, 200...) का पालन करते थे।","explanation_en":"Lower denominations of Harappan weights were binary (1, 2, 4...), while higher denominations followed the decimal system (160, 200...)."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस वर्ष जॉन मार्शल ने पूरी दुनिया के सामने सिंधु घाटी में एक नई सभ्यता की खोज की घोषणा की?","question_en":"Question 9: In which year did John Marshall announce the discovery of a new civilisation in the Indus valley to the world?","options":[{"hi":"1921","en":"1921"},{"hi":"1924","en":"1924"},{"hi":"1944","en":"1944"},{"hi":"1946","en":"1946"}],"answer":1,"explanation_hi":"दया राम साहनी और राखाल दास बनर्जी के निष्कर्षों के आधार पर जॉन मार्शल ने 1924 में एक नई सभ्यता की खोज की घोषणा की।","explanation_en":"Based on the finds by Daya Ram Sahni and Rakhal Das Banerji, John Marshall announced the discovery in 1924."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जेम्स प्रिंसेप ने ब्राह्मी और खरोष्ठी लिपियों का गूढ़वाचन (decipherment) किस वर्ष किया?","question_en":"Question 10: In which year did James Prinsep decipher the Brahmi and Kharosthi scripts?","options":[{"hi":"1838","en":"1838"},{"hi":"1877","en":"1877"},{"hi":"1810","en":"1810"},{"hi":"1854","en":"1854"}],"answer":0,"explanation_hi":"कालक्रम के अनुसार, ईस्ट इंडिया कंपनी के अधिकारी जेम्स प्रिंसेप ने 1838 में अशोक की ब्राह्मी लिपि को पढ़ा था।","explanation_en":"According to the timeline, James Prinsep, an officer of the East India Company, deciphered Asokan Brahmi in 1838."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चौथी शताब्दी ईसा पूर्व में मगध की राजधानी राजगृह से किस स्थान पर स्थानांतरित कर दी गई थी?","question_en":"Question 11: In the fourth century BCE, the capital of Magadha was shifted from Rajagaha to which place?","options":[{"hi":"श्रावस्ती","en":"Shravasti"},{"hi":"वाराणसी","en":"Varanasi"},{"hi":"पाटलिपुत्र","en":"Pataliputra"},{"hi":"वैशाली","en":"Vaishali"}],"answer":2,"explanation_hi":"चौथी शताब्दी ईसा पूर्व में मगध की राजधानी पाटलिपुत्र (वर्तमान पटना) स्थानांतरित की गई, जो गंगा के किनारे संचार मार्गों को नियंत्रित करती थी।","explanation_en":"In the fourth century BCE, the capital was shifted to Pataliputra (present-day Patna), commanding communication routes along the Ganga."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पहली शताब्दी ईसा पूर्व से पहली शताब्दी ईस्वी के बीच भारत में सबसे पहले सोने के सिक्के किस वंश द्वारा जारी किए गए थे?","question_en":"Question 12: The first gold coins in India were issued by which dynasty between the first century BCE and the first century CE?","options":[{"hi":"मौर्य","en":"Mauryas"},{"hi":"कुषाण","en":"Kushanas"},{"hi":"इंडो-ग्रीक","en":"Indo-Greeks"},{"hi":"गुप्त","en":"Guptas"}],"answer":1,"explanation_hi":"कुषाणों ने सोने के सिक्कों का सबसे बड़ा भंडार जारी किया, जिनका वजन रोमन और पार्थियन शासकों द्वारा जारी सिक्कों के लगभग समान था।","explanation_en":"The Kushanas issued the largest hoards of gold coins, virtually identical in weight to those issued by Roman and Parthian rulers."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"समुद्रगुप्त के दरबारी कवि हरिषेण द्वारा रचित प्रयाग प्रशस्ति (इलाहाबाद स्तंभ शिलालेख) किस भाषा में लिखी गई थी?","question_en":"Question 13: The Prayaga Prashasti (Allahabad Pillar Inscription), composed by Samudragupta's court poet Harishena, was written in which language?","options":[{"hi":"पालि","en":"Pali"},{"hi":"प्राकृत","en":"Prakrit"},{"hi":"तमिल","en":"Tamil"},{"hi":"संस्कृत","en":"Sanskrit"}],"answer":3,"explanation_hi":"समुद्रगुप्त की प्रशंसा में रचित प्रयाग प्रशस्ति संस्कृत में हरिषेण द्वारा रची गई थी।","explanation_en":"The Prayaga Prashasti, composed in praise of Samudragupta, was written in Sanskrit by Harishena."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रभावती गुप्त, जिनके पास भूमि तक स्वतंत्र पहुंच थी और जिन्होंने भूमि दान किया था, किस गुप्त शासक की पुत्री थीं?","question_en":"Question 14: Prabhavati Gupta, who had independent access to land and granted it, was the daughter of which Gupta ruler?","options":[{"hi":"चंद्रगुप्त द्वितीय","en":"Chandragupta II"},{"hi":"समुद्रगुप्त","en":"Samudragupta"},{"hi":"कुमारगुप्त","en":"Kumaragupta"},{"hi":"स्कंदगुप्त","en":"Skandagupta"}],"answer":0,"explanation_hi":"प्रभावती गुप्त प्रारंभिक भारतीय इतिहास के सबसे महत्वपूर्ण शासकों में से एक, चंद्रगुप्त द्वितीय (375-415 ईस्वी) की पुत्री थीं।","explanation_en":"Prabhavati Gupta was the daughter of Chandragupta II (c. 375-415 CE), one of the most important rulers in early Indian history."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सुदर्शन झील, जो एक कृत्रिम जलाशय था, की मरम्मत अपने स्वयं के संसाधनों से किस शक शासक ने करवाई थी?","question_en":"Question 15: Which Shaka ruler claimed to have repaired the Sudarshana lake, an artificial reservoir, using his own resources?","options":[{"hi":"अशोक","en":"Asoka"},{"hi":"चंद्रगुप्त मौर्य","en":"Chandragupta Maurya"},{"hi":"रुद्रदामन","en":"Rudradaman"},{"hi":"कनिष्क","en":"Kanishka"}],"answer":2,"explanation_hi":"एक संस्कृत शिलालेख के अनुसार, शक शासक रुद्रदामन ने दूसरी शताब्दी ईस्वी में सुदर्शन झील की मरम्मत करवाई थी।","explanation_en":"According to a Sanskrit rock inscription, the Shaka ruler Rudradaman repaired the Sudarshana lake in the second century CE."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपमहाद्वीप के उत्तर-पश्चिमी भाग में शासकों के नाम और चित्र वाले पहले सिक्के किसने जारी किए थे?","question_en":"Question 16: Who issued the first coins to bear the names and images of rulers in the north-western part of the subcontinent?","options":[{"hi":"कुषाण","en":"Kushanas"},{"hi":"इंडो-ग्रीक","en":"Indo-Greeks"},{"hi":"शक","en":"Shakas"},{"hi":"सातवाहन","en":"Satavahanas"}],"answer":1,"explanation_hi":"शासकों के नाम और चित्र वाले सबसे पहले सिक्के इंडो-ग्रीक शासकों द्वारा दूसरी-पहली शताब्दी ईसा पूर्व में जारी किए गए थे।","explanation_en":"The first coins to bear the names and images of rulers were issued by the Indo-Greeks in the second to first century BCE."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"\"एरिथ्रियन सागर का पेरिप्लस\" नामक पाठ में \"पेरिप्लस\" एक यूनानी शब्द है, जिसका क्या अर्थ है?","question_en":"Question 17: In the text \"Periplus of the Erythraean Sea\", \"Periplus\" is a Greek word. What does it mean?","options":[{"hi":"समुद्री मार्ग","en":"Sea route"},{"hi":"व्यापारी","en":"Merchant"},{"hi":"बंदरगाह शहर","en":"Port city"},{"hi":"चारों ओर नौकायन","en":"Sailing around"}],"answer":3,"explanation_hi":"यूनानी शब्द \"पेरिप्लस\" का अर्थ 'चारों ओर नौकायन' है और एरिथ्रियन लाल सागर का यूनानी नाम था।","explanation_en":"The Greek word \"Periplus\" means sailing around, and Erythraean was the Greek name for the Red Sea."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वी.एस. सुकथंकर के नेतृत्व में महाभारत का समालोचनात्मक संस्करण तैयार करने की परियोजना को पूरा होने में कितने वर्ष लगे?","question_en":"Question 18: How many years did it take to complete the project of preparing the critical edition of the Mahabharata under the leadership of V.S. Sukthankar?","options":[{"hi":"47 वर्ष","en":"47 years"},{"hi":"37 वर्ष","en":"37 years"},{"hi":"57 वर्ष","en":"57 years"},{"hi":"27 वर्ष","en":"27 years"}],"answer":0,"explanation_hi":"यह महत्वाकांक्षी परियोजना 1919 में शुरू हुई थी और विभिन्न संस्करणों की तुलना करके इसे पूरा करने में 47 वर्ष लगे।","explanation_en":"The ambitious project started in 1919 and took 47 years to complete by comparing various versions."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विवाह के उस प्रकार को क्या कहते हैं जिसमें विवाह एक इकाई (जैसे गोत्र, जाति या एक ही स्थान पर रहने वाले समूह) के भीतर होता है?","question_en":"Question 19: What is the type of marriage called where the marriage occurs within a unit (like a kin group, caste, or a group living in the same locality)?","options":[{"hi":"बहिर्विवाह","en":"Exogamy"},{"hi":"बहुपति प्रथा","en":"Polyandry"},{"hi":"अंतर्विवाह","en":"Endogamy"},{"hi":"बहुपत्नी प्रथा","en":"Polygyny"}],"answer":2,"explanation_hi":"अंतर्विवाह एक विशिष्ट इकाई के भीतर विवाह को संदर्भित करता है, जबकि बहिर्विवाह इकाई के बाहर विवाह है।","explanation_en":"Endogamy refers to marriage within a specific unit, whereas exogamy is marriage outside the unit."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मंदसौर (मध्य प्रदेश) में प्राप्त एक महत्वपूर्ण शिलालेख में लाट (गुजरात) से पलायन करने वाले किस शिल्प समूह के इतिहास का विवरण है?","question_en":"Question 20: An important inscription found in Mandasor (Madhya Pradesh) records the history of which craft group that migrated from Lata (Gujarat)?","options":[{"hi":"सुनारों की श्रेणी","en":"Guild of goldsmiths"},{"hi":"रेशम बुनकरों की श्रेणी","en":"Guild of silk weavers"},{"hi":"लोहारों की श्रेणी","en":"Guild of blacksmiths"},{"hi":"कुम्हारों की श्रेणी","en":"Guild of potters"}],"answer":1,"explanation_hi":"मंदसौर का शिलालेख एक रेशम बुनकरों की श्रेणी का इतिहास दर्ज करता है जो एक स्थानीय राजा की महानता सुनकर लाट से वहां चले गए थे।","explanation_en":"The Mandasor inscription records the history of a guild of silk weavers who migrated from Lata after hearing of a local king's greatness."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मनुस्मृति के अनुसार, चांडालों को आभूषण के रूप में किस धातु को पहनने का निर्देश दिया गया था?","question_en":"Question 21: According to the Manusmriti, chandalas were directed to wear ornaments made of which metal?","options":[{"hi":"लोहे के आभूषण","en":"Ornaments of iron"},{"hi":"सोने के आभूषण","en":"Ornaments of gold"},{"hi":"चांदी के आभूषण","en":"Ornaments of silver"},{"hi":"तांबे के आभूषण","en":"Ornaments of copper"}],"answer":0,"explanation_hi":"मनुस्मृति में उल्लेख है कि चांडालों को गांव के बाहर रहना पड़ता था, फेंके गए बर्तन इस्तेमाल करने होते थे, और मृत लोगों के कपड़े और लोहे के आभूषण पहनने होते थे।","explanation_en":"The Manusmriti dictated that chandalas had to live outside the village, use discarded utensils, and wear clothes of the dead and ornaments of iron."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"चीनी बौद्ध भिक्षु फा शियान ने किस सदी में लिखा था कि अस्पृश्यों को गली में चलते समय ताली बजानी पड़ती थी?","question_en":"Question 22: In which century did the Chinese Buddhist monk Fa Xian write that untouchables had to sound a clapper in the streets?","options":[{"hi":"दूसरी शताब्दी ईस्वी","en":"Second century CE"},{"hi":"तीसरी शताब्दी ईस्वी","en":"Third century CE"},{"hi":"चौथी शताब्दी ईस्वी","en":"Fourth century CE"},{"hi":"पांचवीं शताब्दी ईस्वी","en":"Fifth century CE"}],"answer":3,"explanation_hi":"पांचवीं शताब्दी ईस्वी के चीनी भिक्षु फा शियान ने दर्ज किया कि अस्पृश्यों को दूसरों को प्रदूषित करने से बचाने के लिए सड़कों पर ताली बजानी पड़ती थी।","explanation_en":"The fifth-century CE Chinese monk Fa Xian recorded that untouchables had to sound a clapper in streets to prevent polluting others."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सुत्त पिटक के एक मिथक के अनुसार, लोगों द्वारा सामाजिक व्यवस्था बनाए रखने के लिए चुने गए व्यक्ति को क्या कहा जाता था?","question_en":"Question 23: According to a myth in the Sutta Pitaka, what was the being chosen by the people to maintain social order called?","options":[{"hi":"चक्रवर्ती","en":"Chakravartin"},{"hi":"देवपुत्र","en":"Devaputra"},{"hi":"महासम्मत","en":"Mahasammata"},{"hi":"गपति","en":"Gahapati"}],"answer":2,"explanation_hi":"बौद्ध मिथक के अनुसार, पूरी जनता द्वारा चुने गए नेता को 'महासम्मत' (महान निर्वाचित) कहा जाता था।","explanation_en":"According to the Buddhist myth, the leader chosen by the whole people was known as 'mahasammata' (the great elect)."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1951-52 में मेरठ (उत्तर प्रदेश) के हस्तिनापुर गांव में उत्खनन कार्य किस पुरातत्वविद् ने किया था?","question_en":"Question 24: Which archaeologist excavated the village of Hastinapura in Meerut (Uttar Pradesh) in 1951-52?","options":[{"hi":"जॉन मार्शल","en":"John Marshall"},{"hi":"बी.बी. लाल","en":"B.B. Lal"},{"hi":"आर.ई.एम. व्हीलर","en":"R.E.M. Wheeler"},{"hi":"अलेक्जेंडर कनिंघम","en":"Alexander Cunningham"}],"answer":1,"explanation_hi":"पुरातत्वविद् बी.बी. लाल ने 1951-52 में हस्तिनापुर में उत्खनन किया, जहां उन्हें निवास के पांच स्तर मिले।","explanation_en":"The archaeologist B.B. Lal excavated at Hastinapura in 1951-52, identifying five occupational levels."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"19वीं सदी में साँची के स्तूप के संरक्षण के लिए मुख्य रूप से किन शासकों ने धन उपलब्ध कराया था?","question_en":"Question 25: Which rulers primarily provided money for the preservation of the stupa at Sanchi in the nineteenth century?","options":[{"hi":"शाहजहां बेगम और सुल्तान जहाँ बेगम","en":"Shahjehan Begum and Sultan Jehan Begum"},{"hi":"नूरजहाँ बेगम और सिकंदर बेगम","en":"Nur Jehan Begum and Sikandar Begum"},{"hi":"मुमताज महल और जहांआरा","en":"Mumtaz Mahal and Jahanara"},{"hi":"शाहजहां बेगम और रजिया सुल्तान","en":"Shahjehan Begum and Razia Sultan"}],"answer":0,"explanation_hi":"भोपाल की शासकों, शाहजहां बेगम और उनकी उत्तराधिकारी सुल्तान जहाँ बेगम ने साँची के संरक्षण के लिए धन प्रदान किया।","explanation_en":"The rulers of Bhopal, Shahjehan Begum and her successor Sultan Jehan Begum, provided money for the preservation of Sanchi."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जैन परंपरा के अनुसार, वर्धमान महावीर से पहले कितने शिक्षक या तीर्थंकर हो चुके थे?","question_en":"Question 26: According to Jaina tradition, how many teachers or tirthankaras had preceded Vardhamana Mahavira?","options":[{"hi":"21","en":"21"},{"hi":"22","en":"22"},{"hi":"24","en":"24"},{"hi":"23","en":"23"}],"answer":3,"explanation_hi":"महावीर 24वें तीर्थंकर थे; जैन परंपरा के अनुसार उनसे पहले 23 अन्य तीर्थंकर हुए थे।","explanation_en":"Mahavira was the 24th tirthankara; according to Jaina tradition, he was preceded by 23 other tirthankaras."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सिद्धार्थ (गौतम बुद्ध) ने ज्ञान प्राप्ति के बाद अपना पहला उपदेश किस स्थान पर दिया था?","question_en":"Question 27: At which place did Siddhartha (Gautama Buddha) give his first sermon after attaining enlightenment?","options":[{"hi":"लुंबिनी","en":"Lumbini"},{"hi":"बोधगया","en":"Bodh Gaya"},{"hi":"सारनाथ","en":"Sarnath"},{"hi":"कुशीनगर","en":"Kusinagara"}],"answer":2,"explanation_hi":"बुद्ध ने अपना पहला उपदेश सारनाथ में दिया था, जबकि बोधगया में उन्हें ज्ञान प्राप्त हुआ था।","explanation_en":"The Buddha gave his first sermon at Sarnath, whereas he attained enlightenment at Bodh Gaya."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"स्तूप की संरचना में, 'अंड' के ऊपर स्थित छज्जे जैसी संरचना को क्या कहा जाता था जो देवताओं के निवास का प्रतीक थी?","question_en":"Question 28: In the structure of the stupa, what was the balcony-like structure above the 'anda' called, representing the abode of the gods?","options":[{"hi":"अंड","en":"Anda"},{"hi":"हर्मिका","en":"Harmika"},{"hi":"यष्टि","en":"Yashti"},{"hi":"छतरी","en":"Chhatri"}],"answer":1,"explanation_hi":"स्तूप के अंड (गुंबद) के ऊपर एक छज्जे जैसी संरचना थी जिसे हर्मिका कहा जाता था, जो देवताओं के निवास का प्रतीक थी।","explanation_en":"Above the anda (dome) of the stupa was the harmika, a balcony-like structure representing the abode of the gods."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अमरावती के स्तूप के खंडहर 1796 में अचानक किसके द्वारा खोजे गए थे?","question_en":"Question 29: By whom were the ruins of the stupa at Amaravati stumbled upon in 1796?","options":[{"hi":"कॉलिन मैकेंज़ी","en":"Colin Mackenzie"},{"hi":"जेम्स फर्ग्यूसन","en":"James Fergusson"},{"hi":"अलेक्जेंडर कनिंघम","en":"Alexander Cunningham"},{"hi":"एक स्थानीय राजा","en":"A local raja"}],"answer":3,"explanation_hi":"1796 में एक स्थानीय राजा, जो मंदिर बनाना चाहता था, को अमरावती के स्तूप के खंडहर मिले, और उसने पत्थर का उपयोग करने का निर्णय लिया।","explanation_en":"In 1796, a local raja who wanted to build a temple stumbled upon the ruins of the stupa at Amaravati and decided to use the stone."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"साँची के स्तूप पर खुदी हुई वह मूर्तिकला, जो झोपड़ियों और पेड़ों के साथ एक ग्रामीण दृश्य दर्शाती है, कला इतिहासकारों द्वारा किस जातक कथा से जोड़ी गई है?","question_en":"Question 30: The sculpture at Sanchi depicting a rural scene with thatched huts and trees is identified by art historians with which Jataka tale?","options":[{"hi":"वेस्सांतर जातक","en":"Vessantara Jataka"},{"hi":"मातंग जातक","en":"Matanga Jataka"},{"hi":"मज्झिम निकाय","en":"Majjhima Nikaya"},{"hi":"उत्तराध्ययन सुत्त","en":"Uttaradhyayana Sutta"}],"answer":0,"explanation_hi":"साँची की यह मूर्ति वेस्सांतर जातक की कहानी दर्शाती है, जिसमें एक दानवीर राजकुमार अपनी पत्नी और बच्चों के साथ जंगल चला जाता है।","explanation_en":"The sculpture at Sanchi depicts a story from the Vessantara Jataka about a generous prince who went to the forest with his family."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"एलोरा (महाराष्ट्र) का प्रसिद्ध कैलाशनाथ मंदिर किस विशेषता के लिए जाना जाता है?","question_en":"Question 31: For what feature is the famous Kailashnatha Temple at Ellora (Maharashtra) known?","options":[{"hi":"यह पूरी तरह से ईंटों से बना है","en":"It is completely made of bricks"},{"hi":"यह प्राचीनतम ईंट संरचना है","en":"It is the oldest brick structure"},{"hi":"इसे चट्टान के एक ही टुकड़े से उकेरा गया है","en":"It is carved out of a single piece of rock"},{"hi":"इसमें कोई गर्भगृह नहीं है","en":"It has no garbhagriha"}],"answer":2,"explanation_hi":"एलोरा का कैलाशनाथ मंदिर पूरी तरह से चट्टान के एक ही टुकड़े को तराश कर बनाया गया है।","explanation_en":"The Kailashnatha Temple at Ellora is entirely carved out of a single piece of rock."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हड़प्पाई स्थलों से प्राप्त किन जंगली प्रजातियों की हड्डियां यह दर्शाती हैं कि उनका शिकार किया जाता था?","question_en":"Question 32: Bones of which wild species found at Harappan sites indicate that they were hunted?","options":[{"hi":"सूअर, हिरण और घड़ियाल","en":"Boar, deer and gharial"},{"hi":"भेड़, बकरी और सूअर","en":"Sheep, goat and pig"},{"hi":"मवेशी, भैंस और कुत्ते","en":"Cattle, buffalo and dog"},{"hi":"गाय, सुअर और बिल्ली","en":"Cow, pig and cat"}],"answer":0,"explanation_hi":"हड़प्पाई स्थलों से सूअर, हिरण और घड़ियाल जैसी जंगली प्रजातियों की हड्डियां मिली हैं, जो शिकार किए जाने का संकेत देती हैं।","explanation_en":"Bones of wild species such as boar, deer and gharial have been found at Harappan sites, indicating hunting."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दक्षिण भारतीय शिलालेखों की पत्रिका, एपिग्राफिया कर्नाटिका (Epigraphia Carnatica) का पहला अंक किस वर्ष प्रकाशित हुआ था?","question_en":"Question 33: In which year was the first issue of Epigraphia Carnatica, a journal of south Indian inscriptions, published?","options":[{"hi":"1877","en":"1877"},{"hi":"1886","en":"1886"},{"hi":"1888","en":"1888"},{"hi":"1914","en":"1914"}],"answer":1,"explanation_hi":"1886 में दक्षिण भारतीय शिलालेखों की पत्रिका 'एपिग्राफिया कर्नाटिका' का पहला अंक प्रकाशित हुआ था।","explanation_en":"The first issue of Epigraphia Carnatica, a journal of south Indian inscriptions, was published in 1886."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौर्य साम्राज्य के प्रांतीय केंद्र 'सुवर्णगिरि' शब्द का शाब्दिक अर्थ क्या है?","question_en":"Question 34: What is the literal meaning of the word 'Suvarnagiri', a provincial centre in the Mauryan Empire?","options":[{"hi":"स्वर्ण पर्वत","en":"The golden mountain"},{"hi":"शाही किला","en":"The royal fort"},{"hi":"पवित्र नगर","en":"The sacred city"},{"hi":"व्यापारिक केंद्र","en":"Trade centre"}],"answer":0,"explanation_hi":"सुवर्णगिरि का शाब्दिक अर्थ \"स्वर्ण पर्वत\" है, जो संभवतः कर्नाटक की सोने की खदानों के लिए महत्वपूर्ण था।","explanation_en":"Suvarnagiri literally translates to \"the golden mountain\" and was possibly important for tapping the gold mines of Karnataka."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"धर्मशास्त्रों के अनुसार वर्णों और जातियों की संख्या के संबंध में कौन सा कथन सही है?","question_en":"Question 35: According to the Dharmashastras, which statement is true regarding the number of varnas and jatis?","options":[{"hi":"वर्ण और जातियां दोनों चार तक सीमित थे","en":"Both varnas and jatis were restricted to four"},{"hi":"वर्ण असीमित थे, जातियां चार थीं","en":"Varnas were unlimited, jatis were four"},{"hi":"वर्ण चार पर तय थे, जातियों की संख्या पर कोई प्रतिबंध नहीं था","en":"Varnas were fixed at four, there was no restriction on the number of jatis"},{"hi":"वर्ण पांच थे, जातियां छह थीं","en":"Varnas were five, jatis were six"}],"answer":2,"explanation_hi":"ग्रंथों के अनुसार, वर्णों की संख्या चार निश्चित थी, जबकि नई आजीविकाओं के अनुसार जातियों की संख्या बढ़ती रही।","explanation_en":"According to the texts, while the number of varnas was fixed at four, there was no restriction on the number of jatis."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सुत्त पिटक का हिस्सा 'थेरीगाथा' एक अनूठा बौद्ध ग्रंथ है जो किससे संबंधित है?","question_en":"Question 36: The 'Therigatha', a unique Buddhist text part of the Sutta Pitaka, is related to what?","options":[{"hi":"बुद्ध के जन्म की कहानियां","en":"Stories of the Buddha's birth"},{"hi":"राजाओं के दान का रिकॉर्ड","en":"Records of donations by kings"},{"hi":"भिक्खुओं द्वारा रचित नियम","en":"Rules composed by bhikkhus"},{"hi":"भिक्खुनियों द्वारा रचित छंदों का संग्रह","en":"A collection of verses composed by bhikkhunis"}],"answer":3,"explanation_hi":"थेरीगाथा भिक्खुनियों द्वारा रचित छंदों का संग्रह है जो महिलाओं के सामाजिक और आध्यात्मिक अनुभवों की अंतर्दृष्टि प्रदान करता है।","explanation_en":"The Therigatha is a collection of verses composed by bhikkhunis, providing insight into women's social and spiritual experiences."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रारंभिक हड़प्पा संस्कृति (Early Harappan phase) का कालखंड क्या निर्धारित किया गया है?","question_en":"Question 37: What is the designated time span of the Early Harappan phase?","options":[{"hi":"2600 ईसा पूर्व से 1900 ईसा पूर्व","en":"2600 BCE to 1900 BCE"},{"hi":"6000 ईसा पूर्व से 2600 ईसा पूर्व","en":"6000 BCE to 2600 BCE"},{"hi":"1900 ईसा पूर्व से 1300 ईसा पूर्व","en":"1900 BCE to 1300 BCE"},{"hi":"7000 ईसा पूर्व से 2600 ईसा पूर्व","en":"7000 BCE to 2600 BCE"}],"answer":1,"explanation_hi":"प्रारंभिक हड़प्पा संस्कृति, जो सभ्यता का प्रारंभिक चरण है, 6000 ईसा पूर्व से 2600 ईसा पूर्व के बीच निर्धारित किया गया है।","explanation_en":"The Early Harappan phase, which is a formative phase of the civilisation, ranges from 6000 BCE to 2600 BCE."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"छठी शताब्दी ईसा पूर्व के आसपास उपमहाद्वीप में ढाले और इस्तेमाल किए गए सबसे शुरुआती आहत सिक्के (punch-marked coins) किन धातुओं के बने थे?","question_en":"Question 38: The earliest punch-marked coins minted and used in the subcontinent around the sixth century BCE were made of which metals?","options":[{"hi":"चांदी और तांबा","en":"Silver and copper"},{"hi":"सोना और चांदी","en":"Gold and silver"},{"hi":"कांस्य और तांबा","en":"Bronze and copper"},{"hi":"सोना और कांस्य","en":"Gold and bronze"}],"answer":0,"explanation_hi":"आहत सिक्के सबसे शुरुआती सिक्कों में से थे और मुख्य रूप से चांदी और तांबे से बनाए जाते थे।","explanation_en":"Punch-marked coins were amongst the earliest to be minted and were made of silver and copper."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मनुस्मृति के अनुसार, स्त्रियों और पुरुषों के लिए संपत्ति अर्जित करने के क्रमशः कितने साधन बताए गए हैं?","question_en":"Question 39: According to the Manusmriti, how many means of acquiring wealth were stated for women and men, respectively?","options":[{"hi":"स्त्रियों के लिए सात और पुरुषों के लिए छह","en":"Seven for women and six for men"},{"hi":"स्त्रियों के लिए पांच और पुरुषों के लिए सात","en":"Five for women and seven for men"},{"hi":"स्त्रियों के लिए छह और पुरुषों के लिए सात","en":"Six for women and seven for men"},{"hi":"स्त्रियों के लिए आठ और पुरुषों के लिए छह","en":"Eight for women and six for men"}],"answer":2,"explanation_hi":"मनुस्मृति पुरुषों के लिए धन प्राप्त करने के सात साधन और महिलाओं के लिए छह साधन घोषित करती है।","explanation_en":"The Manusmriti declares seven means of acquiring wealth for men and six means for women."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"देवगढ़ (उत्तर प्रदेश) का मंदिर, जिसमें शेषनाग पर शयन करते हुए विष्णु की मूर्ति है, लगभग किस सदी का है?","question_en":"Question 40: The temple in Deogarh (Uttar Pradesh), featuring the sculpture of Vishnu reclining on Sheshnag, dates to about which century?","options":[{"hi":"तीसरी शताब्दी ईस्वी","en":"Third century CE"},{"hi":"छठी शताब्दी ईस्वी","en":"Sixth century CE"},{"hi":"चौथी शताब्दी ईस्वी","en":"Fourth century CE"},{"hi":"पांचवीं शताब्दी ईस्वी","en":"Fifth century CE"}],"answer":3,"explanation_hi":"देवगढ़ (उत्तर प्रदेश) का मंदिर पांचवीं शताब्दी ईस्वी (c. fifth century CE) में बनाया गया था।","explanation_en":"The temple in Deogarh (Uttar Pradesh) was built around the fifth century CE."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कृषि के लिए पानी जमा करने हेतु हड़प्पा सभ्यता के किस स्थल पर जलाशयों (water reservoirs) के प्रमाण मिले हैं?","question_en":"Question 41: At which Harappan site have pieces of evidence of water reservoirs used to store water for agriculture been found?","options":[{"hi":"लोथल","en":"Lothal"},{"hi":"धोलावीरा","en":"Dholavira"},{"hi":"कालीबंगा","en":"Kalibangan"},{"hi":"हड़प्पा","en":"Harappa"}],"answer":1,"explanation_hi":"गुजरात के धोलावीरा में मिले जलाशयों का उपयोग संभवतः कृषि के लिए पानी जमा करने हेतु किया जाता था।","explanation_en":"Water reservoirs found in Dholavira (Gujarat) may have been used to store water for agriculture."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अशोक ने अपने साम्राज्य में धम्म के संदेश को फैलाने के लिए किन विशेष अधिकारियों की नियुक्ति की थी?","question_en":"Question 42: Which special officers were appointed by Asoka to spread the message of dhamma in his empire?","options":[{"hi":"अमात्य","en":"Amatyas"},{"hi":"सामंत","en":"Samantas"},{"hi":"धम्म महामत्त","en":"Dhamma mahamatta"},{"hi":"पतिवेदक","en":"Pativedakas"}],"answer":2,"explanation_hi":"अशोक ने धम्म के सिद्धांतों को लागू करने और फैलाने के लिए 'धम्म महामत्त' नामक विशेष अधिकारियों की नियुक्ति की।","explanation_en":"Asoka appointed special officers known as 'dhamma mahamatta' to spread the message of dhamma."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अशोक के शिलालेखों में उल्लिखित शब्द 'पतिवेदक' (pativedakas) का क्या कार्य था?","question_en":"Question 43: What was the function of the term 'pativedakas' mentioned in Asoka's inscriptions?","options":[{"hi":"लोगों के मामलों की सूचना राजा को देना","en":"To report to the king about the affairs of the people"},{"hi":"कर एकत्र करना","en":"To collect taxes"},{"hi":"सेना का नेतृत्व करना","en":"To lead the army"},{"hi":"धार्मिक अनुष्ठान करना","en":"To perform religious rituals"}],"answer":0,"explanation_hi":"शिलालेखों के अनुसार, पतिवेदकों का कार्य अशोक को हर समय और हर जगह लोगों के मामलों की सूचना देना था।","explanation_en":"According to the inscriptions, the role of pativedakas was to report to Asoka about the affairs of the people at all times and places."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सातवाहन शासकों ने, जिन्होंने पश्चिमी भारत और दक्कन के कुछ हिस्सों पर शासन किया, उनका अनुमानित कालखंड क्या था?","question_en":"Question 44: What was the approximate time period of the Satavahana rulers, who ruled over parts of western India and the Deccan?","options":[{"hi":"पहली शताब्दी ईसा पूर्व से पहली शताब्दी ईस्वी","en":"1st century BCE to 1st century CE"},{"hi":"तीसरी शताब्दी ईसा पूर्व से तीसरी शताब्दी ईस्वी","en":"3rd century BCE to 3rd century CE"},{"hi":"चौथी शताब्दी ईस्वी से छठी शताब्दी ईस्वी","en":"4th century CE to 6th century CE"},{"hi":"दूसरी शताब्दी ईसा पूर्व से दूसरी शताब्दी ईस्वी","en":"2nd century BCE to 2nd century CE"}],"answer":3,"explanation_hi":"सातवाहनों ने पश्चिमी भारत और दक्कन के कुछ हिस्सों पर लगभग दूसरी शताब्दी ईसा पूर्व से दूसरी शताब्दी ईस्वी तक शासन किया।","explanation_en":"The Satavahanas ruled over parts of western India and the Deccan from c. second century BCE to second century CE."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उपमहाद्वीप के उत्तर-पश्चिमी और पश्चिमी भागों में राज्य स्थापित करने वाले शक (Shakas) मूल रूप से कहाँ के निवासी थे?","question_en":"Question 45: The Shakas, who established kingdoms in the north-western and western parts of the subcontinent, originally belonged to which region?","options":[{"hi":"यूनानी मूल","en":"Greek origin"},{"hi":"मध्य एशियाई मूल","en":"Central Asian origin"},{"hi":"फ़ारसी मूल","en":"Persian origin"},{"hi":"तिब्बती मूल","en":"Tibetan origin"}],"answer":1,"explanation_hi":"शक मध्य एशियाई मूल के लोग थे जिन्होंने भारतीय उपमहाद्वीप के उत्तर-पश्चिमी और पश्चिमी भागों में राज्य स्थापित किए।","explanation_en":"The Shakas were a people of Central Asian origin who established kingdoms in the north-western and western parts of the Indian subcontinent."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हड़प्पाई लिपि, जिसे आज तक पढ़ा नहीं जा सका है, में चिह्नों की कुल संख्या लगभग कितनी थी?","question_en":"Question 46: The Harappan script, which remains undeciphered to date, had approximately how many signs?","options":[{"hi":"275 से 300 के बीच","en":"Between 275 and 300"},{"hi":"475 से 500 के बीच","en":"Between 475 and 500"},{"hi":"375 से 400 के बीच","en":"Between 375 and 400"},{"hi":"175 से 200 के बीच","en":"Between 175 and 200"}],"answer":2,"explanation_hi":"हड़प्पाई लिपि वर्णमाला पर आधारित नहीं थी और इसमें लगभग 375 से 400 के बीच चिह्न थे।","explanation_en":"The Harappan script was not alphabetical and had too many signs, somewhere between 375 and 400."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बोधिसत्व को चांडाल के रूप में दर्शाने वाली कहानी 'मातंग जातक' मूल रूप से किस भाषा का ग्रंथ है?","question_en":"Question 47: The 'Matanga Jataka', a story showing the Bodhisattva as a chandala, is originally a text of which language?","options":[{"hi":"संस्कृत","en":"Sanskrit"},{"hi":"प्राकृत","en":"Prakrit"},{"hi":"तमिल","en":"Tamil"},{"hi":"पालि","en":"Pali"}],"answer":3,"explanation_hi":"मातंग जातक एक पालि ग्रंथ है जिसमें बोधिसत्व (पूर्व जन्म में बुद्ध) की पहचान मातंग नामक चांडाल के रूप में की गई है।","explanation_en":"The Matanga Jataka is a Pali text where the Bodhisattva (Buddha in a previous birth) is identified as a chandala named Matanga."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"यूनानी राजदूत मेगस्थनीज के विवरण के अनुसार, मौर्य सेना की गतिविधियों के समन्वय के लिए समिति के अंतर्गत कितनी उपसमितियां थीं?","question_en":"Question 48: According to the account of the Greek ambassador Megasthenes, how many subcommittees were there under the committee for coordinating Mauryan military activity?","options":[{"hi":"छह","en":"Six"},{"hi":"पांच","en":"Five"},{"hi":"सात","en":"Seven"},{"hi":"आठ","en":"Eight"}],"answer":0,"explanation_hi":"मेगस्थनीज ने सैन्य गतिविधियों के समन्वय के लिए छह उपसमितियों वाली एक समिति का उल्लेख किया है।","explanation_en":"Megasthenes mentions a committee with six subcommittees for coordinating military activity."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मगध की प्रारंभिक राजधानी पाटलिपुत्र थी।\nकथन 2: प्राकृत नाम 'राजगृह' का शाब्दिक अर्थ \"राजा का घर\" है।","question_en":"Question 49: Consider the following statements:\nStatement 1: The initial capital of Magadha was Pataliputra.\nStatement 2: The Prakrit name 'Rajagaha' literally means \"house of the king\".","options":[{"hi":"केवल 1 सही है","en":"Only 1 is correct"},{"hi":"केवल 2 सही है","en":"Only 2 is correct"},{"hi":"दोनों 1 और 2 सही हैं","en":"Both 1 and 2 are correct"},{"hi":"न तो 1 और न ही 2 सही है","en":"Neither 1 nor 2 is correct"}],"answer":1,"explanation_hi":"मगध की प्रारंभिक राजधानी राजगृह थी (पाटलिपुत्र नहीं), और राजगृह का अर्थ \"राजा का घर\" होता है।","explanation_en":"The initial capital of Magadha was Rajagaha (not Pataliputra), and Rajagaha means \"house of the king\"."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: सिद्धार्थ (बुद्ध) ने अपना पहला उपदेश सारनाथ में दिया था।\nकथन 2: बुद्ध ने अपना निब्बान कुशीनगर में प्राप्त किया।","question_en":"Question 50: Consider the following statements:\nStatement 1: Siddhartha (Buddha) gave his first sermon in Sarnath.\nStatement 2: The Buddha attained nibbana in Kusinagara.","options":[{"hi":"केवल 1 सही है","en":"Only 1 is correct"},{"hi":"केवल 2 सही है","en":"Only 2 is correct"},{"hi":"दोनों 1 और 2 सही हैं","en":"Both 1 and 2 are correct"},{"hi":"न तो 1 और न ही 2 सही है","en":"Neither 1 nor 2 is correct"}],"answer":2,"explanation_hi":"स्रोतों के अनुसार, बुद्ध ने ज्ञान बोधगया में प्राप्त किया, पहला उपदेश सारनाथ में दिया और निब्बान कुशीनगर में प्राप्त किया।","explanation_en":"According to sources, the Buddha attained enlightenment at Bodh Gaya, gave his first sermon at Sarnath, and attained nibbana at Kusinagara."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
