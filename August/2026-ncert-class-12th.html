@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"UPSC/PCS • NCERT CLASS 12th • History book 3","highlight":"NCERT CLASS 12th","shortTitle":"UPSC/PCS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • NCERT CLASS 12th • History book 3","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-upsc-pcs-ncert-class-12th-history-book-3-ncert-history-class-12-20260821-acac3","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-21","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मेरठ छावनी में सिपाहियों ने किस तारीख को विद्रोह शुरू किया था?","question_en":"Question 1: On which date did the sepoys in Meerut cantonment begin their mutiny?","options":[{"hi":"10 मई 1857","en":"10 May 1857"},{"hi":"11 मई 1857","en":"11 May 1857"},{"hi":"12 मई 1857","en":"12 May 1857"},{"hi":"13 मई 1857","en":"13 May 1857"}],"answer":0,"explanation_hi":"मेरठ में सिपाहियों ने 10 मई 1857 को दोपहर बाद विद्रोह शुरू किया, जो बहुत तेजी से फैला।","explanation_en":"The sepoys in Meerut cantonment began their mutiny late in the afternoon of 10 May 1857."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मेरठ के विद्रोही सिपाही दिल्ली के लाल किले के फाटकों पर किस तिथि को सुबह पहुंचे थे?","question_en":"Question 2: On which date did the rebel sepoys of Meerut reach the gates of the Red Fort in Delhi in the morning?","options":[{"hi":"10 मई 1857","en":"10 May 1857"},{"hi":"11 मई 1857","en":"11 May 1857"},{"hi":"12 मई 1857","en":"12 May 1857"},{"hi":"13 मई 1857","en":"13 May 1857"}],"answer":1,"explanation_hi":"विद्रोही सिपाही 11 मई 1857 को सुबह लाल किले पहुंचे जब बहादुर शाह जफ़र रमज़ान का भोजन और प्रार्थना समाप्त कर चुके थे।","explanation_en":"The rebel sepoys arrived at the gates of the Red Fort early in the morning on 11 May 1857."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मई की शुरुआत में 7वीं अवध इर्रेगुलर कैवलरी ने नए कारतूसों को स्वीकार करने से इनकार कर दिया था।\nकथन 2: उन्होंने 48वीं नेटिव इन्फैंट्री को लिखा कि उन्होंने धर्म के लिए काम किया है और उनके आदेशों की प्रतीक्षा कर रहे हैं।","question_en":"Question 3: Consider the following statements:\nStatement 1: In early May, the 7th Awadh Irregular Cavalry refused to accept the new cartridges.\nStatement 2: They wrote to the 48th Native Infantry that they had acted for the faith and awaited their orders.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं, जो दर्शाते हैं कि विद्रोह में विभिन्न छावनियों के बीच योजना और समन्वय मौजूद था।","explanation_en":"Both statements are correct, indicating that some sort of planning and coordination existed between cantonments."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: विद्रोही नेता शाह मल उत्तर प्रदेश के परगना मेरठ के एक बड़े गांव में रहते थे।\nकथन 2: वह जाट काश्तकारों के एक कुल से संबंधित थे जिनका प्रभुत्व अस्सी गांवों पर था।","question_en":"Question 4: Consider the following statements:\nStatement 1: The rebel leader Shah Mal lived in a large village in pargana Meerut of Uttar Pradesh.\nStatement 2: He belonged to a clan of Jat cultivators whose dominance extended over eighty villages.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":3,"explanation_hi":"कथन 1 गलत है क्योंकि शाह मल परगना बड़ौत के थे; कथन 2 गलत है क्योंकि उनके कुल के नातेदारी संबंध चौरासी देस (84 गांवों) में थे।","explanation_en":"Statement 1 is incorrect as Shah Mal was from pargana Barout; Statement 2 is incorrect as his clan extended over 84 villages."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"शाह मल ने उत्तर प्रदेश के परगना बड़ौत में किस कुल के किसानों को संगठित किया था, जिसके नातेदारी संबंध 'चौरासी देस' में फैले थे?","question_en":"Question 5: Shah Mal mobilized the cultivators of which clan in pargana Barout of Uttar Pradesh, whose kinship ties extended over 'chaurasee des'?","options":[{"hi":"जाट किसानों को","en":"Jat cultivators"},{"hi":"राजपूत जमींदारों को","en":"Rajput zamindars"},{"hi":"गुर्जर कृषकों को","en":"Gujjar cultivators"},{"hi":"कोल आदिवासियों को","en":"Kol tribals"}],"answer":0,"explanation_hi":"शाह मल का संबंध जाट किसानों के एक कुल से था, जिसके रिश्तेदार चौरासी देस यानी चौरासी गांवों में फैले हुए थे।","explanation_en":"Shah Mal belonged to a clan of Jat cultivators whose kinship ties extended over chaurasee des (84 villages)."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"छोटानागपुर के सिंहभूम में कोल आदिवासियों का नेतृत्व करने वाले स्थानीय विद्रोही नेता गोनू कौन थे?","question_en":"Question 6: Who was Gonoo, the local rebel leader of the Kol tribals of Singhbhum in Chotanagpur?","options":[{"hi":"एक स्थानीय राजा","en":"a local raja"},{"hi":"एक आदिवासी काश्तकार","en":"a tribal cultivator"},{"hi":"एक ब्रिटिश पुलिस अधिकारी","en":"a British police officer"},{"hi":"एक धनी महाजन","en":"a wealthy moneylender"}],"answer":1,"explanation_hi":"गोनू सिंहभूम, छोटानागपुर के कोल आदिवासियों का एक विद्रोही नेता था जो कि एक आदिवासी काश्तकार था।","explanation_en":"Gonoo was a tribal cultivator of Singhbhum in Chotanagpur who became a leader of the Kol tribals."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1851 में किस गवर्नर जनरल ने अवध के साम्राज्य को 'एक चेरी जो एक दिन हमारे मुंह में आ गिरेगी' के रूप में वर्णित किया था?","question_en":"Question 7: In 1851, which Governor General described the kingdom of Awadh as 'a cherry that will drop into our mouth one day'?","options":[{"hi":"लॉर्ड वेलेस्ली ने","en":"Lord Wellesley"},{"hi":"लॉर्ड कैनिंग ने","en":"Lord Canning"},{"hi":"लॉर्ड डलहौजी ने","en":"Lord Dalhousie"},{"hi":"लॉर्ड कॉर्नवॉलिस ने","en":"Lord Cornwallis"}],"answer":2,"explanation_hi":"गवर्नर जनरल लॉर्ड डलहौजी ने 1851 में अवध को 'चेरी' कहा था और ठीक पांच वर्ष बाद 1856 में इसका विलय कर लिया गया।","explanation_en":"Governor General Lord Dalhousie described Awadh as a cherry in 1851, and it was annexed in 1856."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लॉर्ड वेलेस्ली की सहायक संधि (सब्सिडियरी एलायंस) की शर्तों को अवध साम्राज्य पर किस वर्ष लागू किया गया था?","question_en":"Question 8: In which year was the terms of Lord Wellesley's Subsidiary Alliance imposed on the kingdom of Awadh?","options":[{"hi":"1798","en":"1798"},{"hi":"1793","en":"1793"},{"hi":"1856","en":"1856"},{"hi":"1801","en":"1801"}],"answer":3,"explanation_hi":"अवध पर सहायक संधि 1801 में थोपी गई थी जिसके तहत नवाब को अपनी सेना भंग करनी पड़ी थी।","explanation_en":"The Subsidiary Alliance was imposed on Awadh in 1801, depriving the Nawab of his armed forces."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सहायक संधि (सब्सिडियरी एलायंस) की प्रणाली को 1798 में किस ब्रिटिश अधिकारी द्वारा तैयार किया गया था?","question_en":"Question 9: By which British officer was the system of Subsidiary Alliance devised in 1798?","options":[{"hi":"लॉर्ड वेलेस्ली द्वारा","en":"Lord Wellesley"},{"hi":"लॉर्ड डलहौजी द्वारा","en":"Lord Dalhousie"},{"hi":"लॉर्ड कॉर्नवॉलिस द्वारा","en":"Lord Cornwallis"},{"hi":"लॉर्ड कैनिंग द्वारा","en":"Lord Canning"}],"answer":0,"explanation_hi":"सहायक संधि की प्रणाली को लॉर्ड वेलेस्ली द्वारा 1798 में तैयार किया गया था और इसे भारतीय शासकों पर थोपा गया था।","explanation_en":"The Subsidiary Alliance was a system devised by Lord Wellesley in 1798 with specific security terms."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नवाब वाजिद अली शाह को कुशासन के आरोप में गद्दी से हटाकर 1856 में कहाँ निर्वासित कर दिया गया था?","question_en":"Question 10: To which place was Nawab Wajid Ali Shah exiled after being dethroned in 1856 on the plea of misgovernment?","options":[{"hi":"कानपुर","en":"Kanpur"},{"hi":"कलकत्ता","en":"Calcutta"},{"hi":"दिल्ली","en":"Delhi"},{"hi":"रंगून","en":"Rangoon"}],"answer":1,"explanation_hi":"अवध के नवाब वाजिद अली शाह को ब्रिटिश सरकार ने गद्दी से हटाकर कलकत्ता निर्वासित कर दिया था।","explanation_en":"Nawab Wajid Ali Shah was dethroned on pleas of misgovernment and exiled to Calcutta."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अवध में गाया जाने वाला लोकगीत 'अंग्रेज बहादुर आइन, मुल्क लै लीन्हो' किस नवाब के निर्वासन के बाद लोगों के शोक को दर्शाता है?","question_en":"Question 11: The folk song 'Angrez Bahadur ain, mulk lai linho' laments the departure of which Nawab of Awadh?","options":[{"hi":"नवाब शुजा-उद-दौला","en":"Nawab Shuja-ud-Daula"},{"hi":"नवाब आसफ-उद-दौला","en":"Nawab Asaf-ud-Daula"},{"hi":"नवाब वाजिद अली शाह","en":"Nawab Wajid Ali Shah"},{"hi":"नवाब बिरजिस काद्र","en":"Nawab Birjis Qadr"}],"answer":2,"explanation_hi":"यह प्रसिद्ध लोकगीत अवध के लोकप्रिय शासक वाजिद अली शाह के कलकत्ता निर्वासन के दुख को व्यक्त करता है।","explanation_en":"This folk song laments the exile of Nawab Wajid Ali Shah after the British took over the country."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अवध के विलय के बाद अंग्रेजों द्वारा समरी सेटलमेंट ऑफ 1856 लागू किया गया था।\nकथन 2: इस बंदोबस्त के बाद तालुकदारों के नियंत्रण वाले गांवों की संख्या 67 प्रतिशत से घटकर 38 प्रतिशत रह गई थी।","question_en":"Question 12: Consider the following statements:\nStatement 1: After the annexation of Awadh, the Summary Settlement of 1856 was introduced by the British.\nStatement 2: Following this settlement, the percentage of villages held by taluqdars dropped from 67 percent to 38 percent.","options":[{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":0,"explanation_hi":"दोनों कथन सही हैं; 1856 के समरी सेटलमेंट ने अवध के तालुकदारों की शक्ति और जमीन को काफी कम कर दिया था।","explanation_en":"Both statements are correct; the Summary Settlement of 1856 reduced the taluqdars' village share from 67% to 38%."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मौलवी अहमदशाह को उनके पालकी में चलने और आगे ढोल बजाने के कारण 'डंका शाह' कहा जाता था।\nकथन 2: उन्होंने प्रसिद्ध चिनहट के युद्ध में हिस्सा लिया जिसमें ब्रिटिश सेना प्रमुख हेनरी लॉरेंस की पराजय हुई थी।","question_en":"Question 13: Consider the following statements:\nStatement 1: Maulvi Ahmadullah Shah was popularly called 'Danka Shah' because he moved in a palanquin with drumbeaters in front.\nStatement 2: He fought in the famous Battle of Chinhat in which the British forces under Henry Lawrence were defeated.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":1,"explanation_hi":"दोनों कथन सही हैं; फैजाबाद के मौलवी अहमदशाह चिनहट के प्रसिद्ध युद्ध में विजयी रहे थे।","explanation_en":"Both statements are correct; Maulvi Ahmadullah Shah defeated Henry Lawrence's forces at the Battle of Chinhat."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"नवाब वाजिद अली शाह द्वारा निर्मित उस आमोद-प्रमोद के उद्यान (प्लेज़र गार्डन) का नाम क्या था जहाँ ब्रिटिश सेनापति कैंपबेल ने 1857 में 2,000 से अधिक विद्रोही सिपाहियों को मार डाला था?","question_en":"Question 14: What was the name of the pleasure garden built by Nawab Wajid Ali Shah where British forces led by Campbell killed over 2,000 rebel sepoys in 1857?","options":[{"hi":"कैसर बाग","en":"Kaisar Bagh"},{"hi":"रेजीडेंसी बाग","en":"Residency Garden"},{"hi":"दिलकुशा बाग","en":"Dilkusha Garden"},{"hi":"सिकंदरा बाग","en":"Secundrah Bagh"}],"answer":3,"explanation_hi":"कैंपबेल के नेतृत्व में ब्रिटिश सेना ने सिकंदरा बाग में 2000 से अधिक विद्रोही सिपाहियों को मौत के घाट उतार दिया था, जो वाजिद अली शाह का बाग था।","explanation_en":"British forces led by Campbell killed over 2,000 rebel sepoys in Secundrah Bagh, Nawab Wajid Ali Shah's pleasure garden."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दिसंबर 1857 में ब्रिटिश अधिकारियों ने बरेली में हिंदू आबादी को मुसलमानों के खिलाफ भड़काने के लिए कितनी राशि खर्च की थी, जो प्रयास पूरी तरह विफल रहा?","question_en":"Question 15: In December 1857, how much money did the British spend in Bareilly to incite the Hindu population against the Muslims, an attempt that failed completely?","options":[{"hi":"50,000 रुपये","en":"Rs 50,000"},{"hi":"1,00,000 रुपये","en":"Rs 1,00,000"},{"hi":"25,000 रुपये","en":"Rs 25,000"},{"hi":"75,000 रुपये","en":"Rs 75,000"}],"answer":0,"explanation_hi":"ब्रिटिश अधिकारियों ने बरेली में सांप्रदायिक फूट डालने के लिए 50,000 रुपये खर्च किए थे, परंतु हिंदू जनता ने इसका विरोध किया।","explanation_en":"In Bareilly in December 1857, the British spent Rs 50,000 to incite Hindus against Muslims, but the attempt failed."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. चार्ल्स बॉल, B. हेनरी हार्डिंग, C. ऑगस्टस क्लीवलैंड;\nसूची-II: 1. पहाड़िया शांतिकरण नीति का प्रस्तावक, 2. कानपुर सिपाही लाइनों में रात्रि पंचायत का उल्लेखकर्ता, 3. सेना में एनफील्ड राइफलें लाने वाले गवर्नर जनरल। सही विकल्प चुनिए:","question_en":"Question 16: Match List-I with List-II:\nList-I: A. Charles Ball, B. Henry Hardinge, C. Augustus Cleveland;\nList-II: 1. Proposer of Paharia pacification policy, 2. Mentioner of nightly panchayats in Kanpur sepoy lines, 3. Governor General who introduced Enfield rifles. Choose the correct option:","options":[{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"}],"answer":2,"explanation_hi":"चार्ल्स बॉल ने कानपुर पंचायत का; हेनरी हार्डिंग ने एनफील्ड राइफल का; ऑगस्टस क्लीवलैंड ने पहाड़िया शांतिकरण नीति का सूत्रपात किया था।","explanation_en":"Charles Ball recorded Kanpur panchayats; Hardinge introduced Enfield rifles; Cleveland proposed Paharia pacification."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"1857 के विद्रोह के दौरान की निम्नलिखित घटनाओं और तारीखों के जोड़ों पर विचार करें: 1. 10 मई 1857 — मेरठ में विद्रोह की शुरुआत, 2. 30 मई 1857 — लखनऊ में विद्रोह की शुरुआत, 3. 30 जून 1857 — चिनहट के युद्ध में ब्रिटिश सेना की हार। उपर्युक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Question 17: Consider the following pairs of events and dates during the 1857 revolt: 1. 10 May 1857 — Outbreak of mutiny in Meerut, 2. 30 May 1857 — Rising in Lucknow, 3. 30 June 1857 — Defeat of British forces in the Battle of Chinhat. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"कोई भी नहीं","en":"None of the pairs"},{"hi":"सभी तीनों युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"सभी तीनों युग्म सही सुमेलित हैं। मेरठ में विद्रोह 10 मई को; लखनऊ में 30 मई को; चिनहट का युद्ध 30 जून को हुआ था।","explanation_en":"All three pairs are correctly matched as per the official timeline of the 1857 uprising."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अवध में 1857 के दौरान प्रतिरोध सबसे तीव्र और लंबे समय तक चलने वाला था।\nकथन 2: ब्रिटिश अधिकारी फ़ोरसिथ ने अनुमान लगाया था कि अवध की तीन-चौथाई वयस्क पुरुष आबादी विद्रोह में शामिल थी।","question_en":"Question 18: Consider the following statements:\nStatement 1: Resistance to the British in 1857 was most intense and long-lasting in Awadh.\nStatement 2: A British official named Forsyth estimated that three-fourths of the adult male population in Awadh was in rebellion.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":1,"explanation_hi":"दोनों कथन सही हैं; अवध में जनसाधारण का विद्रोह इस कदर व्यापक था कि फोरसिथ ने तीन-चौथाई पुरुषों के शामिल होने का अनुमान लगाया था।","explanation_en":"Both statements are correct; the rebellion was so widespread that Forsyth estimated 3/4th of the adult male population was in revolt."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. नाना साहिब, B. कुँवर सिंह, C. बिरजिस काद्र;\nसूची-II: 1. आरा (बिहार), 2. कानपुर, 3. लखनऊ। सही विकल्प चुनिए:","question_en":"Question 19: Match List-I with List-II:\nList-I: A. Nana Sahib, B. Kunwar Singh, C. Birjis Qadr;\nList-II: 1. Arrah (Bihar), 2. Kanpur, 3. Lucknow. Choose the correct option:","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"}],"answer":0,"explanation_hi":"नाना साहिब कानपुर के नेता थे; कुँवर सिंह आरा के स्थानीय जमींदार थे और बिरजिस काद्र लखनऊ के नवाब के पुत्र थे।","explanation_en":"Nana Sahib led Kanpur; Kunwar Singh was a local zamindar in Arrah; Birjis Qadr was proclaimed leader in Lucknow."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित घटनाओं को कालक्रम के अनुसार व्यवस्थित कीजिए: 1. मेरठ में विद्रोह की शुरुआत, 2. चिनहट के युद्ध में ब्रिटिश सेना की हार, 3. अवध का ब्रिटिश साम्राज्य में औपचारिक विलय। सही विकल्प चुनिए:","question_en":"Question 20: Arrange the following events in chronological order: 1. Outbreak of mutiny in Meerut, 2. Defeat of British forces in the Battle of Chinhat, 3. Formal annexation of Awadh into the British Empire. Choose the correct option:","options":[{"hi":"3-2-1","en":"3-2-1"},{"hi":"1-2-3","en":"1-2-3"},{"hi":"3-1-2","en":"3-1-2"},{"hi":"2-1-3","en":"2-1-3"}],"answer":2,"explanation_hi":"अवध का विलय 1856 में हुआ; मेरठ विद्रोह 10 मई 1857 को; चिनहट का युद्ध 30 जून 1857 को हुआ था।","explanation_en":"Annexation of Awadh occurred in 1856; Meerut mutiny on 10 May 1857; Battle of Chinhat on 30 June 1857."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बंगाल में स्थायी बंदोबस्त (परमानेंट सेटलमेंट) किस वर्ष लागू किया गया था और उस समय बंगाल का गवर्नर जनरल कौन था?","question_en":"Question 21: In which year was the Permanent Settlement introduced in Bengal, and who was the Governor General of Bengal at that time?","options":[{"hi":"1797, लॉर्ड वेलेस्ली","en":"1797, Lord Wellesley"},{"hi":"1793, वॉरेन हेस्टिंग्स","en":"1793, Warren Hastings"},{"hi":"1801, लॉर्ड डलहौजी","en":"1801, Lord Dalhousie"},{"hi":"1793, चार्ल्स कॉर्नवॉलिस","en":"1793, Charles Cornwallis"}],"answer":3,"explanation_hi":"चार्ल्स कॉर्नवॉलिस के गवर्नर जनरल रहते हुए बंगाल में स्थायी बंदोबस्त 1793 में लागू किया गया था।","explanation_en":"The Permanent Settlement was introduced in 1793 in Bengal, with Charles Cornwallis as Governor General."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राजा की संपत्ति की नीलामी की वह प्रसिद्ध घटना वर्धमान (बर्दवान) में किस वर्ष हुई थी, जहाँ 95 प्रतिशत से अधिक बोलियाँ फर्जी साबित हुईं?","question_en":"Question 22: In which year did the famous auction of the Raja's estates take place in Burdwan, where over 95 percent of the sales turned out to be fictitious?","options":[{"hi":"1793","en":"1793"},{"hi":"1797","en":"1797"},{"hi":"1801","en":"1801"},{"hi":"1813","en":"1813"}],"answer":1,"explanation_hi":"वर्धमान के राजा मेहताब चंद के पूर्वज की संपत्ति की नीलामी 1797 में हुई थी, जिसमें 95% से अधिक बिक्री फर्जी थी।","explanation_en":"The auction in Burdwan took place in 1797, where over 95% of the sales were found to be fictitious."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"स्थायी बंदोबस्त की नीलामी की धोखाधड़ी में व्यापक रूप से प्रयुक्त शब्द 'बेनामी' (Benami) का शाब्दिक अर्थ क्या है?","question_en":"Question 23: What is the literal meaning of the term 'Benami', which was widely used in fictitious transactions during the Permanent Settlement auctions?","options":[{"hi":"गुमनाम","en":"anonymous"},{"hi":"बहुत प्रसिद्ध","en":"very famous"},{"hi":"सरकारी स्वामित्व","en":"state-owned"},{"hi":"राजा की निजी भूमि","en":"king's private land"}],"answer":0,"explanation_hi":"हिंदी तथा अन्य भाषाओं में 'बेनामी' का शाब्दिक अर्थ गुमनाम होता है, जहां असली लाभार्थी का नाम नहीं होता है।","explanation_en":"Benami literally means anonymous, used for transactions made in the name of a fictitious person."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: महाराजा मेहताब चंद के शासनकाल में बर्दवान की रियासत काफी फली-फूली।\nकथन 2: महाराजा मेहताब चंद ने संथाल विद्रोह और 1857 के विद्रोह के दौरान अंग्रेजों की मदद की थी।","question_en":"Question 24: Consider the following statements:\nStatement 1: Under Maharaja Mehtab Chand, the estate of Burdwan prospered.\nStatement 2: Mehtab Chand helped the British during the Santhal rebellion and the 1857 revolt.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं; महाराजा मेहताब चंद के अधीन बर्दवान समृद्ध हुआ और उन्होंने अंग्रेजों का दोनों विद्रोहों में साथ दिया।","explanation_en":"Both statements are correct; Burdwan prospered under Mehtab Chand, who actively supported the British."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्रिटिश संसद में 1813 में प्रस्तुत 'पांचवीं रिपोर्ट' (Fifth Report) कुल कितने पृष्ठों की थी, और उसमें परिशिष्टों के कितने पृष्ठ शामिल थे?","question_en":"Question 25: The 'Fifth Report' submitted to the British Parliament in 1813 ran into how many total pages, and how many of those were appendices?","options":[{"hi":"1002 पृष्ठ जिनमें से 500 पृष्ठ परिशिष्ट थे","en":"1002 pages of which 500 pages were appendices"},{"hi":"1200 पृष्ठ जिनमें से 800 से अधिक पृष्ठ परिशिष्ट थे","en":"1200 pages of which over 800 pages were appendices"},{"hi":"800 पृष्ठ जिनमें से 600 पृष्ठ परिशिष्ट थे","en":"800 pages of which 600 pages were appendices"},{"hi":"1002 पृष्ठ जिनमें से 800 से अधिक पृष्ठ परिशिष्ट थे","en":"1002 pages of which over 800 pages were appendices"}],"answer":3,"explanation_hi":"पांचवीं रिपोर्ट 1002 पृष्ठों की थी जिसमें 800 से अधिक पृष्ठ परिशिष्टों के थे, जो जमींदारों की अर्जियों पर आधारित थे।","explanation_en":"The Fifth Report ran into 1002 pages, containing over 800 pages of appendices with petitions and data."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"फ्रांसिस बुकानन, जो भारत में बंगाल चिकित्सा सेवा में चिकित्सक थे, किस गवर्नर जनरल के शल्यचिकित्सक (सर्जन) रहे थे?","question_en":"Question 26: Francis Buchanan, who served as a physician in the Bengal Medical Service, was the surgeon to which Governor-General of India?","options":[{"hi":"लॉर्ड वेलेस्ली","en":"Lord Wellesley"},{"hi":"लॉर्ड कॉर्नवॉलिस","en":"Lord Cornwallis"},{"hi":"लॉर्ड डलहौजी","en":"Lord Dalhousie"},{"hi":"लॉर्ड विलियम बेंटिक","en":"Lord William Bentinck"}],"answer":0,"explanation_hi":"बुकानन भारत में कुछ वर्षों तक गवर्नर जनरल लॉर्ड वेलेस्ली के निजी सर्जन रहे थे।","explanation_en":"For a few years, Francis Buchanan was surgeon to the Governor-General of India, Lord Wellesley."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान सभा की महत्वपूर्ण समितियों और उनके अध्यक्षों का कौन सा सुमेलन सही है? समिति: A. संघ शक्ति समिति, B. प्रांतीय संविधान समिति, C. संचालन समिति; अध्यक्ष: 1. जवाहरलाल नेहरू, 2. वल्लभभाई पटेल, 3. राजेंद्र प्रसाद। सही विकल्प चुनिए:","question_en":"Question 27: Which matching of important Constituent Assembly committees and their presidents is correct? Committee: A. Union Power Committee, B. Provincial Constitution Committee, C. Steering Committee; President: 1. Jawaharlal Nehru, 2. Vallabhbhai Patel, 3. Rajendra Prasad. Choose the correct option:","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"}],"answer":1,"explanation_hi":"संघ शक्ति समिति के नेहरू; प्रांतीय संविधान के पटेल; संचालन समिति के राजेंद्र प्रसाद अध्यक्ष थे।","explanation_en":"Union Power Committee was headed by Nehru; Provincial Constitution by Patel; Steering Committee by Rajendra Prasad."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित औपनिवेशिक प्रशासनिक सुधारों और नीतियों को सही कालक्रम में व्यवस्थित कीजिए: 1. बंगाल में स्थायी बंदोबस्त, 2. अवध में सहायक संधि का लागू होना, 3. बंबई दक्कन में प्रथम राजस्व बंदोबस्त, 4. संथालों के लिए दामिन-इ-कोह का सीमांकन। सही विकल्प चुनिए:","question_en":"Question 28: Arrange the following colonial administrative reforms and policies in correct chronological order: 1. Permanent Settlement in Bengal, 2. Imposition of Subsidiary Alliance in Awadh, 3. First revenue settlement in the Bombay Deccan, 4. Demarcation of Damin-i-Koh for Santhals. Choose the correct option:","options":[{"hi":"2-1-3-4","en":"2-1-3-4"},{"hi":"1-2-4-3","en":"1-2-4-3"},{"hi":"1-2-3-4","en":"1-2-3-4"},{"hi":"3-1-2-4","en":"3-1-2-4"}],"answer":2,"explanation_hi":"बंगाल बंदोबस्त 1793 में; अवध सहायक संधि 1801 में; बंबई दक्कन बंदोबस्त 1818 में; दामिन-इ-कोह सीमांकन 1832 में हुआ।","explanation_en":"Bengal Settlement was 1793; Awadh Alliance 1801; Bombay Deccan Settlement 1818; Damin-i-Koh 1832."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भागलपुर के उस कलेक्टर का नाम क्या था जिसने 1780 के दशक में पहाड़िया लोगों के शांतिकरण (पेसिफिकेशन) की नीति का प्रस्ताव रखा था?","question_en":"Question 29: What was the name of the Collector of Bhagalpur who proposed a policy of pacification for the Paharias in the 1780s?","options":[{"hi":"फ्रांसिस बुकानन","en":"Francis Buchanan"},{"hi":"हेनरी लॉरेंस","en":"Henry Lawrence"},{"hi":"चार्ल्स कॉर्नवॉलिस","en":"Charles Cornwallis"},{"hi":"ऑगस्टस क्लीवलैंड","en":"Augustus Cleveland"}],"answer":3,"explanation_hi":"ऑगस्टस क्लीवलैंड भागलपुर के कलेक्टर थे जिन्होंने पहाड़िया प्रमुखों को भत्ते देकर शांतिकरण की नीति का प्रस्ताव दिया था।","explanation_en":"Augustus Cleveland, the Collector of Bhagalpur, proposed a policy of pacification for Paharias in the 1780s."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्रिटिश सरकार द्वारा राजमहल की पहाड़ियों के निचले भाग में संथालों के लिए 'दामिन-इ-कोह' (Damin-i-Koh) नामक भूमि क्षेत्र का सीमांकन किस वर्ष किया गया था?","question_en":"Question 30: In which year did the British government demarcate the land region of 'Damin-i-Koh' in the foothills of Rajmahal for the Santhals?","options":[{"hi":"1832","en":"1832"},{"hi":"1800","en":"1800"},{"hi":"1855","en":"1855"},{"hi":"1813","en":"1813"}],"answer":0,"explanation_hi":"दामिन-इ-कोह का सीमांकन 1832 में किया गया था, जिसे संथालों के बसने और हल वाली कृषि करने की भूमि घोषित किया गया था।","explanation_en":"A large area of land was demarcated as Damin-i-Koh in 1832, declared to be the land of the Santhals."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: दामिन-इ-कोह के सीमांकन के बाद संथालों की बस्तियां बहुत तेजी से फैलीं।\nकथन 2: संथालों के गांवों की संख्या जो 1838 में केवल 40 थी, वह बढ़कर 1851 तक 1,473 हो गई थी।","question_en":"Question 31: Consider the following statements:\nStatement 1: After the demarcation of Damin-i-Koh, Santhal settlements expanded rapidly.\nStatement 2: The number of Santhal villages increased from 40 in 1838 to 1,473 by 1851.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":1,"explanation_hi":"दोनों कथन सही हैं; संथालों की आबादी भी इसी अवधि में 3,000 से बढ़कर 82,000 से अधिक हो गई थी।","explanation_en":"Both statements are correct; Santhal villages expanded from 40 in 1838 to 1,473 by 1851 as population rose."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दक्कन का प्रसिद्ध किसान विद्रोह पूना (पुणे) जिले के किस बड़े विपणन केंद्र (मार्केट सेंटर) वाले गांव में 12 मई 1875 को शुरू हुआ था?","question_en":"Question 32: In which large marketing center village of Poona district did the famous Deccan peasant riots begin on 12 May 1875?","options":[{"hi":"सतारा","en":"Satara"},{"hi":"बारडोली","en":"Bardoli"},{"hi":"सुपा","en":"Supa"},{"hi":"शोलापुर","en":"Sholapur"}],"answer":2,"explanation_hi":"दक्कन विद्रोह 12 मई 1875 को पूना के सुपा नामक गाँव से शुरू हुआ जहाँ किसानों ने महाजनों की बहियों को जलाया।","explanation_en":"The Deccan riots began on 12 May 1875 at Supa, a large market village in Poona district."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दक्कन दंगा आयोग (Deccan Riots Commission) ने दंगों और विद्रोहों की जांच के बाद ब्रिटिश संसद में अपनी रिपोर्ट किस वर्ष प्रस्तुत की थी?","question_en":"Question 33: In which year was the report of the Deccan Riots Commission presented to the British Parliament?","options":[{"hi":"1875","en":"1875"},{"hi":"1857","en":"1857"},{"hi":"1885","en":"1885"},{"hi":"1878","en":"1878"}],"answer":3,"explanation_hi":"दक्कन दंगों की रिपोर्ट को ब्रिटिश संसद के समक्ष 1878 में प्रस्तुत किया गया था जो कि ऐतिहासिक अध्ययन का बड़ा स्रोत है।","explanation_en":"The Deccan Riots Commission report was presented to the British Parliament in 1878."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. संथाल विद्रोह, B. दक्कन के गांवों में किसानों का विद्रोह, C. बंबई दक्कन में प्रथम राजस्व बंदोबस्त;\nसूची-II: 1. 1875, 2. 1855-56, 3. 1818। सही विकल्प चुनिए:","question_en":"Question 34: Match List-I with List-II:\nList-I: A. Santhal Rebellion, B. Deccan Peasant Riots, C. First Revenue Settlement in Bombay Deccan;\nList-II: 1. 1875, 2. 1855-56, 3. 1818. Choose the correct option:","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"}],"answer":0,"explanation_hi":"संथाल विद्रोह 1855-56 में हुआ; दक्कन विद्रोह 1875 में; बंबई दक्कन बंदोबस्त 1818 में हुआ था।","explanation_en":"Santhal rebellion occurred in 1855-56; Deccan riots in 1875; Bombay Deccan settlement in 1818."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: विपिन चंद्र पाल बंगाल के प्रमुख राष्ट्रवादी नेता थे।\nकथन 2: बाल गंगाधर तिलक महाराष्ट्र के और लाला लाजपत राय पंजाब प्रांत के रहने वाले थे।","question_en":"Question 35: Consider the following statements:\nStatement 1: Bipin Chandra Pal was a prominent nationalist leader from Bengal.\nStatement 2: Bal Gangadhar Tilak was from Maharashtra and Lala Lajpat Rai belonged to the Punjab province.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं; ये तीनों मिलकर राष्ट्रवादी संघर्ष के 'लाल, बाल और पाल' के रूप में जाने जाते थे।","explanation_en":"Both statements are correct, representing the provinces of the famous nationalist trio Lal, Bal, and Pal."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1915 में दक्षिण अफ्रीका से लौटने के बाद महात्मा गांधी के स्वीकृत राजनीतिक गुरु (राजनीतिक गुरु) कौन थे?","question_en":"Question 36: Who was Mahatma Gandhi's acknowledged political mentor after his return from South Africa in 1915?","options":[{"hi":"बाल गंगाधर तिलक","en":"Bal Gangadhar Tilak"},{"hi":"गोपाल कृष्ण गोखले","en":"Gopal Krishna Gokhale"},{"hi":"मोहम्मद अली जिन्ना","en":"Mohammad Ali Jinnah"},{"hi":"रवींद्रनाथ टैगोर","en":"Rabindranath Tagore"}],"answer":1,"explanation_hi":"गांधीजी के राजनीतिक गुरु गोपाल कृष्ण गोखले थे जिन्होंने उन्हें भारत को समझने के लिए देश की यात्रा करने की सलाह दी।","explanation_en":"Gopal Krishna Gokhale was Gandhiji's political mentor who advised him to travel around India first."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में लौटने के बाद महात्मा गांधी की पहली महत्वपूर्ण सार्वजनिक उपस्थिति किस महीने और वर्ष में बनारस हिंदू विश्वविद्यालय (BHU) के उद्घाटन समारोह में हुई थी?","question_en":"Question 37: In which month and year did Mahatma Gandhi make his first major public appearance at the opening of the Banaras Hindu University (BHU)?","options":[{"hi":"फरवरी 1916","en":"February 1916"},{"hi":"जनवरी 1915","en":"January 1915"},{"hi":"अप्रैल 1919","en":"April 1919"},{"hi":"दिसंबर 1920","en":"December 1920"}],"answer":0,"explanation_hi":"गांधीजी की पहली बड़ी सार्वजनिक उपस्थिति फरवरी 1916 में बनारस हिंदू विश्वविद्यालय के उद्घाटन समारोह में हुई थी।","explanation_en":"Gandhiji's first major public appearance was at the opening of BHU in February 1916."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"महात्मा गांधी के उस प्रसिद्ध अमेरिकी जीवनी लेखक का नाम क्या था जिसने लिखा था कि 'असहयोग भारत और गांधीजी के जीवन के एक युग का नाम बन गया'?","question_en":"Question 38: What was the name of Mahatma Gandhi's famous American biographer who wrote that 'Non-cooperation became the name of an epoch in the life of India and of Gandhiji'?","options":[{"hi":"वेब मिलर","en":"Webb Miller"},{"hi":"विलियम शिरेर","en":"William Shirer"},{"hi":"विंसेंट शीन","en":"Vincent Sheean"},{"hi":"लुई फिशर","en":"Louis Fischer"}],"answer":3,"explanation_hi":"गांधीजी के जीवनी लेखक लुई फिशर ने कहा था कि असहयोग आंदोलन भारत और गांधीजी के जीवन का एक महान शांतिपूर्ण युग था।","explanation_en":"Gandhiji's American biographer Louis Fischer wrote that Non-cooperation became the name of an epoch."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस महीने और वर्ष में संयुक्त प्रांत के चौरी चौरा नामक गांव में किसानों की भीड़ द्वारा पुलिस स्टेशन को जलाने की हिंसक घटना हुई, जिसके बाद गांधीजी ने असहयोग आंदोलन वापस ले लिया था?","question_en":"Question 39: In which month and year did the violent incident of burning the police station in Chauri Chaura by a peasant mob occur, prompting Gandhiji to call off the Non-cooperation Movement?","options":[{"hi":"जनवरी 1920","en":"January 1920"},{"hi":"मार्च 1930","en":"March 1930"},{"hi":"फरवरी 1922","en":"February 1922"},{"hi":"अगस्त 1942","en":"August 1942"}],"answer":2,"explanation_hi":"फरवरी 1922 में चौरी-चौरा की हिंसक घटना में पुलिसकर्मियों की जलकर मौत हुई, जिसके बाद गांधीजी ने आंदोलन स्थगित कर दिया।","explanation_en":"In February 1922, Gandhiji called off the Non-cooperation Movement after the Chauri Chaura police station arson."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: वर्ष 1928 में साइमन कमीशन के खिलाफ देशव्यापी विरोध प्रदर्शन हुआ।\nकथन 2: महात्मा गांधी ने उसी वर्ष बारडोली में हुए प्रसिद्ध किसान सत्याग्रह में प्रत्यक्ष रूप से भाग लिया था।","question_en":"Question 40: Consider the following statements:\nStatement 1: In 1928, there was an all-India campaign in opposition to the Simon Commission.\nStatement 2: Mahatma Gandhi directly participated in the famous peasant satyagraha in Bardoli in the same year.","options":[{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":1,"explanation_hi":"कथन 1 सही है; कथन 2 गलत है क्योंकि गांधीजी ने बारडोली किसान आंदोलन में भाग नहीं लिया था बल्कि केवल अपना आशीर्वाद दिया था।","explanation_en":"Statement 1 is correct; Statement 2 is incorrect as Gandhiji did not personally participate in Bardoli, though he blessed it."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दिसंबर 1929 के अंत में कांग्रेस के लाहौर वार्षिक अधिवेशन के संदर्भ में निम्नलिखित कथनों में से कौन सा सत्य है?","question_en":"Question 41: Regarding the Lahore annual session of the Congress at the end of December 1929, which of the following statements is true?","options":[{"hi":"जवाहरलाल नेहरू को अध्यक्ष चुना गया और 'पूर्ण स्वराज' की प्रतिबद्धता घोषित की गई","en":"Jawaharlal Nehru was elected President and commitment to 'Purna Swaraj' was proclaimed"},{"hi":"महात्मा गांधी इसके अध्यक्ष थे और असहयोग का प्रस्ताव पारित हुआ","en":"Mahatma Gandhi was its President and Non-cooperation resolution was passed"},{"hi":"सुभाष चंद्र बोस इसके अध्यक्ष थे और स्वतंत्रता दिवस 15 अगस्त तय किया गया","en":"Subhas Chandra Bose was its President and 15 August was fixed as Independence Day"},{"hi":"सरदार पटेल इसके अध्यक्ष थे और सविनय अवज्ञा आंदोलन वापस लिया गया","en":"Sardar Patel was its President and Civil Disobedience Movement was withdrawn"}],"answer":0,"explanation_hi":"दिसंबर 1929 के लाहौर अधिवेशन में जवाहरलाल नेहरू अध्यक्ष चुने गए तथा पूर्ण स्वराज (पूर्ण स्वतंत्रता) का संकल्प घोषित किया गया।","explanation_en":"The Lahore Session in December 1929 was significant for the election of Nehru as President and 'Purna Swaraj' declaration."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सविनय अवज्ञा आंदोलन की शुरुआत में महात्मा गांधी ने किस तारीख को साबरमती आश्रम से समुद्र की ओर अपनी प्रसिद्ध 'नमक यात्रा' (साल्ट मार्च) शुरू की थी?","question_en":"Question 42: On which date did Mahatma Gandhi begin his famous 'Salt March' from Sabarmati Ashram towards the ocean at the start of the Civil Disobedience Movement?","options":[{"hi":"6 अप्रैल 1930 को","en":"6 April 1930"},{"hi":"12 मार्च 1930 को","en":"12 March 1930"},{"hi":"26 जनवरी 1930 को","en":"26 January 1930"},{"hi":"12 मार्च 1931 को","en":"12 March 1931"}],"answer":1,"explanation_hi":"गांधीजी ने 12 मार्च 1930 को साबरमती से दांडी के लिए नमक मार्च शुरू किया और 6 अप्रैल 1930 को नमक कानून तोड़ा था।","explanation_en":"On 12 March 1930, Gandhiji began walking from Sabarmati towards the ocean, reaching it three weeks later."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उस प्रसिद्ध समाजवादी कार्यकर्ता का नाम क्या था जिसने महात्मा गांधी को नमक यात्रा के दौरान अपने विरोध प्रदर्शनों को केवल पुरुषों तक सीमित न रखने के लिए राजी किया था?","question_en":"Question 43: What was the name of the famous socialist activist who persuaded Mahatma Gandhi not to restrict the salt protests to men alone?","options":[{"hi":"सरोजिनी नायडू","en":"Sarojini Naidu"},{"hi":"सुचेता कृपलानी","en":"Sucheta Kripalani"},{"hi":"कमलादेवी चट्टोपाध्याय","en":"Kamaladevi Chattopadhyay"},{"hi":"अम्मू स्वामीनाथन","en":"Ammu Swaminathan"}],"answer":2,"explanation_hi":"समाजवादी कार्यकर्ता कमलादेवी चट्टोपाध्याय ने गांधीजी को आंदोलन केवल पुरुषों तक सीमित न रखने के लिए मनाया, जिसके बाद महिलाओं ने बढ़-चढ़कर भाग लिया।","explanation_en":"The socialist activist Kamaladevi Chattopadhyay persuaded Gandhiji not to restrict the protests to men alone."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. बनारस हिंदू विश्वविद्यालय का उद्घाटन, B. चौरी चौरा कांड, C. नमक सत्याग्रह, D. बारडोली सत्याग्रह;\nसूची-II: 1. 1916, 2. 1922, 3. 1930, 4. 1928। सही विकल्प चुनिए:","question_en":"Question 44: Match List-I with List-II:\nList-I: A. Opening of Banaras Hindu University, B. Chauri Chaura Incident, C. Salt Satyagraha, D. Bardoli Satyagraha;\nList-II: 1. 1916, 2. 1922, 3. 1930, 4. 1928. Choose the correct option:","options":[{"hi":"A-1, B-2, C-4, D-3","en":"A-1, B-2, C-4, D-3"},{"hi":"A-2, B-1, C-3, D-4","en":"A-2, B-1, C-3, D-4"},{"hi":"A-1, B-3, C-2, D-4","en":"A-1, B-3, C-2, D-4"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"}],"answer":3,"explanation_hi":"बीएचयू का उद्घाटन 1916 में; चौरी चौरा 1922 में; नमक सत्याग्रह 1930 में; बारडोली सत्याग्रह 1928 में हुआ था।","explanation_en":"BHU opened in 1916; Chauri Chaura occurred in 1922; Salt March was in 1930; Bardoli satyagraha in 1928."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"महात्मा गांधी ने वर्धा के निकट अपने आश्रम 'सेगांव' (Segaon) से जवाहरलाल नेहरू को वह प्रसिद्ध पत्र किस तारीख को लिखा था, जिसमें उनके गले को आराम देने की बात कही गई थी?","question_en":"Question 45: On which date did Mahatma Gandhi write the famous letter to Jawaharlal Nehru from his ashram 'Segaon' near Wardha, telling him to give his throat a chance?","options":[{"hi":"15 जुलाई 1936","en":"15 July 1936"},{"hi":"26 जनवरी 1930","en":"26 January 1930"},{"hi":"12 मार्च 1930","en":"12 March 1930"},{"hi":"15 अगस्त 1947","en":"15 August 1947"}],"answer":0,"explanation_hi":"गांधीजी ने जवाहरलाल नेहरू को अत्यधिक भाषण देने के कारण गले को आराम देने की सलाह वाला पत्र 15 जुलाई 1936 को सेगांव से लिखा था।","explanation_en":"Gandhiji wrote the letter to Nehru from Segaon on 15 July 1936, advising him to give his throat a chance."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत विभाजन के बाद बनी भारतीय संविधान सभा में कांग्रेस पार्टी के सदस्यों का वर्चस्व था। इस सभा के कुल सदस्यों में कांग्रेस के सदस्य कितने प्रतिशत थे?","question_en":"Question 46: The Constituent Assembly of India after Partition was dominated by the Congress. What percentage of the members of the Constituent Assembly were also members of the Congress?","options":[{"hi":"75 प्रतिशत","en":"75 percent"},{"hi":"82 प्रतिशत","en":"82 percent"},{"hi":"90 प्रतिशत","en":"90 percent"},{"hi":"67 प्रतिशत","en":"67 percent"}],"answer":1,"explanation_hi":"लीग के बहिष्कार के बाद संविधान सभा के कुल सदस्यों में से 82 प्रतिशत सदस्य कांग्रेस पार्टी के थे।","explanation_en":"In effect, 82 percent of the members of the Constituent Assembly were also members of the Congress."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जवाहरलाल नेहरू ने भारत के भावी संविधान की रूपरेखा तय करने वाला ऐतिहासिक 'उद्देश्य प्रस्ताव' (Objectives Resolution) संविधान सभा में किस तिथि को पेश किया था?","question_en":"Question 47: On which date did Jawaharlal Nehru introduce the historic 'Objectives Resolution' in the Constituent Assembly?","options":[{"hi":"9 दिसंबर 1946 को","en":"9 December 1946"},{"hi":"15 अगस्त 1947 को","en":"15 August 1947"},{"hi":"13 दिसंबर 1946 को","en":"13 December 1946"},{"hi":"26 जनवरी 1950 को","en":"26 January 1950"}],"answer":2,"explanation_hi":"जवाहरलाल नेहरू ने 13 दिसंबर 1946 को संविधान सभा में ऐतिहासिक उद्देश्य प्रस्ताव पेश किया था, जो संविधान का आधार बना।","explanation_en":"On 13 December 1946, Jawaharlal Nehru introduced the Objectives Resolution in the Constituent Assembly."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान सभा की निम्नलिखित महिला सदस्यों और उनके हस्ताक्षरों की तिथियों के जोड़ों पर विचार करें: 1. अमू स्वामीनाथन — 9 दिसंबर 1946, 2. राजकुमारी अमृत कौर — 21 दिसंबर 1946, 3. रेनुका राय — 14 जुलाई 1947। उपर्युक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Question 48: Consider the following pairs of female members of the Constituent Assembly and their signing dates: 1. Ammu Swaminathan — 9 Dec. 1946, 2. Rajkumari Amrit Kaur — 21 Dec. 1946, 3. Renuka Ray — 14 July 1947. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"कोई भी नहीं","en":"None of the pairs"},{"hi":"सभी तीनों युग्म","en":"All three pairs"}],"answer":3,"explanation_hi":"सभी तीनों युग्म सही सुमेलित हैं; तीनों महिला सदस्यों के हस्ताक्षर की तिथियां उनके संबंधित राज्य क्षेत्रों के दस्तावेजों के साथ दी गई हैं।","explanation_en":"All three pairs are correctly matched as per the registers of women members of the Constituent Assembly."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान सभा के महिला सदस्यों के नाम और उनके निर्वाचन निर्वाचन क्षेत्रों के जोड़ों में से कौन सा एक सही सुमेलित है?","question_en":"Question 49: Regarding the female members of the Constituent Assembly and their constituencies, which of the following pairs is correctly matched?","options":[{"hi":"राजकुमारी अमृत कौर — बिहार","en":"Rajkumari Amrit Kaur — Bihar"},{"hi":"अम्मू स्वामीनाथन — मद्रास जनरल","en":"Ammu Swaminathan — Madras General"},{"hi":"हंसा मेहता — संयुक्त प्रांत","en":"Hansa Mehta — United Provinces"},{"hi":"सुचेता कृपलानी — बंबई","en":"Sucheta Kripalani — Bombay"}],"answer":1,"explanation_hi":"अम्मू स्वामीनाथन मद्रास जनरल की सीट से थीं; अमृत कौर मध्य प्रांत की सीट से; हंसा मेहता बंबई से थीं।","explanation_en":"Ammu Swaminathan was from Madras General, whereas Rajkumari Amrit Kaur represented Central Provinces."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: हंसा मेहता ने संविधान सभा में महिलाओं के लिए पृथक निर्वाचन क्षेत्र और आरक्षित सीटों की पुरजोर वकालत की थी।\nकथन 2: उन्होंने महिलाओं के लिए सामाजिक, आर्थिक और राजनीतिक न्याय की मांग की ताकि आपसी सम्मान का मार्ग प्रशस्त हो सके।","question_en":"Question 50: Consider the following statements:\nStatement 1: Hansa Mehta strongly advocated for separate electorates and reserved seats for women in the Constituent Assembly.\nStatement 2: She demanded social, economic, and political justice for women to pave the way for mutual respect.","options":[{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"कथन 1 और 2 दोनों सही हैं","en":"Both Statement 1 and 2 are correct"},{"hi":"न तो कथन 1 और न ही कथन 2 सही है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":0,"explanation_hi":"कथन 2 सही है; कथन 1 गलत है क्योंकि हंसा मेहता ने स्पष्ट रूप से कहा था कि महिलाओं ने कभी आरक्षित सीटों या विशेषाधिकारों की मांग नहीं की है।","explanation_en":"Statement 2 is correct; Statement 1 is incorrect because Hansa Mehta explicitly stated women have never asked for privileges or reserved seats."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
