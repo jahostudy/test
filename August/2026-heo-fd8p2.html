@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"HEO","highlight":"HEO","shortTitle":"HEO","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-heo-20260825-fd8p2","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-25","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रतिचयन विधियों और उनके प्रमुख लक्षणों का सही मिलान करें:\nसूची-I: A. स्तरित प्रतिचयन, B. व्यवस्थित प्रतिचयन, C. बहु-स्तरीय प्रतिचयन;\nसूची-II: 1. प्रत्येक K-वें घटक का चयन, 2. राज्य, जिला, ब्लॉक, गाँव और परिवार का क्रम, 3. अल्पसंख्यक प्रतिनिधित्व सुनिश्चित करना","question_en":"Question 1: Match the sampling methods with their key characteristics:\nList-I: A. Stratified sampling, B. Systematic sampling, C. Multistage sampling;\nList-II: 1. Selection of every Kth unit, 2. Order of state, district, block, village and family, 3. Ensuring representation of minorities","options":[{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"}],"answer":0,"explanation_hi":"स्तरित प्रतिचयन अल्पसंख्यक समुदायों को पर्याप्त प्रतिनिधित्व देता है, व्यवस्थित प्रतिचयन में प्रत्येक K-वें घटक का चयन होता है और बहु-स्तरीय प्रतिचयन में एक पदानुक्रमित क्रम का उपयोग किया जाता है।","explanation_en":"Stratified sampling gives adequate representation to minority groups, systematic sampling selects every Kth unit, and multistage sampling uses a hierarchical order."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रजनन और बाल स्वास्थ्य (RCH) पहल के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: आरसीएच का प्रथम चरण अक्टूबर 1997 में और द्वितीय चरण अप्रैल 2005 में शुरू किया गया था।\nकथन 2: प्रसव के समय संक्रमण से बचाव के लिए '5 साफ' (5 cleans) मानकों में साफ हाथ, साफ सतह, साफ धागा, साफ ब्लेड और साफ नाल का ठूंठ शामिल हैं।","question_en":"Question 2: Consider the following statements regarding the Reproductive and Child Health (RCH) initiative:\nStatement 1: Phase-1 of RCH was launched in October 1997 and Phase-2 in April 2005.\nStatement 2: The '5 cleans' standards to prevent infection during delivery include clean hands, clean surface, clean thread, clean blade and clean cord-stump.","options":[{"hi":"केवल कथन 1","en":"Statement 1 only"},{"hi":"केवल कथन 2","en":"Statement 2 only"},{"hi":"कथन 1 और 2 दोनों","en":"Both Statement 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":2,"explanation_hi":"प्रजनन और बाल स्वास्थ्य (RCH) के प्रथम व द्वितीय चरण के प्रारंभ वर्ष क्रमशः 1997 और 2005 हैं, तथा सुरक्षित प्रसव के लिए 5 स्वच्छता मानक निर्धारित हैं।","explanation_en":"The launch years of Phase-1 and Phase-2 of Reproductive and Child Health (RCH) are 1997 and 2005 respectively, and 5 sanitation standards are defined for safe delivery."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"खाद्य स्वच्छता मानकों के अनुसार, बैक्टीरिया के तेजी से बढ़ने के लिए तापमान की 'खतरे की सीमा' (डेंजर ज़ोन) क्या है?","question_en":"Question 3: According to food hygiene standards, what is the 'danger zone' of temperature for the rapid growth of bacteria?","options":[{"hi":"5 डिग्री से 63 डिग्री सेल्सियस","en":"5 degree to 63 degree Celsius"},{"hi":"0 डिग्री से 50 डिग्री सेल्सियस","en":"0 degree to 50 degree Celsius"},{"hi":"10 डिग्री से 75 डिग्री सेल्सियस","en":"10 degree to 75 degree Celsius"},{"hi":"15 डिग्री से 80 डिग्री सेल्सियस","en":"15 degree to 80 degree Celsius"}],"answer":0,"explanation_hi":"बैक्टीरिया 5 डिग्री से 63 डिग्री सेल्सियस के बीच सबसे तेजी से बढ़ते हैं, जिसे डेंजर जोन कहा जाता है। 5 डिग्री से नीचे उनका विकास रुक जाता है।","explanation_en":"Bacteria grow fastest between 5 degree to 63 degree Celsius, which is called the danger zone. Below 5 degree, their multiplication stops."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लैंडफिल और अपशिष्ट निपटान के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: लैंडफिल के निचले हिस्से में कम पारगम्यता के कारण चिकनी मिट्टी (क्ले) की परत सबसे अच्छी मानी जाती है।\nकथन 2: लैंडफिल में अपघटित होने वाले कचरे से बनने वाली गैस मुख्य रूप से मीथेन और कार्बन डाइऑक्साइड (CO2) होती है।","question_en":"Question 4: Consider the following statements in the context of landfill and waste disposal:\nStatement 1: A clay layer at the bottom of the landfill is considered best due to its low permeability.\nStatement 2: The gas formed from decomposing waste in landfills is mainly methane and carbon dioxide (CO2).","options":[{"hi":"केवल कथन 1","en":"Statement 1 only"},{"hi":"केवल कथन 2","en":"Statement 2 only"},{"hi":"कथन 1 और 2 दोनों","en":"Both Statement 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":2,"explanation_hi":"कम पारगम्यता के कारण चिकनी मिट्टी लैंडफिल के निचले अस्तर के लिए सर्वश्रेष्ठ है, और अपघटन से उत्पन्न होने वाली प्रमुख गैसें मीथेन और कार्बन डाइऑक्साइड हैं।","explanation_en":"Clay is best for the bottom lining of a landfill due to low permeability, and the major gases produced from decomposition are methane and carbon dioxide."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ग्रामीण क्षेत्रों में सोख गड्ढे (सोकेज पिट) के संबंध में निम्नलिखित में से कौन सा कथन असत्य है?","question_en":"Question 5: Regarding the soakage pit in rural areas, which of the following statements is false?","options":[{"hi":"इसका उपयोग जलभराव वाले क्षेत्रों में सफलतापूर्वक किया जा सकता है।","en":"It can be successfully used in waterlogged areas."},{"hi":"इसकी गहराई आमतौर पर 2 मीटर और चौड़ाई 1.5 मीटर होती है।","en":"Its depth is usually 2 metres and width is 1.5 metres."},{"hi":"इसके भर जाने पर होने वाले अतिप्रवाह को 'सीवेज सिक' कहा जाता है।","en":"When full, the overflow is called 'Sewage Sick'."},{"hi":"यह मुख्य रूप से ग्रामीण क्षेत्रों के लिए उपयुक्त होता है।","en":"It is mainly suitable for rural areas."}],"answer":0,"explanation_hi":"सोख गड्ढा जलभराव वाले क्षेत्रों में अनुपयोगी (unusable) हो जाता है, क्योंकि वहां भूमि अतिरिक्त पानी को सोखने में असमर्थ होती है।","explanation_en":"The soakage pit becomes unusable in waterlogged areas because the ground is unable to absorb additional water."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित यौन संचारित संक्रमणों (STIs) को उनके रोगजनक एजेंटों के साथ सुमेलित करें:\nसूची-I: A. ग्रैनुलोमा इन्गुइनैल, B. एलजीवी (LGV), C. जेनिटल वार्ट्स;\nसूची-II: 1. क्लैमाइडिया ट्रैकोमैटिस, 2. क्लेबसिएला ग्रैनुलोमैटिस, 3. एचपीवी (HPV)","question_en":"Question 6: Match the following Sexually Transmitted Infections (STIs) with their causative agents:\nList-I: A. Granuloma inguinale, B. LGV, C. Genital warts;\nList-II: 1. Chlamydia trachomatis, 2. Klebsiella granulomatis, 3. HPV","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-3, C-1","en":"A-2, B-3, C-1"}],"answer":0,"explanation_hi":"ग्रैनुलोमा इन्गुइनैल क्लेबसिएला ग्रैनुलोमैटिस से, एलजीवी क्लैमाइडिया ट्रैकोमैटिस से और जेनिटल वार्ट्स एचपीवी (HPV) से होता है।","explanation_en":"Granuloma inguinale is caused by Klebsiella granulomatis, LGV by Chlamydia trachomatis, and genital warts by HPV."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गोनोरिया (सुजाक) के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: गोनोरिया संक्रमण के बाद इसके लक्षण आमतौर पर 3 से 5 हफ्तों में दिखाई देते हैं।\nकथन 2: यदि उपचार न किया जाए, तो 10 प्रतिशत से 40 प्रतिशत संक्रमित महिलाओं में पेल्विक इंफ्लेमेटरी डिजीज (PID) होने का खतरा रहता है।","question_en":"Question 7: Consider the following statements regarding Gonorrhoea:\nStatement 1: The symptoms of Gonorrhoea usually appear within 3 to 5 weeks after infection.\nStatement 2: If untreated, there is a risk of developing Pelvic Inflammatory Disease (PID) in 10 percent to 40 percent of infected women.","options":[{"hi":"केवल कथन 1","en":"Statement 1 only"},{"hi":"केवल कथन 2","en":"Statement 2 only"},{"hi":"कथन 1 और 2 दोनों","en":"Both Statement 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":1,"explanation_hi":"कथन 1 गलत है क्योंकि गोनोरिया के लक्षण संक्रमण के मात्र 3 से 5 दिनों (weeks नहीं) में दिखाई देते हैं, जबकि अनुपचारित रहने पर महिलाओं में पीआईडी का जोखिम सही है।","explanation_en":"Statement 1 is incorrect because symptoms of Gonorrhoea appear in just 3 to 5 days (not weeks) after infection, while the risk of PID in untreated women is correct."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पेल्विक इंफ्लेमेटरी डिजीज (PID) महिलाओं के प्रजनन तंत्र के किन हिस्सों को मुख्य रूप से प्रभावित करती है?","question_en":"Question 8: Pelvic Inflammatory Disease (PID) mainly affects which parts of the female reproductive system?","options":[{"hi":"केवल गर्भाशय अस्तर और योनि","en":"Only uterine lining and vagina"},{"hi":"गर्भाशय अस्तर, फैलोपियन ट्यूब और अंडाशय","en":"Uterine lining, fallopian tubes and ovaries"},{"hi":"केवल गर्भाशय ग्रीवा और मूत्रमार्ग","en":"Only cervix and urethra"},{"hi":"केवल अंडाशय और बाह्य जननांग","en":"Only ovaries and external genitalia"}],"answer":1,"explanation_hi":"पीआईडी गर्भाशय अस्तर (एंडोमेट्रिटिस), फैलोपियन ट्यूब (सैलपिंजाइटिस) और अंडाशय (ऊफोराइटिस) को प्रभावित करती है, जिससे बांझपन का खतरा बढ़ता है।","explanation_en":"PID affects the uterine lining (endometritis), fallopian tubes (salpingitis) and ovaries (oophoritis), which increases the risk of infertility."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डब्ल्यूएचओ नैदानिक वर्गीकरण के अनुसार, एड्स (AIDS) के नैदानिक लक्षणों के निर्धारण के लिए निम्नलिखित में से कौन से मानदंड सही हैं?","question_en":"Question 9: According to the WHO clinical classification, which of the following criteria are correct for the determination of clinical symptoms of AIDS?","options":[{"hi":"5% से अधिक वजन कम होना, 1 सप्ताह से अधिक बुखार और 1 सप्ताह से अधिक दस्त","en":"More than 5% weight loss, fever for more than 1 week and diarrhoea for more than 1 week"},{"hi":"15% से अधिक वजन कम होना, 2 सप्ताह से अधिक बुखार and 2 सप्ताह से अधिक दस्त","en":"More than 15% weight loss, fever for more than 2 weeks and diarrhoea for more than 2 weeks"},{"hi":"20% से अधिक वजन कम होना, 3 महीने से अधिक बुखार और 3 महीने से अधिक दस्त","en":"More than 20% weight loss, fever for more than 3 months and diarrhoea for more than 3 months"},{"hi":"10% से अधिक वजन कम होना, 1 महीने से अधिक बुखार और 1 महीने से अधिक दस्त","en":"More than 10% weight loss, fever for more than 1 month and diarrhoea for more than 1 month"}],"answer":3,"explanation_hi":"एड्स के प्रमुख नैदानिक लक्षणों में बिना किसी स्पष्ट कारण के 10% से अधिक वजन कम होना, तथा 1 महीने से अधिक समय तक बुखार और दस्त रहना शामिल हैं।","explanation_en":"Key clinical symptoms of AIDS include more than 10% weight loss without clear cause, and fever and diarrhoea persisting for more than 1 month."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सुई चुभने (नीडल-स्टिक) से संभावित एचआईवी संक्रमण के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: सुई चुभने की स्थिति में पोस्ट एक्सपोजर प्रोफिलैक्सिस (PEP) को एक्सपोजर के बाद यथाशीघ्र, आदर्श रूप से कुछ ही घंटों के भीतर और अधिकतम 72 घंटों के भीतर शुरू किया जाना चाहिए।\nकथन 2: नाको (NACO) द्वारा इस आकस्मिक दवा के लिए एक निश्चित शुल्क लिया जाता है।","question_en":"Question 10: Consider the following statements regarding potential HIV infection from a needle-stick injury:\nStatement 1: In case of a needle-stick injury, Post Exposure Prophylaxis (PEP) should be started as soon as possible after exposure, ideally within a few hours and at most within 72 hours.\nStatement 2: A fixed fee is charged by NACO for this emergency medication.","options":[{"hi":"केवल कथन 1","en":"Statement 1 only"},{"hi":"केवल कथन 2","en":"Statement 2 only"},{"hi":"कथन 1 और 2 दोनों","en":"Both Statement 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"कथन 2 गलत है क्योंकि नाको (NACO) द्वारा सुई चुभने की दुर्घटनाओं के लिए पोस्ट एक्सपोजर प्रोफिलैक्सिस (PEP) पूरी तरह से निःशुल्क प्रदान की जाती है।","explanation_en":"Statement 2 is incorrect because Post Exposure Prophylaxis (PEP) is provided completely free of charge by NACO for needle-stick accidents."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में सरकारी वितरण प्रणालियों में प्रयुक्त होने वाली गर्भनिरोधक गोलियों के संबंध में निम्नलिखित में से कौन सा युग्म सही सुमेलित है?","question_en":"Question 11: Which of the following pairs is correctly matched regarding contraceptive pills used in government distribution systems in India?","options":[{"hi":"माला-डी: साप्ताहिक गैर-हार्मोनल गोली और सहेली: दैनिक हार्मोनल गोली","en":"Mala-D: Weekly non-hormonal pill and Saheli: Daily hormonal pill"},{"hi":"माला-डी: दैनिक हार्मोनल गोली और सहेली: साप्ताहिक गैर-हार्मोनल गोली","en":"Mala-D: Daily hormonal pill and Saheli: Weekly non-hormonal pill"},{"hi":"माला-डी: दैनिक गैर-हार्मोनल गोली और सहेली: साप्ताहिक हार्मोनल गोली","en":"Mala-D: Daily non-hormonal pill and Saheli: Weekly hormonal pill"},{"hi":"माला-डी: साप्ताहिक हार्मोनल गोली और सहेली: दैनिक गैर-हार्मोनल गोली","en":"Mala-D: Weekly hormonal pill and Saheli: Daily non-hormonal pill"}],"answer":1,"explanation_hi":"'माला-डी' एक दैनिक हार्मोनल गर्भनिरोधक गोली है, जबकि 'सहेली' एक साप्ताहिक गैर-हार्मोनल गर्भनिरोधक गोली है।","explanation_en":"'Mala-D' is a daily hormonal contraceptive pill, whereas 'Saheli' is a weekly non-hormonal contraceptive pill."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सार्वजनिक स्वास्थ्य निवारण के स्तरों के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: बचपन में स्वस्थ जीवन शैली की आदत डालना 'प्राइमर्डियल प्रिवेंशन' (प्रारंभिक रोकथाम) का एक उदाहरण है।\nकथन 2: टीकों (जैसे डीपीटी अथवा पेंटावेलेंट) के माध्यम से सुरक्षा प्रदान करना 'प्राइमरी प्रिवेंशन' (प्राथमिक रोकथाम) का उदाहरण है।","question_en":"Question 12: Consider the following statements regarding the levels of public health prevention:\nStatement 1: Instilling the habit of a healthy lifestyle in childhood is an example of 'Primordial prevention'.\nStatement 2: Providing protection through vaccines (such as DPT or Pentavalent) is an example of 'Primary prevention'.","options":[{"hi":"केवल कथन 1","en":"Statement 1 only"},{"hi":"केवल कथन 2","en":"Statement 2 only"},{"hi":"कोई नहीं","en":"Neither"},{"hi":"कथन 1 और 2 दोनों","en":"Both Statement 1 and 2"}],"answer":3,"explanation_hi":"प्राइमर्डियल प्रिवेंशन का उद्देश्य जोखिम कारकों के विकास को रोकना है, जबकि प्राइमरी प्रिवेंशन रोग के पूर्व-रोगजनन चरण में स्वास्थ्य संवर्धन और विशिष्ट सुरक्षा प्रदान करता है।","explanation_en":"Primordial prevention aims to prevent the development of risk factors, whereas primary prevention provides health promotion and specific protection in the pre-pathogenesis phase."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"टीकों के वर्गीकरण और उनके प्रकारों का सही मिलान करें:\nसूची-I: A. लाइव वैक्सीन, B. किल्ड वैक्सीन, C. टॉक्सॉइड;\nसूची-II: 1. आईपीवी (IPV), 2. टिटनेस टॉक्सॉइड (TT), 3. बीसीजी (BCG)","question_en":"Question 13: Match the vaccine classifications with their correct types:\nList-I: A. Live vaccine, B. Killed vaccine, C. Toxoid;\nList-II: 1. IPV, 2. Tetanus Toxoid (TT), 3. BCG","options":[{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"},{"hi":"A-3, B-1, C-2","en":"A-3, B-1, C-2"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"}],"answer":2,"explanation_hi":"बीसीजी एक कमजोर जीवित (लाइव) बैक्टीरिया आधारित टीका है, आईपीवी निष्क्रिय (किल्ड) टीका है और टिटनेस टॉक्सॉइड एक निष्क्रिय विष (टॉक्सॉइड) है।","explanation_en":"BCG is a live attenuated bacterial vaccine, IPV is an inactivated (killed) vaccine, and Tetanus Toxoid is an inactivated toxin (toxoid)."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"टीकाकरण कोल्ड चेन सिस्टम के अंतर्गत, बिजली गुल होने की स्थिति में डीप फ्रीज़र ओपीवी और खसरे के टीकों के लिए कितने समय तक सुरक्षित तापमान बनाए रखता है?","question_en":"Question 14: Under the immunization cold chain system, for how long does a deep freezer maintain a safe temperature for OPV and Measles vaccines during a power cut?","options":[{"hi":"10 से 12 घंटे","en":"10 to 12 hours"},{"hi":"30 से 36 घंटे","en":"30 to 36 hours"},{"hi":"40 से 48 घंटे","en":"40 to 48 hours"},{"hi":"18 से 26 घंटे","en":"18 to 26 hours"}],"answer":3,"explanation_hi":"डीप फ्रीज़र बिजली कटौती की स्थिति में 18 से 26 घंटों तकOPV और खसरे के टीकों के लिए तापमान सुरक्षित बनाए रखने में सक्षम होता है।","explanation_en":"Deep freezers are capable of maintaining safe storage temperatures for OPV and Measles vaccines for 18 to 26 hours during a power outage."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय प्रतिरक्षण सारणी के अनुसार, गर्भवती महिलाओं को दी जाने वाली टीडी-2 (Td-2) वैक्सीन की निर्धारित खुराक और लगाने का मार्ग क्या है?","question_en":"Question 15: According to the National Immunization Schedule, what is the prescribed dose and route of administration of Td-2 vaccine for pregnant women?","options":[{"hi":"0.1 मिलीलीटर और अंतःत्वचीय","en":"0.1 ml and intra-dermal"},{"hi":"0.5 मिलीलीटर और अंतःपेशी","en":"0.5 ml and intramuscular"},{"hi":"0.5 मिलीलीटर और उपत्वचीय","en":"0.5 ml and sub-cutaneous"},{"hi":"1.0 मिलीलीटर और अंतःपेशी","en":"1.0 ml and intramuscular"}],"answer":1,"explanation_hi":"गर्भवती महिलाओं को टीडी-2 वैक्सीन की 0.5 मिलीलीटर की खुराक अंतःपेशी (इंट्रामस्क्युलर) मार्ग से ऊपरी बांह में दी जाती है।","explanation_en":"The Td-2 vaccine is administered to pregnant women as a 0.5 ml dose via the intramuscular route in the upper arm."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के राष्ट्रीय प्रतिरक्षण कार्यक्रम के तहत नवजात शिशुओं को दिए जाने वाले टीकों के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: हेपेटाइटिस-बी की जन्म खुराक (बर्थ डोज़) नवजात शिशु को जन्म के बाद यथाशीघ्र, आदर्श रूप से 24 घंटे के भीतर दी जानी चाहिए।\nकथन 2: पोलियो की शून्य खुराक (OPV-0) जन्म के समय अथवा पहले 15 दिनों के भीतर दी जानी चाहिए।","question_en":"Question 16: Consider the following statements regarding vaccines administered to newborns under India's National Immunization Programme:\nStatement 1: The birth dose of Hepatitis-B should be administered to the newborn as early as possible, ideally within 24 hours of birth.\nStatement 2: The zero dose of polio (OPV-0) should be administered at birth or within the first 15 days.","options":[{"hi":"केवल कथन 1","en":"Statement 1 only"},{"hi":"केवल कथन 2","en":"Statement 2 only"},{"hi":"कोई नहीं","en":"Neither"},{"hi":"कथन 1 और 2 दोनों","en":"Both Statement 1 and 2"}],"answer":3,"explanation_hi":"हेपेटाइटिस-बी की जन्म खुराक संक्रमण से बचाव के लिए पहले 24 घंटे में और ओपीवी की शून्य खुराक प्रारंभिक 15 दिनों के भीतर दी जाना अनिवार्य है।","explanation_en":"The birth dose of Hepatitis-B must be given within the first 24 hours to prevent transmission, and the zero dose of OPV must be given within the initial 15 days."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय प्रतिरक्षण कार्यक्रम के तहत 9 से 12 महीने की आयु में दी जाने वाली एमआर-1 (खसरा-रुबेला) वैक्सीन का मार्ग और लगाने का स्थान क्या है?","question_en":"Question 17: Under the National Immunization Programme, what is the route and site of administration for the MR-1 (Measles-Rubella) vaccine given at 9 to 12 months of age?","options":[{"hi":"अंतःपेशी और बाईं ऊपरी बांह","en":"Intramuscular and left upper arm"},{"hi":"अंतःत्वचीय और बाईं ऊपरी बांह","en":"Intra-dermal and left upper arm"},{"hi":"अंतःपेशी और दाईं ऊपरी बांह","en":"Intramuscular and right upper arm"},{"hi":"उपत्वचीय और दाईं ऊपरी बांह","en":"Sub-cutaneous and right upper arm"}],"answer":3,"explanation_hi":"एमआर-1 (खसरा-रुबेला) का टीका शिशु को 9 से 12 महीने की आयु में उपत्वचीय (सब-क्यूटेनियस) मार्ग से दाईं ऊपरी बांह में लगाया जाता है।","explanation_en":"The MR-1 (Measles-Rubella) vaccine is administered subcutaneously in the right upper arm of the infant at 9 to 12 months of age."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बच्चों को स्थायी रूप से अपंग बनाने वाली अत्यधिक संक्रामक बीमारी 'पोलियोमाइलाइटिस' से बचाव के लिए 'ओरल पोलियो वैक्सीन' (OPV) का विकास डॉ. अल्बर्ट सबिन द्वारा किस वर्ष किया गया था?","question_en":"Question 18: In which year was the 'Oral Polio Vaccine' (OPV) developed by Dr Albert Sabin to prevent 'Poliomyelitis', a highly contagious disease causing permanent paralysis in children?","options":[{"hi":"वर्ष 1955","en":"Year 1955"},{"hi":"वर्ष 1961","en":"Year 1961"},{"hi":"वर्ष 1978","en":"Year 1978"},{"hi":"वर्ष 1985","en":"Year 1985"}],"answer":1,"explanation_hi":"डॉ. जोनास साल्क ने 1955 में पहली निष्क्रिय पोलियो वैक्सीन विकसित की थी, जबकि डॉ. अल्बर्ट सबिन ने 1961 में पहली ओरल पोलियो वैक्सीन (OPV) विकसित की थी।","explanation_en":"Dr Jonas Salk developed the first inactivated polio vaccine in 1955, while Dr Albert Sabin developed the oral polio vaccine (OPV) in 1961."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय तपेदिक उन्मूलन कार्यक्रम (NTEP) के तहत प्रत्यक्ष प्रेक्षित उपचार (DOTS) रणनीति के अंतर्गत बलगम की जांच (सप्युटम माइक्रोस्कोपी) के लिए बलगम के कितने नमूने लिए जाते हैं?","question_en":"Question 19: Under the National TB Elimination Programme (NTEP), how many sputum samples are taken for sputum microscopy under the Direct Observation Treatment (DOTS) strategy?","options":[{"hi":"1 नमूना","en":"1 sample"},{"hi":"2 नमूने","en":"2 samples"},{"hi":"3 नमूने","en":"3 samples"},{"hi":"4 नमूने","en":"4 samples"}],"answer":1,"explanation_hi":"डॉट्स रणनीति के अंतर्गत टीबी के सटीक निदान के लिए रोगी के थूक (बलगम) के 2 अलग-अलग नमूने (एक तत्काल और एक सुबह का) लिए जाते हैं।","explanation_en":"Under the DOTS strategy, 2 separate sputum samples (one on-spot and one morning sample) are collected for the accurate diagnosis of TB."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मच्छर जनित बीमारियों और उनके वाहकों के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: डेंगू का वाहक एडीज एजिप्टी मच्छर है, जिस पर काली और सफेद धारियां होती हैं और यह दिन के समय काटता है।\nकथन 2: यह मच्छर मुख्य रूप से ग्रामीण क्षेत्रों में बहते हुए गंदे नालों के पानी में प्रजनन करता है।","question_en":"Question 20: Consider the following statements regarding mosquito-borne diseases and their vectors:\nStatement 1: The vector of dengue is the Aedes aegypti mosquito, which has black and white stripes and bites during the day.\nStatement 2: This mosquito mainly breeds in flowing dirty drain water in rural areas.","options":[{"hi":"केवल कथन 1","en":"Statement 1 only"},{"hi":"केवल कथन 2","en":"Statement 2 only"},{"hi":"कथन 1 और 2 दोनों","en":"Both Statement 1 and 2"},{"hi":"कोई नहीं","en":"Neither"}],"answer":0,"explanation_hi":"कथन 2 गलत है क्योंकि डेंगू फैलाने वाला एडीज मच्छर मुख्य रूप से घरेलू स्तर पर जमा साफ और स्थिर पानी (जैसे गमलें, कूलर, कंटेनर) में प्रजनन करता है।","explanation_en":"Statement 2 is incorrect because the dengue-vector Aedes mosquito primarily breeds in clean, stagnant water stored domestically (such as flower pots, coolers, containers)."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय कुष्ठ रोग उन्मूलन कार्यक्रम (NLEP) के संदर्भ में कुष्ठ रोग के 'उन्मूलन' (elimination) का क्या पैमाना निर्धारित किया गया था, जिसे भारत ने वर्ष 2005 में राष्ट्रीय स्तर पर प्राप्त किया?","question_en":"Question 21: In the context of the National Leprosy Eradication Programme (NLEP), what was the defined criterion for 'elimination' of leprosy, which India achieved nationally in the year 2005?","options":[{"hi":"प्रति 10,000 की जनसंख्या पर 1 से कम मामला","en":"Less than 1 case per 10,000 population"},{"hi":"प्रति 1,00,000 की जनसंख्या पर 1 से कम मामला","en":"Less than 1 case per 1,00,000 population"},{"hi":"शून्य सक्रिय मामले","en":"Zero active cases"},{"hi":"प्रति 1,00,000 की जनसंख्या पर 5 से कम मामले","en":"Less than 5 cases per 1,00,000 population"}],"answer":0,"explanation_hi":"राष्ट्रीय स्तर पर कुष्ठ रोग उन्मूलन का अर्थ रोग के प्रसार की दर को प्रति 10,000 जनसंख्या पर 1 से कम मामले तक लाना था, जिसे भारत ने 2005 में हासिल किया।","explanation_en":"Leprosy elimination at the national level meant bringing down the prevalence rate of the disease to less than 1 case per 10,000 population, achieved by India in 2005."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय दृष्टिहीनता और दृष्टिदोष नियंत्रण कार्यक्रम (NPCBVI) के अंतर्गत भारत में 'दृष्टिहीनता' (ब्लाइंडनेस) को किस स्तर की दृष्टि तीक्ष्णता (विजुअल एक्यूटी) के रूप में परिभाषित किया गया है?","question_en":"Question 22: Under the National Programme for Control of Blindness and Visual Impairment (NPCBVI), blindness in India is defined as which level of visual acuity?","options":[{"hi":"6/18 से कम","en":"Less than 6/18"},{"hi":"6/60 से कम","en":"Less than 6/60"},{"hi":"3/60 से कम","en":"Less than 3/60"},{"hi":"1/60 से कम","en":"Less than 1/60"}],"answer":1,"explanation_hi":"दृष्टिहीनता नियंत्रण कार्यक्रम के तहत यदि किसी व्यक्ति की दृष्टि तीक्ष्णता सर्वोत्तम सुधार के बाद भी 6/60 से कम है, तो उसे दृष्टिहीन श्रेणी में माना जाता है।","explanation_en":"Under the NPCBVI, a person is categorized as blind if their visual acuity is less than 6/60 even after the best possible correction."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"एकीकृत बाल विकास सेवा (ICDS) योजना के तहत बच्चों की वृद्धि निगरानी (ग्रोथ मॉनिटरिंग) के संबंध में निम्नलिखित कथनों पर विचार करें:\nकथन 1: योजना के मानदंडों के अनुसार, 3 वर्ष से कम उम्र के प्रत्येक बच्चे का वजन प्रत्येक महीने मापा जाना चाहिए।\nकथन 2: आंगनवाड़ी केंद्रों में वृद्धि निगरानी के लिए 'साल्टर स्केल' (Salter scale) का उपयोग किया जाता है।","question_en":"Question 23: Consider the following statements regarding the growth monitoring of children under the Integrated Child Development Services (ICDS) scheme:\nStatement 1: According to scheme norms, the weight of every child under 3 years of age should be measured every month.\nStatement 2: The 'Salter scale' is used for growth monitoring in Anganwadi centres.","options":[{"hi":"केवल कथन 1","en":"Statement 1 only"},{"hi":"केवल कथन 2","en":"Statement 2 only"},{"hi":"कोई नहीं","en":"Neither"},{"hi":"कथन 1 और 2 दोनों","en":"Both Statement 1 and 2"}],"answer":3,"explanation_hi":"आईसीडीएस मानकों के तहत 3 साल से कम उम्र के बच्चों का वजन मासिक रूप से तथा 3-6 वर्ष के बच्चों का तिमाही रूप से साल्टर स्प्रिंग बैलेंस स्केल से मापा जाता है।","explanation_en":"Under ICDS norms, children under 3 years are weighed monthly and those 3-6 years quarterly using the Salter spring balance scale."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संयुक्त राष्ट्र शिखर सम्मेलन (वर्ष 2000) में वैश्विक स्तर पर स्वीकृत सहस्राब्दी विकास लक्ष्यों (MDGs) के अंतर्गत 'लक्ष्य 4' के तहत बाल मृत्यु दर में कितनी कमी का लक्ष्य रखा गया था?","question_en":"Question 24: Under the Millennium Development Goals (MDGs) accepted globally at the United Nations Summit (Year 2000), what target was set for reducing child mortality under 'Goal 4'?","options":[{"hi":"आधा करना","en":"Halving"},{"hi":"दो-तिहाई की कमी","en":"Two-thirds reduction"},{"hi":"तीन-चौथाई की कमी","en":"Three-fourths reduction"},{"hi":"अस्सी प्रतिशत की कमी","en":"Eighty percent reduction"}],"answer":1,"explanation_hi":"सहस्राब्दी विकास लक्ष्यों के लक्ष्य 4 का उद्देश्य 1990 और 2015 के बीच पाँच वर्ष से कम आयु के बच्चों की मृत्यु दर में दो-तिहाई (2/3) की कमी लाना था।","explanation_en":"Goal 4 of the Millennium Development Goals aimed to reduce the under-five child mortality rate by two-thirds (2/3) between 1990 and 2015."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संगठनात्मक व्यवहार (OB) के अंतर्गत सामूहिक निर्णय लेने की लोकप्रिय तकनीक 'ब्रेनस्टॉर्मिंग' (मस्तिष्क उद्वेलन) के लिए सामान्यतः कितने सदस्यों का समूह होना चाहिए?","question_en":"Question 25: In organizational behavior (OB), how many members should typically be in a group for the popular collective decision-making technique of 'Brainstorming'?","options":[{"hi":"3 से 5 सदस्य","en":"3 to 5 members"},{"hi":"15 से 20 सदस्य","en":"15 to 20 members"},{"hi":"6 से 12 सदस्य","en":"6 to 12 members"},{"hi":"25 से 30 सदस्य","en":"25 to 30 members"}],"answer":2,"explanation_hi":"मस्तिष्क उद्वेलन (ब्रेनस्टॉर्मिंग) रचनात्मक और बिना किसी आलोचना के स्वतंत्र विचार उत्पन्न करने के लिए 6 से 12 लोगों का एक छोटा परस्पर संवादात्मक समूह है।","explanation_en":"Brainstorming is a small interactive group of 6 to 12 people designed to generate creative and criticism-free independent ideas."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
