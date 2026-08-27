@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"UPSC/PCS • NCERT CLASS 12","highlight":"NCERT CLASS 12","shortTitle":"UPSC/PCS","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • NCERT CLASS 12","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-upsc-pcs-ncert-class-12-ncert-class-12-20260827-1th8l","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-27","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विष्णुधर्मोत्तर पुराण के पांचवीं शताब्दी के किस खंड में चित्रसूत्र नामक अध्याय है, जिसे भारतीय कला के औपचारिक सिद्धांतों का स्रोत माना जाता है?","question_en":"Question 1: Which khanda of the fifth-century Vishnudharmottara Purana contains the chapter Chitrasutra, which is considered a source book of Indian art?","options":[{"hi":"प्रथम खंड","en":"First Khanda"},{"hi":"द्वितीय खंड","en":"Second Khanda"},{"hi":"तृतीय खंड","en":"Third Khanda"},{"hi":"चतुर्थ खंड","en":"Fourth Khanda"}],"answer":2,"explanation_hi":"विष्णुधर्मोत्तर पुराण के तीसरे खंड (तृतीय खंड) में चित्रसूत्र अध्याय शामिल है, जो भारतीय चित्रकला के मूल सिद्धांतों का प्रतिपादन करता है।","explanation_en":"The third khanda of the Vishnudharmottara Purana contains the chapter Chitrasutra, which lays down the canons of Indian painting."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मेवाड़ के शासक विजयसिंह के शासनकाल में 1260 ईस्वी में चित्रित सबसे प्राचीन सचित्र ताड़पत्र पांडुलिपि 'श्रावकप्रतिक्रमणसूत्रचूर्णि' के लिपिक (scribe) कौन थे?","question_en":"Question 2: Who was the scribe of the earliest surviving illustrated palm-leaf manuscript from Mewar, 'Sravakapratikramasutra-curni', dated 1260 CE during the reign of Vijayasimha?","options":[{"hi":"नूरुद्दीन","en":"Nuruddin"},{"hi":"साहबदीन","en":"Sahibdin"},{"hi":"जगन्नाथ","en":"Jagannath"},{"hi":"कमलचंद्र","en":"Kamalchandra"}],"answer":3,"explanation_hi":"श्रावकप्रतिक्रमणसूत्रचूर्णि 1260 ईस्वी में मेवाड़ में कमलचंद्र द्वारा लिखित पांडुलिपि है।","explanation_en":"The Sravakapratikramasutra-curni is a manuscript written by Kamalchandra in Mewar in 1260 CE."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कल्पसूत्र के अनुसार, जब त्रिशला महावीर को गर्भ में धारण करती हैं, तो वह कितने स्वप्न देखती हैं, जिनका अर्थ ज्योतिषी एक संप्रभु राजा या महान संत के जन्म के रूप में बताते हैं?","question_en":"Question 3: According to the Kalpasutra, how many objects does Trishala dream of when she conceives Mahavir, which astrologers interpreted as a sign of giving birth to a sovereign king or a great saint?","options":[{"hi":"अठारह","en":"Eighteen"},{"hi":"चौदह","en":"Fourteen"},{"hi":"बारह","en":"Twelve"},{"hi":"सोलह","en":"Sixteen"}],"answer":1,"explanation_hi":"कल्पसूत्र के अनुसार, महावीर की माता त्रिशला गर्भधारण के समय 14 शुभ वस्तुओं के स्वप्न देखती हैं।","explanation_en":"According to the Kalpasutra, Mahavir's mother Trishala dreams of 14 auspicious objects when she conceives him."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पश्चिमी भारतीय जैन चित्रकला परंपरा में ताड़पत्रों के स्थान पर कागज का उपयोग किस शताब्दी में प्रारंभ हुआ?","question_en":"Question 4: In the Western Indian Jain manuscript tradition, in which century was paper introduced to replace treated palm leaves?","options":[{"hi":"पंद्रहवीं शताब्दी","en":"Fifteenth century"},{"hi":"चौदहवीं शताब्दी","en":"Fourteenth century"},{"hi":"बारहवीं शताब्दी","en":"Twelfth century"},{"hi":"तेरहवीं शताब्दी","en":"Thirteenth century"}],"answer":1,"explanation_hi":"पश्चिमी भारत में कागज की शुरुआत चौदहवीं शताब्दी में हुई, जिससे पहले ताड़ के पत्तों का उपयोग किया जाता था।","explanation_en":"Paper was introduced in the fourteenth century in Western India, prior to which paintings were done on treated palm leaves."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मांडू में नासिर शाह खलजी (1500–1510 ईस्वी) के शासनकाल के दौरान चित्रित 'निमतनामा' मूल रूप से किस विषय पर आधारित पुस्तक है?","question_en":"Question 5: The 'Nimatnama', painted at Mandu during the reign of Nasir Shah Khalji (1500–1510 CE), is primarily a book on which subject?","options":[{"hi":"सूपशास्त्र अथवा व्यंजनों के नुस्खे","en":"Recipes and delicacies"},{"hi":"खगोल विज्ञान","en":"Astronomy"},{"hi":"सूफी प्रेम कथा","en":"Sufi romance stories"},{"hi":"शाही युद्ध गाथा","en":"Royal battle accounts"}],"answer":0,"explanation_hi":"निमतनामा मूल रूप से व्यंजनों के नुस्खों (सूपशास्त्र) की एक सचित्र पुस्तक है, जिसमें शिकार और दवाओं का भी विवरण है।","explanation_en":"The Nimatnama is a book of recipes with sections on hunting, medicine, cosmetics, and perfumes."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पाल राजा रामपाल के शासनकाल के पंद्रहवें वर्ष में नालंदा महाविहार में लिखित अष्टसाहस्रिका प्रज्ञापारमिता पांडुलिपि कितने श्लोकों (लाइनों) में लिखी गई है?","question_en":"Question 6: The Pala Buddhist palm-leaf manuscript Astasahasrika Prajnaparamita, written at the monastery of Nalanda in the fifteenth year of King Ramapala's reign, is written in how many lines?","options":[{"hi":"आठ हजार","en":"Eight thousand"},{"hi":"छह हजार","en":"Six thousand"},{"hi":"दस हजार","en":"Ten thousand"},{"hi":"बारह हजार","en":"Twelve thousand"}],"answer":0,"explanation_hi":"अष्टसाहस्रिका प्रज्ञापारमिता का अर्थ ही 'आठ हजार पंक्तियों में ज्ञान की पूर्णता' है, जिसे नालंदा महाविहार में रामपाल के शासनकाल में चित्रित किया गया था।","explanation_en":"Astasahasrika Prajnaparamita translates to 'Perfection of Wisdom' written in eight thousand lines."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मध्यकालीन भारतीय कला के विकास क्रम में चौदहवीं शताब्दी में बिहार में मैथिल ब्राह्मण भानुदत्त द्वारा रचित संस्कृत ग्रंथ 'रसमंजरी' किस विषय पर केंद्रित है?","question_en":"Question 7: The fourteenth-century Sanskrit text 'Rasamanjari', composed in Bihar by the Maithil Brahmin Bhanu Datta, is focused on which subject?","options":[{"hi":"वैदिक देवताओं के मंत्र और अनुष्ठान","en":"Hymns and rituals of Vedic deities"},{"hi":"नायक-नायिका भेद और रसों का वर्गीकरण","en":"Classification of heroes, heroines and rasas"},{"hi":"राधा और कृष्ण के बीच की युद्ध गाथाएं","en":"Battle accounts between Radha and Krishna"},{"hi":"कृषि और बागवानी पद्धतियां","en":"Agriculture and plantation methods"}],"answer":1,"explanation_hi":"रसमंजरी रस पर एक प्रबंध है जो नायकों (नायक) और नायिकाओं (नायिका) के शारीरिक और भावनात्मक वर्गीकरण से संबंधित है।","explanation_en":"Rasamanjari is a treatise on rasa that deals with the classification of heroes (nayakas) and heroines (nayikas)."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राजस्थानी रागमाला चित्रों के एलबम में प्रत्येक मुख्य पुरुष राग के अंतर्गत कितनी महिला रागिनियों की कल्पना की गई है?","question_en":"Question 8: In Rajasthani Ragamala painting albums, how many female consorts called raginis are associated with each male raga?","options":[{"hi":"चार","en":"Four"},{"hi":"छह","en":"Six"},{"hi":"आठ","en":"Eight"},{"hi":"पांच","en":"Five"}],"answer":1,"explanation_hi":"रागमाला एलबम में प्रत्येक मुख्य पुरुष राग के साथ छह रागिनियाँ (महिला पत्नियां) जुड़ी होती हैं।","explanation_en":"Each family in a Ragamala album is headed by a male raga, having six female consorts called raginis."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बूंदी शैली के प्रारंभिक चरण को दर्शाने वाली 'बूंदी रागमाला' (1591 ईस्वी) का चित्रण राव भोज सिंह के समय में उत्तर प्रदेश के किस स्थान पर किया गया था?","question_en":"Question 9: The 'Bundi Ragamala' dated 1591, belonging to the earliest phase of Bundi painting under Rao Bhoj Singh, was painted at which place?","options":[{"hi":"आगरा","en":"Agra"},{"hi":"इलाहाबाद","en":"Allahabad"},{"hi":"चुनार","en":"Chunar"},{"hi":"जौनपुर","en":"Jaunpur"}],"answer":2,"explanation_hi":"बूंदी रागमाला का अंकन चुनार (बनारस के पास) में हुआ था, जहाँ राव भोज सिंह और उनके पिता राव सुरजन सिंह का महल था।","explanation_en":"Bundi Ragamala dated 1591 was painted at Chunar (near Benaras), where Rao Bhoj Singh and Rao Surjan Singh maintained a palace."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बीकानेर के शासक करण सिंह ने दिल्ली के किस प्रसिद्ध कलाकार को नियुक्त किया था, जिसका कार्य बीकानेर शैली के आरंभिक बिंदु (लगभग 1650 ईस्वी) को चिह्नित करता है?","question_en":"Question 10: Which master artist from Delhi was employed by Karan Singh of Bikaner, whose work dating back to around 1650 represents the beginnings of the Bikaner School?","options":[{"hi":"उस्ताद अली रज़ा","en":"Ustad Ali Raza"},{"hi":"रुकनुद्दीन","en":"Ruknuddin"},{"hi":"इब्राहिम","en":"Ibrahim"},{"hi":"शाहिबदीन","en":"Sahibdin"}],"answer":0,"explanation_hi":"बीकानेर के राजा करण सिंह ने दिल्ली के उस्ताद अली रज़ा को नियुक्त किया था, जिन्होंने 1650 के आसपास इस शैली की नींव रखी।","explanation_en":"Karan Singh employed Ustad Ali Raza from Delhi, whose earliest work represents the beginning of the Bikaner School around 1650."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"रसिकप्रिया ग्रंथ पर आधारित बीकानेर शैली का प्रसिद्ध चित्र 'कृष्णा स्विंगिंग एंड राधा इन सैड मूड' (1683 ईस्वी) किस चित्रकार द्वारा चित्रित किया गया था?","question_en":"Question 11: Which artist painted the famous Bikaner School painting 'Krishna swinging and Radha in sad mood' (1683), illustrating the Rasikapriya?","options":[{"hi":"नूरुद्दीन","en":"Nuruddin"},{"hi":"रुकनुद्दीन","en":"Ruknuddin"},{"hi":"साहबदीन","en":"Sahibdin"},{"hi":"अली रज़ा","en":"Ali Raza"}],"answer":0,"explanation_hi":"यह चित्र 1683 में कलाकार नूरुद्दीन द्वारा बीकानेर के दरबार में चित्रित किया गया था, जिन्होंने वहाँ 1674 से 1698 तक कार्य किया।","explanation_en":"This painting was created in 1683 by the artist Nuruddin, who worked in the court of Bikaner from 1674 to 1698."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किशनगढ़ के राजा सावंत सिंह के लिए उनके सबसे प्रसिद्ध कलाकार निहाल चंद ने किस समयावधि के बीच सावंत सिंह की कविताओं पर आधारित चित्रों की रचना की?","question_en":"Question 12: Between which years did the celebrated artist Nihal Chand work for Sawant Singh of Kishangarh, composing paintings based on the king's poetry?","options":[{"hi":"1757 और 1780 ईस्वी","en":"1757 and 1780 CE"},{"hi":"1735 और 1757 ईस्वी","en":"1735 and 1757 CE"},{"hi":"1780 और 1805 ईस्वी","en":"1780 and 1805 CE"},{"hi":"1715 और 1735 ईस्वी","en":"1715 and 1735 CE"}],"answer":1,"explanation_hi":"निहाल चंद ने राजा सावंत सिंह के लिए 1735 से 1757 ईस्वी के बीच काम किया और उनके काव्य को सुंदर चित्रों में ढाला।","explanation_en":"Nihal Chand worked for Sawant Singh between 1735 and 1757, composing paintings on Sawant Singh's poetry."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जोधपुर (मारवाड़) शैली की सबसे प्रारंभिक श्रृंखलाओं में से एक, जो पाली में 1623 ईस्वी में चित्रित की गई थी, किस कलाकार द्वारा तैयार की गई एक रागमाला श्रृंखला है?","question_en":"Question 13: One of the earliest Jodhpur sets painted in Pali is a Ragamala set painted in 1623 CE by which artist?","options":[{"hi":"नत्थू","en":"Nathu"},{"hi":"साहबदीन","en":"Sahibdin"},{"hi":"वीरजी","en":"Virji"},{"hi":"मनोहर","en":"Manohar"}],"answer":2,"explanation_hi":"जोधपुर शैली के सबसे शुरुआती सचित्र सेटों में से एक पाली में 1623 में कलाकार वीरजी द्वारा चित्रित रागमाला सेट है।","explanation_en":"One of the earliest Jodhpur sets painted in Pali is a Ragamala set by artist Virji in 1623."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मेवाड़ शैली में संवत 1685 (1628 ईस्वी) के शिलालेखों में प्रसिद्ध चित्रकार साहबदीन को किस विशिष्ट राजस्थानी शब्द से संबोधित किया गया है?","question_en":"Question 14: In the Mewar school inscriptions of Samvat 1685 (1628 CE), the famous artist Sahibdin is referred to by which specific term?","options":[{"hi":"नक्काश","en":"Nakkash"},{"hi":"उस्ताद","en":"Ustad"},{"hi":"लिखनहार","en":"Likhanhar"},{"hi":"चितेरा","en":"Chitara"}],"answer":3,"explanation_hi":"मेवाड़ अभिलेखों में साहबदीन को 'चितारा' कहा गया है, जिसका अर्थ है 'वह जो चित्र बनाता है'।","explanation_en":"Sahibdin is referred to as 'chitara' in Mewar inscriptions, which means 'someone who paints'."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ईरानी सफ़वीद दरबार में निर्वासन से लौटने के बाद हुमायूँ ने अपने शाही स्टूडियो की स्थापना के लिए किन दो प्रसिद्ध फारसी चित्रकारों को भारत आमंत्रित किया था?","question_en":"Question 15: Which two famous Persian artists were invited by Humayun to establish an art studio in his court after his exile in the Safavid Persian court?","options":[{"hi":"बिचित्र और बिशनदास","en":"Bichitra and Bishandas"},{"hi":"फर्रुख बेग और बसावन","en":"Farrukh Beg and Basawan"},{"hi":"आका रिज़ा और अबुल हसन","en":"Aqa Riza and Abul Hasan"},{"hi":"मीर सैयद अली और अब्द उस समद","en":"Mir Sayyid Ali and Abd us Samad"}],"answer":3,"explanation_hi":"हुमायूँ ने मीर सैयद अली और अब्द उस समद को भारत आमंत्रित किया था जो अपनी चित्रकला विशेषकर शबीह (व्यक्तिचित्र) के लिए प्रसिद्ध थे।","explanation_en":"Humayun brought back Persian masters Mir Sayyid Ali and Abd us Samad to establish a studio in his court."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हुमायूँ के शासनकाल में चित्रित मुगल चित्रकला का अप्रतिम उदाहरण 'प्रिंसेस ऑफ द हाउस ऑफ तैमूर' (1545-50 ईस्वी) किस सतह पर अपारदर्शी जलरंगों से बनाया गया है?","question_en":"Question 16: The early Mughal masterpiece 'Princes of the House of Timur' (1545-50 CE) was painted in opaque watercolour on which surface base?","options":[{"hi":"सूती वस्त्र पर","en":"Cotton cloth"},{"hi":"ताड़पत्र पर","en":"Palm leaf"},{"hi":"लकड़ी की पटली पर","en":"Wooden cover"},{"hi":"हस्तनिर्मित कागज़ पर","en":"Handmade paper"}],"answer":0,"explanation_hi":"यह प्रसिद्ध विशालकाय चित्र सूती कपड़े पर अपारदर्शी जलरंगों का उपयोग करके सफ़वी शैली में चित्रित किया गया था।","explanation_en":"The early Mughal masterpiece 'Princes of the House of Timur' was painted in opaque watercolour on cotton."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अकबर कालीन 'हमज़ा नामा' चित्र परियोजना के संदर्भ में, इसके संपूर्ण निर्माण में कितने वर्ष लगे तथा इसके कुल कितने खंड और सचित्र पृष्ठ थे?","question_en":"Question 17: Regarding Akbar's imperial project 'Hamza Nama', how many years did it take to complete, and how many volumes and illustrations did it contain?","options":[{"hi":"12 वर्ष, 12 खंड और 1200 चित्र","en":"12 years, 12 volumes and 1200 illustrations"},{"hi":"10 वर्ष, 10 खंड और 1000 चित्र","en":"10 years, 10 volumes and 1000 illustrations"},{"hi":"15 वर्ष, 14 खंड और 1400 चित्र","en":"15 years, 14 volumes and 1400 illustrations"},{"hi":"20 वर्ष, 16 खंड और 1600 चित्र","en":"20 years, 16 volumes and 1600 illustrations"}],"answer":2,"explanation_hi":"हमज़ा नामा सचित्र ग्रंथ 15 वर्षों (1567-1582 ई.) में तैयार हुआ, जिसमें 14 खंड और 1400 चित्र थे।","explanation_en":"The Hamza Nama project consisted of 14 volumes with 1400 illustrations and took nearly 15 years to complete."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अकबर द्वारा हिंदू महाकाव्य 'महाभारत' का फारसी में अनुवाद कराकर उसका चित्रण करवाया गया, जिसे 'रज़्म नामा' के नाम से जाना जाता है। यह किस चित्रकार की देखरेख में 1589 ईस्वी में संपन्न हुआ था?","question_en":"Question 18: The Persian translation and illustrated version of the Mahabharata, known as the 'Razm Nama', was completed in 1589 under the supervision of which master artist?","options":[{"hi":"मीर सैयद अली","en":"Mir Sayyid Ali"},{"hi":"बसावन","en":"Basawan"},{"hi":"मिस्किन","en":"Miskin"},{"hi":"दसवंत","en":"Daswant"}],"answer":3,"explanation_hi":"रज़्म नामा परियोजना को 1589 ईस्वी में अकबर के प्रसिद्ध दरबारी चित्रकार दसवंत की देखरेख में पूर्ण किया गया था।","explanation_en":"The Razm Nama manuscript, completed in 1589, was illustrated under the supervision of the master artist Daswant."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अकबर कालीन मुग़ल चित्र 'मैडोना एंड चाइल्ड' (16वीं शताब्दी के उत्तरार्ध), जो यूरोपीय पुनर्जागरण और बीजान्टिन कला शैली से प्रेरित है, किस कलाकार की प्रारंभिक रचना है?","question_en":"Question 19: The early Mughal painting 'Madonna and Child' (late 16th century), heavily influenced by Byzantine and European Renaissance art, is an important work attributed to which artist?","options":[{"hi":"केशवदास","en":"Keshav Das"},{"hi":"बसावन","en":"Basawan"},{"hi":"गोवर्धन","en":"Govardhan"},{"hi":"बिचित्र","en":"Bichitra"}],"answer":1,"explanation_hi":"मैडोना एंड चाइल्ड मुग़ल चित्रकार बसावन से संबद्ध एक प्रारंभिक मुग़ल कृति है, जिसमें यूरोपीय ईसाई चित्रात्मक प्रभाव दिखाई देता है।","explanation_en":"Madonna and Child is an early Mughal work attributed to Basawan, showing European Christian pictorial influences."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जहाँगीर के दरबारी चित्रकार अबुल हसन को उनकी असाधारण कलात्मक प्रतिभा के कारण किस शाही उपाधि से सम्मानित किया गया था?","question_en":"Question 20: Which royal title was bestowed upon the court painter Abul Hasan by Emperor Jahangir in recognition of his artistic sophistication?","options":[{"hi":"नादिर अल-ज़माँ","en":"Nadir al Zaman"},{"hi":"शीरीन कलम","en":"Shirin Kalam"},{"hi":"ज़रीन कलम","en":"Zarrin Kalam"},{"hi":"नादिर उल-अस्र","en":"Nadir ul asr"}],"answer":0,"explanation_hi":"जहाँगीर ने चित्रकार अबुल हसन को 'नादिर अल-ज़माँ' (युग का आश्चर्य) की उपाधि दी थी।","explanation_en":"Jahangir awarded the title 'Nadir al Zaman' (meaning 'Wonder of the Age') to his court artist Abul Hasan."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जहाँगीर के सपने पर आधारित चित्र 'जहाँगीरस ड्रीम' (1618-22 ईस्वी) में जहाँगीर और ईरान के शाह अब्बास क्रमशः किन दो सोते हुए जानवरों पर खड़े दिखाई देते हैं?","question_en":"Question 21: In the political fantasy painting 'Jahangir's Dream' (1618-22 CE), Jahangir and Persian Shah Abbas are depicted standing on which two sleeping animals?","options":[{"hi":"बैल और गधा","en":"Bull and donkey"},{"hi":"शेर और चीता","en":"Lion and tiger"},{"hi":"शेर और भेड़","en":"Lion and sheep"},{"hi":"हाथी और ऊँट","en":"Elephant and camel"}],"answer":2,"explanation_hi":"इस चित्र में प्रभुत्व दर्शाने हेतु जहाँगीर को एक शक्तिशाली शेर पर और शाह अब्बास को एक विनम्र भेड़ पर खड़ा दिखाया गया है।","explanation_en":"In the painting, Jahangir towers over a powerful lion while the Persian Shah Abbas stands on a docile sheep."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जहाँगीर कालीन प्रसिद्ध प्रतीकात्मक चित्र 'जहाँगीर एन्थ्रोन्ड ऑन एन ऑवरग्लास' (1625 ईस्वी) किस मुग़ल चित्रकार की रचना है?","question_en":"Question 22: The famous allegorical painting 'Jahangir enthroned on an Hourglass' (1625 CE) was painted by which Mughal court artist?","options":[{"hi":"बिचित्र","en":"Bichitra"},{"hi":"मनोहर","en":"Manohar"},{"hi":"अबुल हसन","en":"Abul Hasan"},{"hi":"उस्ताद मंसूर","en":"Ustad Mansur"}],"answer":0,"explanation_hi":"यह प्रतीकात्मक चित्र चित्रकार बिचित्र द्वारा चित्रित किया गया था, जिन्होंने चित्र में स्वयं को भी नीचे दाईं ओर खड़ा दिखाया है।","explanation_en":"This symbolic work was painted in 1625 by the court painter Bichitra, who depicted himself in the composition."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जहाँगीर के दरबार के प्रसिद्ध प्रकृति चित्रकार उस्ताद मंसूर को उनके दुर्लभ वन्यजीव चित्रों के लिए कौन सी उपाधि दी गई थी?","question_en":"Question 23: Which unique title was awarded by Jahangir to the famous nature painter of his court, Ustad Mansur?","options":[{"hi":"नादिर उल-अस्र","en":"Nadir ul asr"},{"hi":"शबीह नवीस","en":"Shabih Navis"},{"hi":"हुनरमंद","en":"Hunarmand"},{"hi":"नादिर अल-ज़माँ","en":"Nadir al Zaman"}],"answer":0,"explanation_hi":"प्रकृति, वनस्पतियों और जीवों के अद्वितीय चित्रण के कारण उस्ताद मंसूर को 'नादिर उल-अस्र' (युग का अनुपम) कहा गया।","explanation_en":"Ustad Mansur, famous for his wildlife and nature studies, was given the title 'Nadir ul asr' (meaning 'Wonder of the Age')."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"तुर्की यात्रियों द्वारा इथियोपिया से मुग़ल दरबार में लाए गए किस धारीदार जानवर का चित्र उस्ताद मंसूर द्वारा 1621 ईस्वी के नौरोज़ उत्सव के समय बनाया गया था?","question_en":"Question 24: Which striped animal, brought from Ethiopia and presented during the Nowruz festivities of March 1621, was painted by Ustad Mansur?","options":[{"hi":"कस्तूरी मृग","en":"Musk deer"},{"hi":"जंगली सांड","en":"Wild bull"},{"hi":"नीलगाय","en":"Nilgai"},{"hi":"जेबरा","en":"Zebra"}],"answer":3,"explanation_hi":"तुर्कों द्वारा इथियोपिया (हबशा) से लाए गए जेबरा को नौरोज़ (मार्च 1621) के अवसर पर जहाँगीर को भेंट किया गया था, जिसे मंसूर ने चित्रित किया।","explanation_en":"The Zebra from Ethiopia was presented to Jahangir during the Nowruz festivities in March 1621 and was drawn by Ustad Mansur."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दक्कनी शैली की अहमदनगर रियासत के अंतर्गत चित्रकला के सबसे प्रारंभिक उदाहरण किस शासक के शासनकाल को समर्पित कविताओं की पुस्तक में मिलते हैं?","question_en":"Question 25: The earliest examples of Deccani painting are found in a volume of poems celebrating the reign of which Ahmadnagar ruler?","options":[{"hi":"इब्राहिम कुतुब शाह","en":"Ibrahim Qutb Shah"},{"hi":"मुहम्मद कुली कुतुब शाह","en":"Muhammad Quli Qutb Shah"},{"hi":"अली आदिल शाह प्रथम","en":"Ali Adil Shah I"},{"hi":"हुसैन निज़ाम शाह प्रथम","en":"Hussain Nizam Shah I"}],"answer":3,"explanation_hi":"अहमदनगर चित्रकला के प्रारंभिक उदाहरण 1553-1565 ई. के बीच हुसैन निज़ाम शाह प्रथम के शासनकाल के काव्य ग्रंथ 'तारीफ़-ए-हुसैन शाही' में मिलते हैं।","explanation_en":"The earliest examples of Deccani painting appear in a volume of poems celebrating the reign of Hussain Nizam Shah I (1553–1565)."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बीजापुर शैली में 1570 ईस्वी में रचित एक सचित्र विश्वकोश ग्रंथ 'नुजुम अल-उलूम' (Nujum al-Ulum) में कुल कितने लघुचित्र (Miniatures) शामिल हैं?","question_en":"Question 26: How many miniatures are contained in the 'Nujum al-Ulum', a richly illustrated encyclopedia dated 1570 CE from the Bijapur School?","options":[{"hi":"876 लघुचित्र","en":"876 miniatures"},{"hi":"1400 लघुचित्र","en":"1400 miniatures"},{"hi":"500 लघुचित्र","en":"500 miniatures"},{"hi":"680 लघुचित्र","en":"680 miniatures"}],"answer":0,"explanation_hi":"नुजुम अल-उलूम नामक इस छोटे ग्रंथ में कुल 876 लघुचित्र हैं जो खगोल विज्ञान, हथियारों और बर्तनों को दर्शाते हैं।","explanation_en":"The Nujum al-Ulum, dated 1570, is a highly illustrated encyclopedia adorned with 876 miniatures."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बीजापुर के आदिलशाही शासक इब्राहिम द्वितीय (1580–1627) द्वारा संगीत पर लिखित प्रसिद्ध ग्रंथ कौन सा है, जिसने दक्कनी कला को अत्यधिक समृद्ध किया?","question_en":"Question 27: Which famous book on Indian music was authored by the Bijapur Adil Shahi ruler Ibrahim II (1580–1627)?","options":[{"hi":"संग्रहणी सूत्र","en":"Sangrahini Sutra"},{"hi":"नौरस-नामा","en":"Nauras-nama"},{"hi":"तारीफ़-ए-हुसैन शाही","en":"Tarif-i-Hussain Shahi"},{"hi":"दीवान-ए-हाफ़िज़","en":"Diwan of Hafiz"}],"answer":1,"explanation_hi":"इब्राहिम द्वितीय संगीत के बड़े मर्मज्ञ थे और उन्होंने इस विषय पर 'नौरस-नामा' नामक पुस्तक की रचना की थी।","explanation_en":"Ibrahim II of Bijapur was an expert in Indian music and author of the book Nauras-nama."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"गोलकुंडा शैली के अंतर्गत चित्रित सबसे प्रारंभिक पांच लघुचित्र 1463 ईस्वी में लिखित किस फारसी कवि के ग्रंथ में संगृहीत हैं?","question_en":"Question 28: The earliest five miniatures identified as Golconda work are bound in which Persian poet's manuscript dated 1463?","options":[{"hi":"हाफ़िज़ का दीवान","en":"Diwan of Hafiz"},{"hi":"रूमी की मसनवी","en":"Masnavi of Rumi"},{"hi":"अमीर खुसरो का दीवान","en":"Diwan of Amir Khusrau"},{"hi":"सादी का गुलिस्ताँ","en":"Gulistan of Sa'di"}],"answer":0,"explanation_hi":"गोलकुंडा कला के प्रारंभिक पांच लघुचित्र 'दीवान-ए-हाफ़िज़' पांडुलिपि (1463 ई.) में बाद में जोड़े गए पृष्ठों के रूप में संगृहीत हैं।","explanation_en":"The earliest five miniatures identified as Golconda work are bound in the Diwan of Hafiz, dated 1463."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राष्ट्रीय संग्रहालय, नई दिल्ली में सुरक्षित बीजापुर शैली के प्रसिद्ध रागमाला चित्र 'रागिनी पथंसिका' (1590-95 ईस्वी) में मध्य में स्थित महिला कौन सा वाद्ययंत्र बजा रही है?","question_en":"Question 29: In the famous Bijapur Ragamala painting 'Ragini Pathamsika of Raga Hindola' (1590-95 CE), what musical instrument is the central female musician playing?","options":[{"hi":"सितार","en":"Sitar"},{"hi":"शहनाई","en":"Shehnai"},{"hi":"वीणा","en":"Veena"},{"hi":"सारंगी","en":"Sarangi"}],"answer":2,"explanation_hi":"इस चित्र में मंडप के बीच बैठी मुख्य महिला संगीतकार एक भारतीय वाद्ययंत्र बजा रही है, जो वीणा जैसा प्रतीत होता है।","explanation_en":"In this Ragamala painting, the centrally placed female musician is playing an Indian instrument, which appears to be a veena."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दक्कन की प्रसिद्ध और कुशल रानी चाँद बीबी, जिन्होंने अकबर की सेना का डटकर मुकाबला किया, को एक प्रांतीय दक्कनी चित्र में कौन सा खेल खेलते हुए दिखाया गया है?","question_en":"Question 30: Chand Bibi, the revered Queen of Bijapur who resisted Akbar's forces, is depicted playing which sport in a famous provincial Deccani painting?","options":[{"hi":"तीरंदाज़ी","en":"Archery"},{"hi":"चौगान (शतरंज)","en":"Chaugan (chess)"},{"hi":"चौगान (पोलो)","en":"Chaugan (polo)"},{"hi":"शिकार","en":"Hunting"}],"answer":2,"explanation_hi":"चाँद बीबी को घोड़ों पर बैठकर खेला जाने वाला शाही खेल 'चौगान' (पोलो) खेलते हुए दर्शाया गया है।","explanation_en":"The painting depicts Chand Bibi playing chaugan, which is the other name for equestrian polo, a popular royal sport of the time."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: 'रसिकप्रिया' ग्रंथ की रचना ओरछा के राजपरिवार के संरक्षण में केशवदास द्वारा 1591 ईस्वी में ब्रजभाषा में की गई थी।\nकथन 2: 'रसमंजरी' ग्रंथ की रचना चौदहवीं शताब्दी में बिहार के मैथिल ब्राह्मण भानुदत्त द्वारा संस्कृत में की गई थी।","question_en":"Question 31: Consider the following statements:\nStatement 1: 'Rasikapriya' was composed in Brajbhasha by Keshav Das in 1591 CE under the patronage of the Orchha royal family.\nStatement 2: 'Rasamanjari' was composed in Sanskrit in the fourteenth century by Maithil Brahmin Bhanu Datta of Bihar.","options":[{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"},{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"}],"answer":3,"explanation_hi":"रसिकप्रिया और रसमंजरी दोनों भारतीय चित्रकला के प्रिय साहित्यिक विषय थे, जिनके रचनाकाल और रचयिताओं की दी गई जानकारियाँ पूर्णतः सत्य हैं।","explanation_en":"Both statements are correct. Rasikapriya was written by Keshav Das in 1591, and Rasamanjari was written by Bhanu Datta in the 14th century."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: कला इतिहासकार बी.एन. गोस्वामी के अनुसार पहाड़ी चित्रों को केवल भौगोलिक सीमाओं के आधार पर वर्गीकृत करना भ्रामक हो सकता है।\nकथन 2: गोस्वामी का तर्क है कि पहाड़ी शैली के क्रमिक विकास का मुख्य श्रेय पंडित सेउ के चित्रकार परिवार की कलात्मक वंश-परंपरा को जाता है।","question_en":"Question 32: Consider the following statements:\nStatement 1: According to art historian B. N. Goswamy, categorizing Pahari paintings solely based on regional boundaries can be misleading.\nStatement 2: Goswamy argues that the lineage of Pandit Seu's family of artists was chiefly responsible for the stylistic evolution of Pahari painting.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"},{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"}],"answer":1,"explanation_hi":"बी.एन. गोस्वामी ने पहाड़ी चित्रकला शैली के क्षेत्रीय वर्गीकरण के स्थान पर 'कलाकार परिवार' को शैली का मुख्य वाहक माना है।","explanation_en":"Both statements are correct. Goswamy proposed that the family lineage of Pandit Seu was the style bearer across fluid boundaries."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मुग़ल सम्राट जहाँगीर ने ईरानी सफ़वीद सम्राट शाह अब्बास के साथ कंदहार प्रांत के अधिकार संघर्ष को लेकर अपने सपने को अबुल हसन द्वारा चित्र रूप में चित्रित करवाया।\nकथन 2: मुग़ल सम्राट जहाँगीर और ईरान के शाह अब्बास ने एक दूसरे को कभी आमने-सामने प्रत्यक्ष रूप से नहीं देखा था।","question_en":"Question 33: Consider the following statements:\nStatement 1: Mughal Emperor Jahangir commissioned Abul Hasan to paint his dream concerning the rivalry over Qandahar province with Safavid Emperor Shah Abbas.\nStatement 2: Mughal Emperor Jahangir and Iranian Shah Abbas had never met each other in person.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"},{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"}],"answer":2,"explanation_hi":"दोनों कथन सत्य हैं। 'जहाँगीरस ड्रीम' एक राजनीतिक कल्पना थी क्योंकि दोनों राजा कभी भी प्रत्यक्ष रूप से एक-दूसरे से नहीं मिले थे।","explanation_en":"Both statements are correct. The painting was a political fantasy of a dream embrace, as the two rival monarchs never actually met."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में आधुनिकतावादी राष्ट्रीय कला आंदोलन का सूत्रपात करने वाले प्रसिद्ध बंगाली कलाकार अबानिंद्रनाथ टैगोर ने 'वॉश' तकनीक की खोज की थी।\nकथन 2: अबानिंद्रनाथ टैगोर को कला शिक्षा के भारतीयकरण के प्रयास में ब्रिटिश कला प्रशासक ई.बी. हैवेल का सक्रिय सहयोग प्राप्त हुआ था।","question_en":"Question 34: Consider the following statements:\nStatement 1: Abanindranath Tagore, who spearheaded the modern nationalist art movement in India, invented the 'wash' painting technique.\nStatement 2: Abanindranath Tagore received active support from British art administrator E. B. Havell in Indianizing art education.","options":[{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"},{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":0,"explanation_hi":"कथन 1 गलत है क्योंकि वॉश तकनीक का विकास जापानी कला परंपरा में हुआ था और अबानिंद्रनाथ टैगोर ने जापानी कलाकारों से इसे सीखकर अपने ढंग से विकसित किया। कथन 2 सही है क्योंकि ई.बी. हैवेल ने कला शिक्षा के भारतीयकरण में उनका सक्रिय सहयोग किया।","explanation_en":"Statement 1 is incorrect because the wash technique developed in the Japanese art tradition, and Abanindranath Tagore learned it from Japanese artists and developed his own adaptation. Statement 2 is correct because E. B. Havell actively supported his efforts to Indianise art education."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मुग़ल चित्रकला शैली में अंतिम महत्वपूर्ण तथा महान चरण शाहजहाँ के शासनकाल में देखा गया जहाँ यथार्थवादी अंकन के स्थान पर अत्यधिक आदर्शीकरण को प्राथमिकता दी गई।\nकथन 2: शाहजहाँ के काल के चित्रों में बहुमूल्य रत्न जैसे रंगों, चमकदार सोने के प्रयोग और बारीक नक्काशीदार रेखाओं के द्वारा विलासितापूर्ण वातावरण का सृजन प्रमुख था।","question_en":"Question 35: Consider the following statements:\nStatement 1: The last major phase of Mughal miniature painting under Shah Jahan preferred idealization and stylisation over naturalistic accuracy.\nStatement 2: Painting under Shah Jahan's supervision utilized jewel-like colours, perfect rendering, gold and intricate lines to depict majesty.","options":[{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"},{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"}],"answer":0,"explanation_hi":"दोनों कथन शाहजहाँ कालीन मुग़ल कला शैली की विशेषताओं का सही और सटीक वर्णन करते हैं।","explanation_en":"Both statements are correct. Shah Jahan's paintings favored great stylisation, jewel-like colors, perfect rendering, and intricate lines."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: मुंबई के 'प्रोग्रेसिव आर्टिस्ट्स ग्रुप' (1946) के मुखर नेता फ्रांसिस न्यूटन सूज़ा कला विद्यालयों में प्रचलित पारंपरिक ब्रिटिश अकादमिक यथार्थवाद के घोर विरोधी थे।\nकथन 2: प्रोग्रेसिव आर्टिस्ट्स ग्रुप के कलाकारों ने अपनी कलाकृतियों में मुख्य रूप से भारतीय महाकाव्यों जैसे रामायण और महाभारत के पारंपरिक प्रसंगों का पुनरावृत्ति चित्रण किया।","question_en":"Question 36: Consider the following statements:\nStatement 1: Francis Newton Souza, the outspoken leader of the Progressive Artists' Group of Bombay (1946), rebelled against British academic realism in art schools.\nStatement 2: The Progressive Artists' Group focused primarily on repeating traditional episodes from Indian epics like the Ramayana and Mahabharata.","options":[{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"},{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"}],"answer":3,"explanation_hi":"कथन 1 सही है। कथन 2 गलत है क्योंकि प्रगतिशील कलाकारों ने पारंपरिक पौराणिक चित्रण को अस्वीकार कर तत्कालीन जीवन और वैश्विक आधुनिक शैलियों को अपनाया था।","explanation_en":"Statement 1 is correct. Statement 2 is incorrect because the group rebelled against traditional standards of mythology and focused on modern freedom."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: यामिनी रॉय ने पाश्चात्य अकादमिक तेल चित्रकला शैली का परित्याग कर बंगाल के स्थानीय पटुआ कलाकारों की लोक शैली को अपनी नवीन कला भाषा बनाया।\nकथन 2: यामिनी रॉय ने औपनिवेशिक शासन के विरुद्ध कलात्मक प्रतिरोध के रूप में हाथ से कते सूती वस्त्रों को अपने कैनवास के रूप में प्रयोग किया।","question_en":"Question 37: Consider the following statements:\nStatement 1: Jamini Roy abandoned Western academic oil painting to adopt the folk style of Bengal's local patuas (scroll painters).\nStatement 2: Jamini Roy used home-spun cotton fabric as his canvas as a political act of artistic resistance against colonial rule.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"},{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"}],"answer":2,"explanation_hi":"दोनों कथन पूर्णतः सत्य हैं। यामिनी रॉय ने लोक कला को राष्ट्रीय अस्मिता और स्वदेशी स्वावलंबन का माध्यम बनाया।","explanation_en":"Both statements are correct. Jamini Roy turned to local folk traditions and used home-spun fabric as a sign of nationalist resistance."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: रवींद्रनाथ टैगोर ने जीवन के बहुत उत्तरार्द्ध में चित्रकला आरंभ की और उन्होंने अपनी कविताओं में काटे गए अशुद्ध शब्दों को रेखांकित कर एक अनूठी सुलेखीय कला शैली विकसित की।\nकथन 2: रवींद्रनाथ टैगोर के चित्रों का रंग-संयोजन मुख्य रूप से अत्यंत चटकीले प्राथमिक लाल, नीले और हरे रंगों की प्रचुरता के लिए प्रसिद्ध है।","question_en":"Question 38: Consider the following statements:\nStatement 1: Rabindranath Tagore turned to visual art late in life, developing a calligraphic style out of crossed-out words in his manuscripts.\nStatement 2: Rabindranath Tagore's paintings are famous for their vibrant and lavish use of primary colors like red, blue, and green.","options":[{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"}],"answer":2,"explanation_hi":"कथन 1 सही है। कथन 2 गलत है क्योंकि रवींद्रनाथ टैगोर का रंग-संयोजन मुख्य रूप से सीमित रंगों जैसे काले, पीले ओकर, भूरे और कत्थई रंगों पर आधारित था।","explanation_en":"Statement 1 is correct. Statement 2 is incorrect because Tagore's palette was limited to black, yellow ochre, reds, and browns."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: पाल शैली के चित्रों में अजंता शैली की भांति एक कोमल और घुमावदार प्रवाहपूर्ण रेखा और शांत रंग योजना दिखाई देती है।\nकथन 2: जैन चित्रकला शैली की कोणीय और तीखी रेखाओं की तुलना में पाल चित्र अधिक कोमल और मूर्तिकला के समान त्रिआयामी प्रभाव दर्शाते हैं।","question_en":"Question 39: Consider the following statements:\nStatement 1: Pala School paintings are characterized by a flowing and sinuous line in subdued color tones, similar to the Ajanta mural style.\nStatement 2: In contrast to the angular and sharp lines of Jain paintings, Pala paintings exhibit a softer, sculptural language.","options":[{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"},{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"},{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"}],"answer":1,"explanation_hi":"दोनों कथन बिल्कुल सत्य हैं। पाल चित्रों में अजंता भित्तिचित्रों के समान ही प्रवाहमयी और कोमल रेखांकन मिलता है।","explanation_en":"Both statements are correct. Unlike the sharp, angular Jain drawings, Pala paintings show a sinuous line reminiscent of Ajanta murals."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: कला भवन, शांतिनिकेतन के मूर्तिकार रामकिंकर बैज ने स्थानीय संथाल जनजाति के दैनिक जीवन को आधुनिक सामग्रियों जैसे सीमेंट, रोड़ी और धातु के ढांचे से मूर्तिकला में ढाला।\nकथन 2: रामकिंकर बैज की जीवंत लोक शैली और सामग्री का चुनाव उनके समकालीन मूर्तिकार डी.पी. राय चौधरी की 'ट्रायम्फ ऑफ लेबर' जैसी अकादमिक यथार्थवादी शैली के पूर्ण विपरीत था।","question_en":"Question 40: Consider the following statements:\nStatement 1: Ramkinkar Baij, the sculptor of Kala Bhavana Shantiniketan, cast the daily life of the local Santhal tribe using modern materials like cement, pebbles, and metal armature.\nStatement 2: Ramkinkar Baij's dynamic style was in sharp contrast to the academic realism used by his contemporary sculptor D. P. Roy Choudhury in 'The Triumph of Labour'.","options":[{"hi":"दोनों में से कोई भी कथन सही नहीं है","en":"Neither Statement 1 nor Statement 2 is correct"},{"hi":"कथन 1 और कथन 2 दोनों सही हैं","en":"Both Statement 1 and Statement 2 are correct"},{"hi":"केवल कथन 2 सही है","en":"Only Statement 2 is correct"},{"hi":"केवल कथन 1 सही है","en":"Only Statement 1 is correct"}],"answer":1,"explanation_hi":"दोनों कथन बिल्कुल सत्य हैं। रामकिंकर बैज ने आधुनिक सामग्री से संथाल जीवन को जीवंत रूप दिया जो चौधरी की अकादमिक कला से अलग था।","explanation_en":"Both statements are correct. Baij's outdoor cement sculptures of Santhals stood in stark contrast to D. P. Roy Choudhury's classical realism."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दक्कनी चित्रकला शैलियों तथा उनसे संबंधित महत्वपूर्ण साहित्यिक कृतियों का सुमेल कीजिए:\nसूची-I: A. अहमदनगर, B. बीजापुर, C. गोलकुंडा;\nसूची-II: 1. तारीफ़-ए-हुसैन शाही, 2. नुजुम अल-उलूम, 3. दीवान-ए-हाफ़िज़","question_en":"Question 41: Match the Deccani painting schools with their respective literary works:\nList-I: A. Ahmadnagar, B. Bijapur, C. Golconda;\nList-II: 1. Tarif-i-Hussain Shahi, 2. Nujum al-Ulum, 3. Diwan of Hafiz","options":[{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"}],"answer":2,"explanation_hi":"अहमदनगर में तारीफ़-ए-हुसैन शाही, बीजापुर में सचित्र विश्वकोश नुजुम अल-उलूम (1570), तथा गोलकुंडा के सबसे आरंभिक चित्र दीवान-ए-हाफ़िज़ (1463) में अंकित किए गए।","explanation_en":"Ahmadnagar corresponds to Tarif-i-Hussain Shahi, Bijapur to Nujum al-Ulum, and Golconda to Diwan of Hafiz."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आधुनिक भारतीय चित्रकारों को उनसे संबद्ध प्रसिद्ध कलाकृतियों के साथ सुमेलित कीजिए:\nसूची-I: A. अबानिंद्रनाथ टैगोर, B. नंदलाल बोस, C. क्षितिजेंद्रनाथ मजूमदार, D. अब्दुल रहमान चुगताई;\nसूची-II: 1. जर्नीज़ एंड, 2. हल जोतता किसान, 3. रास-लीला, 4. राधिका","question_en":"Question 42: Match the modern Indian artists with their associated famous paintings:\nList-I: A. Abanindranath Tagore, B. Nandalal Bose, C. Kshitindranath Majumdar, D. Abdul Rehman Chughtai;\nList-II: 1. Journey's End, 2. Tiller of the Soil, 3. Rasa-Lila, 4. Radhika","options":[{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-4, B-2, C-3, D-1","en":"A-4, B-2, C-3, D-1"},{"hi":"A-1, B-3, C-2, D-4","en":"A-1, B-3, C-2, D-4"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"}],"answer":3,"explanation_hi":"जर्नीज़ एंड अबानिंद्रनाथ की, हल जोतता किसान नंदलाल बोस की, रास-लीला मजूमदार की और राधिका चुगताई की प्रसिद्ध रचनाएँ हैं।","explanation_en":"Abanindranath Tagore painted Journey's End, Nandalal Bose painted Tiller of the Soil, Kshitindranath Majumdar painted Rasa-Lila, and Chughtai painted Radhika."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मिश्रित लोक कला शैलियों को उनके मुख्य भौगोलिक क्षेत्रों के साथ सुमेलित कीजिए:\nसूची-I: A. वारली चित्रकला, B. पिथोरो चित्रकला, C. मिथिला चित्रकला, D. पटचित्र;\nसूची-II: 1. महाराष्ट्र, 2. गुजरात, 3. बिहार, 4. ओडिशा","question_en":"Question 43: Match the traditional Indian painting styles with their primary geographical regions:\nList-I: A. Warli painting, B. Pithoro painting, C. Mithila painting, D. Patachitra;\nList-II: 1. Maharashtra, 2. Gujarat, 3. Bihar, 4. Odisha","options":[{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-1, B-4, C-3, D-2","en":"A-1, B-4, C-3, D-2"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"}],"answer":1,"explanation_hi":"वारली चित्रकला महाराष्ट्र में, पिथोरो गुजरात में, मिथिला बिहार में तथा पटचित्र ओडिशा एवं बंगाल में प्रचलित लोक चित्रकला परंपराएं हैं।","explanation_en":"Warli is from Maharashtra, Pithoro from Gujarat, Mithila from Bihar, and Patachitra is famously practiced in Odisha."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मुग़ल शैली के प्रमुख चित्रकारों को उनके प्रसिद्ध विषय-चित्रों के साथ सुमेल कीजिए:\nसूची-I: A. उस्ताद मंसूर, B. अबुल हसन, C. बिचित्र, D. बसावन;\nसूची-II: 1. जेबरा, 2. जहाँगीरस ड्रीम, 3. जहाँगीर एन्थ्रोन्ड ऑन एन ऑवरग्लास, 4. मैडोना एंड चाइल्ड","question_en":"Question 44: Match the Mughal court artists with their famous subjects/paintings:\nList-I: A. Ustad Mansur, B. Abul Hasan, C. Bichitra, D. Basawan;\nList-II: 1. Zebra, 2. 'Jahangir's Dream', 3. 'Jahangir enthroned on an Hourglass', 4. 'Madonna and Child'","options":[{"hi":"A-1, B-3, C-2, D-4","en":"A-1, B-3, C-2, D-4"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-4, B-2, C-3, D-1","en":"A-4, B-2, C-3, D-1"}],"answer":1,"explanation_hi":"उस्ताद मंसूर ने जेबरा, अबुल हसन ने जहाँगीरस ड्रीम, बिचित्र ने ऑवरग्लास पर बैठे जहाँगीर और बसावन ने मैडोना एंड चाइल्ड का अंकन किया।","explanation_en":"Ustad Mansur painted the Zebra, Abul Hasan painted 'Jahangir's Dream', Bichitra painted 'Jahangir on the Hourglass', and Basawan painted 'Madonna and Child'."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राजस्थानी चित्रकला केंद्रों को उनसे जुड़े प्रसिद्ध ऐतिहासिक कलाकारों के साथ सुमेलित कीजिए:\nसूची-I: A. किशनगढ़, B. मेवाड़, C. बूंदी, D. जोधपुर;\nसूची-II: 1. निहाल चंद, 2. साहबदीन, 3. शेक हसन, 4. वीरजी","question_en":"Question 45: Match the Rajasthani painting centers with their famous historical artists:\nList-I: A. Kishangarh, B. Mewar, C. Bundi, D. Jodhpur;\nList-II: 1. Nihal Chand, 2. Sahibdin, 3. Shaykh Hasan, 4. Virji","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-1, B-3, C-2, D-4","en":"A-1, B-3, C-2, D-4"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-4, B-2, C-3, D-1","en":"A-4, B-2, C-3, D-1"}],"answer":0,"explanation_hi":"किशनगढ़ शैली के प्रसिद्ध चितेरे निहाल चंद, मेवाड़ के साहबदीन, बूंदी के शेक हसन (चुनार सेट) और जोधपुर (पाली) के वीरजी थे।","explanation_en":"Nihal Chand is associated with Kishangarh, Sahibdin with Mewar, Shaykh Hasan with Bundi, and Virji with Jodhpur."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आधुनिक भारतीय कला समूहों/संस्थाओं को उनके प्रमुख संस्थापक, नेता या निर्देशक के साथ सुमेलित कीजिए:\nसूची-I: A. प्रोग्रेसिव आर्टिस्ट्स ग्रुप, B. कलकत्ता ग्रुप, C. ग्रुप 1890, D. कला भवन शांतिनिकेतन;\nसूची-II: 1. एफ. एन. सूज़ा, 2. प्रदोश दास गुप्ता, 3. जे. स्वामीनाथन, 4. नंदलाल बोस","question_en":"Question 46: Match the modern Indian art groups/institutions with their respective founders, leaders, or directors:\nList-I: A. Progressive Artists' Group, B. Calcutta Group, C. Group 1890, D. Kala Bhavana Shantiniketan;\nList-II: 1. F. N. Souza, 2. Prodosh Das Gupta, 3. J. Swaminathan, 4. Nandalal Bose","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-4, B-2, C-3, D-1","en":"A-4, B-2, C-3, D-1"},{"hi":"A-1, B-3, C-2, D-4","en":"A-1, B-3, C-2, D-4"}],"answer":0,"explanation_hi":"मुंबई प्रोग्रेसिव ग्रुप के नेता सूज़ा, कलकत्ता ग्रुप के प्रदोश दास गुप्ता, ग्रुप 1890 के स्वामीनाथन और कला भवन शांतिनिकेतन के प्रमुख निर्देशक नंदलाल बोस थे।","explanation_en":"F. N. Souza led the Progressive Artists' Group, Prodosh Das Gupta founded the Calcutta Group, J. Swaminathan led Group 1890, and Nandalal Bose directed Kala Bhavana."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मुग़ल लघुचित्र शैली की निम्नलिखित सचित्र परियोजनाओं और उत्कृष्ट कलाकृतियों को उन्हें सही कालानुक्रमिक क्रम में व्यवस्थित करें: 1. हमज़ा नामा चित्र परियोजना का समापन, 2. रज़्म नामा (फारसी महाभारत) चित्र श्रृंखला का समापन, 3. उस्ताद मंसूर द्वारा चित्रित 'फाल्कन पर्च्ड ऑन ए बर्ड रेस्ट', 4. बिचित्र द्वारा चित्रित 'जहाँगीर एन्थ्रोन्ड ऑन एन ऑवरग्लास'","question_en":"Question 47: Arrange the following Mughal illustrated projects and masterpieces in their correct chronological order: 1. Completion of the Hamza Nama project, 2. Completion of the Razm Nama manuscript, 3. 'Falcon Perched on a Bird Rest' by Ustad Mansur, 4. 'Jahangir enthroned on an Hourglass' by Bichitra","options":[{"hi":"1-3-2-4","en":"1-3-2-4"},{"hi":"2-1-4-3","en":"2-1-4-3"},{"hi":"1-2-3-4","en":"1-2-3-4"},{"hi":"2-1-3-4","en":"2-1-3-4"}],"answer":2,"explanation_hi":"कालानुक्रम: हमज़ा नामा (1567-1582), रज़्म नामा (1589), फाल्कन पर्च्ड ऑन ए बर्ड रेस्ट (1615), तथा जहाँगीर एन्थ्रोन्ड ऑन एन ऑवरग्लास (1625)।","explanation_en":"The chronological sequence is Hamza Nama (1567-1582), Razm Nama (1589), Falcon (1615), and Jahangir on Hourglass (1625)."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मध्यकालीन और आधुनिक भारतीय कला के निम्नलिखित महत्वपूर्ण ग्रंथों/घटनाओं को ऐतिहासिक क्रम में व्यवस्थित कीजिए: 1. ओरछा के कवि केशवदास द्वारा 'रसिकप्रिया' की रचना, 2. बीजापुर में सचित्र विश्वकोश 'नुजुम अल-उलूम' का निर्माण, 3. बंगाल स्कूल ऑफ आर्ट का उदय, 4. मुंबई प्रोग्रेसिव आर्टिस्ट्स ग्रुप की स्थापना","question_en":"Question 48: Arrange the following historical texts and events of Indian art in chronological order: 1. Composition of 'Rasikapriya' by Keshav Das of Orchha, 2. Compilation of the illustrated encyclopedia 'Nujum al-Ulum' in Bijapur, 3. Emergence of the Bengal School of Art, 4. Formation of the Progressive Artists' Group of Bombay","options":[{"hi":"1-2-4-3","en":"1-2-4-3"},{"hi":"1-2-3-4","en":"1-2-3-4"},{"hi":"2-1-4-3","en":"2-1-4-3"},{"hi":"2-1-3-4","en":"2-1-3-4"}],"answer":3,"explanation_hi":"कालानुक्रम: नुजुम अल-उलूम (1570), रसिकप्रिया की रचना (1591), बंगाल स्कूल ऑफ आर्ट (20वीं सदी का पहला दशक), तथा मुंबई प्रोग्रेसिव ग्रुप (1946)।","explanation_en":"Chronological order: Nujum al-Ulum (1570), Rasikapriya (1591), Bengal School (first decade of 20th century), and Bombay Progressives (1946)."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कला शैलियों और उनकी अनूठी विशेषताओं पर विचार करें: 1. बसौहली शैली – जेवरातों में पन्नों के प्रभाव को दर्शाने के लिए हरे beetle wings का प्रयोग, 2. कोटा शैली – वन्यजीव शिकार और spontaneous रेखांकन की प्रचुरता, 3. किशनगढ़ शैली – लंबी और सुडौल शारीरिक बनावट तथा वक्राकार धनुषाकार भौहें, 4. गोलकुंडा शैली – चित्रों में नीले रंग के जंगली जानवर (जैसे नीली लोमड़ी)। निम्नलिखित में से कितने युग्म सही सुमेलित हैं?","question_en":"Question 49: Consider the following art styles and their unique features: 1. Basohli style – Use of green beetle wings to simulate emeralds in jewelry, 2. Kota style – Abundance of wildlife chase and spontaneous line work, 3. Kishangarh style – Elongated human forms and exaggerated arched eyebrows, 4. Golconda style – Blue wild animals (like blue foxes) in paintings. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"केवल तीन युग्म","en":"Only three pairs"},{"hi":"सभी चारों युग्म","en":"All four pairs"}],"answer":3,"explanation_hi":"सभी चारों युग्म सही सुमेलित हैं। ये चारों विशेषताएँ संबंधित क्षेत्रीय शैलियों के विशिष्ट पहचान चिह्न हैं।","explanation_en":"All four pairs are correctly matched as they accurately describe the hallmark features of these specific schools."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राजस्थान के विभिन्न लोक पशुपालक देवताओं (Bhomia) और उनके प्रभाव क्षेत्रों पर विचार करें: 1. गोगाजी, 2. तेजाजी (Jejaji), 3. देव नारायण, 4. रामदेवजी, 5. पाबूजी (Pabhuji)। उपर्युक्त पशु-रक्षक वीर-देवताओं से संबंधित फड़ परंपरा और पूजा मुख्यतः राजस्थान के किस जिले के आसपास की पशुपालक समुदायों में केंद्रित है?","question_en":"Question 50: Consider the following pastoral hero-deities (Bhomia) of Rajasthan: 1. Gogaji, 2. Tejaji, 3. Dev Narayan, 4. Ramdevji, 5. Pabuji. Around which district of Rajasthan are the Phad tradition and worship of these cattle-protector heroes primarily centered among pastoral communities?","options":[{"hi":"भीलवाड़ा जिला","en":"Bhilwara district"},{"hi":"जैसलमेर जिला","en":"Jaisalmer district"},{"hi":"बीकानेर जिला","en":"Bikaner district"},{"hi":"जोधपुर जिला","en":"Jodhpur district"}],"answer":0,"explanation_hi":"भीलवाड़ा के आसपास के पशुपालक समुदायों में इन भोमिया वीर-देवताओं की पूजा और उनकी वीर गाथाओं को फड़ चित्रों में प्रस्तुत करने की परंपरा विशेष रूप से केंद्रित है।","explanation_en":"Among pastoral communities around Bhilwara, worship of these bhomia hero-deities and their depiction in Phad scrolls are particularly prominent."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
