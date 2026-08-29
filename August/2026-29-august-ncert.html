@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"UPSC/PCS- 29 august • NCERT CLASS 12 • Polity","highlight":"NCERT CLASS 12","shortTitle":"UPSC/PCS- 29 august","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test • NCERT CLASS 12 • Polity","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-upsc-pcs-29-august-ncert-class-12-polity-ncert-polity-class-12-20260829-wlama","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-08-29","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कैबिनेट मिशन योजना के अनुसार, भारतीय संविधान सभा में प्रत्येक प्रांत और देशी रियासत को उनकी जनसंख्या के अनुपात में सीटें आवंटित की गई थीं। यह अनुपात लगभग कितना था?","question_en":"Question 1: According to the Cabinet Mission Plan, seats were allotted to each Province and Princely State in the Constituent Assembly in proportion to their population. What was this approximate ratio?","options":[{"hi":"प्रत्येक 5,00,000 व्यक्तियों पर 1 सीट","en":"1 seat for every 5,00,000 persons"},{"hi":"प्रत्येक 10,00,000 व्यक्तियों पर 1 सीट","en":"1 seat for every 10,00,000 persons"},{"hi":"प्रत्येक 15,00,000 व्यक्तियों पर 1 सीट","en":"1 seat for every 15,00,000 persons"},{"hi":"प्रत्येक 20,00,000 व्यक्तियों पर 1 seat","en":"1 seat for every 20,00,000 persons"}],"answer":1,"explanation_hi":"कैबिनेट मिशन योजना के अनुसार, प्रत्येक प्रांत और रियासत को उनकी जनसंख्या के अनुपात में लगभग दस लाख की आबादी पर एक सीट आवंटित की गई थी।","explanation_en":"According to the Cabinet Mission plan, each Province and Princely State was allotted seats proportional to their population in the ratio of roughly 1:10,00,000."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कैबिनेट मिशन योजना के तहत अविभाजित भारत की संविधान सभा में देशी रियासतों को कुल कितनी न्यूनतम सीटें आवंटित की गई थीं?","question_en":"Question 2: Under the Cabinet Mission Plan, how many minimum seats were allotted to the Princely States in the Constituent Assembly of undivided India?","options":[{"hi":"292 सीटें","en":"292 seats"},{"hi":"389 सीटें","en":"389 seats"},{"hi":"93 सीटें","en":"93 seats"},{"hi":"112 सीटें","en":"112 seats"}],"answer":2,"explanation_hi":"कैबिनेट मिशन योजना के अनुसार, ब्रिटिश शासन के प्रत्यक्ष नियंत्रण वाले प्रांतों को 292 सदस्य और देशी रियासतों को न्यूनतम 93 सीटें दी गई थीं।","explanation_en":"According to the Cabinet Mission plan, Provinces under direct British rule were to elect 292 members while the Princely States were allotted a minimum of 93 seats."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अविभाजित भारत के लिए गठित भारतीय संविधान सभा की पहली बैठक किस तिथि को आयोजित की गई थी?","question_en":"Question 3: On which date was the first sitting of the Constituent Assembly of India formed for undivided India held?","options":[{"hi":"9 दिसंबर 1946 को","en":"9 December 1946"},{"hi":"14 अगस्त 1947 को","en":"14 August 1947"},{"hi":"26 नवंबर 1949 को","en":"26 November 1949"},{"hi":"26 जनवरी 1950 को","en":"26 January 1950"}],"answer":0,"explanation_hi":"अविभाजित भारत की संविधान सभा की पहली बैठक 9 दिसंबर 1946 को हुई थी।","explanation_en":"The Constituent Assembly of undivided India held its first sitting on 9 December 1946."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विभाजन के उपरांत भारतीय संविधान सभा विभाजित भारत के लिए पुनः किस तिथि को एकत्रित हुई थी?","question_en":"Question 4: Following the partition, on which date did the Constituent Assembly reassemble for divided India?","options":[{"hi":"15 अगस्त 1947 को","en":"15 August 1947"},{"hi":"26 जनवरी 1950 को","en":"26 January 1950"},{"hi":"26 नवंबर 1949 को","en":"26 November 1949"},{"hi":"14 अगस्त 1947 को","en":"14 August 1947"}],"answer":3,"explanation_hi":"भारत विभाजन के बाद संविधान सभा 14 अगस्त 1947 को विभाजित भारत के लिए पुनः एकत्रित हुई थी।","explanation_en":"The Constituent Assembly reassembled as the Constituent Assembly for divided India on 14 August 1947."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान निर्माण के दौरान संविधान सभा की बैठकें कुल कितने दिनों तक चली थीं, जो दो वर्ष ग्यारह महीने की अवधि में फैली थीं?","question_en":"Question 5: For how many days did the Constituent Assembly sit during the framing of the Constitution, over a period of two years and eleven months?","options":[{"hi":"180 दिन","en":"180 days"},{"hi":"210 दिन","en":"210 days"},{"hi":"166 दिन","en":"166 days"},{"hi":"365 दिन","en":"365 days"}],"answer":2,"explanation_hi":"संविधान सभा की बैठकें कुल दो वर्ष और ग्यारह महीने की अवधि में 166 दिनों तक चली थीं।","explanation_en":"The sessions of the Constituent Assembly met for 166 days, spread over two years and eleven months."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस ऐतिहासिक वर्ष में मोतीलाल नेहरू समिति ने ब्रिटिश सरकार से पहली बार अधिकारों के एक घोषणापत्र की मांग की थी?","question_en":"Question 6: In which historic year did the Motilal Nehru committee demand a bill of rights from the British rulers for the first time?","options":[{"hi":"वर्ष 1928 में","en":"1928"},{"hi":"वर्ष 1919 में","en":"1919"},{"hi":"वर्ष 1935 में","en":"1935"},{"hi":"वर्ष 1946 में","en":"1946"}],"answer":0,"explanation_hi":"मोतीलाल नेहरू समिति ने स्वतंत्रता आंदोलन के दौरान वर्ष 1928 में ही अधिकारों के घोषणापत्र की मांग की थी।","explanation_en":"The Motilal Nehru committee had demanded a bill of rights as far back as in 1928."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"रंगभेद के बाद बने दक्षिण अफ्रीका के 1996 के संविधान पर कानून के रूप में किस वर्ष और महीने में हस्ताक्षर किए गए थे?","question_en":"Question 7: Following apartheid, in which year and month was South Africa's 1996 Constitution signed into law?","options":[{"hi":"दिसंबर 1990 में","en":"December 1990"},{"hi":"दिसंबर 1994 में","en":"December 1994"},{"hi":"दिसंबर 1998 में","en":"December 1998"},{"hi":"दिसंबर 1996 में","en":"December 1996"}],"answer":3,"explanation_hi":"दक्षिण अफ्रीका के 1996 के संविधान पर 10 दिसंबर 1996 को कानून के रूप में हस्ताक्षर किए गए और 18 दिसंबर 1996 को इसे प्रख्यापित किया गया; यह 4 फरवरी 1997 को प्रभावी हुआ।","explanation_en":"South Africa's 1996 Constitution was signed into law on 10 December 1996, promulgated on 18 December 1996, and took effect on 4 February 1997."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान के अनुसार, खतरनाक व्यवसायों या नौकरियों में बच्चों के नियोजन का निषेध किस मौलिक अधिकार के अंतर्गत आता है?","question_en":"Question 8: According to the Indian Constitution, the prohibition of employment of children in hazardous occupations falls under which Fundamental Right?","options":[{"hi":"समता का अधिकार","en":"Right to Equality"},{"hi":"स्वतंत्रता का अधिकार","en":"Right to Freedom"},{"hi":"शोषण के विरुद्ध अधिकार","en":"Right against Exploitation"},{"hi":"धार्मिक स्वतंत्रता का अधिकार","en":"Right to Freedom of Religion"}],"answer":2,"explanation_hi":"खतरनाक नौकरियों में बच्चों के नियोजन का निषेध संविधान के अनुच्छेद 24 के तहत शोषण के विरुद्ध अधिकार का हिस्सा है।","explanation_en":"The prohibition of employment of children in hazardous jobs is a core aspect of the Right against Exploitation."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"डॉ. बी.आर. अंबेडकर ने संविधान के किस विशिष्ट मौलिक अधिकार को 'संविधान का हृदय और आत्मा' कहा था?","question_en":"Question 9: Which specific Fundamental Right was considered by Dr. Ambedkar as the 'heart and soul of the Constitution'?","options":[{"hi":"समता का अधिकार","en":"Right to Equality"},{"hi":"स्वतंत्रता का अधिकार","en":"Right to Freedom"},{"hi":"धार्मिक स्वतंत्रता का अधिकार","en":"Right to Freedom of Religion"},{"hi":"संवैधानिक उपचारों का अधिकार","en":"Right to Constitutional Remedies"}],"answer":3,"explanation_hi":"डॉ. अंबेडकर ने संवैधानिक उपचारों के अधिकार को संविधान का हृदय और आत्मा माना क्योंकि यह अन्य अधिकारों की सुरक्षा सुनिश्चित करता है।","explanation_en":"Dr. Ambedkar considered the Right to Constitutional Remedies as the heart and soul because it provides judicial protection for all rights."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत सरकार द्वारा संसद के अधिनियम के तहत राष्ट्रीय मानवाधिकार आयोग की स्थापना किस वर्ष की गई थी?","question_en":"Question 10: In which year was the National Human Rights Commission established by the government under a parliamentary law?","options":[{"hi":"वर्ष 1990 में","en":"1990"},{"hi":"वर्ष 1993 में","en":"1993"},{"hi":"वर्ष 1995 में","en":"1995"},{"hi":"वर्ष 1998 में","en":"1998"}],"answer":1,"explanation_hi":"मानवाधिकारों के उल्लंघन की स्वतंत्र जांच के लिए संसद के कानून द्वारा वर्ष 1993 में राष्ट्रीय मानवाधिकार आयोग की स्थापना हुई थी।","explanation_en":"The government established the National Human Rights Commission in 1993 under a statutory framework."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस ऐतिहासिक संविधान संशोधन अधिनियम द्वारा भारतीय संविधान में नागरिकों के मौलिक कर्तव्यों को समाविष्ट किया गया था?","question_en":"Question 11: By which landmark Constitutional Amendment Act was a list of Fundamental Duties of citizens inserted into the Constitution?","options":[{"hi":"44वां संशोधन अधिनियम","en":"44th Amendment Act"},{"hi":"42वां संशोधन अधिनियम","en":"42nd Amendment Act"},{"hi":"86वां संशोधन अधिनियम","en":"86th Amendment Act"},{"hi":"91वां संशोधन अधिनियम","en":"91st Amendment Act"}],"answer":1,"explanation_hi":"वर्ष 1976 में पारित 42वें संविधान संशोधन द्वारा नागरिकों के मौलिक कर्तव्यों की सूची को संविधान में जोड़ा गया था।","explanation_en":"The 42nd Amendment to the Constitution, passed in 1976, inserted the list of Fundamental Duties of citizens."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1976 में जब 42वां संविधान संशोधन अधिनियम पारित किया गया, तब संविधान में कुल कितने मौलिक कर्तव्य जोड़े गए थे?","question_en":"Question 12: When the 42nd Constitutional Amendment Act was passed in 1976, how many total Fundamental Duties were originally added?","options":[{"hi":"8 कर्तव्य","en":"8 duties"},{"hi":"11 कर्तव्य","en":"11 duties"},{"hi":"12 कर्तव्य","en":"12 duties"},{"hi":"10 कर्तव्य","en":"10 duties"}],"answer":3,"explanation_hi":"वर्ष 1976 में 42वें संशोधन द्वारा मूल रूप से दस मौलिक कर्तव्यों को संविधान में शामिल किया गया था।","explanation_en":"Initially, ten duties were enumerated in the list of Fundamental Duties inserted by the 42nd Amendment in 1976."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1984 के लोकसभा चुनावों में कांग्रेस पार्टी ने उस चुनाव में निर्वाचित 514 सीटों में से कितनी सीटों पर ऐतिहासिक विजय प्राप्त की थी?","question_en":"Question 13: In the 1984 Lok Sabha election, how many seats did the Congress party win out of the 514 seats elected in that election?","options":[{"hi":"251 सीटें","en":"251 seats"},{"hi":"404 सीटें","en":"404 seats"},{"hi":"543 सीटें","en":"543 seats"},{"hi":"480 सीटें","en":"480 seats"}],"answer":1,"explanation_hi":"वर्ष 1984 के लोकसभा चुनाव में कांग्रेस पार्टी ने 49.10 प्रतिशत मत प्राप्त कर 514 निर्वाचित सीटों में से 404 सीटें जीती थीं। पंजाब और असम में बाद में हुए चुनावों में उसे 10 अतिरिक्त सीटें मिलीं।","explanation_en":"In the 1984 Lok Sabha election, the Congress party won 404 of the 514 seats elected in that election, with 49.10 percent of the vote. It won 10 additional seats in the elections held later in Punjab and Assam."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"समानुपातिक प्रतिनिधित्व प्रणाली के तहत किस देश में संपूर्ण देश को एक ही निर्वाचन क्षेत्र माना जाता है?","question_en":"Question 14: Under the Proportional Representation system, in which country is the entire country treated as a single constituency?","options":[{"hi":"भारत","en":"India"},{"hi":"यूनाइटेड किंगडम","en":"United Kingdom"},{"hi":"इज़राइल","en":"Israel"},{"hi":"जर्मनी","en":"Germany"}],"answer":2,"explanation_hi":"इज़राइल और नीदरलैंड जैसे देशों में संपूर्ण देश को एकल निर्वाचन क्षेत्र माना जाता है और दलों को मत प्रतिशत के अनुसार सीटें आवंटित होती हैं।","explanation_en":"In Israel and the Netherlands, the entire country is treated as a single constituency for proportional seat allocation."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान के तहत प्रत्येक राज्य से राज्यसभा के लिए चुने जाने वाले सदस्यों की संख्या किस अनुसूची द्वारा निर्धारित की गई है?","question_en":"Question 15: Under the Indian Constitution, the number of members to be elected from each State to the Rajya Sabha is fixed by which Schedule?","options":[{"hi":"चौथी अनुसूची","en":"Fourth Schedule"},{"hi":"तीसरी अनुसूची","en":"Third Schedule"},{"hi":"सातवीं अनुसूची","en":"Seventh Schedule"},{"hi":"दसवीं अनुसूची","en":"Tenth Schedule"}],"answer":0,"explanation_hi":"संविधान की चौथी अनुसूची प्रत्येक राज्य की जनसंख्या के आधार पर उनके लिए राज्यसभा सीटों का निर्धारण करती है।","explanation_en":"The Fourth Schedule of the Constitution fixes the representation of each State in the Rajya Sabha based on population."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जनसंख्या के आधार पर सीटों के आवंटन के कारण उत्तर प्रदेश और सिक्किम से राज्यसभा में क्रमशः कितने प्रतिनिधि चुने जाते हैं?","question_en":"Question 16: Due to representation based on population, how many members do Uttar Pradesh and Sikkim send to the Rajya Sabha respectively?","options":[{"hi":"उत्तर प्रदेश से 31 और सिक्किम से 2 प्रतिनिधि","en":"31 from Uttar Pradesh and 2 from Sikkim"},{"hi":"महाराष्ट्र से 31 और सिक्किम से 1 प्रतिनिधि","en":"31 from Maharashtra and 1 from Sikkim"},{"hi":"उत्तर प्रदेश से 31 और सिक्किम से 1 प्रतिनिधि","en":"31 from Uttar Pradesh and 1 from Sikkim"},{"hi":"उत्तर प्रदेश से 31 और सिक्किम से कोई नहीं","en":"31 from Uttar Pradesh and none from Sikkim"}],"answer":2,"explanation_hi":"उत्तर प्रदेश की विशाल जनसंख्या के कारण इसे राज्यसभा में 31 सीटें मिली हैं, जबकि सिक्किम को केवल 1 सीट आवंटित है।","explanation_en":"Uttar Pradesh sends 31 members to the Rajya Sabha due to its large population, whereas Sikkim has only 1 seat."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जर्मनी की द्विसदनीय विधायिका में राज्यों का प्रतिनिधित्व करने वाले सदन (बुंडेसरात) में कुल कितनी सीटें आवंटित हैं?","question_en":"Question 17: In the bicameral legislature of Germany, how many total seats are allotted in the house representing the states (Bundesrat)?","options":[{"hi":"Federal Council की 100 सीटें","en":"100 seats of the Federal Council"},{"hi":"Bundestag की 69 सीटें","en":"69 seats of the Bundestag"},{"hi":"Federal Council की 50 सीटें","en":"50 seats of the Federal Council"},{"hi":"Bundesrat की 69 सीटें","en":"69 seats of the Bundesrat"}],"answer":3,"explanation_hi":"जर्मनी के द्वितीय सदन बुंडेसरात (संघीय परिषद) में कुल 69 सीटें हैं जो राज्यों की आबादी के आधार पर बंटी होती हैं।","explanation_en":"The German second chamber, the Bundesrat (Federal Council), has 69 seats distributed among the federal states."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लोकसभा की 543 सीटों का राज्यों के बीच वर्तमान आवंटन किस वर्ष की जनगणना के आधार पर निर्धारित है, जिसमें तब से पुनर्समायोजन नहीं किया गया है?","question_en":"Question 18: The present allocation of 543 Lok Sabha seats among the States is based on the census of which year, with this allocation not having been readjusted since then?","options":[{"hi":"वर्ष 1971 की जनगणना पर","en":"1971 census"},{"hi":"वर्ष 1951 की जनगणना पर","en":"1951 census"},{"hi":"वर्ष 1991 की जनगणना पर","en":"1991 census"},{"hi":"वर्ष 2011 की जनगणना पर","en":"2011 census"}],"answer":0,"explanation_hi":"राज्यों के बीच लोकसभा सीटों के आवंटन का आधार 1971 की जनगणना है और इस सीट-वितरण का पुनर्समायोजन 2026 के बाद की पहली जनगणना तक स्थगित है। वर्तमान निर्वाचन क्षेत्रों की सीमाएँ, हालांकि, 2001 की जनगणना पर आधारित परिसीमन से संबंधित हैं।","explanation_en":"The allocation of Lok Sabha seats among States is based on the 1971 Census, and readjustment of this allocation is deferred until the first census after 2026. The boundaries of the present constituencies, however, relate to delimitation based on the 2001 Census."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बिहार की जेलों में बंद उन बंदियों की दयनीय स्थिति पर 1979 में दायर जनहित याचिका का नाम क्या है जिन्होंने अपनी वास्तविक सजा से अधिक समय विचाराधीन कैदी के रूप में बिताया था?","question_en":"Question 19: What is the name of the public interest litigation filed in 1979 regarding prisoners in Bihar jails who spent more time as undertrials than their potential sentence?","options":[{"hi":"सुनील बत्रा बनाम दिल्ली प्रशासन वाद","en":"Sunil Batra vs. Delhi Administration"},{"hi":"केशवानंद भारती बनाम केरल राज्य वाद","en":"Kesavananda Bharati vs. State of Kerala"},{"hi":"मेनका गांधी बनाम भारत संघ वाद","en":"Maneka Gandhi vs. Union of India"},{"hi":"हुसैनआरा खातून बनाम बिहार राज्य वाद","en":"Hussainara Khatoon vs. State of Bihar"}],"answer":3,"explanation_hi":"हुसैनआरा खातून बनाम बिहार राज्य मामला भारत में विचाराधीन कैदियों की रिहाई से संबंधित सबसे पहले जनहित याचिकाओं में से एक था।","explanation_en":"Hussainara Khatoon vs. Bihar (1979) was one of the earliest PILs, filed for the rights of undertrial prisoners."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"तिहाड़ जेल के एक कैदी द्वारा सर्वोच्च न्यायालय के न्यायाधीश कृष्ण अय्यर को लिखे गए पत्र को याचिका के रूप में स्वीकार करने वाला ऐतिहासिक पीआईएल मामला कौन-सा है?","question_en":"Question 20: Which landmark PIL case arose from a handwritten note sent by a Tihar jail inmate to Supreme Court Justice Krishna Iyer reporting prisoner torture?","options":[{"hi":"हुसैनआरा खातून बनाम बिहार राज्य","en":"Hussainara Khatoon vs. State of Bihar"},{"hi":"एशियाई खेल निर्माण कार्यकर्ता मामला","en":"Asian Games Construction Case"},{"hi":"सुनील बत्रा बनाम दिल्ली प्रशासन","en":"Sunil Batra vs. Delhi Administration"},{"hi":"विशाखा बनाम राजस्थान राज्य","en":"Vishaka vs. State of Rajasthan"}],"answer":2,"explanation_hi":"वर्ष 1980 के सुनील बत्रा बनाम दिल्ली प्रशासन वाद में सर्वोच्च न्यायालय ने कैदी के पत्र को याचिका मानकर जेल सुधार के निर्देश दिए थे।","explanation_en":"In Sunil Batra vs. Delhi Administration (1980), the court converted a prisoner's letter into a PIL to address jail torture."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"आधुनिक समय में भारत में निर्वाचित स्थानीय सरकारी निकायों (स्थानीय बोर्डों) के गठन की पहल वर्ष 1882 में किस ब्रिटिश वायसराय ने की थी?","question_en":"Question 21: In modern times, which British Viceroy took the initiative to create elected local government bodies (local boards) in India in 1882?","options":[{"hi":"लॉर्ड रिपन ने","en":"Lord Ripon"},{"hi":"लॉर्ड कर्जन ने","en":"Lord Curzon"},{"hi":"लॉर्ड डफरिन ने","en":"Lord Dufferin"},{"hi":"लॉर्ड माउंटबेटन ने","en":"Lord Mountbatten"}],"answer":0,"explanation_hi":"वायसराय लॉर्ड रिपन ने वर्ष 1882 में भारत में स्थानीय स्वशासन के विकास के लिए 'स्थानीय बोर्डों' के गठन की पहल की थी।","explanation_en":"Lord Ripon, as the Viceroy of India in 1882, took the pioneering initiative of establishing elected local boards."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"73वें संविधान संशोधन के बाद संविधान की 11वीं अनुसूची में पंचायती राज संस्थाओं से संबंधित कुल कितने विषय सूचीबद्ध किए गए हैं?","question_en":"Question 22: Following the 73rd Constitutional Amendment, how many subjects relating to Panchayati Raj Institutions are listed in the Eleventh Schedule of the Constitution?","options":[{"hi":"18 विषय","en":"18 subjects"},{"hi":"21 विषय","en":"21 subjects"},{"hi":"29 विषय","en":"29 subjects"},{"hi":"33 विषय","en":"33 subjects"}],"answer":2,"explanation_hi":"73वें संविधान संशोधन द्वारा संविधान में 11वीं अनुसूची जोड़ी गई, जिसमें पंचायतों से संबंधित 29 विषय सूचीबद्ध हैं। इन विषयों का वास्तविक हस्तांतरण राज्य विधानमंडल के कानून द्वारा किया जाता है।","explanation_en":"The 73rd Constitutional Amendment added the Eleventh Schedule, which lists 29 subjects relating to Panchayats. Their actual devolution is made through legislation by the State Legislature."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व के सबसे पुराने लिखित संविधानों में से एक, संयुक्त राज्य अमेरिका के संविधान में अब तक कुल कितनी बार संशोधन किया जा चुका है?","question_en":"Question 23: One of the oldest written constitutions in the world, the Constitution of the United States, has been amended how many times so far?","options":[{"hi":"10 बार","en":"10 times"},{"hi":"100 बार","en":"100 times"},{"hi":"42 बार","en":"42 times"},{"hi":"27 बार","en":"27 times"}],"answer":3,"explanation_hi":"अमेरिकी संविधान 200 से अधिक वर्षों पहले अस्तित्व में आया था और कठोर संशोधन प्रक्रिया के कारण इसमें केवल 27 बार संशोधन हुआ है।","explanation_en":"The US Constitution came into existence over 200 years ago and has been amended only 27 times due to its rigid process."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सर्वोच्च न्यायालय ने किस वर्ष में केशवानंद भारती मामले में अपना ऐतिहासिक निर्णय सुनाया था जिसने बुनियादी ढांचे के सिद्धांत को स्थापित किया?","question_en":"Question 24: In which year did the Supreme Court deliver its historic judgment in the Kesavananda Bharati case establishing the basic structure doctrine?","options":[{"hi":"वर्ष 1967 में","en":"1967"},{"hi":"वर्ष 1976 में","en":"1976"},{"hi":"वर्ष 1980 में","en":"1980"},{"hi":"वर्ष 1973 में","en":"1973"}],"answer":3,"explanation_hi":"सर्वोच्च न्यायालय की 13 न्यायाधीशों की पीठ ने 24 अप्रैल 1973 को केशवानंद भारती मामले का ऐतिहासिक फैसला सुनाया था।","explanation_en":"The Supreme Court delivered its landmark judgment in the Kesavananda Bharati case on 24 April 1973."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"महाराष्ट्र के किस क्रांतिकारी समाज सुधारक के लेखन में अधिकारों के उस दृष्टिकोण की प्रारंभिक अभिव्यक्ति मिलती है जिसमें स्वतंत्रता और समानता दोनों शामिल हैं?","question_en":"Question 25: In the writings of which radical social reformer from Maharashtra do we find one of the earliest expressions of rights combining both freedom and equality?","options":[{"hi":"ज्योतिराव फुले के लेखन में","en":"Jotirao Phule"},{"hi":"बाल गंगाधर तिलक के लेखन में","en":"Bal Gangadhar Tilak"},{"hi":"डॉ. बी.आर. अंबेडकर के लेखन में","en":"Dr. B.R. Ambedkar"},{"hi":"महादेव गोविंद रानाडे के लेखन में","en":"Justice Ranade"}],"answer":0,"explanation_hi":"महाराष्ट्र के महान समाज सुधारक ज्योतिराव फुले (1827-1890) के विचारों में अधिकारों के भीतर स्वतंत्रता और समानता के सह-अस्तित्व की प्रारंभिक झलक मिलती है।","explanation_en":"The writings of Jotirao Phule (1827-1890) from Maharashtra offer some of the earliest arguments connecting rights with both liberty and equality."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वर्ष 1928 में प्रस्तुत मोतीलाल नेहरू रिपोर्ट के अनुसार, भारत में मतदान करने के अधिकार के लिए न्यूनतम कितनी आयु की सिफारिश की गई थी?","question_en":"Question 26: According to the Motilal Nehru Report submitted in 1928, what was the minimum voting age recommended for universal franchise?","options":[{"hi":"18 वर्ष","en":"18 years"},{"hi":"25 वर्ष","en":"25 years"},{"hi":"30 वर्ष","en":"30 years"},{"hi":"21 वर्ष","en":"21 years"}],"answer":3,"explanation_hi":"वर्ष 1928 की नेहरू रिपोर्ट में ही 21 वर्ष की आयु प्राप्त प्रत्येक महिला और पुरुष के लिए वयस्क मताधिकार की सिफारिश की गई थी।","explanation_en":"The Motilal Nehru Report of 1928 recommended universal adult franchise for every person of either sex who attained the age of 21."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान के 73वें और 74वें संशोधन के अनुसार, यदि किसी स्थानीय स्वशासी निकाय (पंचायत/नगरपालिका) को विघटित किया जाता है, तो कितनी अवधि के भीतर नए चुनाव कराना अनिवार्य है?","question_en":"Question 27: According to the 73rd and 74th amendments, if a local self-government body is dissolved, within what maximum period must fresh elections be mandatory held?","options":[{"hi":"3 महीने के भीतर","en":"3 months"},{"hi":"6 महीने के भीतर","en":"6 months"},{"hi":"9 महीने के भीतर","en":"9 months"},{"hi":"1 वर्ष के भीतर","en":"1 year"}],"answer":1,"explanation_hi":"दोनों संशोधनों में यह अनिवार्य प्रावधान है कि स्थानीय निकायों के विघटन की स्थिति में 6 महीने के भीतर चुनाव संपन्न कराने होंगे।","explanation_en":"Both amendments mandate that fresh elections must be conducted within 6 months of the dissolution of any local body."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान के अनुसार, केंद्रीय मंत्रिपरिषद में मंत्रियों की कुल संख्या (प्रधानमंत्री सहित) लोकसभा के सदस्यों की कुल संख्या के कितने प्रतिशत से अधिक नहीं होनी चाहिए?","question_en":"Question 28: According to the Constitution, the total number of ministers in the Union Council of Ministers (including the PM) must not exceed what percentage of the total strength of the Lok Sabha?","options":[{"hi":"10 प्रतिशत से","en":"10 percent"},{"hi":"15 प्रतिशत से","en":"15 percent"},{"hi":"20 प्रतिशत से","en":"20 percent"},{"hi":"25 प्रतिशत से","en":"25 percent"}],"answer":1,"explanation_hi":"संविधान के अनुसार, संघ अथवा राज्य मंत्रिपरिषद का आकार क्रमशः लोकसभा या विधानसभा की कुल सदस्य संख्या के 15 प्रतिशत तक सीमित कर दिया गया है।","explanation_en":"The size of the Council of Ministers is constitutionally restricted to a maximum of 15 percent of the total membership of the lower house."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"किस संविधान संशोधन अधिनियम द्वारा मंत्रियों की अधिकतम संख्या को कुल सदस्य संख्या के 15 प्रतिशत तक सीमित करने का ऐतिहासिक सुधार किया गया था?","question_en":"Question 29: By which Constitutional Amendment Act was the size of the Council of Ministers capped at 15 percent of the total membership of the House?","options":[{"hi":"44वां संशोधन अधिनियम 1978","en":"44th Amendment Act 1978"},{"hi":"42वां संशोधन अधिनियम 1976","en":"42nd Amendment Act 1976"},{"hi":"86वां संशोधन अधिनियम 2002","en":"86th Amendment Act 2002"},{"hi":"91वां संशोधन अधिनियम 2003","en":"91st Amendment Act 2003"}],"answer":3,"explanation_hi":"वर्ष 2003 में पारित 91वें संविधान संशोधन अधिनियम द्वारा दलबदल और बड़े मंत्रालयों को रोकने के लिए 15 प्रतिशत की सीमा निर्धारित की गई थी।","explanation_en":"The 91st Amendment Act of 2003 introduced this limit to prevent oversized ministries and opportunist politics."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उन्नीसवीं शताब्दी के आरंभ में ब्रिटिश औपनिवेशिक राज्य द्वारा प्रेस की स्वतंत्रता पर प्रतिबंध लगाने के विरुद्ध सबसे पहले किस समाज सुधारक ने विरोध दर्ज कराया था?","question_en":"Question 30: In the early nineteenth century, which social reformer protested against the British curtailment of the freedom of the press?","options":[{"hi":"राममोहन राय ने","en":"Rammohan Roy"},{"hi":"ईश्वर चंद्र विद्यासागर ने","en":"Ishwar Chandra Vidyasagar"},{"hi":"स्वामी विवेकानंद ने","en":"Swami Vivekananda"},{"hi":"ज्योतिराव फुले ने","en":"Jotirao Phule"}],"answer":0,"explanation_hi":"राजा राममोहन राय ने तर्क दिया था कि एक उत्तरदायी राज्य को नागरिकों की आवश्यकताओं की अभिव्यक्ति के लिए प्रेस की पूर्ण स्वतंत्रता देनी चाहिए।","explanation_en":"Rammohan Roy protested press restrictions, arguing that a responsive state must allow publication to know people's needs."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: निर्वाचन आयोग अपनी स्थापना के समय से ही हमेशा एक बहु-सदस्यीय निकाय रहा है।\nकथन 2: मुख्य चुनाव आयुक्त के पास निर्णय लेने में अन्य चुनाव आयुक्तों की तुलना में अधिक शक्तियां होती हैं।","question_en":"Question 31: Consider the following statements:\nStatement 1: The Election Commission has always been a multi-member body since its inception.\nStatement 2: The Chief Election Commissioner has more powers in decision-making than the other Election Commissioners.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":3,"explanation_hi":"चुनाव आयोग मूलतः एक सदस्यीय था और 1993 में स्थायी रूप से बहु-सदस्यीय बना। मुख्य चुनाव आयुक्त की शक्ति अन्य चुनाव आयुक्तों के बराबर होती है।","explanation_en":"The Commission was initially single-member and became multi-member in 1993. The CEC and other Commissioners have equal powers."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: परिसीमन आयोग की नियुक्ति भारत के प्रधानमंत्री द्वारा की जाती है।\nकथन 2: परिसीमन आयोग भारत के चुनाव आयोग के साथ मिलकर काम करता है।","question_en":"Question 32: Consider the following statements:\nStatement 1: The Delimitation Commission is appointed by the Prime Minister of India.\nStatement 2: The Delimitation Commission works in collaboration with the Election Commission of India.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"परिसीमन आयोग का गठन केंद्र सरकार करती है, न कि प्रधानमंत्री या राष्ट्रपति व्यक्तिगत रूप से; आयोग में मुख्य चुनाव आयुक्त या उनके द्वारा नामित चुनाव आयुक्त पदेन सदस्य होता है और यह चुनाव आयोग की सहायता से परिसीमन का कार्य करता है।","explanation_en":"The Central Government constitutes the Delimitation Commission, not the Prime Minister or the President personally; the Chief Election Commissioner or an Election Commissioner nominated by the CEC is an ex officio member, and the Commission works with the Election Commission in carrying out delimitation."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: भारत सरकार अधिनियम 1919 के पारित होने के बाद कई प्रांतों में ग्राम पंचायतों की स्थापना की गई थी।\nकथन 2: भारत सरकार अधिनियम 1935 के तहत स्थानीय स्वशासन को पूर्ण रूप से केंद्रीय विषय बना दिया गया था।","question_en":"Question 33: Consider the following statements:\nStatement 1: Following the Government of India Act 1919, village panchayats were established in a number of provinces.\nStatement 2: Under the Government of India Act 1935, local self-government was made entirely a central subject.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"अधिनियम 1919 के बाद कई प्रांतों में पंचायतें बनीं। स्थानीय शासन ब्रिटिश काल से ही प्रांतीय/राज्य का विषय रहा है, न कि केंद्रीय विषय।","explanation_en":"Under the 1919 Act, many provinces set up panchayats. Local government was a provincial subject, not a central subject under the 1935 Act."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: सोवियत संघ के इतिहास में कुल चार अलग-अलग संविधान क्रमशः वर्ष 1918, 1924, 1936 और 1977 में लागू किए गए थे।\nकथन 2: सोवियत संघ के विघटन के बाद नवगठित रूसी संघ ने वर्ष 1993 में एक नया संविधान अपनाया था।","question_en":"Question 34: Consider the following statements:\nStatement 1: In the history of the Soviet Union, four different constitutions were adopted in the years 1918, 1924, 1936, and 1977 respectively.\nStatement 2: After the disintegration of the Soviet Union, the newly formed Russian Federation adopted a new constitution in 1993.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"सोवियत संघ ने अपने अस्तित्व के दौरान चार संविधान बदले। 1991 में उसके विघटन के बाद, रूस ने 1993 में वर्तमान संविधान अपनाया।","explanation_en":"The Soviet Union had four constitutions over its life. Following its collapse, Russia adopted its new constitution in 1993."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: ब्रिटिश प्रांतों में संविधान सभा की सीटें तीन मुख्य समुदायों: मुस्लिम, सिख और सामान्य में उनकी जनसंख्या के अनुपात में विभाजित की गई थीं।\nकथन 2: देशी रियासतों के प्रतिनिधियों का चुनाव वयस्क मताधिकार द्वारा सीधे जनता द्वारा किया जाना था।","question_en":"Question 35: Consider the following statements:\nStatement 1: In British provinces, seats in the Constituent Assembly were distributed among three main communities: Muslims, Sikhs, and general in proportion to population.\nStatement 2: The representatives of Princely States were to be selected through direct election by the people based on adult franchise.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"ब्रिटिश प्रांतों में सीटें तीन समुदायों में विभाजित थीं। रियासतों के प्रतिनिधियों का चुनाव वहां के शासकों और संविधान सभा की समिति के बीच विचार-विमर्श से तय होना था।","explanation_en":"Provincial seats were split among three communities. Representatives of Princely States were selected through consultation, not direct elections."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: राष्ट्रीय मानवाधिकार आयोग का अध्यक्ष ऐसा व्यक्ति होता है जो भारत का मुख्य न्यायाधीश या सर्वोच्च न्यायालय का न्यायाधीश रहा हो, तथा एक सदस्य ऐसा व्यक्ति होता है जो सर्वोच्च न्यायालय का न्यायाधीश है या रह चुका है।\nकथन 2: राष्ट्रीय मानवाधिकार आयोग के पास मानवाधिकारों का उल्लंघन करने वालों पर मुकदमा चलाने और सजा देने का पूर्ण न्यायिक अधिकार है।","question_en":"Question 36: Consider the following statements:\nStatement 1: The Chairperson of the National Human Rights Commission is a person who has been the Chief Justice of India or a Judge of the Supreme Court, and one member is a person who is or has been a Judge of the Supreme Court.\nStatement 2: The National Human Rights Commission has full judicial power of prosecution and can award punishment to human rights violators.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"मानवाधिकार संरक्षण अधिनियम, 1993 की धारा 3 के अनुसार आयोग के अध्यक्ष के रूप में वह व्यक्ति नियुक्त किया जा सकता है जो भारत का मुख्य न्यायाधीश या सर्वोच्च न्यायालय का न्यायाधीश रहा हो; इसके अतिरिक्त एक सदस्य सर्वोच्च न्यायालय का न्यायाधीश है या रह चुका है। आयोग के पास किसी आरोपी पर अभियोजन चलाकर दंड देने की पूर्ण न्यायिक शक्ति नहीं है।","explanation_en":"Under Section 3 of the Protection of Human Rights Act, 1993, the Chairperson may be a person who has been the Chief Justice of India or a Judge of the Supreme Court, and one member is a person who is or has been a Judge of the Supreme Court. The Commission does not have full judicial power to prosecute and punish an accused."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: मौलिक अधिकार सरकार को कुछ कार्यों को करने से रोकते हैं, जबकि राज्य के नीति निर्देशक तत्व सरकार को कुछ सकारात्मक कार्य करने के लिए प्रेरित करते हैं।\nकथन 2: मौलिक अधिकार मुख्य रूप से व्यक्तिगत स्वतंत्रता और अधिकारों की रक्षा करते हैं, जबकि नीति निर्देशक तत्व संपूर्ण समाज के कल्याण को सुनिश्चित करते हैं।","question_en":"Question 37: Consider the following statements:\nStatement 1: Fundamental Rights restrain the government from doing certain things, while Directive Principles exhort the government to do certain positive things.\nStatement 2: Fundamental Rights mainly protect the rights of individuals, while Directive Principles ensure the well-being of the entire society.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों कथन सही हैं। मौलिक अधिकार नकारात्मक प्रकृति के हैं जो सरकार की शक्तियों को सीमित करते हैं, जबकि नीति निर्देशक तत्व सकारात्मक कल्याणकारी राज्य की स्थापना पर बल देते हैं।","explanation_en":"Both statements are correct. Fundamental Rights act as limitations on government, while Directive Principles act as active directives for social welfare."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: भारतीय संविधान के प्रावधानों के तहत भारत के सभी राज्यों के लिए द्विसदनीय विधायिका स्थापित करना अनिवार्य है।\nकथन 2: वर्तमान में बिहार, उत्तर प्रदेश और महाराष्ट्र जैसे राज्यों में द्विसदनीय विधायिका कार्यरत है।","question_en":"Question 38: Consider the following statements:\nStatement 1: Under the provisions of the Indian Constitution, it is mandatory for all States in India to establish a bicameral legislature.\nStatement 2: Currently, states like Bihar, Uttar Pradesh, and Maharashtra have a functioning bicameral legislature.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"संविधान राज्यों को एकसदनीय या द्विसदनीय विधायिका स्थापित करने का विकल्प देता है। वर्तमान में उत्तर प्रदेश, बिहार, कर्नाटक, महाराष्ट्र, आंध्र प्रदेश और तेलंगाना में द्विसदन हैं।","explanation_en":"The Constitution allows States to choose between unicameral or bicameral setups. Currently, six states have a bicameral legislature."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: जर्मनी की विधायिका में राज्यों का प्रतिनिधित्व करने वाले सदन 'बुंडेसरात' के सभी सदस्य प्रत्यक्ष रूप से जर्मनी के मतदाताओं द्वारा निर्वाचित होते हैं।\nकथन 2: जर्मनी के कानून के अनुसार, बुंडेसरात में किसी भी राज्य के सभी सदस्यों को अपनी राज्य सरकार के निर्देशों के अनुसार एक साथ (ब्लॉक में) मतदान करना होता है।","question_en":"Question 39: Consider the following statements:\nStatement 1: In Germany's legislature, all members of the 'Bundesrat' representing the federal states are directly elected by German voters.\nStatement 2: According to German law, all members representing a state in the Bundesrat must vote as a bloc according to the instructions of their state government.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"बुंडेसरात के सदस्य निर्वाचित नहीं बल्कि नियुक्त होते हैं। वे राज्यों की सरकारों के मंत्री होते हैं। कानूनन, एक राज्य के सभी सदस्यों को निर्देशानुसार एकमुश्त मतदान करना होता है।","explanation_en":"Bundesrat members are appointed state ministers, not elected. By German law, members from a single state must vote as a bloc based on state orders."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार कीजिए:\nकथन 1: भारत में जाति आधारित आरक्षण जैसे सकारात्मक कार्रवाई कार्यक्रमों को वर्ष 1950 में ही संवैधानिक मान्यता प्रदान कर दी गई थी।\nकथन 2: संयुक्त राज्य अमेरिका में इस तरह के सकारात्मक कार्रवाई कार्यक्रम 1964 के नागरिक अधिकार अधिनियम के बाद ही शुरू हो सके थे।","question_en":"Question 40: Consider the following statements:\nStatement 1: In India, caste-based affirmative action programmes were constitutionally entrenched as early as 1950.\nStatement 2: In the United States, such affirmative action programmes could only begin after the Civil Rights Act of 1964.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"भारत में संविधान के लागू होने के समय ही वंचित वर्गों के लिए अनेक सकारात्मक संवैधानिक प्रावधान मौजूद थे। अमेरिका में affirmative action की औपचारिक नीतिगत शुरुआत 1964 से पहले, 1961 के Executive Order 10925 सहित, हो चुकी थी।","explanation_en":"In India, several constitutional provisions for affirmative action for disadvantaged groups were present when the Constitution came into force. In the United States, affirmative action policies had already begun before 1964, including through Executive Order 10925 in 1961."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए और सही विकल्प का चयन कीजिए:\nसूची-I: A. आयरलैंड का संविधान, B. कनाडा का संविधान, C. संयुक्त राज्य अमेरिका का संविधान, D. फ्रांस का संविधान;\nसूची-II: 1. राज्य के नीति निर्देशक तत्व, 2. अवशिष्ट शक्तियों का विचार, 3. न्यायिक पुनरावलोकन की शक्ति, 4. स्वतंत्रता, समानता और बंधुत्व के सिद्धांत","question_en":"Question 41: Match List-I with List-II and select the correct option:\nList-I: A. Irish Constitution, B. Canadian Constitution, C. United States Constitution, D. French Constitution;\nList-II: 1. Directive Principles of State Policy, 2. Idea of Residual Powers, 3. Power of Judicial Review, 4. Principles of Liberty, Equality, and Fraternity","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-4, B-3, C-2, D-1","en":"A-4, B-3, C-2, D-1"}],"answer":0,"explanation_hi":"आयरलैंड से नीति निर्देशक तत्व, कनाडा से सशक्त केंद्र व अवशिष्ट शक्तियां, अमेरिका से मौलिक अधिकार व न्यायिक पुनरावलोकन और फ्रांस से स्वतंत्रता, समानता व बंधुत्व लिया गया है।","explanation_en":"DPSP is from Ireland, Residual Powers from Canada, Judicial Review from the US, and Liberty, Equality, Fraternity from France."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए और सही विकल्प का चयन कीजिए: सूची-I (नीति निर्देशक तत्व की श्रेणियां): A. समाज के लिए लक्ष्य और उद्देश्य, B. गैर-न्यायसंगत अधिकार, C. सरकार की नीतियां; सूची-II (संबंधित प्रावधान): 1. अंतर्राष्ट्रीय शांति को बढ़ावा देना, 2. पुरुषों और महिलाओं को समान कार्य के लिए समान वेतन, 3. कुटीर उद्योगों को बढ़ावा देना","question_en":"Question 42: Match List-I with List-II and select the correct option: List-I (DPSP Categories): A. Goals and objectives of society, B. Non-justiciable rights, C. Government policies; List-II (Specific Provisions): 1. Promotion of international peace, 2. Equal pay for equal work for men and women, 3. Promotion of cottage industries","options":[{"hi":"A-2, B-1, C-3","en":"A-2, B-1, C-3"},{"hi":"A-1, B-2, C-3","en":"A-1, B-2, C-3"},{"hi":"A-3, B-2, C-1","en":"A-3, B-2, C-1"},{"hi":"A-1, B-3, C-2","en":"A-1, B-3, C-2"}],"answer":1,"explanation_hi":"अंतर्राष्ट्रीय शांति लक्ष्य श्रेणी का हिस्सा है, समान कार्य के लिए समान वेतन एक गैर-न्यायसंगत सामाजिक-आर्थिक प्रावधान है, और कुटीर उद्योगों को बढ़ावा देना राज्य की नीतियों के अंतर्गत आता है।","explanation_en":"International peace represents a DPSP Goal, equal pay for equal work is a non-justiciable socio-economic provision, and cottage industry promotion is a Policy."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए और सही विकल्प का चयन कीजिए: सूची-I (रिट का नाम): A. बंदी प्रत्यक्षीकरण, B. परमादेश, C. अधिकार पृच्छा, D. प्रतिषेध; सूची-II (शाब्दिक अर्थ अथवा कार्य): 1. गिरफ्तार व्यक्ति को न्यायालय के समक्ष प्रस्तुत करने का आदेश, 2. किसी सार्वजनिक अधिकारी को कर्तव्य पालन करने का आदेश, 3. किसी व्यक्ति के सरकारी पद पर दावे की वैधता की जांच, 4. किसी निचली अदालत को अधिकार क्षेत्र से बाहर काम करने से रोकना","question_en":"Question 43: Match List-I with List-II and select the correct option: List-I (Name of Writ): A. Habeas Corpus, B. Mandamus, C. Quo Warranto, D. Prohibition; List-II (Meaning or Function): 1. Order to produce an arrested person before the court, 2. Order to a public official to perform their duty, 3. Inquiry into the legality of a person's claim to a public office, 4. Order restraining a lower court from acting beyond its jurisdiction","options":[{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-4, B-3, C-2, D-1","en":"A-4, B-3, C-2, D-1"}],"answer":2,"explanation_hi":"बंदी प्रत्यक्षीकरण अवैध हिरासत के खिलाफ सुरक्षा देता है, परमादेश अधिकारियों को काम करने का आदेश देता है, अधिकार पृच्छा पद की जांच करता है और प्रतिषेध निचली अदालतों को रोकता है।","explanation_en":"Habeas Corpus targets illegal custody, Mandamus orders performance of duty, Quo Warranto inquires into office title, and Prohibition restrains lower courts."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए और सही विकल्प का चयन कीजिए: सूची-I (संविधान से संबंधित उदाहरण): A. विधवाओं के प्रति सामाजिक दुर्व्यवहार की खुलकर आलोचना करना, B. संविधान सभा में केवल स्वार्थ के बजाय तर्क-वितर्क से निर्णय लेना, C. पूर्वोत्तर राज्यों की विशेष आवश्यकताओं के लिए अनुच्छेद 371 जोड़ना, D. पारिवारिक संपत्ति के मामलों में महिलाओं के असमान अधिकार होना; सूची-II (संवैधानिक दर्शन की प्रकृति): 1. उदारवादी व्यक्तिवाद, 2. प्रक्रियात्मक उपलब्धि, 3. किसी विशिष्ट क्षेत्र की आवश्यकताओं पर ध्यान देना, 4. लैंगिक न्याय की उपेक्षा","question_en":"Question 44: Match List-I with List-II and select the correct option: List-I (Constitutional Examples): A. Freedom to criticise social ill-treatment of widows, B. Making decisions in the Constituent Assembly based on reason rather than self-interest, C. Incorporating Article 371 for specific needs of North-Eastern states, D. Unequal property rights for women in family property; List-II (Nature of Constitutional Philosophy): 1. Liberal individualism, 2. Procedural achievement, 3. Attention to requirements of a particular region, 4. Neglect of gender justice","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-4, B-3, C-2, D-1","en":"A-4, B-3, C-2, D-1"}],"answer":0,"explanation_hi":"सामाजिक बुराइयों की आलोचना उदार व्यक्तिवाद है, सर्वसम्मति व तर्क प्रक्रियात्मक उपलब्धि है, अनुच्छेद 371 विशेष क्षेत्रीय प्रावधान है, और पारिवारिक कानूनों में असमानता लैंगिक न्याय की उपेक्षा है।","explanation_en":"Criticising social practices relates to liberalism, reason represents procedural achievement, Art. 371 targets regional needs, and family law inequality reflects a gender justice gap."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए और सही विकल्प का चयन कीजिए: सूची-I (विविध निर्वाचन प्रक्रिया): A. भारत में सामान्य लोकसभा चुनाव, B. इज़राइल में होने वाले Knesset चुनाव, C. भारत में राष्ट्रपति का चुनाव, D. अमेरिकी सीनेट में राज्यों का प्रतिनिधित्व; सूची-II (विशेषता अथवा प्रयुक्त प्रणाली): 1. फर्स्ट पास्ट द पोस्ट प्रणाली, 2. राष्ट्रीय स्तर पर समानुपातिक प्रतिनिधित्व की सूची प्रणाली, 3. एकल संक्रमणीय मत द्वारा समानुपातिक प्रतिनिधित्व, 4. प्रत्येक राज्य को सीनेट में समान प्रतिनिधित्व की व्यवस्था","question_en":"Question 45: Match List-I with List-II and select the correct option: List-I (Electoral Process): A. General Lok Sabha election in India, B. Knesset election in Israel, C. Presidential election in India, D. Representation of States in the U.S. Senate; List-II (System or Feature): 1. First Past the Post system, 2. Party-list Proportional Representation at national level, 3. Proportional Representation by Single Transferable Vote, 4. Equal representation of each state in the Senate","options":[{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-4, B-3, C-2, D-1","en":"A-4, B-3, C-2, D-1"}],"answer":1,"explanation_hi":"लोकसभा के लिए फर्स्ट पास्ट द पोस्ट, इज़राइल में राष्ट्रीय सूची आधारित पीआर, भारतीय राष्ट्रपति के लिए एकल संक्रमणीय मत और अमेरिका में प्रत्येक राज्य को सीनेट में दो सीटें प्राप्त हैं।","explanation_en":"India uses FPTP for Lok Sabha, Israel uses national-level PR for Knesset, India uses STV-PR for the President, and the US has equal Senate representation."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित संवैधानिक घटनाओं को उनके घटित होने के सही कालानुक्रमिक क्रम में व्यवस्थित कीजिए: 1. जवाहरलाल नेहरू द्वारा उद्देश्य प्रस्ताव पेश किया जाना, 2. अविभाजित भारत की संविधान सभा की पहली बैठक, 3. संविधान सभा द्वारा भारत के संविधान को अपनाया जाना, 4. भारत का संविधान औपचारिक रूप से लागू होना।","question_en":"Question 46: Arrange the following constitutional events in their correct chronological order: 1. Objective Resolution being moved by Jawaharlal Nehru, 2. First sitting of the Constituent Assembly of undivided India, 3. Adoption of the Constitution of India by the Constituent Assembly, 4. Formal enforcement of the Constitution of India.","options":[{"hi":"1-2-3-4","en":"1-2-3-4"},{"hi":"2-1-3-4","en":"2-1-3-4"},{"hi":"2-3-1-4","en":"2-3-1-4"},{"hi":"1-3-2-4","en":"1-3-2-4"}],"answer":1,"explanation_hi":"संविधान सभा की पहली बैठक 9 दिसंबर 1946 को हुई, उद्देश्य प्रस्ताव 13 दिसंबर 1946 को पेश किया गया, संविधान 26 नवंबर 1949 को अपनाया गया और 26 जनवरी 1950 को लागू हुआ।","explanation_en":"The first sitting was on 9 Dec 1946, the Objectives Resolution was moved on 13 Dec 1946, the Constitution was adopted on 26 Nov 1949, and enforced on 26 Jan 1950."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित युग्मों पर विचार कीजिए: 1. हुसैनआरा खातून बनाम बिहार राज्य: विचाराधीन कैदियों के मौलिक अधिकार, 2. सुनील बत्रा बनाम दिल्ली प्रशासन: जेल में कैदियों की शारीरिक यातना के खिलाफ संरक्षण, 3. एशियाई खेल निर्माण मामला 1982: न्यूनतम मजदूरी न देना और जबरन श्रम (बेगार)। उपरोक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Question 47: Consider the following pairs: 1. Hussainara Khatoon vs. State of Bihar: Fundamental rights of undertrial prisoners, 2. Sunil Batra vs. Delhi Administration: Protection against physical torture of inmates, 3. Asian Games Construction Case 1982: Failure to pay minimum wages and forced labour (begar). How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीनों युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":2,"explanation_hi":"तीनों युग्म सही सुमेलित हैं। हुसैनआरा खातून मामला विचाराधीन कैदियों से, सुनील बत्रा मामला प्रताड़ना से और एशियाई खेल मामला बेगार (न्यूनतम मजदूरी से कम भुगतान) के खिलाफ अधिकार से जुड़ा है।","explanation_en":"All three pairs are correctly matched. Hussainara Khatoon relates to undertrials, Sunil Batra to prison torture, and the Asian Games case to forced labour under Article 23."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में स्थानीय स्वशासन के ऐतिहासिक विकास से संबंधित निम्नलिखित मील के पत्थरों को उनके सही कालानुक्रमिक क्रम में व्यवस्थित कीजिए: 1. वायसराय लॉर्ड रिपन की पहल पर स्थानीय बोर्डों का गठन, 2. भारत सरकार अधिनियम 1919 के तहत कई प्रांतों में ग्राम पंचायतों की स्थापना, 3. स्थानीय स्वशासन संस्थाओं को संवैधानिक दर्जा देने वाले 73वें और 74वें संशोधन अधिनियमों का पारित होना।","question_en":"Question 48: Arrange the following milestones in the historical development of local self-government in India in their correct chronological order: 1. Formation of local boards on the initiative of Viceroy Lord Ripon, 2. Establishment of village panchayats in several provinces under the Government of India Act 1919, 3. Passing of the 73rd and 74th Amendment Acts granting constitutional status to local bodies.","options":[{"hi":"1-2-3","en":"1-2-3"},{"hi":"2-1-3","en":"2-1-3"},{"hi":"3-1-2","en":"3-1-2"},{"hi":"1-3-2","en":"1-3-2"}],"answer":0,"explanation_hi":"लॉर्ड रिपन द्वारा स्थानीय बोर्डों का गठन वर्ष 1882 में हुआ, ग्राम पंचायतें अधिनियम 1919 के तहत बनीं और संसद द्वारा 73वां व 74वां संशोधन वर्ष 1992 में पारित किया गया।","explanation_en":"Lord Ripon created local boards in 1882, panchayats were established under the 1919 Act, and the 73rd/74th amendments were enacted in 1992."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लोकसभा में समाज के वंचित वर्गों के प्रतिनिधित्व के लिए आरक्षित सीटों के निम्नलिखित युग्मों पर विचार कीजिए: 1. लोकसभा में अनुसूचित जातियों के लिए आरक्षित सीटें: 84 सीटें, 2. लोकसभा में अनुसूचित जनजातियों के लिए आरक्षित सीटें: 47 सीटें। उपरोक्त में से कौन-सा/से युग्म सही सुमेलित है/हैं?","question_en":"Question 49: Consider the following pairs regarding reserved seats in the Lok Sabha for representation of disadvantaged sections: 1. Reserved seats for Scheduled Castes in Lok Sabha: 84 seats, 2. Reserved seats for Scheduled Tribes in Lok Sabha: 47 seats. Which of the above pairs is/are correctly matched?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 और न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"दोनों युग्म सही सुमेलित हैं। लोकसभा की 543 निर्वाचित सीटों में से 84 सीटें अनुसूचित जातियों (SC) के लिए और 47 सीटें अनुसूचित जनजातियों (ST) के लिए आरक्षित की गई हैं (26 जनवरी 2019 के अनुसार)।","explanation_en":"Both pairs are correctly matched. Out of 543 elected seats in the Lok Sabha, 84 are reserved for SCs and 47 for STs."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान की सीमाओं अथवा आलोचनाओं के संदर्भ में निम्नलिखित युग्मों पर विचार कीजिए: 1. राष्ट्रीय एकता के संदर्भ में सीमा: राष्ट्रीय एकता की अत्यधिक केंद्रीकृत धारणा होना, 2. सामाजिक-आर्थिक अधिकारों के संदर्भ में सीमा: कुछ बुनियादी अधिकारों को मौलिक अधिकारों के बजाय नीति निर्देशक तत्वों में डालना, 3. सामाजिक न्याय के संदर्भ में सीमा: परिवार के भीतर लैंगिक न्याय के मुद्दों (जैसे संपत्ति अधिकार) की उपेक्षा करना। उपरोक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Question 50: Consider the following pairs regarding the limitations or criticisms of the Indian Constitution: 1. Limitation on national unity: Having a highly centralized idea of national unity, 2. Limitation on socio-economic rights: Relegating basic socio-economic rights to Directive Principles instead of Fundamental Rights, 3. Limitation on social justice: Glossing over issues of gender justice within the family (like property rights). How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीनों युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"None of the pairs"}],"answer":2,"explanation_hi":"तीनों युग्म सही सुमेलित हैं। राजनीतिक विश्लेषक इन तीनों बिंदुओं (अत्यधिक केंद्रीकरण, परिवार के भीतर लैंगिक न्याय की कमी और सामाजिक-आर्थिक अधिकारों का गैर-वादयोग्य होना) को संविधान की सीमाएं मानते हैं।","explanation_en":"All three pairs are correctly matched. Philosophers point to these three aspects (centralization, lack of family gender justice, and non-justiciable socio-economic rights) as core limitations."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
