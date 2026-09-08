@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"Angad day 6","highlight":"Angad day 6","shortTitle":"Angad day 6","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-angad-day-6-20260908-11sei","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-09-08","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बौद्ध त्रिपिटक के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: विनय पिटक में भिक्षुओं और भिक्षुणियों के मठवासी जीवन पर लागू आचरण और अनुशासन के नियम शामिल हैं।\nकथन 2: सुत्तपिटक में भिक्षुओं की शिक्षा और विद्वतापूर्ण गतिविधि का दार्शनिक विश्लेषण शामिल है।","question_en":"With reference to Buddhist Tripitakas, consider the following statements:\nStatement 1: Vinaya Pitaka includes rules of conduct and discipline applicable to monastic life of monks and nuns.\nStatement 2: Sutta Pitaka includes philosophical analysis and systematization of monks' teachings and scholarly activities.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"दार्शनिक विश्लेषण अभिधम्म पिटक में शामिल है, जबकि सुत्तपिटक में बुद्ध की मुख्य शिक्षा या धम्म शामिल हैं।","explanation_en":"Philosophical analysis is in Abhidhamma Pitaka, whereas Sutta Pitaka contains Buddha's main teachings or Dhamma."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की प्रमुख तेल रिफाइनरियों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. डिगबोई रिफाइनरी की स्थापना असम में वर्ष 1901 में की गई थी। 2. बरौनी रिफाइनरी बिहार में वर्ष 1964 में स्थापित हुई थी। 3. कोयली रिफाइनरी उत्तर प्रदेश में वर्ष 1982 में स्थापित की गई थी। उपरोक्त में से कौन से कथन सही हैं?","question_en":"With reference to major oil refineries of India, consider the following statements: 1. Digboi refinery was established in Assam in the year 1901. 2. Barauni refinery was established in Bihar in the year 1964. 3. Koyali refinery was established in Uttar Pradesh in the year 1982. Which of the above statements are correct?","options":[{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":1,"explanation_hi":"कोयली रिफाइनरी गुजरात में वर्ष 1965 में स्थापित हुई थी, जबकि उत्तर प्रदेश में मथुरा रिफाइनरी (1982) स्थित है।","explanation_en":"Koyali refinery was set up in Gujarat in 1965, whereas Mathura refinery (1982) is located in Uttar Pradesh."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए:\nसूची-I: A. उत्तर प्रदेश के पहले मुख्यमंत्री, B. उत्तर प्रदेश की पहली महिला मुख्यमंत्री, C. उत्तर प्रदेश के प्रथम मुख्य सूचना आयुक्त, D. उत्तर प्रदेश के पहले लोकायुक्त;\nसूची-II: 1. सुचेता कृपलानी, 2. मोहम्मद असगर, 3. गोविंद बल्लभ पंत, 4. जस्टिस विशंभर दयाल","question_en":"Match List-I with List-II:\nList-I: A. First Chief Minister of UP, B. First female Chief Minister of UP, C. First Chief Information Commissioner of UP, D. First Lokayukta of UP;\nList-II: 1. Sucheta Kripalani, 2. Mohammad Asghar, 3. Govind Ballabh Pant, 4. Justice Vishwambhar Dayal","options":[{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-4, C-2, D-1","en":"A-3, B-4, C-2, D-1"},{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"}],"answer":3,"explanation_hi":"प्रथम मुख्यमंत्री गोविंद बल्लभ पंत, पहली महिला सीएम सुचेता कृपलानी, प्रथम सूचना आयुक्त मोहम्मद असगर तथा प्रथम लोकायुक्त जस्टिस विशंभर दयाल थे।","explanation_en":"First CM was Pant, first female CM was Kripalani, first CIC was Mohammad Asghar, and first Lokayukta was Justice Vishwambhar Dayal."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में तेंदुओं की स्थिति 2022 रिपोर्ट के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. रिपोर्ट के अनुसार भारत में तेंदुओं की संख्या वर्ष 2018 के 12,852 से बढ़कर वर्ष 2022 में 13,874 हो गई है। 2. भारत में तेंदुओं की सर्वाधिक संख्या महाराष्ट्र (3907) में पाई गई है। 3. उत्तर प्रदेश में तेंदुओं की कुल संख्या 371 दर्ज की गई है। उपरोक्त में से कितने कथन सही हैं?","question_en":"With reference to the Status of Leopards in India 2022 Report, consider the following statements: 1. According to the report, leopard count in India rose from 12,852 in 2018 to 13,874 in 2022. 2. The highest population of leopards in India was recorded in Maharashtra (3907). 3. The total number of leopards in Uttar Pradesh was recorded at 371. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"मध्य प्रदेश में तेंदुओं की संख्या सर्वाधिक (3907) है, जबकि महाराष्ट्र 1985 तेंदुओं के साथ दूसरे स्थान पर है।","explanation_en":"Madhya Pradesh has the highest leopard population (3907), while Maharashtra ranks second with 1985 leopards."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मुद्रा आपूर्ति के मानदण्डों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: M1 को संकुचित मुद्रा कहा जाता है और यह सबसे अधिक तरल मुद्रा माप है जिसे तुरंत नकद में बदला जा सकता है।\nकथन 2: M4 मुद्रा आपूर्ति का सबसे व्यापक माप है तथा यह M1 से अधिक तरल संपत्ति है।","question_en":"With reference to measures of money supply, consider the following statements:\nStatement 1: M1 is called Narrow Money and is the most liquid measure of money that can be converted into cash instantly.\nStatement 2: M4 is the broadest measure of money supply and is more liquid than M1.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"M4 सबसे कम तरल मुद्रा माप है क्योंकि इसमें डाकघर की अन्य लंबी अवधि की ऐसी जमाएं शामिल होती हैं जो तुरंत नकद में नहीं बदली जा सकतीं।","explanation_en":"M4 is the least liquid money measure as it includes post office long-term deposits that cannot be converted to cash immediately."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान एवं संविधान सभा से जुड़ी ऐतिहासिक घटनाओं को सही कालक्रम में व्यवस्थित कीजिए: 1. प्रारूप समिति का गठन, 2. राष्ट्रीय ध्वज को अपनाया जाना, 3. संविधान सभा की अंतिम बैठक, 4. राष्ट्रमंडल में भारत की सदस्यता का सत्यापन","question_en":"Arrange historical events of the Indian Constitution and Assembly in correct chronological order: 1. Formation of Drafting Committee, 2. Adoption of National Flag, 3. Final meeting of Constituent Assembly, 4. Ratification of India's Commonwealth membership","options":[{"hi":"2, 4, 1, 3","en":"2, 4, 1, 3"},{"hi":"1, 2, 4, 3","en":"1, 2, 4, 3"},{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"2, 1, 3, 4","en":"2, 1, 3, 4"}],"answer":2,"explanation_hi":"राष्ट्रीय ध्वज 22 जुलाई 1947, प्रारूप समिति 29 अगस्त 1947, राष्ट्रमंडल सदस्यता मई 1949 तथा संविधान सभा की अंतिम बैठक 24 जनवरी 1950 को हुई।","explanation_en":"National Flag was on 22 July 1947, Drafting Committee on 29 Aug 1947, Commonwealth on May 1949, and final CA meeting on 24 Jan 1950."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जीवों एवं पादपों के वैज्ञानिक नामों का सही मिलान कीजिए:\nसूची-I: A. गाय, B. घरेलू मक्खी, C. धान, D. गेहूँ;\nसूची-II: 1. मस्का डोमेस्टिका, 2. ट्रिटिकम एस्टिवम, 3. बॉस टॉरस, 4. ओराइज़ा सैटिवा","question_en":"Match scientific names of organisms and plants:\nList-I: A. Cow, B. Housefly, C. Paddy (Rice), D. Wheat;\nList-II: 1. Musca domestica, 2. Triticum aestivum, 3. Bos taurus, 4. Oryza sativa","options":[{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"}],"answer":0,"explanation_hi":"गाय का बॉस टॉरस, घरेलू मक्खी का मस्का डोमेस्टिका, धान का ओराइज़ा सैटिवा तथा गेहूँ का ट्रिटिकम एस्टिवम है।","explanation_en":"Cow is Bos taurus, housefly is Musca domestica, rice is Oryza sativa, and wheat is Triticum aestivum."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौर्यकालीन प्रशासनिक अधिकारियों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: समाहर्ता मौर्य प्रशासन में राजकीय आय का संग्रहकर्ता अधिकारी होता था।\nकथन 2: सन्निधाता कारागार का सर्वोच्च प्रशासनिक अध्यक्ष होता था।","question_en":"With reference to Mauryan administrative officials, consider the following statements:\nStatement 1: Samaharta was the revenue collector official in Mauryan administration.\nStatement 2: Sannidhata was the supreme administrative head of the prison.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"सन्निधाता राजकीय कोष का अध्यक्ष होता था, जबकि कारागार के अध्यक्ष को प्रशास्ता कहा जाता था।","explanation_en":"Sannidhata was the head of royal treasury, whereas the head of prison was called Prashasta."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में झूमिंग कृषि के क्षेत्रीय नामों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. मणिपुर में झूमिंग कृषि को पामलू के नाम से जाना जाता है। 2. छत्तीसगढ़ एवं अंडमान और निकोबार द्वीप समूह में इसे दीपा कहा जाता है। 3. पश्चिमी घाट में झूमिंग कृषि को बेवर या दहिया कहा जाता है। उपरोक्त में से कौन से कथन सही हैं?","question_en":"With reference to regional names of Jhum cultivation in India, consider the following statements: 1. In Manipur, shifting cultivation is known as Pamlou. 2. In Chhattisgarh and Andaman and Nicobar Islands, it is called Dipa. 3. In Western Ghats, shifting cultivation is called Bewar or Dahiya. Which of the above statements are correct?","options":[{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":2,"explanation_hi":"पश्चिमी घाट में झूमिंग कृषि को कुमारी कहा जाता है, जबकि बेवर या दहिया मध्य प्रदेश में कहा जाता है।","explanation_en":"In Western Ghats shifting cultivation is called Kumari, whereas Bewar or Dahiya is used in Madhya Pradesh."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के जनपदों की भौगोलिक विशेषताओं के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. ललितपुर जिला तीन ओर से मध्य प्रदेश राज्य से घिरा हुआ है। 2. सहारनपुर जिला तीन राज्यों हरियाणा, उत्तराखंड और हिमाचल प्रदेश से सीमा बनाता है। 3. उत्तर प्रदेश का क्षेत्रफल में सबसे बड़ा जिला हापुड़ तथा सबसे छोटा जिला लखीमपुर खीरी है। उपरोक्त में से कितने कथन सही हैं?","question_en":"With reference to geographical features of UP districts, consider the following statements: 1. Lalitpur district is surrounded on three sides by Madhya Pradesh state. 2. Saharanpur district borders three states: Haryana, Uttarakhand, and Himachal Pradesh. 3. The largest district by area in UP is Hapur and the smallest is Lakhimpur Kheri. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"क्षेत्रफल में सबसे बड़ा जिला लखीमपुर खीरी (7680 वर्ग किमी) तथा सबसे छोटा जिला हापुड़ (660 वर्ग किमी) है।","explanation_en":"Largest district by area is Lakhimpur Kheri (7680 sq km) and smallest is Hapur (660 sq km)."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण एवं पारिस्थितिकी की मूलभूत शब्दावलियों के संदर्भ में निम्नलिखित युग्मों पर विचार करें: 1. लैटिक आवास – बहते जल के आवास जैसे नदी अथवा झरना, 2. निषे (Niche) – किसी जीव द्वारा पारिस्थितिकी तंत्र में निभाई जाने वाली कार्यात्मक भूमिका, 3. ग्रीनवॉश – पर्यावरण संरक्षण के संबंध में झूठे वादे करना। उपरोक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"With reference to fundamental terms of environment and ecology, consider the following pairs: 1. Lentic habitat – Running water habitats such as rivers or streams, 2. Niche – Functional role played by an organism in its ecosystem, 3. Greenwashing – Making false claims regarding environmental protection. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"},{"hi":"केवल दो","en":"Only two"}],"answer":3,"explanation_hi":"लैटिक आवास स्थिर जल (तालाब, झील) का आवास है, जबकि बहते जल के आवास को लोटिक आवास कहते हैं।","explanation_en":"Lentic habitat refers to still water (ponds, lakes), while running water habitat is termed lotic habitat."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय रिज़र्व बैंक के गवर्नरों के ऐतिहासिक संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारतीय रिज़र्व बैंक के प्रथम गवर्नर सर ऑसबॉर्न स्मिथ थे।\nकथन 2: स्वतंत्र भारत के प्रथम भारतीय रिज़र्व बैंक गवर्नर शक्तिकांत दास थे।","question_en":"With reference to Governors of Reserve Bank of India, consider the following statements:\nStatement 1: The first Governor of Reserve Bank of India was Sir Osborne Smith.\nStatement 2: The first Reserve Bank Governor of independent India was Shaktikanta Das.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"स्वतंत्र भारत के प्रथम भारतीय गवर्नर सी. डी. देशमुख थे, जबकि शक्तिकांत दास ने वर्ष 2018 से 2024 तक गवर्नर पद संभाला था।","explanation_en":"The first Indian Governor of independent India was C.D. Deshmukh, while Shaktikanta Das held the post of Governor from 2018 to 2024."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की निम्नलिखित प्रमुख तेल रिफाइनरियों को उनकी स्थापना वर्ष के अनुसार सही कालक्रम में व्यवस्थित कीजिए: 1. बरौनी रिफाइनरी, 2. डिगबोई रिफाइनरी, 3. मथुरा रिफाइनरी, 4. नूनमती (गुवाहाटी) रिफाइनरी","question_en":"Arrange the following oil refineries of India in correct chronological order of their establishment years: 1. Barauni refinery, 2. Digboi refinery, 3. Mathura refinery, 4. Noonmati (Guwahati) refinery","options":[{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"2, 4, 1, 3","en":"2, 4, 1, 3"},{"hi":"4, 2, 1, 3","en":"4, 2, 1, 3"},{"hi":"2, 4, 3, 1","en":"2, 4, 3, 1"}],"answer":1,"explanation_hi":"डिगबोई 1901, नूनमती 1962, बरौनी 1964 तथा मथुरा रिफाइनरी की स्थापना 1982 में हुई थी।","explanation_en":"Digboi was set up in 1901, Noonmati in 1962, Barauni in 1964, and Mathura refinery in 1982."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान सभा की प्रमुख समितियों और उनके अध्यक्षों का सही मिलान कीजिए:\nसूची-I: A. प्रांतीय संविधान समिति, B. प्रारूप समिति, C. मौलिक अधिकार उप-समिति, D. संचालन समिति;\nसूची-II: 1. जे. बी. कृपलानी, 2. डॉ. राजेंद्र प्रसाद, 3. सरदार पटेल, 4. डॉ. बी. आर. अंबेडकर","question_en":"Match major committees of Constituent Assembly with their Chairpersons:\nList-I: A. Provincial Constitution Committee, B. Drafting Committee, C. Fundamental Rights Sub-committee, D. Steering Committee;\nList-II: 1. J.B. Kripalani, 2. Dr. Rajendra Prasad, 3. Sardar Patel, 4. Dr. B.R. Ambedkar","options":[{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-4, B-3, C-1, D-2","en":"A-4, B-3, C-1, D-2"}],"answer":1,"explanation_hi":"प्रांतीय संविधान समिति पटेल, प्रारूप समिति अंबेडकर, मूल अधिकार उप-समिति कृपलानी तथा संचालन समिति के अध्यक्ष डॉ. राजेंद्र प्रसाद थे।","explanation_en":"Provincial Committee was headed by Patel, Drafting by Ambedkar, FR Sub-committee by Kripalani, and Steering by Dr. Prasad."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पादप जगत के वर्गीकरण के संदर्भ में निम्नलिखित में से कौन सा पौधा ब्रायोफाइटा प्रभाग के अंतर्गत शामिल नहीं है?","question_en":"With reference to plant kingdom classification, which of the following plants is not included under Bryophyta division?","options":[{"hi":"मार्शेंटिया","en":"Marchantia"},{"hi":"मॉस (फ्यूनेरिया)","en":"Moss (Funaria)"},{"hi":"रिक्सिया","en":"Riccia"},{"hi":"इक्विसिटम","en":"Equisetum"}],"answer":3,"explanation_hi":"इक्विसिटम टेरिडोफाइटा प्रभाग का पौधा है, जबकि मार्शेंटिया, फ्यूनेरिया और रिक्सिया ब्रायोफाइटा प्रभाग के अंतर्गत आते हैं।","explanation_en":"Equisetum is a pteridophyte, whereas Marchantia, Funaria, and Riccia belong to Bryophyta division."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बौद्ध साहित्य एवं मिलिंदपन्हो के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: मिलिंदपन्हो पालि भाषा में लिखा गया बौद्ध ग्रंथ है जिसमें भिक्षु नागसेन और शासक मिलिंद के वार्तालाप का वर्णन है।\nकथन 2: बौद्ध भिक्षु नागसेन मगध के रहने वाले थे।","question_en":"With reference to Buddhist literature and Milindapanho, consider the following statements:\nStatement 1: Milindapanho is a Buddhist text written in Pali describing conversation between monk Nagasena and ruler Milinda.\nStatement 2: Buddhist monk Nagasena was a resident of Magadha.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"नागसेन कश्मीर के रहने वाले सर्वास्तिवादी बौद्ध भिक्षु थे, मगध के नहीं।","explanation_en":"Nagasena was a Sarvastivadin Buddhist monk belonging to Kashmir, not Magadha."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के भौगोलिक विस्तार एवं जनसांख्यिकी के संबंध में निम्नलिखित कथनों पर विचार करें: 1. उत्तर प्रदेश का सबसे पूर्वी जिला बलिया तथा सबसे पश्चिमी जिला शामली है। 2. उत्तर प्रदेश का सबसे उत्तरी जिला सहारनपुर तथा सबसे दक्षिणी जिला सोनभद्र है। 3. उत्तर प्रदेश में शीर्ष जनसंख्या वाले जिलों में प्रथम स्थान मुरादाबाद का है। उपरोक्त में से कौन से कथन सही हैं?","question_en":"With reference to geographical extent and demography of Uttar Pradesh, consider the following statements: 1. The easternmost district of UP is Ballia and westernmost is Shamli. 2. The northernmost district of UP is Saharanpur and southernmost is Sonbhadra. 3. Among the most populated districts of UP, Moradabad ranks first. Which of the above statements are correct?","options":[{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":0,"explanation_hi":"उत्तर प्रदेश में सर्वाधिक जनसंख्या वाला जिला प्रयागराज है, जबकि मुरादाबाद का स्थान दूसरा है।","explanation_en":"The most populous district in UP is Prayagraj, while Moradabad ranks second."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विश्व में प्रचलित झूमिंग अथवा स्थानांतरित कृषि के नामों के संदर्भ में निम्नलिखित युग्मों पर विचार करें: 1. मिल्पा – मेक्सिको और मध्य अमेरिका, 2. रोका – ब्राज़ील, 3. लदांग – वेनेजुएला। उपरोक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Consider the following pairs of shifting cultivation names prevalent across the world: 1. Milpa – Mexico and Central America, 2. Roca – Brazil, 3. Ladang – Venezuela. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"},{"hi":"केवल दो","en":"Only two"}],"answer":3,"explanation_hi":"वेनेजुएला में झूमिंग कृषि को कोनुको कहा जाता है, जबकि लदांग इंडोनेशिया में कहा जाता है।","explanation_en":"In Venezuela shifting cultivation is called Conuco, whereas Ladang is practiced in Indonesia."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण संरक्षण के प्रमाणनों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत में इकोमार्क (Ecomark) वर्ष 1991 में भारतीय मानक ब्यूरो द्वारा पर्यावरण अनुकूल उत्पादों हेतु शुरू किया गया था।\nकथन 2: एगमार्क (AGMARK) का प्रमाणन केवल इलेक्ट्रॉनिक एवं प्लास्टिक उत्पादों पर दिया जाता है।","question_en":"With reference to environmental protection certifications, consider the following statements:\nStatement 1: Ecomark was launched in India in 1991 by the Bureau of Indian Standards for eco-friendly products.\nStatement 2: AGMARK certification is awarded exclusively to electronic and plastic goods.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"एगमार्क कृषि अथवा खाद्य उत्पादों पर दिया जाता है, इलेक्ट्रॉनिक उत्पादों पर नहीं।","explanation_en":"AGMARK is awarded to agricultural or food products, not to electronic products."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की जनगणना 2011 के प्रमुख आंकड़ों के संबंध में निम्नलिखित कथनों पर विचार करें: 1. वर्ष 2011 की जनगणना के अनुसार सर्वाधिक साक्षरता वाले शीर्ष दो राज्य क्रमशः केरल और मिज़ोरम हैं। 2. सर्वाधिक प्रतिशत शहरी जनसंख्या वाला राज्य गोवा है। 3. न्यूनतम शहरी लिंगानुपात वाला राज्य जम्मू एवं कश्मीर (840) दर्ज किया गया था। उपरोक्त में से कितने कथन सही हैं?","question_en":"Consider the following statements regarding key figures of Census 2011 of India: 1. According to Census 2011, top two states with highest literacy are Kerala and Mizoram respectively. 2. The state with highest percentage of urban population is Goa. 3. The state with lowest urban sex ratio recorded was Jammu and Kashmir (840). How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":2,"explanation_hi":"साक्षरता में केरल व मिजोरम शीर्ष पर हैं, गोवा सर्वाधिक शहरीकृत (प्रतिशत) राज्य है तथा जम्मू-कश्मीर का शहरी लिंगानुपात न्यूनतम (840) है।","explanation_en":"Kerala and Mizoram lead in literacy, Goa has highest urban percentage, and J&K had lowest urban sex ratio (840)."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्रमुख जैन ग्रंथों और उनके रचयिताओं का सही मिलान कीजिए:\nसूची-I: A. कल्पसूत्र, B. स्याद्वादमंजरी, C. न्यायावतार, D. द्रव्य संग्रह;\nसूची-II: 1. मल्लिसेन, 2. नेमिचंद्र, 3. भद्रबाहु, 4. सिद्धसेन दिवाकर","question_en":"Match major Jain texts with their authors:\nList-I: A. Kalpasutra, B. Syadvadamanjari, C. Nyayavatara, D. Dravyasangraha;\nList-II: 1. Mallisena, 2. Nemichandra, 3. Bhadrabahu, 4. Siddhasena Divakara","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"}],"answer":3,"explanation_hi":"कल्पसूत्र भद्रबाहु, स्याद्वादमंजरी मल्लिसेन, न्यायावतार सिद्धसेन दिवाकर तथा द्रव्य संग्रह नेमिचंद्र की रचना है।","explanation_en":"Kalpasutra was authored by Bhadrabahu, Syadvadamanjari by Mallisena, Nyayavatara by Siddhasena Divakara, and Dravyasangraha by Nemichandra."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के कला एवं संस्कृति से जुड़े प्रमुख संस्थानों को उनके स्थापना वर्ष के सही कालक्रम में व्यवस्थित कीजिए: 1. भारत कला भवन (वाराणसी), 2. कला एवं शिल्प महाविद्यालय (लखनऊ), 3. राज्य ललित कला अकादमी (लखनऊ), 4. लखनऊ नगर निगम आर्ट गैलरी","question_en":"Arrange the cultural institutes of Uttar Pradesh in correct chronological order of establishment: 1. Bharat Kala Bhavan (Varanasi), 2. Government College of Arts and Crafts (Lucknow), 3. State Lalit Kala Akademi (Lucknow), 4. Lucknow Municipal Corporation Art Gallery","options":[{"hi":"2, 4, 1, 3","en":"2, 4, 1, 3"},{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"1, 2, 4, 3","en":"1, 2, 4, 3"},{"hi":"2, 1, 3, 4","en":"2, 1, 3, 4"}],"answer":1,"explanation_hi":"कला एवं शिल्प महाविद्यालय 1911, भारत कला भवन 1920, लखनऊ नगर निगम आर्ट गैलरी 1949 तथा राज्य ललित कला अकादमी 1962 में स्थापित हुई।","explanation_en":"Arts College in 1911, Bharat Kala Bhavan in 1920, Lucknow MC Art Gallery in 1949, and State Lalit Kala Akademi in 1962."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ब्रिटिश भारत के संवैधानिक अधिनियमों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत शासन अधिनियम 1919 द्वारा केंद्रीय बजट को राज्यों के बजट से अलग कर दिया गया था।\nकथन 2: भारत शासन अधिनियम 1935 द्वारा प्रांतों में द्वैध शासन प्रणाली को प्रारंभ किया गया।","question_en":"With reference to constitutional acts of British India, consider the following statements:\nStatement 1: Government of India Act 1919 separated provincial budget from central budget.\nStatement 2: Government of India Act 1935 introduced dyarchy in provinces.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"1935 के अधिनियम द्वारा प्रांतों में द्वैध शासन समाप्त किया गया तथा केंद्र में द्वैध शासन प्रणाली प्रारंभ की गई थी।","explanation_en":"1935 Act abolished dyarchy in provinces and introduced dyarchy at the Centre."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जीवों के पाँच जगत वर्गीकरण के संबंध में निम्नलिखित कथनों पर विचार करें: 1. मोनेरा जगत में जीवाणु, नील-हरित शैवाल तथा आर्कीबैक्टीरिया शामिल हैं। 2. प्रोटिस्टा जगत में अमीबा, पैरामीशियम, यूग्लीना और प्लास्मोडियम शामिल हैं। 3. कवक जगत में स्पंज, मछलियाँ और सरीसृप शामिल हैं। उपरोक्त में से कौन से कथन सही हैं?","question_en":"Consider the following statements regarding the five-kingdom classification of life: 1. Monera includes bacteria, blue-green algae, and archaebacteria. 2. Protista includes amoeba, paramecium, euglena, and plasmodium. 3. Fungi includes sponges, fishes, and reptiles. Which of the above statements are correct?","options":[{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":2,"explanation_hi":"स्पंज, मछलियाँ और सरीसृप जंतु (Animalia) जगत में आते हैं, जबकि कवक में खमीर, मशरूम और पेनिसिलियम आते हैं।","explanation_en":"Sponges, fish, and reptiles belong to Animalia, whereas fungi include yeast, mushroom, and penicillium."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन भारतीय साहित्यिक कृतियों एवं उनके रचनाकारों के संदर्भ में निम्नलिखित युग्मों पर विचार करें: 1. रावणवध – भट्टि, 2. किरातार्जुनीयम् – भारवि, 3. नीतिशतक – दण्डिन्। उपरोक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Consider the following pairs of ancient Indian literary works and their authors: 1. Ravanavadha – Bhatti, 2. Kiratarjuniya – Bharavi, 3. Nitishataka – Dandin. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"नीतिशतक के रचयिता भर्तृहरि हैं, जबकि दण्डिन् ने काव्यादर्श तथा दशकुमारचरित की रचना की थी।","explanation_en":"Nitishataka was composed by Bhartrihari, while Dandin composed Kavyadarsha and Dashakumaracharita."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के प्रमुख खनिज संस्थानों की अवस्थिति के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: हिंदुस्तान कॉपर लिमिटेड राजस्थान के खेतड़ी में स्थित है।\nकथन 2: केंद्रीय खनन एवं ईंधन अनुसंधान केंद्र नागपुर में स्थित है।","question_en":"With reference to locations of major mineral institutes of India, consider the following statements:\nStatement 1: Hindustan Copper Limited is located in Khetri, Rajasthan.\nStatement 2: Central Institute of Mining and Fuel Research is located in Nagpur.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"केंद्रीय खनन एवं ईंधन अनुसंधान केंद्र धनबाद में स्थित है, जबकि नागपुर में भारतीय खान ब्यूरो स्थित है।","explanation_en":"Central Institute of Mining and Fuel Research is in Dhanbad, whereas Indian Bureau of Mines is in Nagpur."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के राजकीय प्रतीकों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. उत्तर प्रदेश का राजकीय वृक्ष अशोक तथा राजकीय पुष्प पलाश है। 2. उत्तर प्रदेश का राजकीय पशु बारहसिंगा तथा राजकीय पक्षी सारस क्रेन है। 3. उत्तर प्रदेश का राजकीय खेल क्रिकेट है। उपरोक्त में से कितने कथन सही हैं?","question_en":"Consider the following statements regarding state symbols of Uttar Pradesh: 1. The state tree of UP is Ashok and state flower is Palash. 2. The state animal of UP is Barasingha and state bird is Sarus crane. 3. The state sport of UP is Cricket. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"उत्तर प्रदेश का राजकीय खेल हॉकी है, क्रिकेट नहीं।","explanation_en":"The state sport of Uttar Pradesh is Hockey, not Cricket."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पारिस्थितिकी तंत्र से जुड़े प्रमुख संप्रत्ययों और उनकी परिभाषाओं का सही मिलान कीजिए:\nसूची-I: A. लैटिक आवास, B. लोटिक आवास, C. वहन क्षमता, D. जैव आवर्धन;\nसूची-II: 1. बहते जल के आवास जैसे नदी या झरना, 2. फूड चैन में विभिन्न पोषण स्तरों पर भारी धातुओं की बढ़ती सांद्रता, 3. स्थिर जल के आवास जैसे तालाब या झील, 4. किसी निश्चित क्षेत्र में प्राणियों की संख्या की सीमा जिसे पर्यावरण समर्थन कर सकता है","question_en":"Match major ecological concepts with their definitions:\nList-I: A. Lentic habitat, B. Lotic habitat, C. Carrying Capacity, D. Biomagnification;\nList-II: 1. Running water habitats like rivers or streams, 2. Increasing concentration of heavy metals at trophic levels, 3. Still water habitats like ponds or lakes, 4. Limit of population of organisms an environment can support","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"}],"answer":2,"explanation_hi":"लैटिक स्थिर जल, लोटिक बहता जल, वहन क्षमता आबादी की समर्थन सीमा तथा जैव आवर्धन भारी धातुओं की सांद्रता वृद्धि है।","explanation_en":"Lentic is still water, lotic is running water, carrying capacity is support limit, and biomagnification is heavy metal concentration."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में संकुचित मुद्रा (M1) के घटकों में निम्नलिखित में से कौन सा शामिल नहीं है?","question_en":"Which of the following is not included among components of Narrow Money (M1) in India?","options":[{"hi":"चलन में मौजूद मुद्रा जैसे नोट और सिक्के","en":"Currency in circulation such as notes and coins"},{"hi":"बैंकों की मांग जमाएं जैसे चालू और बचत खाते","en":"Demand deposits of banks such as current and savings accounts"},{"hi":"बैंकों की सावधि अथवा लंबी अवधि की फिक्स्ड जमाएं","en":"Time or fixed deposits of banks"},{"hi":"बैंकों के पास अन्य निकासी योग्य मांग ड्राफ्ट","en":"Other withdrawable demand drafts with banks"}],"answer":2,"explanation_hi":"बैंकों की सावधि फिक्स्ड जमाएं M3 (व्यापक मुद्रा) का हिस्सा होती हैं, M1 में केवल तुरंत निकासी योग्य मांग जमाएं आती हैं।","explanation_en":"Fixed time deposits of banks form part of M3 (Broad Money); M1 comprises only readily withdrawable demand deposits."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान सभा की प्रारूप समिति के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: संविधान सभा की प्रारूप समिति का गठन 29 अगस्त 1947 को किया गया था जिसमें कुल 7 सदस्य थे।\nकथन 2: सरदार वल्लभभाई पटेल प्रारूप समिति के अध्यक्ष थे।","question_en":"With reference to Drafting Committee of Constituent Assembly, consider the following statements:\nStatement 1: Drafting Committee was constituted on 29 August 1947 comprising 7 members.\nStatement 2: Sardar Vallabhbhai Patel was the Chairman of Drafting Committee.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"प्रारूप समिति के अध्यक्ष डॉ. बी. आर. अंबेडकर थे, जबकि सरदार पटेल प्रांतीय संविधान समिति के अध्यक्ष थे।","explanation_en":"The Chairman of Drafting Committee was Dr. B.R. Ambedkar, whereas Sardar Patel chaired the Provincial Constitution Committee."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की निम्नलिखित तेल रिफाइनरियों को उनकी स्थापना वर्ष के अनुसार सही कालक्रम में व्यवस्थित कीजिए: 1. कोच्चि रिफाइनरी, 2. मुंबई ट्रॉम्बे रिफाइनरी, 3. नुमालीगढ़ रिफाइनरी, 4. विशाखापट्टनम रिफाइनरी","question_en":"Arrange the following oil refineries of India in correct chronological order of establishment: 1. Kochi refinery, 2. Mumbai Trombay refinery, 3. Numaligarh refinery, 4. Visakhapatnam refinery","options":[{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"4, 2, 1, 3","en":"4, 2, 1, 3"},{"hi":"2, 4, 3, 1","en":"2, 4, 3, 1"},{"hi":"2, 4, 1, 3","en":"2, 4, 1, 3"}],"answer":3,"explanation_hi":"मुंबई ट्रॉम्बे 1955, विशाखापट्टनम 1957, कोच्चि 1966 तथा नुमालीगढ़ रिफाइनरी 1999 में स्थापित हुई थी।","explanation_en":"Mumbai Trombay was set up in 1955, Visakhapatnam in 1957, Kochi in 1966, and Numaligarh in 1999."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"विभिन्न वैज्ञानिक अध्ययनों और उनके विषयों के संदर्भ में निम्नलिखित में से कौन सा युग्म सही सुमेलित नहीं है?","question_en":"With reference to scientific studies and their subjects, which of the following pairs is not correctly matched?","options":[{"hi":"डर्मेटोलॉजी – त्वचा एवं इसके रोगों का अध्ययन","en":"Dermatology – Study of skin and its diseases"},{"hi":"माइकोलॉजी – कवकों का अध्ययन","en":"Mycology – Study of fungi"},{"hi":"एंटोमोलॉजी – विषाणुओं का अध्ययन","en":"Entomology – Study of viruses"},{"hi":"हीमेटोलॉजी – रक्त का अध्ययन","en":"Hematology – Study of blood"}],"answer":2,"explanation_hi":"एंटोमोलॉजी कीटों (Insects) का अध्ययन है, जबकि विषाणुओं का अध्ययन वायरोलॉजी कहलाता है।","explanation_en":"Entomology is the study of insects, whereas the study of viruses is called virology."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय दर्शन के वेदांत संप्रदायों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: अद्वैत दर्शन के प्रवर्तक आदि शंकराचार्य तथा द्वैत दर्शन के प्रवर्तक मध्वाचार्य थे।\nकथन 2: शुद्धाद्वैत दर्शन के प्रवर्तक निम्बार्काचार्य थे।","question_en":"With reference to Vedanta schools of Indian philosophy, consider the following statements:\nStatement 1: Adi Shankaracharya founded Advaita Darshan and Madhvacharya founded Dvaita Darshan.\nStatement 2: Nimbarkacharya founded Shuddhadvaita Darshan.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"केवल 1","en":"Only 1"}],"answer":3,"explanation_hi":"शुद्धाद्वैत दर्शन के प्रवर्तक वल्लभाचार्य थे, जबकि निम्बार्काचार्य भेदाभेद अथवा द्वैताद्वैत दर्शन के प्रवर्तक थे।","explanation_en":"Vallabhacharya founded Shuddhadvaita, whereas Nimbarkacharya was the proponent of Bhedabheda or Dvaitadvaita."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"काजीरंगा टाइगर रिजर्व से जुड़ी 'स्टेटस ऑफ टाइगर्स इन काजीरंगा 2024' रिपोर्ट, जो जुलाई 2025 में जारी की गई, के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. इस रिपोर्ट में काजीरंगा में बाघों की संख्या 148 दर्ज की गई है। 2. काजीरंगा का बाघ घनत्व 18.65 बाघ प्रति 100 वर्ग किमी है, जो बांदीपुर और कॉर्बेट के बाद भारत में तीसरा सर्वाधिक है। 3. यह रिपोर्ट राष्ट्रीय बाघ संरक्षण प्राधिकरण द्वारा विश्व वन्यजीव दिवस के अवसर पर जारी की गई थी। उपरोक्त में से कौन से कथन सही हैं?","question_en":"With reference to the 'Status of Tigers in Kaziranga 2024' report released in July 2025, consider the following statements: 1. The report recorded 148 tigers in Kaziranga. 2. Kaziranga has a tiger density of 18.65 tigers per 100 sq km, the third highest in India after Bandipur and Corbett. 3. The report was released by the National Tiger Conservation Authority on the occasion of World Wildlife Day. Which of the above statements are correct?","options":[{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":1,"explanation_hi":"यह रिपोर्ट 29 जुलाई 2025 को वैश्विक बाघ दिवस के अवसर पर असम सरकार द्वारा जारी की गई थी, न कि विश्व वन्यजीव दिवस पर। बाघों की गणना में डीएनए फिंगरप्रिंटिंग तकनीक का प्रयोग किया गया। यह आँकड़ा प्रत्येक नई गणना में संशोधित होता है, इसलिए परीक्षा से पूर्व नवीनतम रिपोर्ट पर एक बार देख लें।","explanation_en":"The report was released by the Government of Assam on 29 July 2025 on Global Tiger Day, not on World Wildlife Day; DNA fingerprinting was used for the tiger count. This figure is revised with every fresh estimation, so do check the latest report before the exam."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के प्रमुख खनिज संस्थानों और उनके नगरों का सही मिलान कीजिए:\nसूची-I: A. हिंदुस्तान कॉपर लिमिटेड, B. हिंदुस्तान जिंक लिमिटेड, C. राष्ट्रीय धातु कर्म प्रयोगशाला, D. केंद्रीय खनन एवं ईंधन अनुसंधान केंद्र;\nसूची-II: 1. धनबाद, 2. जमशेदपुर, 3. खेतड़ी, 4. उदयपुर","question_en":"Match major mineral institutes of India with their cities:\nList-I: A. Hindustan Copper Limited, B. Hindustan Zinc Limited, C. National Metallurgical Laboratory, D. Central Institute of Mining and Fuel Research;\nList-II: 1. Dhanbad, 2. Jamshedpur, 3. Khetri, 4. Udaipur","options":[{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"},{"hi":"A-3, B-4, C-2, D-1","en":"A-3, B-4, C-2, D-1"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-4, B-3, C-2, D-1","en":"A-4, B-3, C-2, D-1"}],"answer":1,"explanation_hi":"हिंदुस्तान कॉपर खेतड़ी, जिंक लिमिटेड उदयपुर, राष्ट्रीय धातु कर्म प्रयोगशाला जमशेदपुर तथा CIMFR धनबाद में स्थित है।","explanation_en":"Copper is in Khetri, Zinc in Udaipur, NML in Jamshedpur, and CIMFR is in Dhanbad."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के संरक्षित क्षेत्रों एवं आर्द्रभूमियों के संदर्भ में निम्नलिखित युग्मों पर विचार करें: 1. बखिरा वन्य जीव अभयारण्य – संत कबीर नगर, 2. ऊपरी गंगा नदी – बुलंदशहर, 3. हैदरपुर वैटलैंड – मुजफ्फरनगर एवं बिजनौर। उपरोक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Consider the following pairs of protected areas and wetlands of Uttar Pradesh: 1. Bakhira Wildlife Sanctuary – Sant Kabir Nagar, 2. Upper Ganga River – Bulandshahr, 3. Haiderpur Wetland – Muzaffarnagar and Bijnor. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"कोई भी नहीं","en":"None"},{"hi":"सभी तीन","en":"All three"}],"answer":3,"explanation_hi":"बखिरा संत कबीर नगर में, ऊपरी गंगा नदी बुलंदशहर में तथा हैदरपुर वैटलैंड मुजफ्फरनगर व बिजनौर जिलों में विस्तृत है।","explanation_en":"Bakhira is in Sant Kabir Nagar, Upper Ganga in Bulandshahr, and Haiderpur wetland spans Muzaffarnagar and Bijnor."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की जनगणना 2011 के नगरीकरण एवं लिंगानुपात आंकड़ों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: वर्ष 2011 की जनगणना में सर्वाधिक शहरी जनसंख्या प्रतिशत वाले राज्यों में गोवा के बाद दूसरा स्थान मिज़ोरम का है।\nकथन 2: केंद्रशासित प्रदेशों में सर्वाधिक ग्रामीण लिंगानुपात तथा सर्वाधिक शहरी लिंगानुपात दोनों पुदुचेरी में दर्ज किए गए।","question_en":"With reference to urbanization and sex ratio figures of Census 2011, consider the following statements:\nStatement 1: Among states with highest urban population percentage in 2011, Mizoram ranks second after Goa.\nStatement 2: Among Union Territories, both highest rural sex ratio and highest urban sex ratio were recorded in Puducherry.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"शहरी प्रतिशत में गोवा के बाद मिजोरम दूसरे स्थान पर है, तथा पुदुचेरी में ग्रामीण और शहरी दोनों लिंगानुपात शीर्ष पर हैं।","explanation_en":"In urban percentage Mizoram is second after Goa, and Puducherry holds the highest rural and urban sex ratios."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत शासन अधिनियम 1935 के प्रावधानों के संबंध में निम्नलिखित कथनों पर विचार करें: 1. इस अधिनियम द्वारा अवशिष्ट शक्तियां वायसराय को सौंपी गई थीं। 2. इसके द्वारा वर्ष 1858 द्वारा स्थापित भारत परिषद को समाप्त कर दिया गया। 3. इस अधिनियम के तहत वर्ष 1937 में संघीय न्यायालय की स्थापना की गई थी। उपरोक्त में से कितने कथन सही हैं?","question_en":"Consider the following statements regarding provisions of Government of India Act 1935: 1. Residuary powers were vested in the Viceroy by this Act. 2. Council of India established by 1858 Act was abolished by it. 3. A Federal Court was established in 1937 under this Act. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"कोई भी नहीं","en":"None"},{"hi":"सभी तीन","en":"All three"}],"answer":3,"explanation_hi":"1935 अधिनियम द्वारा अवशिष्ट शक्तियां वायसराय को दी गईं, 1858 की भारत परिषद समाप्त हुई तथा 1937 में संघीय न्यायालय स्थापित हुआ।","explanation_en":"1935 Act gave residuary powers to Viceroy, abolished 1858 Council of India, and set up Federal Court in 1937."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पादप जगत के वर्गीकरण के संदर्भ में निम्नलिखित में से कौन सा पौधा जिम्नोस्पर्म (अनावृतबीजी) का उदाहरण नहीं है?","question_en":"With reference to plant kingdom classification, which of the following plants is not an example of Gymnosperm?","options":[{"hi":"साइकस","en":"Cycas"},{"hi":"सूरजमुखी","en":"Sunflower"},{"hi":"पाइनस","en":"Pinus"},{"hi":"नीटम (Gnetum)","en":"Gnetum"}],"answer":1,"explanation_hi":"सूरजमुखी एंजियोस्पर्म (आवृतबीजी) का उदाहरण है, जबकि साइकस, पाइनस और नीटम जिम्नोस्पर्म हैं।","explanation_en":"Sunflower is an angiosperm, whereas Cycas, Pinus, and Gnetum are gymnosperms."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"बौद्ध ग्रंथों एवं निकायों के विभाजन के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: सुत्तपिटक को पाँच निकायों (दीघ निकाय, मज्झिम निकाय, संयुक्त निकाय, अंगुत्तर निकाय और खुद्दक निकाय) में विभाजित किया गया है।\nकथन 2: विनयपिटक केवल बुद्ध के दार्शनिक सिद्धांतों का विश्लेषण करता है तथा इसमें भिक्षुओं के नियमों का कोई उल्लेख नहीं है।","question_en":"With reference to division of Buddhist texts and Nikayas, consider the following statements:\nStatement 1: Sutta Pitaka is divided into five Nikayas (Digha, Majjhima, Samyutta, Anguttara, and Khuddaka Nikaya).\nStatement 2: Vinaya Pitaka exclusively analyzes Buddha's philosophical principles and contains no rules for monks.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"भिक्षुओं और भिक्षुणियों के आचरण व अनुशासन के नियम विनयपिटक में हैं, जबकि दार्शनिक विश्लेषण अभिधम्मपिटक में है।","explanation_en":"Monastic rules of conduct and discipline are in Vinaya Pitaka, while philosophical analysis is in Abhidhamma Pitaka."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत में विभिन्न क्षेत्रों में प्रचलित झूमिंग कृषि के नामों के संदर्भ में निम्नलिखित में से कौन सा युग्म सही सुमेलित नहीं है?","question_en":"With reference to names of jhum cultivation prevalent in different regions in India, which of the following pairs is not correctly matched?","options":[{"hi":"ओडिशा – पामाडाबी अथवा कोमान अथवा ब्रिंगा","en":"Odisha – Pamadabi or Koman or Bringa"},{"hi":"दक्षिण-पूर्वी राजस्थान – वालरे या वालतरे","en":"South-Eastern Rajasthan – Valre or Waltre"},{"hi":"झारखंड – पेंडा","en":"Jharkhand – Penda"},{"hi":"हिमालयन क्षेत्र – खिल","en":"Himalayan region – Khil"}],"answer":2,"explanation_hi":"झारखंड में झूमिंग कृषि को कुरुवा कहा जाता है, जबकि पेंडा मध्य प्रदेश में प्रचलित नाम है।","explanation_en":"In Jharkhand shifting cultivation is called Kuruwa, whereas Penda is the name used in Madhya Pradesh."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौर्यकालीन प्रशासनिक पदों एवं उनके दायित्वों का सही मिलान कीजिए:\nसूची-I: A. सन्निधाता, B. प्रशास्ता, C. नायक, D. सीताध्यक्ष;\nसूची-II: 1. कारागार का अध्यक्ष, 2. राजकीय भूमि का संरक्षक, 3. राजकीय कोष का अध्यक्ष, 4. नगर रक्षा का अध्यक्ष","question_en":"Match Mauryan administrative posts with their responsibilities:\nList-I: A. Sannidhata, B. Prashasta, C. Nayaka, D. Sitadhyaksha;\nList-II: 1. Head of Prison, 2. Superintendent of Crown Lands, 3. Head of Royal Treasury, 4. Head of City Defense","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"}],"answer":2,"explanation_hi":"सन्निधाता राजकीय कोष प्रमुख, प्रशास्ता कारागार प्रमुख, नायक नगर रक्षा प्रमुख तथा सीताध्यक्ष राजकीय भूमि का संरक्षक था।","explanation_en":"Sannidhata headed Treasury, Prashasta headed Prison, Nayaka headed City Defense, and Sitadhyaksha supervised Crown Lands."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान से संबंधित निम्नलिखित ऐतिहासिक घटनाक्रमों को सही कालक्रम में व्यवस्थित कीजिए: 1. प्रारूप समिति का गठन, 2. 42वें संविधान संशोधन द्वारा प्रस्तावना में तीन शब्दों का जोड़ा जाना, 3. राष्ट्रीय ध्वज को अपनाया जाना, 4. डॉ. राजेंद्र प्रसाद को भारत का प्रथम राष्ट्रपति चुना जाना","question_en":"Arrange the following events related to Indian Constitution in correct chronological order: 1. Formation of Drafting Committee, 2. Addition of three words to Preamble by 42nd Amendment, 3. Adoption of National Flag, 4. Election of Dr. Rajendra Prasad as first President","options":[{"hi":"3, 4, 1, 2","en":"3, 4, 1, 2"},{"hi":"1, 3, 4, 2","en":"1, 3, 4, 2"},{"hi":"3, 1, 2, 4","en":"3, 1, 2, 4"},{"hi":"3, 1, 4, 2","en":"3, 1, 4, 2"}],"answer":3,"explanation_hi":"राष्ट्रीय ध्वज 22 जुलाई 1947, प्रारूप समिति 29 अगस्त 1947, राष्ट्रपति चुनाव 24 जनवरी 1950 तथा 42वां संशोधन अधिनियम 1976 में पारित हुआ था।","explanation_en":"Flag on 22 July 1947, Drafting Committee on 29 Aug 1947, President elected on 24 Jan 1950, and 42nd Amendment in 1976."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण से जुड़े सिद्धांतों एवं शब्दावलियों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: ब्रटलैंड कमीशन (1987) ने अपनी रिपोर्ट 'Our Common Future' में सतत विकास की अवधारणा प्रस्तुत की थी।\nकथन 2: ग्रीनवॉश शब्द का तात्पर्य किसी विशिष्ट क्षेत्र में जीवों के केवल स्थिर जल आवास से है।","question_en":"With reference to environmental principles and terms, consider the following statements:\nStatement 1: Brundtland Commission (1987) introduced sustainable development in its report 'Our Common Future'.\nStatement 2: Term greenwashing exclusively refers to still water habitat of organisms in a region.","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"ग्रीनवॉश का अर्थ पर्यावरण संरक्षण के संबंध में झूठे वादे करना है, जबकि स्थिर जल आवास लैटिक आवास कहलाता है।","explanation_en":"Greenwashing means making false environmental claims, whereas still water habitat is called lentic habitat."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संविधान सभा की प्रारूप समिति के सदस्यों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. अल्लादी कृष्ण स्वामी अय्यर और डॉक्टर के. एम. मुंशी प्रारूप समिति के सात सदस्यों में शामिल थे। 2. सैयद मोहम्मद सादुल्लाह और एन. माधवराव प्रारूप समिति के सदस्य थे। 3. सरदार वल्लभभाई पटेल प्रारूप समिति के सात सदस्यों में शामिल थे। उपरोक्त में से कौन से कथन सही हैं?","question_en":"With reference to members of Drafting Committee of Constituent Assembly, consider the following statements: 1. Alladi Krishnaswami Ayyar and Dr. K.M. Munshi were among seven members of Drafting Committee. 2. Syed Mohammad Saadulla and N. Madhava Rau were members of Drafting Committee. 3. Sardar Vallabhbhai Patel was among seven members of Drafting Committee. Which of the above statements are correct?","options":[{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":2,"explanation_hi":"सरदार पटेल प्रारूप समिति के सदस्य नहीं थे; वे मौलिक अधिकार एवं अल्पसंख्यक संबंधी परामर्शदात्री समिति तथा प्रांतीय संविधान समिति के अध्यक्ष थे।","explanation_en":"Sardar Patel was not a member of Drafting Committee; he chaired the Advisory Committee on Fundamental Rights and Minorities as well as the Provincial Constitution Committee."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जीव विज्ञान एवं चिकित्सा की प्रमुख शाखाओं के संदर्भ में निम्नलिखित युग्मों पर विचार करें: 1. पैथोलॉजी – रोगों की प्रकृति, लक्षण एवं कारणों का अध्ययन, 2. न्यूरोलॉजी – तंत्रिका तंत्र का अध्ययन, 3. सीरोलॉजी – स्तनधारी जीवों का अध्ययन। उपरोक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"With reference to major branches of biology and medicine, consider the following pairs: 1. Pathology – Study of nature, symptoms, and causes of diseases, 2. Neurology – Study of nervous system, 3. Serology – Study of mammalian organisms. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"सीरोलॉजी रक्त सीरम का अध्ययन है, जबकि स्तनधारी जीवों का अध्ययन मैमेलॉजी कहलाता है।","explanation_en":"Serology is the study of serum, whereas the study of mammalian organisms is called mammalogy."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के प्रशासनिक इतिहास के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: उत्तर प्रदेश में प्रथम राज्य आपातकाल (राष्ट्रपति शासन) फरवरी 1968 से फरवरी 1969 तक लागू रहा था।\nकथन 2: उत्तर प्रदेश की पहली महिला मुख्यमंत्री सरोजिनी नायडू थीं।","question_en":"With reference to administrative history of Uttar Pradesh, consider the following statements:\nStatement 1: The first state emergency (President's Rule) in UP was enforced from February 1968 to February 1969.\nStatement 2: The first female Chief Minister of Uttar Pradesh was Sarojini Naidu.","options":[{"hi":"केवल 2","en":"Only 2"},{"hi":"दोनों 1 और 2","en":"Both 1 and 2"},{"hi":"न तो 1 न ही 2","en":"Neither 1 nor 2"},{"hi":"केवल 1","en":"Only 1"}],"answer":3,"explanation_hi":"सरोजिनी नायडू उत्तर प्रदेश की प्रथम राज्यपाल थीं, जबकि पहली महिला मुख्यमंत्री सुचेता कृपलानी थीं।","explanation_en":"Sarojini Naidu was the first Governor of UP, whereas Sucheta Kripalani was the first female Chief Minister."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत की तेल रिफाइनरियों की अवस्थिति के संबंध में निम्नलिखित कथनों पर विचार करें: 1. पानीपत रिफाइनरी हरियाणा राज्य में स्थित है। 2. नागपट्टिनम रिफाइनरी तमिलनाडु राज्य में स्थित है। 3. मंगलौर रिफाइनरी केरल राज्य में स्थित है। उपरोक्त में से कितने कथन सही हैं?","question_en":"With reference to location of India's oil refineries, consider the following statements: 1. Panipat refinery is located in Haryana state. 2. Nagapattinam refinery is located in Tamil Nadu state. 3. Mangalore refinery is located in Kerala state. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"मंगलौर रिफाइनरी कर्नाटक राज्य में स्थित है, जबकि केरल में कोच्चि रिफाइनरी स्थित है।","explanation_en":"Mangalore refinery is located in Karnataka state, whereas Kochi refinery is located in Kerala."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"जीवों एवं वनस्पतियों के वैज्ञानिक नामों का सही मिलान कीजिए:\nसूची-I: A. बिल्ली, B. शेर, C. आम, D. चना;\nसूची-II: 1. पैंथरा लियो, 2. साइसर एरिटिनम, 3. फेलिस कैटस, 4. मैंगीफेरा इंडिका","question_en":"Match scientific names of fauna and flora:\nList-I: A. Cat, B. Lion, C. Mango, D. Gram (Chickpea);\nList-II: 1. Panthera leo, 2. Cicer arietinum, 3. Felis catus, 4. Mangifera indica","options":[{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-3, B-1, C-2, D-4","en":"A-3, B-1, C-2, D-4"}],"answer":2,"explanation_hi":"बिल्ली का फेलिस कैटस, शेर का पैंथरा लियो, आम का मैंगीफेरा इंडिका तथा चने का साइसर एरिटिनम है।","explanation_en":"Cat is Felis catus, lion is Panthera leo, mango is Mangifera indica, and chickpea is Cicer arietinum."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान की प्रस्तावना में उल्लिखित निम्नलिखित शब्दों का सही क्रम कौन सा है?","question_en":"Which is the correct order of the following words mentioned in the Preamble of the Indian Constitution?","options":[{"hi":"संप्रभुता, समाजवादी, धर्मनिरपेक्ष, लोकतांत्रिक, गणराज्य","en":"Sovereign, Socialist, Secular, Democratic, Republic"},{"hi":"संप्रभुता, धर्मनिरपेक्ष, समाजवादी, गणराज्य, लोकतांत्रिक","en":"Sovereign, Secular, Socialist, Republic, Democratic"},{"hi":"समाजवादी, संप्रभुता, धर्मनिरपेक्ष, लोकतांत्रिक, गणराज्य","en":"Socialist, Sovereign, Secular, Democratic, Republic"},{"hi":"संप्रभुता, लोकतांत्रिक, समाजवादी, धर्मनिरपेक्ष, गणराज्य","en":"Sovereign, Democratic, Socialist, Secular, Republic"}],"answer":0,"explanation_hi":"प्रस्तावना में क्रमवार उल्लिखित शब्द संप्रभुता, समाजवादी, धर्मनिरपेक्ष (पंथनिरपेक्ष), लोकतांत्रिक तथा गणराज्य हैं।","explanation_en":"The sequential order of words in Preamble is Sovereign, Socialist, Secular, Democratic, and Republic."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
