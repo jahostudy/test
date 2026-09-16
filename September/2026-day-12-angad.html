@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jai Ho Study | Test</title>
+<style>
+  :root {
+    --navy: #062b63;
+    --deep: #031a3d;
+    --royal: #0a55a3;
+    --sky: #d9ecff;
+    --yellow: #fff200;
+    --red: #e81818;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --white: #ffffff;
+    --off: #f8fbff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 18px 50px rgba(3, 26, 61, 0.20);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Devanagari", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,242,0,0.20), transparent 28%),
+      radial-gradient(circle at top right, rgba(10,85,163,0.24), transparent 30%),
+      linear-gradient(135deg, #02132e 0%, #063a7c 42%, #f7fbff 42.3%, #f7fbff 100%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 22px; color: white; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 62px; height: 62px; border-radius: 16px; background: #171717; color: var(--yellow); display: grid; place-items: center; font-weight: 1000; font-size: 46px; line-height: 1; box-shadow: 0 12px 28px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.14); }
+  .brand h1 { margin: 0; font-size: clamp(22px, 3.8vw, 42px); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+  .brand p { margin: 5px 0 0; color: #d6e8ff; font-weight: 800; font-size: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.12); padding: 9px 13px; border-radius: 999px; backdrop-filter: blur(8px); font-weight: 900; white-space: nowrap; }
+  @media (max-width: 900px) { .topbar { align-items: flex-start; flex-direction: column; } }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+  .card { background: rgba(255,255,255,.93); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.8); overflow: hidden; }
+  .intro { padding: clamp(22px, 4vw, 38px); position: relative; }
+  .intro::before { content: ""; position: absolute; top: -80px; right: -70px; width: 240px; height: 240px; background: var(--sky); border-radius: 50%; z-index: 0; }
+  .intro > * { position: relative; z-index: 1; }
+  .tag { display: inline-block; background: #fff7d1; color: #8a6400; border: 1px solid #f9d64a; padding: 7px 12px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .intro h2 { margin: 16px 0 10px; color: var(--navy); font-size: clamp(28px, 5vw, 54px); line-height: 1.05; letter-spacing: -1px; }
+  .intro h2 span { color: var(--red); display: inline-block; }
+  .intro .sub { font-size: 17px; line-height: 1.7; color: #334155; margin: 14px 0 22px; }
+  .info-grid { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 10px; margin: 28px 0 24px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+  .info { border-radius: 16px; padding: 13px; background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; }
+  .info b { display: block; color: var(--navy); font-size: 20px; margin-bottom: 2px; }
+  .info span { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { border: 0; cursor: pointer; font-family: inherit; }
+  .btn { padding: 13px 18px; border-radius: 14px; font-weight: 950; font-size: 15px; transition: .22s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: linear-gradient(135deg, var(--red), #ff5b36); color: white; box-shadow: 0 10px 22px rgba(232,24,24,.28); }
+  .btn.secondary { background: var(--deep); color: white; }
+  .btn.light { background: #eaf3ff; color: var(--navy); }
+  .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .rules { padding: 22px; background: linear-gradient(145deg, rgba(3,26,61,.95), rgba(10,85,163,.93)), radial-gradient(circle at bottom right, rgba(255,242,0,.25), transparent 35%); color: white; min-height: 100%; }
+  .rules h3 { margin: 0 0 13px; font-size: 26px; color: var(--yellow); }
+  .rule { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.22); }
+  .rule .num { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,242,0,.16); color: var(--yellow); display: grid; place-items: center; font-weight: 1000; }
+  .rule p { margin: 0; line-height: 1.55; color: #e6f1ff; }
+  .name-box { margin-top: 18px; padding: 18px; background: #f8fbff; border: 1px solid #d8eaff; border-radius: 18px; }
+  .name-box h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+  .name-box p { margin: 0 0 12px; color: #475569; font-weight: 750; line-height: 1.55; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 620px) { .field-grid { grid-template-columns: 1fr; } }
+  input { width: 100%; font-family: inherit; font-weight: 850; font-size: 15px; border: 2px solid #dbeafe; border-radius: 14px; padding: 13px 14px; outline: none; background: #fff; color: var(--ink); }
+  input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(10,85,163,.10); }
+  .error-line { color: #991b1b; min-height: 18px; margin-top: 8px; font-size: 13px; font-weight: 900; }
+  .test-screen, .result-screen { display: none; }
+  .exam-shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 950px) { .exam-shell { grid-template-columns: 1fr; } }
+  .exam-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .exam-header h2 { margin: 0; font-size: 20px; }
+  .timer { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.24); border-radius: 13px; padding: 9px 12px; font-weight: 1000; letter-spacing: .3px; }
+  .progress { height: 10px; background: #e5eef9; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange), var(--green)); width: 0%; transition: .25s ease; }
+  .question-card { padding: clamp(18px, 3vw, 28px); }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .qno { font-weight: 1000; color: var(--navy); font-size: 18px; }
+  .topic { background: #eaf3ff; color: var(--royal); border: 1px solid #c9e2ff; padding: 7px 11px; border-radius: 999px; font-weight: 950; font-size: 13px; }
+  .qtext { white-space: pre-line; line-height: 1.72; font-size: 18px; color: #102033; font-weight: 780; }
+  .qtext-en { white-space: pre-line; line-height: 1.58; font-size: 15px; color: #475569; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .options { display: grid; gap: 10px; margin-top: 22px; }
+  .option { display: grid; grid-template-columns: 42px 1fr; gap: 11px; align-items: start; border: 2px solid #e2e8f0; background: white; border-radius: 16px; padding: 13px; text-align: left; transition: .18s ease; }
+  .option:hover { border-color: #9ed0ff; transform: translateX(2px); background: #f8fbff; }
+  .option.selected { border-color: var(--royal); background: #eaf3ff; box-shadow: 0 8px 18px rgba(10,85,163,.13); }
+  .option .letter { width: 36px; height: 36px; border-radius: 12px; background: #eef2f7; display: grid; place-items: center; font-weight: 1000; color: var(--navy); }
+  .option.selected .letter { background: var(--royal); color: white; }
+  .op-hi { font-weight: 850; color: #0f172a; line-height: 1.45; }
+  .op-en { color: #64748b; line-height: 1.35; font-size: 13px; margin-top: 4px; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .side { position: sticky; top: 14px; }
+  @media (max-width: 950px) { .side { position: static; } }
+  .side-card { padding: 18px; }
+  .side-title { margin: 0 0 12px; color: var(--navy); font-size: 18px; }
+  .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 13px; }
+  .mini { background: #f1f7ff; border: 1px solid #d8eaff; border-radius: 14px; padding: 10px; }
+  .mini b { display: block; color: var(--navy); font-size: 20px; }
+  .mini span { color: var(--muted); font-size: 12px; font-weight: 900; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .dot { height: 40px; border-radius: 12px; font-weight: 1000; background: #eef2f7; color: #334155; border: 2px solid transparent; }
+  .dot.current { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(6,43,99,.1); }
+  .dot.answered { background: #dcfce7; color: #166534; }
+  .dot.review { background: #fff7d1; color: #8a6400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 12px; font-weight: 850; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; background: #eef2f7; }
+  .legend .l-ans::before { background: #dcfce7; }
+  .legend .l-rev::before { background: #fff7d1; }
+  .legend .l-cur::before { background: #0a55a3; }
+  .result-hero { padding: 30px; text-align: center; background: radial-gradient(circle at top left, rgba(255,242,0,.22), transparent 30%), linear-gradient(135deg, var(--deep), var(--royal)); color: white; }
+  .result-hero h2 { margin: 0; font-size: clamp(28px, 5vw, 48px); color: var(--yellow); }
+  .result-hero p { margin: 10px auto 0; max-width: 760px; line-height: 1.7; color: #e6f1ff; }
+  .student-strip { margin: 18px auto 0; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .student-strip span { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); padding: 8px 12px; border-radius: 999px; font-weight: 900; color: #fff; }
+  .score-circle { width: 172px; height: 172px; border-radius: 50%; margin: 24px auto 6px; display: grid; place-items: center; background: conic-gradient(var(--yellow) 0deg, var(--yellow) var(--scoreDeg), rgba(255,255,255,.18) var(--scoreDeg), rgba(255,255,255,.18) 360deg); box-shadow: inset 0 0 0 10px rgba(255,255,255,.14), 0 15px 38px rgba(0,0,0,.25); }
+  .score-circle .inner { width: 130px; height: 130px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; font-weight: 1000; font-size: 34px; line-height: 1; }
+  .score-circle small { display: block; font-size: 13px; color: #64748b; margin-top: 6px; }
+  .result-body { padding: 22px; }
+  .result-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 950px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rbox { border-radius: 18px; padding: 14px; background: #f8fbff; border: 1px solid #dcecff; text-align: center; }
+  .rbox b { display: block; color: var(--navy); font-size: 25px; }
+  .rbox span { color: var(--muted); font-size: 13px; font-weight: 900; }
+  .rank-board { margin-top: 18px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; }
+  @media (max-width: 850px) { .rank-board { grid-template-columns: 1fr; } }
+  .rank-card { background: linear-gradient(180deg, #f8fbff, #edf6ff); border: 1px solid #d8eaff; border-radius: 20px; padding: 16px; }
+  .rank-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 20px; }
+  .rank-card p { margin: 0; color: #475569; font-weight: 800; line-height: 1.55; }
+  .rank-big { font-size: 42px; color: var(--red); font-weight: 1000; margin: 8px 0; }
+  .leader-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+  .leader-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; font-weight: 850; }
+  .leader-list .lr { width: 34px; height: 34px; border-radius: 50%; background: #fff7d1; display: grid; place-items: center; color: #8a6400; font-weight: 1000; }
+  .leader-list .score { color: var(--green); font-weight: 1000; }
+  .review-list { margin-top: 20px; display: grid; gap: 12px; }
+  .review-item { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: white; }
+  .review-head { padding: 14px; display: flex; justify-content: space-between; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .badge { padding: 6px 10px; border-radius: 999px; font-weight: 950; font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: #166534; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.skip { background: #eef2f7; color: #475569; }
+  .review-content { padding: 14px; line-height: 1.65; }
+  .answer-line { margin-top: 10px; padding: 11px 12px; background: #f1f7ff; border-left: 4px solid var(--royal); border-radius: 12px; }
+  .explain { margin-top: 10px; color: #334155; }
+  .footer-note {
+    color: #07366d;
+    text-align: center;
+    margin: 18px auto 10px;
+    max-width: 920px;
+    padding: 10px 14px;
+    font-weight: 900;
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(10,85,163,.18);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(3,26,61,.10);
+  }
+  @media (max-width: 620px) {
+    .footer-note { margin: 16px 10px 18px; border-radius: 18px; font-size: 11.8px; padding: 9px 12px; }
+  }
+  .hidden { display: none !important; }
+  @media print { body { background: white; } .topbar, .btns, .side, .exam-header, .progress, .rank-board { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } .result-screen { display: block !important; } }
+#qtext,#qtextEn{white-space:pre-line}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">J</div>
+        <div><h1>JAI HO STUDY</h1><p id="topSub">UPPCS Prelims 2026 / RO-ARO Practice</p></div>
+      </div>
+      <div class="pill" id="pillText">🏆 Daily Rank Ready</div>
+    </header>
+    <main id="homeScreen" class="home-screen">
+      <section class="hero">
+        <div class="card intro">
+          <span class="tag" id="tagText">UPPCS Prelims 2026 / RO-ARO</span>
+          <h2 id="homeTitle">Jai Ho Study <span>Test</span></h2>
+          <p class="sub" id="homeSub">नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।</p>
+          <div class="info-grid">
+            <div class="info"><b id="qCountBox">0</b><span>Questions</span></div>
+            <div class="info"><b id="timeBox">25 Min</b><span>Timer</span></div>
+            <div class="info"><b id="marksBox">+2</b><span>Correct</span></div>
+            <div class="info"><b id="negBox">-0.66</b><span>Wrong</span></div>
+          </div>
+          <div class="name-box">
+            <h3>नाम लिखकर टेस्ट शुरू करें</h3>
+            <p>Rank और result में यही नाम दिखेगा। Rank केवल आपके <b>पहले प्रयास</b> से बनेगी — Retake जितनी बार चाहें, वह सिर्फ़ practice रहेगा।</p>
+            <div class="field-grid" style="grid-template-columns:1fr">
+              <input id="studentName" maxlength="60" placeholder="अपना नाम लिखें" autocomplete="name" />
+            </div>
+            <div class="error-line" id="nameErr"></div>
+            <div class="btns"><button class="btn primary" onclick="startTest()">▶ टेस्ट शुरू करें</button></div>
+          </div>
+        </div>
+        <div class="card rules">
+          <h3>निर्देश / Instructions</h3>
+          <div class="rule"><div class="num">1</div><p>प्रत्येक प्रश्न में चार विकल्प हैं। केवल एक विकल्प सही है।</p></div>
+          <div class="rule"><div class="num">2</div><p>सही उत्तर पर निर्धारित अंक और गलत उत्तर पर निर्धारित ऋणात्मक अंक मिलेंगे। बिना उत्तर वाले प्रश्न पर 0 अंक।</p></div>
+          <div class="rule"><div class="num">3</div><p>आप किसी प्रश्न को Mark for Review कर सकते हैं और Question Palette से किसी भी प्रश्न पर जा सकते हैं।</p></div>
+          <div class="rule"><div class="num">4</div><p>Submit के बाद result, accuracy, attempted, correct/wrong और detailed explanation दिखाई देगा।</p></div>
+          <div class="rule"><div class="num">5</div><p>Rank केवल <b>पहले प्रयास</b> से मानी जाएगी। बाद में Retake जितनी बार चाहें करें — वह practice होगा, rank नहीं बदलेगी।</p></div>
+        </div>
+      </section>
+    </main>
+    <main id="testScreen" class="test-screen">
+      <section class="exam-shell">
+        <div class="card">
+          <div class="exam-header"><h2 id="examTitle">Jai Ho Study Test</h2><div class="timer" id="timer">25:00</div></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="question-card" id="questionCard">
+            <div class="qmeta"><div class="qno" id="qno">Question 1 of 0</div><div class="topic" id="topic">Topic</div></div>
+            <div class="qtext" id="qtext"></div><div class="qtext-en" id="qtextEn"></div><div class="options" id="options"></div>
+            <div class="nav-row"><button class="btn light" onclick="prevQ()">← Previous</button><button class="btn secondary" onclick="toggleReview()" id="reviewBtn">☆ Mark for Review</button><button class="btn light" onclick="clearAnswer()">Clear Response</button><button class="btn primary" onclick="nextQ()">Save & Next →</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="card side-card"><h3 class="side-title">Question Palette</h3><div class="stats-mini"><div class="mini"><b id="attemptedCount">0</b><span>Attempted</span></div><div class="mini"><b id="reviewCount">0</b><span>Review</span></div></div><div class="palette" id="palette"></div><div class="legend"><span class="l-cur">Current</span><span class="l-ans">Answered</span><span class="l-rev">Review</span></div><div style="height:12px"></div><button class="btn primary" style="width:100%" onclick="submitTest()">Submit Test</button></div></aside>
+      </section>
+    </main>
+    <main id="resultScreen" class="result-screen">
+      <section class="card">
+        <div class="result-hero"><h2>Result Analysis</h2><p id="resultMessage">Your performance report is ready.</p><div class="student-strip" id="studentStrip"></div><div class="score-circle" id="scoreCircle" style="--scoreDeg: 0deg"><div class="inner"><div><span id="scorePercent">0%</span><small>Score</small></div></div></div><div class="btns" style="justify-content:center; margin-top:18px"><button class="btn primary" onclick="restartTest()">↻ Retake Test</button><button class="btn light" onclick="window.print()">🖨 Print / Save PDF</button></div></div>
+        <div class="result-body">
+          <div class="result-grid"><div class="rbox"><b id="finalMarks">0</b><span>Marks</span></div><div class="rbox"><b id="finalAttempted">0</b><span>Attempted</span></div><div class="rbox"><b id="finalCorrect">0</b><span>Correct</span></div><div class="rbox"><b id="finalWrong">0</b><span>Wrong</span></div><div class="rbox"><b id="finalAccuracy">0%</b><span>Accuracy</span></div><div class="rbox"><b id="finalTime">0:00</b><span>Time</span></div></div>
+          <div class="rank-board" id="rankBoard"><div class="rank-card"><h3>आपकी Daily Rank</h3><div class="rank-big" id="ownRank">—</div><p id="rankStatus">आपकी rank यहाँ दिखेगी।</p></div><div class="rank-card"><h3>Top 20 Leaderboard</h3><p id="leaderHint">हर test की leaderboard अलग रहेगी।</p><ol class="leader-list" id="leaderList"></ol></div></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-note" id="footerNote">© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com</div>
+  </div>
+<script>
+const TEST = {"title":"Day 12 angad","highlight":"Day 12 angad","shortTitle":"Day 12 angad","subtitle":"UPPCS Prelims 2026 / RO-ARO • GS Test","tag":"UPPCS Prelims 2026 / RO-ARO","pill":"🏆 Live Daily Rank • Jai Ho Study","description":"UPPCS Prelims 2026 / RO-ARO focused practice test. Submit के बाद score, explanation और live rank दिखेगा।","durationMinutes":25,"marksPerQuestion":2,"negativeMarks":0.66,"testId":"jaiho-uppcs-2026-gs-test-day-12-angad-20260916-19bcc","footerCredit":"© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com","rankingEnabled":true,"firebaseConfig":{"apiKey":"AIzaSyCjbXJF3zUCfqqwn9s1jEB_Ojn4YvXMr3I","authDomain":"jai-ho-1c1d7.firebaseapp.com","projectId":"jai-ho-1c1d7","storageBucket":"jai-ho-1c1d7.firebasestorage.app","messagingSenderId":"472878277527","appId":"1:472878277527:web:a62780ddadf60fd5e5dad2","measurementId":"G-LV29VGHG6J"},"publishDateStr":"2026-09-16","questions":[{"id":1,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित कथनों पर विचार करें:\nकथन 1: अशोक के 13वें दीर्घ शिलालेख में कलिंग विजय (261 ई.पू.) का वर्णन मिलता है।\nकथन 2: अशोक के दूसरे दीर्घ शिलालेख में युक्त, रज्जुक तथा प्रादेशिक नामक तीन नए अधिकारियों की नियुक्ति का उल्लेख है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 1: Consider the following statements:\nStatement 1: Ashoka's 13th Major Rock Edict mentions the conquest of Kalinga (261 BC).\nStatement 2: Ashoka's 2nd Major Rock Edict mentions the appointment of three new officers named Yukta, Rajjuka, and Pradesika. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"युक्त, रज्जुक और प्रादेशिक अधिकारियों का उल्लेख (प्रत्येक 5 वर्ष में दौरे पर जाने के निर्देश सहित) तीसरे शिलालेख में है, जबकि दूसरे शिलालेख में मनुष्यों व पशुओं की चिकित्सा व्यवस्था तथा चोल, पाण्ड्य आदि पड़ोसी राज्यों का वर्णन है।","explanation_en":"Yukta, Rajjuka, and Pradesika officers are mentioned in the 3rd Rock Edict (along with the instruction to go on tour every 5 years), whereas the 2nd Edict describes medical treatment for humans and animals and mentions neighbouring states such as the Cholas and Pandyas."},{"id":2,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"लोक लेखा समिति (PAC) के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. लोक लेखा समिति की स्थापना वर्ष 1921 में की गई थी। 2. इस समिति में कुल 22 सदस्य होते हैं जिनमें 15 सदस्य लोक सभा से और 7 सदस्य राज्य सभा से चुने जाते हैं। 3. समिति के अध्यक्ष की नियुक्ति भारत के राष्ट्रपति द्वारा की जाती है। कौन से कथन सही हैं?","question_en":"Question 2: With reference to the Public Accounts Committee (PAC), consider the following statements: 1. The Public Accounts Committee was established in the year 1921. 2. This committee has a total of 22 members, of which 15 members are elected from Lok Sabha and 7 members from Rajya Sabha. 3. The Chairman of the committee is appointed by the President of India. Which of the statements are correct?","options":[{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":1,"explanation_hi":"लोक लेखा समिति के अध्यक्ष की नियुक्ति लोक सभा अध्यक्ष द्वारा सदस्यों में से की जाती है, न कि राष्ट्रपति द्वारा।","explanation_en":"The Chairman of the Public Accounts Committee is appointed by the Lok Sabha Speaker from among the members, not by the President."},{"id":3,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I (एल्युमिनियम कंपनियाँ) को सूची-II (वे देश जिनके सहयोग से इनकी स्थापना हुई) से सुमेलित कीजिए:\nसूची-I: A. बाल्को, B. हिंडाल्को, C. नाल्को, D. माल्को;\nसूची-II: 1. इटली, 2. सोवियत संघ, 3. फ्रांस, 4. संयुक्त राज्य अमेरिका","question_en":"Question 3: Match List-I (Aluminium Companies) with List-II (Countries that assisted in their establishment):\nList-I: A. BALCO, B. HINDALCO, C. NALCO, D. MALCO;\nList-II: 1. Italy, 2. Soviet Union, 3. France, 4. USA","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-4, C-1, D-3","en":"A-2, B-4, C-1, D-3"},{"hi":"A-2, B-4, C-3, D-1","en":"A-2, B-4, C-3, D-1"},{"hi":"A-4, B-2, C-3, D-1","en":"A-4, B-2, C-3, D-1"}],"answer":2,"explanation_hi":"बाल्को सोवियत संघ, हिंडाल्को यूएसए, नाल्को फ्रांस तथा माल्को इटली के सहयोग से स्थापित की गई कंपनी है।","explanation_en":"BALCO was assisted by the Soviet Union, HINDALCO by the USA, NALCO by France, and MALCO by Italy."},{"id":4,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण संबंधी अधिनियमों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. वन्य जीव संरक्षण अधिनियम वर्ष 1972 में पारित किया गया था। 2. जल (प्रदूषण की रोकथाम एवं नियंत्रण) अधिनियम वर्ष 1980 में पारित किया गया। 3. पर्यावरण (संरक्षण) अधिनियम वर्ष 1986 में लागू हुआ। उपर्युक्त में से कितने कथन सही हैं?","question_en":"Question 4: With reference to environmental acts, consider the following statements: 1. The Wildlife Protection Act was passed in the year 1972. 2. The Water (Prevention and Control of Pollution) Act was passed in the year 1980. 3. The Environment (Protection) Act came into force in the year 1986. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"जल प्रदूषण निवारण एवं नियंत्रण अधिनियम वर्ष 1974 में पारित हुआ था, जबकि 1980 में वन (संरक्षण) अधिनियम बना था।","explanation_en":"The Water Pollution Prevention and Control Act was passed in 1974, whereas the Forest (Conservation) Act was enacted in 1980."},{"id":5,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"हिमालय के प्रादेशिक विभाजनों को पश्चिम से पूर्व की ओर सही क्रम में व्यवस्थित कीजिए: 1. कुमायूं हिमालय, 2. असम हिमालय, 3. पंजाब हिमालय, 4. नेपाल हिमालय","question_en":"Question 5: Arrange the regional divisions of the Himalayas in order from West to East: 1. Kumaon Himalaya, 2. Assam Himalaya, 3. Punjab Himalaya, 4. Nepal Himalaya","options":[{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"3, 4, 1, 2","en":"3, 4, 1, 2"},{"hi":"3, 1, 2, 4","en":"3, 1, 2, 4"},{"hi":"3, 1, 4, 2","en":"3, 1, 4, 2"}],"answer":3,"explanation_hi":"पश्चिम से पूर्व का सही क्रम पंजाब (सिंधु-सतलज), कुमायूं (सतलज-काली), नेपाल (काली-तीस्ता) तथा असम हिमालय (तीस्ता-दिहांग) है।","explanation_en":"The correct west-to-east order is Punjab (Indus-Sutlej), Kumaon (Sutlej-Kali), Nepal (Kali-Teesta), and Assam Himalaya (Teesta-Dihang)."},{"id":6,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौर्य साम्राज्य के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: चंद्रगुप्त मौर्य ने अपने अंतिम दिनों में जैन भिक्षु भद्रबाहु का शिष्यत्व ग्रहण किया था।\nकथन 2: चंद्रगुप्त मौर्य ने 305 ई.पू. में श्रवणबेलगोला में सल्लेखना द्वारा शरीर त्याग दिया। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 6: With reference to the Mauryan Empire, consider the following statements:\nStatement 1: Chandragupta Maurya took the discipleship of Jain monk Bhadrabahu in his final days.\nStatement 2: Chandragupta Maurya gave up his body through Sallekhana at Shravanabelagola in 305 BC. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"चंद्रगुप्त मौर्य ने श्रवणबेलगोला में 298 ई.पू. में सल्लेखना की थी; 305 ई.पू. में सेल्युकस और चंद्रगुप्त मौर्य का युद्ध हुआ था।","explanation_en":"Chandragupta Maurya performed Sallekhana at Shravanabelagola in 298 BC; 305 BC was the year of his battle with Seleucus."},{"id":7,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण संरक्षण आंदोलनों और उनके नेतृत्वकर्ताओं के संदर्भ में निम्नलिखित युग्मों पर विचार करें: 1. चिपको आंदोलन – सुंदरलाल बहुगुणा, 2. अपिको आंदोलन – मेधा पाटकर, 3. नीलगिरि बचाओ अभियान – धर्मलिंगम वेणुगोपाल। उपर्युक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Question 7: With reference to environmental conservation movements and their leaders, consider the following pairs: 1. Chipko Movement – Sunderlal Bahuguna, 2. Appiko Movement – Medha Patkar, 3. Save Nilgiris Campaign – Dharmalingam Venugopal. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"No pair"}],"answer":1,"explanation_hi":"अपिको आंदोलन का नेतृत्व पांडुरंग हेगड़े ने किया था, जबकि मेधा पाटकर नर्मदा बचाओ आंदोलन से जुड़ी थीं; नीलगिरि बचाओ अभियान (1985) के संस्थापक धर्मलिंगम वेणुगोपाल थे।","explanation_en":"The Appiko Movement was led by Pandurang Hegde, while Medha Patkar was associated with the Narmada Bachao Andolan; the Save Nilgiris Campaign (1985) was founded by Dharmalingam Venugopal."},{"id":8,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से कौन सा पर्वतीय दर्रा अपने राज्य अथवा केंद्र शासित प्रदेश के साथ सही सुमेलित नहीं है?","question_en":"Question 8: Which one of the following mountain passes is NOT correctly matched with its State or Union Territory?","options":[{"hi":"चांगला दर्रा – लद्दाख","en":"Chang La – Ladakh"},{"hi":"लिपुलेख दर्रा – उत्तराखण्ड","en":"Lipulekh Pass – Uttarakhand"},{"hi":"जैलेप्ला दर्रा – सिक्किम","en":"Jelep La – Sikkim"},{"hi":"तुजु दर्रा – अरुणाचल प्रदेश","en":"Tuju Pass – Arunachal Pradesh"}],"answer":3,"explanation_hi":"तुजु दर्रा मणिपुर में स्थित है, जबकि बोम्डिला, यांग्याप और दीफू दर्रे अरुणाचल प्रदेश में स्थित हैं।","explanation_en":"Tuju Pass is located in Manipur, whereas Bomdi La, Yangyap, and Diphu passes are located in Arunachal Pradesh."},{"id":9,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के महान्यायवादी (अनुच्छेद 76) के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत का महान्यायवादी देश का सर्वोच्च कानून अधिकारी होता है।\nकथन 2: महान्यायवादी का कार्यकाल संविधान द्वारा 5 वर्ष तय किया गया है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 9: With reference to the Attorney General of India (Article 76), consider the following statements:\nStatement 1: The Attorney General of India is the highest law officer of the country.\nStatement 2: The tenure of the Attorney General is fixed as 5 years by the Constitution. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"महान्यायवादी का कार्यकाल संविधान द्वारा तय नहीं है; वह राष्ट्रपति के प्रसादपर्यन्त पद धारण करता है।","explanation_en":"The tenure of the Attorney General is not fixed by the Constitution; he holds office during the pleasure of the President."},{"id":10,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (महाजनपद): A. कम्बोज, B. मत्स्य, C. चेदि, D. शूरसेन; सूची-II (राजधानी): 1. विराटनगर, 2. मथुरा, 3. हाटक, 4. शुक्तिमती","question_en":"Question 10: Match List-I with List-II: List-I (Mahajanapada): A. Kamboja, B. Matsya, C. Chedi, D. Shurasena; List-II (Capital): 1. Viratanagara, 2. Mathura, 3. Hataka, 4. Shuktimati","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-4, B-1, C-3, D-2","en":"A-4, B-1, C-3, D-2"}],"answer":2,"explanation_hi":"कम्बोज की राजधानी हाटक, मत्स्य की विराटनगर, चेदि की शुक्तिमती तथा शूरसेन की मथुरा थी।","explanation_en":"The capital of Kamboja was Hataka, Matsya was Viratanagara, Chedi was Shuktimati, and Shurasena was Mathura."},{"id":11,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के ऐतिहासिक स्थलों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. दशावतार मंदिर ललितपुर जिले के देवगढ़ गाँव में स्थित है। 2. भीतरगाँव मंदिर कानपुर जिले में स्थित है तथा इसे छठी शताब्दी में गुप्त काल में बनाया गया था। 3. स्कंदगुप्त का भितरी स्तंभ शिलालेख वाराणसी जिले में खोजा गया था। कौन से कथन सही हैं?","question_en":"Question 11: With reference to historical sites of Uttar Pradesh, consider the following statements: 1. The Dashavatara Temple is located in Deogarh village of Lalitpur district. 2. The Bhitargaon Temple is located in Kanpur district and was built in the 6th century during the Gupta period. 3. Skandagupta's Bhitari pillar inscription was discovered in Varanasi district. Which of the statements are correct?","options":[{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"1, 2 और 3","en":"1, 2 and 3"},{"hi":"केवल 1 और 2","en":"Only 1 and 2"}],"answer":3,"explanation_hi":"भितरी स्तंभ शिलालेख गाज़ीपुर जिले के सैदपुर तहसील के भितरी गाँव में खोजा गया था, न कि वाराणसी में।","explanation_en":"The Bhitari pillar inscription was discovered at Bhitari village in Saidpur, Ghazipur district, not in Varanasi."},{"id":12,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वायुमंडलीय प्रदूषकों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: कार्बन मोनोऑक्साइड (CO) और मीथेन (CH4) प्राथमिक प्रदूषक हैं।\nकथन 2: ट्रोपोस्फेरिक ओजोन (O3) और पेरोक्सीएसिटिल नाइट्रेट (PAN) द्वितीयक प्रदूषक हैं। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 12: With reference to atmospheric pollutants, consider the following statements:\nStatement 1: Carbon monoxide (CO) and Methane (CH4) are primary pollutants.\nStatement 2: Tropospheric Ozone (O3) and Peroxyacetyl Nitrate (PAN) are secondary pollutants. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"CO और CH4 सीधे उत्सर्जित होने वाले प्राथमिक प्रदूषक हैं, जबकि ओजोन और PAN रासायनिक अभिक्रिया से बनने वाले द्वितीयक प्रदूषक हैं।","explanation_en":"CO and CH4 are directly emitted primary pollutants, whereas tropospheric ozone and PAN are secondary pollutants formed by chemical reactions."},{"id":13,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"वैज्ञानिक उपकरणों और तरंगों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. सोनार उपकरण में पराश्रव्य तरंगों का उपयोग किया जाता है। 2. कपड़ों और घड़ी पुर्जों से धूल हटाने के लिए अवरक्त तरंगों का प्रयोग होता है। 3. फोटोमीटर का उपयोग प्रकाश-तीव्रता मापने के लिए किया जाता है। उपर्युक्त में से कितने कथन सही हैं?","question_en":"Question 13: With reference to scientific instruments and waves, consider the following statements: 1. Ultrasonic waves are used in Sonar equipment. 2. Infrared waves are used to remove dust from clothes and watch parts. 3. Photometer is used to measure light intensity. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"कपड़ों और घड़ी पुर्जों से धूल हटाने के लिए पराश्रव्य तरंगों (ultrasonic waves) का उपयोग होता है, न कि अवरक्त तरंगों का।","explanation_en":"Ultrasonic waves, not infrared waves, are used to remove dust from clothes and watch parts."},{"id":14,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के प्रमुख लोक नृत्यों के संदर्भ में कौन सा एक सही सुमेलित नहीं है?","question_en":"Question 14: With reference to folk dances of Uttar Pradesh, which one is NOT correctly matched?","options":[{"hi":"नटवरी नृत्य – पूर्वांचल के यादव समाज द्वारा","en":"Natwari dance – By Yadav community of Purvanchal"},{"hi":"चरकुला नृत्य – ब्रज क्षेत्र में होली पर्व पर","en":"Charkula dance – On Holi festival in Braj region"},{"hi":"पाई डंडा नृत्य – बुंदेलखंड के अहीर समाज द्वारा","en":"Pai Danda dance – By Ahir community of Bundelkhand"},{"hi":"कर्मा नृत्य – अवध क्षेत्र में रामनवमी पर्व पर","en":"Karma dance – On Ram Navami festival in Awadh region"}],"answer":3,"explanation_hi":"कर्मा नृत्य सोनभद्र एवं मिर्जापुर में खरवार आदिवासियों द्वारा किया जाता है; अवध में रामनवमी पर जोगिनी नृत्य होता है।","explanation_en":"Karma dance is performed by Kharwar tribals in Sonbhadra and Mirzapur; Jogini dance is performed on Ram Navami in Awadh."},{"id":15,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सम्राट अशोक के जीवन से जुड़े निम्नलिखित घटनाक्रमों को कालक्रम में व्यवस्थित कीजिए: 1. कलिंग विजय, 2. अशोक का राज्याभिषेक, 3. राज्याभिषेक के 13वें वर्ष धम्म महामात्रों की नियुक्ति","question_en":"Question 15: Arrange the following events associated with Emperor Ashoka in chronological order: 1. Conquest of Kalinga, 2. Ashoka's coronation, 3. Appointment of Dhamma Mahamatras in the 13th regnal year","options":[{"hi":"1, 2, 3","en":"1, 2, 3"},{"hi":"2, 1, 3","en":"2, 1, 3"},{"hi":"2, 3, 1","en":"2, 3, 1"},{"hi":"3, 2, 1","en":"3, 2, 1"}],"answer":1,"explanation_hi":"अशोक का राज्याभिषेक 269 ई.पू. में हुआ, कलिंग विजय 8वें वर्ष (261 ई.पू.) में हुई तथा धम्म महामात्रों की नियुक्ति 13वें वर्ष (256 ई.पू.) में हुई।","explanation_en":"Ashoka's coronation occurred in 269 BC, Kalinga war in his 8th regnal year (261 BC), and Dhamma Mahamatras were appointed in his 13th regnal year (256 BC)."},{"id":16,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के बंदरगाहों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: भारत के 12 क्रियाशील प्रमुख बंदरगाहों में से सर्वाधिक (3) तमिलनाडु में स्थित हैं।\nकथन 2: काण्डला बंदरगाह भारत का सबसे पुराना कृत्रिम बंदरगाह है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 16: With reference to Indian ports, consider the following statements:\nStatement 1: Among India's 12 operational major ports, the highest number (3) are located in Tamil Nadu.\nStatement 2: Kandla Port is the oldest artificial port of India. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"तमिलनाडु में चेन्नई, कामराजर (एन्नौर) और वी.ओ. चिदंबरनार (तूतीकोरिन) तीन प्रमुख बंदरगाह हैं; चेन्नई भारत का सबसे पुराना कृत्रिम बंदरगाह है, जबकि काण्डला गुजरात का एक ज्वारीय एवं मुक्त व्यापार बंदरगाह है। नए प्रमुख बंदरगाहों के विकास के साथ यह संख्या बदल सकती है, अतः परीक्षा से पूर्व नवीनतम स्थिति देख लें।","explanation_en":"Tamil Nadu has three major ports: Chennai, Kamarajar (Ennore), and V.O. Chidambaranar (Tuticorin); Chennai is the oldest artificial port in India, whereas Kandla is a tidal and free-trade port in Gujarat. This number may change as new major ports are developed, so check the latest position before the exam."},{"id":17,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I (पारिस्थितिक अवधारणाएँ) को सूची-II (संबद्ध प्रतिपादक) से सुमेलित कीजिए:\nसूची-I: A. पारिस्थितिक तंत्र, B. पारिस्थितिक नीश, C. हरित विकास, D. प्राकृतिक कृषि;\nसूची-II: 1. जोसेफ ग्रीनेले, 2. मासानोबु फुकुओका, 3. ए. जी. टांसले, 4. डब्लू. एम. एडम्स","question_en":"Question 17: Match List-I (Ecological Concepts) with List-II (Associated Proponents):\nList-I: A. Ecosystem, B. Ecological Niche, C. Green Development, D. Natural Farming;\nList-II: 1. Joseph Grinnell, 2. Masanobu Fukuoka, 3. A.G. Tansley, 4. W.M. Adams","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-4, B-1, C-3, D-2","en":"A-4, B-1, C-3, D-2"}],"answer":1,"explanation_hi":"पारिस्थितिक तंत्र टांसले ने, नीश ग्रीनेले ने, हरित विकास डब्लू. एम. एडम्स ने तथा प्राकृतिक कृषि फुकुओका ने दी थी।","explanation_en":"Ecosystem was coined by Tansley, Niche by Grinnell, Green Development by W.M. Adams, and Natural Farming by Fukuoka."},{"id":18,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"कौटिल्य के अर्थशास्त्र में वर्णित सप्तांग सिद्धांत के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. सप्तांग सिद्धांत के अनुसार राजा को राज्य का शीर्ष माना गया है। 2. अमात्य को राज्य का मस्तिष्क माना गया है। 3. दुर्ग को राज्य की भुजाएं माना गया है। कौन से कथन सही हैं?","question_en":"Question 18: With reference to the Saptanga Theory in Kautilya's Arthashastra, consider the following statements: 1. According to the Saptanga theory, the King is regarded as the head of the state. 2. Amatya is regarded as the brain of the state. 3. Durga (Fort) is regarded as the arms of the state. Which of the statements are correct?","options":[{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":2,"explanation_hi":"सप्तांग सिद्धांत में अमात्य को राज्य की आँख तथा दण्ड को राज्य का मस्तिष्क माना गया है, अतः कथन 2 असत्य है।","explanation_en":"In Saptanga theory, Amatya is regarded as the eyes and Danda as the brain of the state, making statement 2 false."},{"id":19,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"घाटियों और उनकी अवस्थिति के संदर्भ में निम्नलिखित युग्मों पर विचार करें: 1. सांगला घाटी – हिमाचल प्रदेश, 2. युमथांग घाटी – सिक्किम, 3. नेलांग घाटी – हिमाचल प्रदेश। उपर्युक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Question 19: With reference to valleys and their locations, consider the following pairs: 1. Sangla Valley – Himachal Pradesh, 2. Yumthang Valley – Sikkim, 3. Nelang Valley – Himachal Pradesh. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"No pair"}],"answer":1,"explanation_hi":"नेलांग घाटी उत्तराखण्ड में स्थित है, जबकि सांगला हिमाचल प्रदेश में तथा युमथांग घाटी सिक्किम में स्थित है।","explanation_en":"Nelang Valley is located in Uttarakhand, whereas Sangla is in Himachal Pradesh and Yumthang is in Sikkim."},{"id":20,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय संविधान में कार्यपालिका से संबंधित अनुच्छेदों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: अनुच्छेद 74 मंत्रिपरिषद् द्वारा राष्ट्रपति को सहायता और सलाह देने की शक्ति से संबंधित है।\nकथन 2: अनुच्छेद 77 के तहत प्रधानमंत्री की नियुक्ति राष्ट्रपति द्वारा की जाती है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 20: With reference to articles related to the Executive in the Indian Constitution, consider the following statements:\nStatement 1: Article 74 relates to the power of the Council of Ministers to aid and advise the President.\nStatement 2: Under Article 77, the Prime Minister is appointed by the President. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"प्रधानमंत्री की नियुक्ति राष्ट्रपति द्वारा अनुच्छेद 75 के तहत की जाती है; अनुच्छेद 77 भारत सरकार के कार्यों के संचालन से संबंधित है।","explanation_en":"The Prime Minister is appointed by the President under Article 75; Article 77 pertains to the conduct of business of the Government of India."},{"id":21,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अशोक के शिलालेखों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. 'अशोक' नाम का स्पष्ट उल्लेख मास्की और नेत्तूर अभिलेखों में मिलता है। 2. अशोक के अभिलेख केवल ब्राह्मी और खरोष्ठी लिपियों में उत्कीर्ण हैं। 3. एर्रगुडी शिलालेख स्थल आंध्र प्रदेश के कर्नूल जिले में स्थित है। उपर्युक्त में से कितने कथन सही हैं?","question_en":"Question 21: With reference to Ashoka's inscriptions, consider the following statements: 1. The name 'Ashoka' is explicitly mentioned in Maski and Nettur inscriptions. 2. Ashoka's inscriptions are engraved only in Brahmi and Kharosthi scripts. 3. The Erragudi rock edict site is located in Kurnool district of Andhra Pradesh. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":1,"explanation_hi":"अशोक के अभिलेख ब्राह्मी और खरोष्ठी के अतिरिक्त आरामाइक और यूनानी लिपियों में भी प्राप्त होते हैं, अतः कथन 2 असत्य है।","explanation_en":"Ashoka's inscriptions are also found in Aramaic and Greek scripts in addition to Brahmi and Kharosthi, making statement 2 false."},{"id":22,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (विद्युत चुंबकीय तरंगें): A. गामा किरणें, B. एक्स किरणें, C. पराबैंगनी किरणें, D. सूक्ष्म तरंगें; सूची-II (अनुप्रयोग): 1. जल शोधक में जीवाणुनाश हेतु, 2. हड्डी की बनावट देखने में, 3. राडार प्रणाली एवं माइक्रोवेव ओवन में, 4. कैंसर की कोशिकाओं को नष्ट करने में","question_en":"Question 22: Match List-I with List-II: List-I (Electromagnetic Waves): A. Gamma rays, B. X-rays, C. Ultraviolet rays, D. Microwaves; List-II (Application): 1. Water purification and disinfection, 2. Examining bone fractures, 3. Radar systems and microwave ovens, 4. Destroying cancer cells","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-4, B-1, C-2, D-3","en":"A-4, B-1, C-2, D-3"},{"hi":"A-2, B-4, C-1, D-3","en":"A-2, B-4, C-1, D-3"},{"hi":"A-4, B-2, C-1, D-3","en":"A-4, B-2, C-1, D-3"}],"answer":3,"explanation_hi":"गामा किरणें कैंसर उपचार, एक्स किरणें अस्थि परीक्षण, यूवी किरणें जल शोधन तथा सूक्ष्म तरंगें राडार एवं ओवन में प्रयुक्त होती हैं।","explanation_en":"Gamma rays are used in cancer therapy, X-rays in bone imaging, UV in water purification, and microwaves in radar and ovens."},{"id":23,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण से संबंधित निम्नलिखित अधिनियमों को उनके पारित होने के सही कालक्रम में व्यवस्थित कीजिए: 1. वन (संरक्षण) अधिनियम, 2. पर्यावरण (संरक्षण) अधिनियम, 3. जल (प्रदूषण की रोकथाम एवं नियंत्रण) अधिनियम, 4. जैविक विविधता अधिनियम","question_en":"Question 23: Arrange the following environmental acts in correct chronological order of their enactment: 1. Forest (Conservation) Act, 2. Environment (Protection) Act, 3. Water (Prevention and Control of Pollution) Act, 4. Biological Diversity Act","options":[{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"3, 2, 1, 4","en":"3, 2, 1, 4"},{"hi":"3, 1, 2, 4","en":"3, 1, 2, 4"},{"hi":"1, 3, 2, 4","en":"1, 3, 2, 4"}],"answer":2,"explanation_hi":"जल प्रदूषण अधिनियम 1974, वन संरक्षण अधिनियम 1980, पर्यावरण संरक्षण अधिनियम 1986 तथा जैव विविधता अधिनियम 2002 में पारित हुआ।","explanation_en":"The Water Act was enacted in 1974, Forest Conservation Act in 1980, Environment Protection Act in 1986, and Biodiversity Act in 2002."},{"id":24,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मेगस्थनीज और उसके विवरण के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: मेगस्थनीज के अनुसार भारत में सात प्रकार की जातियां विद्यमान थीं।\nकथन 2: मेगस्थनीज द्वारा रचित 'इंडिका' ग्रंथ आज अपने मूल स्वरूप में पूर्णतः उपलब्ध है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 24: With reference to Megasthenes and his account, consider the following statements:\nStatement 1: According to Megasthenes, there were seven classes or castes in Indian society.\nStatement 2: The text 'Indica' written by Megasthenes is available completely in its original form today. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"मेगस्थनीज की 'इंडिका' अपने मूल स्वरूप में उपलब्ध नहीं है, इसके अंश परवर्ती यूनानी लेखकों के उद्धरणों में मिलते हैं।","explanation_en":"Megasthenes' 'Indica' is not available in its original form; fragments survive only in quotes by later classical writers."},{"id":25,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सतत विकास लक्ष्यों (SDGs) के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. एसडीजी 13 जलवायु कार्रवाई से संबंधित है। 2. एसडीजी 14 स्थलीय जीवों की सुरक्षा से संबंधित है। 3. एसडीजी 16 शांति, न्याय और सशक्त संस्थाओं से संबंधित है। कौन से कथन सही हैं?","question_en":"Question 25: With reference to Sustainable Development Goals (SDGs), consider the following statements: 1. SDG 13 is related to Climate Action. 2. SDG 14 is related to Life on Land. 3. SDG 16 is related to Peace, Justice, and Strong Institutions. Which of the statements are correct?","options":[{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":2,"explanation_hi":"एसडीजी 14 जलीय जीवों की सुरक्षा (Life Below Water) से संबंधित है, जबकि स्थलीय जीवों की सुरक्षा एसडीजी 15 में आती है।","explanation_en":"SDG 14 pertains to Life Below Water, whereas Life on Land is covered under SDG 15."},{"id":26,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत के बंदरगाहों और उनकी विशेषताओं के संदर्भ में कौन सा एक सही सुमेलित नहीं है?","question_en":"Question 26: With reference to Indian ports and their features, which one is NOT correctly matched?","options":[{"hi":"मुर्मुगाओ – एश्चुरी पर स्थित गोवा का बंदरगाह","en":"Mormugao – Port in Goa located on an estuary"},{"hi":"मंगलोर – कुद्रेमुख के लौह अयस्क का निर्यात","en":"Mangalore – Export of iron ore from Kudremukh"},{"hi":"विशाखापत्तनम – सबसे गहरा और सुरक्षित बंदरगाह","en":"Visakhapatnam – Deepest and safest port"},{"hi":"कोच्चि – तमिलनाडु का निगम आधारित बंदरगाह","en":"Kochi – Corporate-based port of Tamil Nadu"}],"answer":3,"explanation_hi":"तमिलनाडु का निगम आधारित बंदरगाह एन्नौर है; कोच्चि केरल में लैगून पर स्थित है और इसे अरब सागर की रानी कहा जाता है।","explanation_en":"Ennore is the corporate-based port in Tamil Nadu; Kochi is located on a lagoon in Kerala and called the Queen of the Arabian Sea."},{"id":27,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"ऊर्जा रूपांतरण के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: विद्युत सेल रासायनिक ऊर्जा को विद्युत ऊर्जा में परिवर्तित करता है।\nकथन 2: डायनेमो विद्युत ऊर्जा को यांत्रिक ऊर्जा में परिवर्तित करता है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 27: With reference to energy transformation, consider the following statements:\nStatement 1: Electric cell converts chemical energy into electrical energy.\nStatement 2: Dynamo converts electrical energy into mechanical energy. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"डायनेमो यांत्रिक ऊर्जा को विद्युत ऊर्जा में परिवर्तित करता है, न कि विद्युत को यांत्रिक ऊर्जा में।","explanation_en":"A dynamo converts mechanical energy into electrical energy, not electrical energy into mechanical energy."},{"id":28,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"केंद्र-राज्य विधायी संबंधों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. केंद्र-राज्यों के संबंध का उल्लेख संविधान के भाग 11 में दिया गया है। 2. अनुच्छेद 245 संसद और राज्य विधानमंडलों द्वारा बनाए गए कानूनों के विस्तार से संबंधित है। 3. अनुच्छेद 246 सातवीं अनुसूची की संघ सूची, राज्य सूची व समवर्ती सूची के आधार पर संसद और राज्य विधानमंडलों के बीच विधायी विषयों के बँटवारे से संबंधित है। उपर्युक्त में से कितने कथन सही हैं?","question_en":"Question 28: With reference to Centre-State legislative relations, consider the following statements: 1. Centre-State relations are given in Part 11 of the Constitution. 2. Article 245 relates to the extent of laws made by Parliament and State Legislatures. 3. Article 246 deals with the distribution of legislative subjects between Parliament and State Legislatures on the basis of the Union List, State List, and Concurrent List of the Seventh Schedule. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":2,"explanation_hi":"भाग 11 में अनुच्छेद 245-263 तक केंद्र-राज्य विधायी एवं प्रशासनिक संबंध दिए गए हैं, जिसमें अनुच्छेद 245 कानूनों के क्षेत्रीय विस्तार तथा अनुच्छेद 246 सातवीं अनुसूची की तीनों सूचियों के आधार पर विषयों का विभाजन तय करता है।","explanation_en":"Part 11 (Articles 245-263) governs Centre-State legislative and administrative relations; Article 245 deals with territorial extent of laws and Article 246 governs the division of subjects on the basis of the three lists of the Seventh Schedule."},{"id":29,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (अशोक के 13वें शिलालेख के यवन राजा): A. तुरमय, B. अलिकसुंदर, C. अंतियोक, D. अंतकिन; सूची-II (राज्य अथवा देश): 1. सीरिया, 2. मासिडोनिया, 3. मिस्र, 4. एपिरस","question_en":"Question 29: Match List-I with List-II: List-I (Yavana Kings in Ashoka's 13th Edict): A. Turamaya, B. Alikasundara, C. Antiyoka, D. Antakini; List-II (State or Country): 1. Syria, 2. Macedonia, 3. Egypt, 4. Epirus","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-4, B-3, C-1, D-2","en":"A-4, B-3, C-1, D-2"},{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"}],"answer":3,"explanation_hi":"तुरमय मिस्र का टॉल्मी द्वितीय, अलिकसुंदर एपिरस का राजा, अंतियोक सीरिया का राजा तथा अंतकिन मासिडोनिया का राजा था।","explanation_en":"Turamaya ruled Egypt (Ptolemy II), Alikasundara ruled Epirus, Antiyoka ruled Syria, and Antakini ruled Macedonia."},{"id":30,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के प्रमुख प्राचीन मंदिरों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: दशावतार मंदिर ललितपुर के देवगढ़ गाँव में स्थित है जिसकी खोज कैप्टन चार्ल्स स्ट्राहन ने की थी।\nकथन 2: भीतरगाँव मंदिर कानपुर जिले में स्थित सबसे पुराना बचा हुआ ईंट निर्मित गुप्तकालीन हिंदू मंदिर है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 30: With reference to prominent ancient temples of Uttar Pradesh, consider the following statements:\nStatement 1: Dashavatara Temple is situated in Deogarh village of Lalitpur and was discovered by Captain Charles Strahan.\nStatement 2: Bhitargaon Temple is the oldest surviving brick-built Gupta period Hindu temple located in Kanpur district. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":2,"explanation_hi":"देवगढ़ का दशावतार मंदिर कैप्टन चार्ल्स स्ट्राहन द्वारा खोजा गया था तथा कानपुर का भीतरगाँव मंदिर छठी शताब्दी का ईंट निर्मित गुप्त मंदिर है।","explanation_en":"Deogarh's Dashavatara Temple was discovered by Capt. Strahan, and Bhitargaon Temple in Kanpur is a 6th-century brick temple of the Gupta era."},{"id":31,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौर्यकालीन प्रशासनिक इकाइयों को उनके आकार के घटते क्रम (बड़े से छोटे) में व्यवस्थित कीजिए: 1. संग्रहण, 2. स्थानीय, 3. खार्वटिक, 4. द्रोणमुख","question_en":"Question 31: Arrange the Mauryan administrative units in descending order of size (largest to smallest): 1. Sangrahana, 2. Sthaniya, 3. Kharvatika, 4. Dronamukha","options":[{"hi":"2, 4, 3, 1","en":"2, 4, 3, 1"},{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"2, 3, 4, 1","en":"2, 3, 4, 1"},{"hi":"4, 2, 3, 1","en":"4, 2, 3, 1"}],"answer":0,"explanation_hi":"मौर्य प्रशासन में 800 गाँवों का समूह स्थानीय, 400 गाँवों का द्रोणमुख, 200 गाँवों का खार्वटिक तथा 10 गाँवों का समूह संग्रहण कहलाता था।","explanation_en":"In Mauryan administration, Sthaniya comprised 800 villages, Dronamukha 400, Kharvatika 200, and Sangrahana comprised 10 villages."},{"id":32,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"पर्यावरण शब्दावली एवं संबंधित विचारकों के संदर्भ में निम्नलिखित युग्मों पर विचार करें: 1. बायोलॉजिकल डायवर्सिटी – रेमंड दासमैन, 2. बायोडायवर्सिटी – वाल्टर जी. रोसेन, 3. बायोस्फीयर रिजर्व – अर्नेस्ट हैकल। उपर्युक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Question 32: With reference to environmental terminologies and associated thinkers, consider the following pairs: 1. Biological Diversity – Raymond Dasmann, 2. Biodiversity – Walter G. Rosen, 3. Biosphere Reserve – Ernst Haeckel. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"No pair"}],"answer":1,"explanation_hi":"बायोस्फीयर रिजर्व की अवधारणा यूनेस्को के मानव और जैवमंडल (MAB) कार्यक्रम (1971) से जुड़ी है, जबकि अर्नेस्ट हैकल ने इकोलॉजी (पारिस्थितिकी) शब्द दिया था; बायोस्फीयर (जैवमंडल) शब्द एडुअर्ड स्वेस ने दिया था।","explanation_en":"The Biosphere Reserve concept is linked to UNESCO's Man and the Biosphere (MAB) Programme (1971), whereas Ernst Haeckel coined the term Ecology; the term Biosphere was introduced by Eduard Suess."},{"id":33,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौर्य शासकों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: बिंदुसार ने सीरिया के शासक एंटियोकस से मीठी मदिरा, सूखी अंजीर और एक दार्शनिक की मांग की थी।\nकथन 2: अशोक का राज्याभिषेक उसके गद्दी पर बैठने (राज्यारोहण) के तुरंत बाद उसी वर्ष 273 ई.पू. में संपन्न हुआ था। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 33: With reference to Mauryan rulers, consider the following statements:\nStatement 1: Bindusara requested sweet wine, dried figs, and a philosopher from the Syrian ruler Antiochus.\nStatement 2: Ashoka's coronation was completed in the same year 273 BC immediately after his accession to the throne. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"अशोक का राज्यारोहण 273 ई.पू. में हुआ था, किंतु उसका राज्याभिषेक 4 वर्ष बाद 269 ई.पू. में हुआ था।","explanation_en":"Ashoka ascended the throne in 273 BC, but his formal coronation took place 4 years later in 269 BC."},{"id":34,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के लोक नृत्यों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. राई नृत्य बुंदेलखंड क्षेत्र में मांगलिक अवसरों तथा श्री कृष्ण जन्माष्टमी पर किया जाता है। 2. बरेदी नृत्य बुंदेलखंड क्षेत्र में दीपावली के अवसर पर ग्वाल (अहीर) समाज द्वारा किया जाता है। 3. शैरा नृत्य पूर्वांचल के धोबी समाज द्वारा विवाह के अवसर पर किया जाता है। कौन से कथन सही हैं?","question_en":"Question 34: With reference to folk dances of Uttar Pradesh, consider the following statements: 1. Rai dance is performed on auspicious occasions and Sri Krishna Janmashtami in Bundelkhand region. 2. Baredi dance is performed by the cowherd (Ahir) community in Bundelkhand on the occasion of Diwali. 3. Shaira dance is performed by the Dhobi community of Purvanchal on weddings. Which of the statements are correct?","options":[{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":1,"explanation_hi":"शैरा नृत्य सोनभद्र-मिर्जापुर के आदिम समाज द्वारा किया जाता है; पूर्वांचल में विवाह के समय धोबिया नृत्य होता है।","explanation_en":"Shaira dance is performed by tribals of Sonbhadra-Mirzapur; Dhobiya dance is performed during weddings in Purvanchal."},{"id":35,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"दृश्य प्रकाश के स्पेक्ट्रम के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: दृश्य प्रकाश में लाल रंग का तरंगदैर्ध्य सर्वाधिक होता है।\nकथन 2: बढ़ते तरंगदैर्ध्य के क्रम में पीला रंग हरे रंग से पहले आता है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 35: With reference to the visible light spectrum, consider the following statements:\nStatement 1: Red colour has the maximum wavelength in visible light.\nStatement 2: In the order of increasing wavelength, yellow colour precedes green colour. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"बढ़ते तरंगदैर्ध्य का सही क्रम बैंगनी -> जामुनी -> नीला -> हरा -> पीला -> नारंगी -> लाल है, अतः पीला रंग हरे के बाद आता है।","explanation_en":"The order of increasing wavelength is Violet -> Indigo -> Blue -> Green -> Yellow -> Orange -> Red; thus yellow succeeds green."},{"id":36,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (दर्रे): A. खारदुंग दर्रा, B. माना दर्रा, C. नाथूला दर्रा, D. बोम्डिला दर्रा; सूची-II (राज्य अथवा केंद्र शासित प्रदेश): 1. अरुणाचल प्रदेश, 2. सिक्किम, 3. लद्दाख, 4. उत्तराखण्ड","question_en":"Question 36: Match List-I with List-II: List-I (Passes): A. Khardung La, B. Mana Pass, C. Nathu La, D. Bomdi La; List-II (State or UT): 1. Arunachal Pradesh, 2. Sikkim, 3. Ladakh, 4. Uttarakhand","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-3, B-4, C-2, D-1","en":"A-3, B-4, C-2, D-1"},{"hi":"A-4, B-3, C-2, D-1","en":"A-4, B-3, C-2, D-1"}],"answer":2,"explanation_hi":"खारदुंग दर्रा लद्दाख में, माना दर्रा उत्तराखण्ड में, नाथूला सिक्किम में तथा बोम्डिला अरुणाचल प्रदेश में स्थित है।","explanation_en":"Khardung La is in Ladakh, Mana in Uttarakhand, Nathu La in Sikkim, and Bomdi La in Arunachal Pradesh."},{"id":37,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"राज्य सभा और संसदीय समितियों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. संविधान के अनुसार राज्य सभा में राज्यों और केंद्र शासित प्रदेशों के अधिकतम 238 प्रतिनिधि हो सकते हैं। 2. लोक लेखा समिति के सदस्यों का कार्यकाल दो वर्ष का होता है। 3. केंद्र सरकार का कोई भी मंत्री लोक लेखा समिति का सदस्य चुना जा सकता है। उपर्युक्त में से कितने कथन सही हैं?","question_en":"Question 37: With reference to the Rajya Sabha and Parliamentary Committees, consider the following statements: 1. As per the Constitution, the Rajya Sabha can have a maximum of 238 representatives of States and Union Territories. 2. The tenure of members of the Public Accounts Committee is two years. 3. Any Minister of the Central Government can be elected as a member of the Public Accounts Committee. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"केवल दो","en":"Only two"},{"hi":"सभी तीन","en":"All three"},{"hi":"कोई भी नहीं","en":"None"}],"answer":0,"explanation_hi":"अनुच्छेद 80 के अनुसार राज्य सभा की अधिकतम सदस्य संख्या 250 है, जिसमें 238 राज्यों व केंद्र शासित प्रदेशों के प्रतिनिधि तथा 12 मनोनीत सदस्य होते हैं, अतः कथन 1 सही है; लोक लेखा समिति के सदस्यों का कार्यकाल 1 वर्ष होता है तथा किसी भी मंत्री को इसका सदस्य नहीं चुना जा सकता है।","explanation_en":"Under Article 80, the maximum strength of the Rajya Sabha is 250, including 238 representatives of States and Union Territories and 12 nominated members, so statement 1 is correct; the term of members of the Public Accounts Committee is 1 year and a Minister cannot be elected as its member."},{"id":38,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित पर्यावरण संबंधी नीतियों अथवा अधिनियमों में से कौन सा अपने वर्ष के साथ सही सुमेलित नहीं है?","question_en":"Question 38: Which of the following environmental policies or acts is NOT correctly matched with its year?","options":[{"hi":"नदी बोर्ड अधिनियम – 1956","en":"River Boards Act – 1956"},{"hi":"वायु (प्रदूषण की रोकथाम और नियंत्रण) अधिनियम – 1981","en":"Air (Prevention and Control of Pollution) Act – 1981"},{"hi":"राष्ट्रीय पर्यावरण न्यायाधिकरण अधिनियम – 1995","en":"National Environment Tribunal Act – 1995"},{"hi":"राष्ट्रीय पर्यावरण नीति – 2004","en":"National Environment Policy – 2004"}],"answer":3,"explanation_hi":"राष्ट्रीय पर्यावरण नीति को केंद्रीय मंत्रिमंडल ने वर्ष 2006 में स्वीकृति दी थी, जबकि वर्ष 2004 में इसका केवल प्रारूप जारी हुआ था; शेष तीनों युग्म सही सुमेलित हैं।","explanation_en":"The National Environment Policy was approved by the Union Cabinet in 2006, while only its draft was released in 2004; the remaining three pairs are correctly matched."},{"id":39,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौर्य काल से संबंधित निम्नलिखित ऐतिहासिक घटनाओं को कालक्रम में व्यवस्थित कीजिए: 1. चंद्रगुप्त मौर्य का श्रवणबेलगोला में सल्लेखना द्वारा शरीर त्याग, 2. सेल्युकस और चंद्रगुप्त मौर्य के मध्य युद्ध, 3. अशोक का राज्याभिषेक, 4. अशोक का राज्यारोहण","question_en":"Question 39: Arrange the following historical events related to the Mauryan period in chronological order: 1. Chandragupta Maurya giving up body through Sallekhana at Shravanabelagola, 2. War between Seleucus and Chandragupta Maurya, 3. Ashoka's coronation, 4. Ashoka's accession to the throne","options":[{"hi":"1, 2, 3, 4","en":"1, 2, 3, 4"},{"hi":"2, 4, 1, 3","en":"2, 4, 1, 3"},{"hi":"2, 1, 4, 3","en":"2, 1, 4, 3"},{"hi":"2, 1, 3, 4","en":"2, 1, 3, 4"}],"answer":2,"explanation_hi":"सेल्युकस युद्ध (305 ई.पू.) -> सल्लेखना (298 ई.पू.) -> अशोक का राज्यारोहण (273 ई.पू.) -> अशोक का राज्याभिषेक (269 ई.पू.)।","explanation_en":"War with Seleucus (305 BC) -> Sallekhana (298 BC) -> Accession of Ashoka (273 BC) -> Coronation of Ashoka (269 BC)."},{"id":40,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारत का कौन सा प्रमुख बंदरगाह जुआरी नदी की एश्चुरी पर स्थित है तथा प्रमुख पर्यटक बंदरगाह के रूप में जाना जाता है?","question_en":"Question 40: Which major port of India is located on the estuary of the Zuari river and is known as a major tourist port?","options":[{"hi":"काण्डला","en":"Kandla"},{"hi":"मुर्मुगाओ","en":"Mormugao"},{"hi":"न्हावाशिवा","en":"Nhava Sheva"},{"hi":"तूतीकोरीन","en":"Tuticorin"}],"answer":1,"explanation_hi":"गोवा का मुर्मुगाओ बंदरगाह एश्चुरी पर स्थित है तथा यह एक प्रमुख पर्यटक बंदरगाह के रूप में प्रख्यात है।","explanation_en":"Mormugao Port in Goa is located on an estuary and is renowned as a prominent tourist port."},{"id":41,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राचीन महाजनपदों और उनकी राजधानियों के संदर्भ में निम्नलिखित युग्मों पर विचार करें: 1. उत्तरी पांचाल – अहिच्छत्र, 2. दक्षिणी पांचाल – काम्पिल्य, 3. उत्तरी अवंती – माहिष्मती। उपर्युक्त में से कितने युग्म सही सुमेलित हैं?","question_en":"Question 41: With reference to ancient Mahajanapadas and their capitals, consider the following pairs: 1. Northern Panchala – Ahichchhatra, 2. Southern Panchala – Kampilya, 3. Northern Avanti – Mahishmati. How many of the above pairs are correctly matched?","options":[{"hi":"केवल एक युग्म","en":"Only one pair"},{"hi":"सभी तीन युग्म","en":"All three pairs"},{"hi":"कोई भी युग्म नहीं","en":"No pair"},{"hi":"केवल दो युग्म","en":"Only two pairs"}],"answer":3,"explanation_hi":"उत्तरी अवंती की राजधानी उज्जयिनी तथा दक्षिणी अवंती की राजधानी माहिष्मती थी, अतः तीसरा युग्म असत्य है।","explanation_en":"The capital of Northern Avanti was Ujjayini and Southern Avanti was Mahishmati; thus pair 3 is incorrect."},{"id":42,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"प्राथमिक एवं द्वितीयक प्रदूषकों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: लेड (Pb) और क्लोरोफ्लोरोकार्बन (CFCs) द्वितीयक प्रदूषक हैं।\nकथन 2: फोटोकेमिकल स्मॉग और सल्फ्यूरिक अम्ल (H2SO4) द्वितीयक प्रदूषक हैं। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 42: With reference to primary and secondary pollutants, consider the following statements:\nStatement 1: Lead (Pb) and Chlorofluorocarbons (CFCs) are secondary pollutants.\nStatement 2: Photochemical smog and Sulphuric acid (H2SO4) are secondary pollutants. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":1,"explanation_hi":"लेड और क्लोरोफ्लोरोकार्बन प्राथमिक प्रदूषक हैं क्योंकि यह सीधे स्रोतों से वायुमंडल में उत्सर्जित होते हैं।","explanation_en":"Lead and chlorofluorocarbons are primary pollutants because they are emitted directly from sources into the atmosphere."},{"id":43,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (उत्तर प्रदेश के लोक नृत्य): A. चरकुला नृत्य, B. बिदेसिया नृत्य, C. झूला नृत्य, D. चौलर नृत्य; सूची-II (अवसर अथवा विषय): 1. ब्रज क्षेत्र में श्रावण मास के दौरान, 2. सोनभद्र-मिर्जापुर में अच्छी वर्षा एवं फसल हेतु, 3. सिर पर 108 दीपक रखकर होली पर्व पर, 4. पूर्वांचल में पति के परदेश जाने के अवसर पर","question_en":"Question 43: Match List-I with List-II: List-I (Folk Dances of Uttar Pradesh): A. Charkula dance, B. Bidesiya dance, C. Jhula dance, D. Chaular dance; List-II (Occasion or Theme): 1. During Shravan month in Braj region, 2. For good rain and crop in Sonbhadra-Mirzapur, 3. On Holi festival carrying 108 lamps on head, 4. In Purvanchal when husband travels abroad","options":[{"hi":"A-3, B-4, C-1, D-2","en":"A-3, B-4, C-1, D-2"},{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-3, B-1, C-4, D-2","en":"A-3, B-1, C-4, D-2"},{"hi":"A-4, B-3, C-1, D-2","en":"A-4, B-3, C-1, D-2"}],"answer":0,"explanation_hi":"चरकुला 108 दीपकों का नृत्य है, बिदेसिया पति के परदेश जाने पर, झूला श्रावण मास में तथा चौलर अच्छी फसल हेतु होता है।","explanation_en":"Charkula features 108 lamps, Bidesiya depicts husband going abroad, Jhula is in Shravan, and Chaular is for good harvest."},{"id":44,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"संघ की कार्यपालिका के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. अनुच्छेद 78 के तहत प्रधानमंत्री मंत्रिपरिषद द्वारा लिए गए निर्णयों से राष्ट्रपति को अवगत कराता है। 2. राष्ट्रपति मंत्रिपरिषद के पुनर्विचार हेतु मामलों को निर्दिष्ट कर सकते हैं। 3. महान्यायवादी को केवल सर्वोच्च न्यायालय में सुनवाई का अधिकार है, राज्यों के उच्च न्यायालयों में नहीं। कौन से कथन सही हैं?","question_en":"Question 44: With reference to the Union Executive, consider the following statements: 1. Under Article 78, the Prime Minister communicates all decisions of the Council of Ministers to the President. 2. The President can refer matters for reconsideration of the Council of Ministers. 3. The Attorney General has the right of audience only in the Supreme Court, and not in the High Courts of the States. Which of the statements are correct?","options":[{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":2,"explanation_hi":"महान्यायवादी को भारत सरकार से संबंधित मामलों में सर्वोच्च न्यायालय अथवा देश के किसी भी उच्च न्यायालय में उपस्थित होने का अधिकार है।","explanation_en":"The Attorney General has the right of audience in the Supreme Court as well as any High Court across India in cases concerning the Government."},{"id":45,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"भारतीय घाटियों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: कुल्लू घाटी धौलाधार और पीर पंजाल श्रेणियों की सीमा के मध्य स्थित है।\nकथन 2: जोहर घाटी हिमाचल प्रदेश राज्य में स्थित है। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 45: With reference to Indian valleys, consider the following statements:\nStatement 1: Kullu Valley is situated between the border of Dhauladhar and Pir Panjal ranges.\nStatement 2: Johar Valley is situated in the state of Himachal Pradesh. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"जोहर घाटी उत्तराखण्ड में स्थित है, जबकि चंबा, लाहुल, सांगला और कुल्लू घाटियाँ हिमाचल प्रदेश में स्थित हैं।","explanation_en":"Johar Valley is situated in Uttarakhand, whereas Chamba, Lahaul, Sangla, and Kullu valleys are in Himachal Pradesh."},{"id":46,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"अशोक के 14 दीर्घ शिलालेखों के प्राप्ति स्थलों के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. गिरनार शिलालेख स्थल गुजरात के जूनागढ़ जिले में स्थित है। 2. शाहबाजगढ़ी और मानसेहरा शिलालेख स्थल पाकिस्तान में स्थित हैं। 3. कालसी शिलालेख स्थल हिमाचल प्रदेश राज्य में स्थित है। उपर्युक्त में से कितने कथन सही हैं?","question_en":"Question 46: With reference to the findspots of Ashoka's 14 Major Rock Edicts, consider the following statements: 1. Girnar rock edict site is located in Junagadh district of Gujarat. 2. Shahbazgarhi and Mansehra rock edict sites are located in Pakistan. 3. Kalsi rock edict site is located in Himachal Pradesh state. How many of the above statements are correct?","options":[{"hi":"केवल एक","en":"Only one"},{"hi":"सभी तीन","en":"All three"},{"hi":"केवल दो","en":"Only two"},{"hi":"कोई भी नहीं","en":"None"}],"answer":2,"explanation_hi":"कालसी शिलालेख उत्तराखण्ड के देहरादून जिले में स्थित है, न कि हिमाचल प्रदेश में।","explanation_en":"The Kalsi rock edict is located in Dehradun district of Uttarakhand, not in Himachal Pradesh."},{"id":47,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"निम्नलिखित में से किस विद्युत चुंबकीय तरंग का उपयोग टी.वी. रिमोट, एयर कंडीशनर नियंत्रण तथा चिकित्सीय सिकाई उपचार में किया जाता है?","question_en":"Question 47: Which of the following electromagnetic waves is utilized in TV remotes, air conditioner controls, and therapeutic heat treatments?","options":[{"hi":"रेडियो तरंगें","en":"Radio waves"},{"hi":"अवरक्त किरणें","en":"Infrared rays"},{"hi":"पराबैंगनी किरणें","en":"Ultraviolet rays"},{"hi":"एक्स किरणें","en":"X-rays"}],"answer":1,"explanation_hi":"अवरक्त किरणों (Infrared rays) का प्रयोग भौतिक उपचार, टी.वी. रिमोट तथा एसी सिस्टम संचालन में किया जाता है।","explanation_en":"Infrared rays are specifically utilized in physical therapies, TV remotes, and air conditioning control systems."},{"id":48,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"मौर्य साम्राज्य के शासकों के संदर्भ में निम्नलिखित कथनों पर विचार करें:\nकथन 1: मौर्य वंश की स्थापना चंद्रगुप्त मौर्य द्वारा की गई थी।\nकथन 2: मौर्य वंश का अंतिम शासक पुष्यमित्र शुंग था। उपर्युक्त में से कौन-सा/से कथन सही है/हैं?","question_en":"Question 48: With reference to the rulers of the Mauryan Empire, consider the following statements:\nStatement 1: The Mauryan dynasty was founded by Chandragupta Maurya.\nStatement 2: Pushyamitra Shunga was the last ruler of the Mauryan dynasty. Which of the statements given above is/are correct?","options":[{"hi":"केवल 1","en":"Only 1"},{"hi":"केवल 2","en":"Only 2"},{"hi":"1 और 2 दोनों","en":"Both 1 and 2"},{"hi":"न तो 1, न ही 2","en":"Neither 1 nor 2"}],"answer":0,"explanation_hi":"मौर्य वंश का अंतिम शासक बृहद्रथ था; पुष्यमित्र शुंग ने उसकी हत्या करके शुंग वंश की नींव रखी थी।","explanation_en":"The last ruler of the Mauryan dynasty was Brihadratha; Pushyamitra Shunga assassinated him to found the Shunga dynasty."},{"id":49,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"सूची-I को सूची-II से सुमेलित कीजिए: सूची-I (पर्यावरण आंदोलन): A. साइलेंट वैली आंदोलन, B. बिश्नोई आंदोलन, C. चिपको आंदोलन, D. अपिको आंदोलन; सूची-II (नेतृत्वकर्ता अथवा संबद्ध व्यक्ति): 1. अमृता देवी बिश्नोई, 2. एम. के. प्रसाद, 3. पांडुरंग हेगड़े, 4. सुंदरलाल बहुगुणा","question_en":"Question 49: Match List-I with List-II: List-I (Environmental Movement): A. Silent Valley Movement, B. Bishnoi Movement, C. Chipko Movement, D. Appiko Movement; List-II (Leader or Associated Person): 1. Amrita Devi Bishnoi, 2. M.K. Prasad, 3. Pandurang Hegde, 4. Sunderlal Bahuguna","options":[{"hi":"A-1, B-2, C-3, D-4","en":"A-1, B-2, C-3, D-4"},{"hi":"A-2, B-4, C-1, D-3","en":"A-2, B-4, C-1, D-3"},{"hi":"A-4, B-1, C-2, D-3","en":"A-4, B-1, C-2, D-3"},{"hi":"A-2, B-1, C-4, D-3","en":"A-2, B-1, C-4, D-3"}],"answer":3,"explanation_hi":"साइलेंट वैली केरल में एम. के. प्रसाद, बिश्नोई अमृता देवी, चिपको बहुगुणा तथा अपिको आंदोलन पांडुरंग हेगड़े से संबंधित है।","explanation_en":"Silent Valley was led by M.K. Prasad in Kerala, Bishnoi by Amrita Devi, Chipko by Bahuguna, and Appiko by Pandurang Hegde."},{"id":50,"topic_hi":"सामान्य अध्ययन","topic_en":"General Studies","question_hi":"उत्तर प्रदेश के प्रमुख ऐतिहासिक स्थलों और सांस्कृतिक परंपराओं के संदर्भ में निम्नलिखित कथनों पर विचार करें: 1. धमेख स्तूप वाराणसी से 13 किमी दूर सारनाथ में ऋषिपत्तन को चिह्नित करता है जहाँ बुद्ध ने प्रथम उपदेश दिया था। 2. स्कंदगुप्त का भितरी स्तंभ शिलालेख लगभग 455 से 467 ईस्वी के शासनकाल से संबंधित है। 3. जोगिनी नृत्य अवध क्षेत्र में रामनवमी के त्यौहार पर किया जाने वाला पारंपरिक नृत्य है। कौन से कथन सही हैं?","question_en":"Question 50: With reference to prominent historical sites and cultural traditions of Uttar Pradesh, consider the following statements: 1. Dhamekh Stupa marks Rishipattana in Sarnath, 13 km from Varanasi, where Buddha preached his first sermon. 2. Skandagupta's Bhitari pillar inscription belongs to his reign from circa 455 to 467 AD. 3. Jogini dance is a traditional dance performed in Awadh region during the Ram Navami festival. Which of the statements are correct?","options":[{"hi":"केवल 1 और 2","en":"Only 1 and 2"},{"hi":"केवल 2 और 3","en":"Only 2 and 3"},{"hi":"केवल 1 और 3","en":"Only 1 and 3"},{"hi":"1, 2 और 3","en":"1, 2 and 3"}],"answer":3,"explanation_hi":"सारनाथ का धमेख स्तूप बुद्ध के प्रथम उपदेश स्थल को दर्शाता है, भितरी शिलालेख स्कंदगुप्त के शासनकाल (455-467 ईस्वी) का है तथा जोगिनी नृत्य अवध में होता है।","explanation_en":"Dhamekh Stupa marks Buddha's first sermon site, Bhitari inscription belongs to Skandagupta (455-467 AD), and Jogini dance is performed in Awadh."}]};
+const QUESTIONS = Array.isArray(TEST.questions) ? TEST.questions : [];
+const letters = ["A", "B", "C", "D"];
+const TOTAL_TIME_SECONDS = Math.max(0, Number(TEST.durationMinutes || 0) * 60);
+const MARKS = Number(TEST.marksPerQuestion || 2);
+const NEG = Number(TEST.negativeMarks || 0);
+const RANKING_ENABLED = Boolean(TEST.rankingEnabled && TEST.firebaseConfig && TEST.firebaseConfig.projectId);
+const FIREBASE_CONFIG = TEST.firebaseConfig || null;
+let current = 0, answers = [], review = [], remaining = TOTAL_TIME_SECONDS, timerId = null, startedAt = 0;
+let studentName = "", lastResult = null, testActive = false;
+const LEADER_TOP = 20;
+const TEST_KEY = String(TEST.testId || "jaiho-test");
+const PROG_KEY = "jaiho_prog_" + TEST_KEY;
+function storeGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function storeSet(k, obj){ try{ localStorage.setItem(k, JSON.stringify(obj)); }catch(e){} }
+function storeDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function saveProgress(){ if(!testActive) return; storeSet(PROG_KEY, {v:1, name:studentName, answers:answers, review:review, current:current, remaining:remaining, startedAt:startedAt, savedAt:Date.now()}); }
+async function tryResume(){
+  const p = storeGet(PROG_KEY);
+  if(!p || !p.name || !Array.isArray(p.answers) || p.answers.length !== QUESTIONS.length) return;
+  const ok = await askConfirm(p.name + " — इसी test का आपका अधूरा प्रयास मिला। क्या वहीं से जारी करें?\n(रद्द करने पर अधूरा प्रयास हटेगा और नया शुरू होगा।)", "वहीं से जारी करें", "नया शुरू करें");
+  if(!ok){ storeDel(PROG_KEY); return; }
+  studentName = String(p.name);
+  answers = p.answers.map(a => (a === null || a === undefined) ? null : Number(a));
+  review = (Array.isArray(p.review) && p.review.length === QUESTIONS.length) ? p.review.map(Boolean) : Array(QUESTIONS.length).fill(false);
+  current = Math.min(Math.max(0, Number(p.current) || 0), QUESTIONS.length - 1);
+  remaining = TOTAL_TIME_SECONDS ? Math.max(5, Math.min(TOTAL_TIME_SECONDS, Number(p.remaining) || TOTAL_TIME_SECONDS)) : 0;
+  startedAt = Number(p.startedAt) || Date.now();
+  testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); requestAnimationFrame(()=>scrollToQuestion("auto"));
+}
+function el(id){ return document.getElementById(id); }
+function askConfirm(message, okText, cancelText){
+  return new Promise(resolve=>{
+    var old = document.getElementById("jhConfirmOverlay");
+    if(old) old.remove();
+    var ov = document.createElement("div");
+    ov.id = "jhConfirmOverlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(3,26,61,.55);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);";
+    var box = document.createElement("div");
+    box.style.cssText = "background:#fff;max-width:400px;width:100%;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(3,26,61,.35);font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;";
+    var msg = document.createElement("p");
+    msg.style.cssText = "margin:0 0 18px;color:#0f172a;font-weight:800;line-height:1.6;font-size:15.5px;white-space:pre-line;";
+    msg.textContent = message;
+    var row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
+    var okBtn = document.createElement("button");
+    okBtn.textContent = okText || "ठीक है";
+    okBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:linear-gradient(135deg,#e81818,#ff5b36);color:#fff;";
+    var cancelBtn = document.createElement("button");
+    cancelBtn.textContent = cancelText || "रद्द करें";
+    cancelBtn.style.cssText = "flex:1;min-width:120px;border:0;cursor:pointer;padding:13px 16px;border-radius:13px;font-weight:900;font-size:15px;font-family:inherit;background:#eaf3ff;color:#062b63;";
+    function done(val){ ov.remove(); resolve(val); }
+    okBtn.addEventListener("click", function(){ done(true); });
+    cancelBtn.addEventListener("click", function(){ done(false); });
+    row.appendChild(cancelBtn); row.appendChild(okBtn);
+    box.appendChild(msg); box.appendChild(row);
+    ov.appendChild(box); document.body.appendChild(ov);
+  });
+}
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+function numClean(n){ return Number.isInteger(Number(n)) ? String(Number(n)) : String(Number(n).toFixed(2)).replace(/\.00$/,""); }
+function formatTime(sec){ sec=Math.max(0, Math.floor(sec||0)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,"0")}`; }
+function splitTitle(title, hi){ const t=String(title||"Jai Ho Study Test"); const h=String(hi||"").trim(); if(h && t.toLowerCase().includes(h.toLowerCase())){ const i=t.toLowerCase().indexOf(h.toLowerCase()); return `${escapeHTML(t.slice(0,i))}<span>${escapeHTML(t.slice(i,i+h.length))}</span>${escapeHTML(t.slice(i+h.length))}`; } return `${escapeHTML(t)} <span>Test</span>`; }
+function initHome(){
+  document.title = `Jai Ho Study | ${TEST.title || "Test"}`;
+  el("topSub").textContent = TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO Practice";
+  el("pillText").textContent = TEST.pill || "🏆 Daily Rank Ready";
+  el("tagText").textContent = TEST.tag || "UPPCS Prelims 2026 / RO-ARO";
+  el("homeTitle").innerHTML = splitTitle(TEST.title, TEST.highlight);
+  el("homeSub").textContent = TEST.description || "नाम डालकर टेस्ट शुरू करें। Submit के बाद score, analysis और rank section दिखेगा।";
+  el("qCountBox").textContent = QUESTIONS.length;
+  el("timeBox").textContent = TOTAL_TIME_SECONDS ? `${TEST.durationMinutes} Min` : "No Limit";
+  el("marksBox").textContent = `+${numClean(MARKS)}`;
+  el("negBox").textContent = NEG ? `-${numClean(NEG)}` : "0";
+  el("examTitle").textContent = `Jai Ho Study • ${TEST.shortTitle || TEST.title || "Test"}`;
+  el("footerNote").textContent = TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com";
+  answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false);
+  if(!QUESTIONS.length){ el("nameErr").textContent = "इस test में questions नहीं मिले।"; }
+}
+function scrollToQuestion(behavior="smooth"){
+  const target = el("questionCard") || document.querySelector(".question-card");
+  if(target) target.scrollIntoView({behavior, block:"start"});
+}
+function renderWithoutJump(changeFn){
+  const y = window.scrollY;
+  changeFn();
+  requestAnimationFrame(()=>window.scrollTo({top:y, left:0, behavior:"auto"}));
+}
+function startTest(){
+  const n = el("studentName").value.trim().replace(/\s+/g," ");
+  if(!n){ el("nameErr").textContent = "कृपया अपना नाम लिखें।"; el("studentName").focus(); return; }
+  if(!QUESTIONS.length){ el("nameErr").textContent = "Questions missing हैं।"; return; }
+  studentName = n; current = 0; answers = Array(QUESTIONS.length).fill(null); review = Array(QUESTIONS.length).fill(false); remaining = TOTAL_TIME_SECONDS; startedAt = Date.now(); testActive = true;
+  el("homeScreen").style.display = "none"; el("resultScreen").style.display = "none"; el("testScreen").style.display = "block";
+  renderQuestion(); startTimer(); saveProgress(); requestAnimationFrame(()=>scrollToQuestion("smooth"));
+}
+function startTimer(){ if(timerId) clearInterval(timerId); el("timer").textContent = TOTAL_TIME_SECONDS ? formatTime(remaining) : "No Limit"; if(!TOTAL_TIME_SECONDS) return; timerId = setInterval(()=>{ remaining--; el("timer").textContent = formatTime(remaining); if(remaining % 5 === 0) saveProgress(); if(remaining <= 60) el("timer").style.background = "rgba(232,24,24,.75)"; if(remaining <= 0){ clearInterval(timerId); calculateResult(true); } },1000); }
+function renderQuestion(){
+  const q = QUESTIONS[current]; if(!q) return;
+  el("qno").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  el("topic").textContent = [q.topic_hi, q.topic_en].filter(Boolean).join(" / ") || "General Studies";
+  el("qtext").textContent = q.question_hi || "";
+  el("qtextEn").textContent = q.question_en || ""; el("qtextEn").classList.toggle("hidden", !q.question_en);
+  el("options").innerHTML = (q.options||[]).map((op,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="selectAnswer(${i})"><div class="letter">${letters[i]}</div><div><div class="op-hi">${escapeHTML(op.hi||"")}</div>${op.en?`<div class="op-en">${escapeHTML(op.en)}</div>`:""}</div></button>`).join("");
+  el("reviewBtn").textContent = review[current] ? "★ Marked for Review" : "☆ Mark for Review";
+  const done = answers.filter(a=>a!==null).length; el("progressBar").style.width = `${(done/QUESTIONS.length)*100}%`;
+  renderPalette(); updateMiniStats();
+}
+function renderPalette(){ el("palette").innerHTML = QUESTIONS.map((_,i)=>`<button class="dot ${i===current?"current":""} ${answers[i]!==null?"answered":""} ${review[i]?"review":""}" onclick="goQ(${i})">${i+1}</button>`).join(""); }
+function updateMiniStats(){ el("attemptedCount").textContent = answers.filter(a=>a!==null).length; el("reviewCount").textContent = review.filter(Boolean).length; }
+function selectAnswer(i){ answers[current]=i; renderQuestion(); saveProgress(); }
+function clearAnswer(){ answers[current]=null; renderQuestion(); saveProgress(); }
+function toggleReview(){ review[current]=!review[current]; renderQuestion(); saveProgress(); }
+function nextQ(){ if(current < QUESTIONS.length-1){ renderWithoutJump(()=>{ current++; renderQuestion(); saveProgress(); }); } }
+function prevQ(){ if(current > 0){ renderWithoutJump(()=>{ current--; renderQuestion(); saveProgress(); }); } }
+function goQ(i){ renderWithoutJump(()=>{ current=i; renderQuestion(); saveProgress(); }); }
+async function submitTest(){ const left = answers.filter(a=>a===null).length; const msg = left ? `${left} questions अभी unattempted हैं। फिर भी submit करना है?` : "Test submit करना है?"; if(await askConfirm(msg, "हाँ, submit करें", "अभी नहीं")) calculateResult(false); }
+function calculateResult(auto){
+  if(timerId) clearInterval(timerId);
+  testActive = false; storeDel(PROG_KEY);
+  const timeTaken = startedAt ? Math.floor((Date.now()-startedAt)/1000) : (TOTAL_TIME_SECONDS - remaining);
+  let correct=0, wrong=0, attempted=0;
+  QUESTIONS.forEach((q,i)=>{ if(answers[i]!==null){ attempted++; if(answers[i]===q.answer) correct++; else wrong++; } });
+  const skipped = QUESTIONS.length - attempted; const marks = correct*MARKS - wrong*NEG; const maxMarks = QUESTIONS.length*MARKS; const percent = maxMarks ? Math.max(0, Math.round((marks/maxMarks)*100)) : 0; const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+  let band = "Revision जारी रखें — explanations देखकर weak areas clear करें।";
+  if(percent >= 80) band = "बहुत अच्छा प्रदर्शन! अब speed और tricky statements पर पकड़ मजबूत रखें।"; else if(percent >= 60) band = "अच्छा प्रयास। गलत questions के explanation से revision करें।"; else if(percent >= 40) band = "Average zone है। Concepts और factual points को systematic तरीके से पढ़ें।"; else band = "Core revision की जरूरत है। Explanation section को ध्यान से पढ़ें।";
+  lastResult = { testId: TEST.testId || "jaiho-test", testTitle: TEST.title || "Jai Ho Study Test", name: studentName, score: Number(marks.toFixed(2)), maxMarks: Number(maxMarks.toFixed(2)), percent, attempted, correct, wrong, skipped, accuracy, timeTaken, totalQuestions: QUESTIONS.length, submittedAt: new Date().toISOString() };
+  el("resultMessage").textContent = auto ? `Time over! ${band}` : band;
+  el("studentStrip").innerHTML = `<span>Name: ${escapeHTML(studentName)}</span><span>Time: ${formatTime(timeTaken)}</span><span>Test ID: ${escapeHTML(lastResult.testId)}</span>`;
+  el("finalMarks").textContent = `${marks.toFixed(2)} / ${numClean(maxMarks)}`; el("finalAttempted").textContent = attempted; el("finalCorrect").textContent = correct; el("finalWrong").textContent = wrong; el("finalAccuracy").textContent = `${accuracy}%`; el("finalTime").textContent = formatTime(timeTaken); el("scorePercent").textContent = `${percent}%`; el("scoreCircle").style.setProperty("--scoreDeg", `${percent*3.6}deg`);
+  renderReview(); saveAttemptAndLoadRank(lastResult);
+  el("testScreen").style.display = "none"; el("resultScreen").style.display = "block"; window.scrollTo({top:0, behavior:"smooth"});
+}
+function renderReview(){ el("reviewList").innerHTML = QUESTIONS.map((q,i)=>{ const user = answers[i]; const status = user===null ? "skip" : (user===q.answer ? "ok" : "bad"); const statusText = user===null ? "Not Attempted" : (user===q.answer ? "Correct" : "Wrong"); const utext = user===null ? "Not attempted" : `${letters[user]}. ${(q.options[user]||{}).hi||""}${(q.options[user]||{}).en ? " / "+q.options[user].en : ""}`; const co = q.options[q.answer] || {hi:"",en:""}; const correctText = `${letters[q.answer]}. ${co.hi||""}${co.en ? " / "+co.en : ""}`; return `<div class="review-item"><div class="review-head"><strong>Q${i+1}. ${escapeHTML([q.topic_hi,q.topic_en].filter(Boolean).join(" / "))}</strong><span class="badge ${status}">${statusText}</span></div><div class="review-content"><div style="white-space:pre-line"><b>${escapeHTML(q.question_hi||"")}</b></div>${q.question_en?`<div style="white-space:pre-line;color:#64748b;margin-top:8px">${escapeHTML(q.question_en)}</div>`:""}<div class="answer-line"><b>Your Answer:</b> ${escapeHTML(utext)}<br><b>Correct Answer:</b> ${escapeHTML(correctText)}</div><div class="explain"><b>Explanation:</b> ${escapeHTML(q.explanation_hi||"")}${q.explanation_en?`<br><span style="color:#64748b">${escapeHTML(q.explanation_en)}</span>`:""}</div></div></div>`; }).join(""); }
+function restartTest(){ current=0; answers=Array(QUESTIONS.length).fill(null); review=Array(QUESTIONS.length).fill(false); remaining=TOTAL_TIME_SECONDS; studentName=""; startedAt=0; testActive=false; storeDel(PROG_KEY); if(timerId) clearInterval(timerId); el("studentName").value=""; el("nameErr").textContent=""; el("timer").style.background="rgba(255,255,255,.15)"; el("resultScreen").style.display="none"; el("homeScreen").style.display="block"; setTimeout(()=>el("studentName").focus(),50); window.scrollTo({top:0, behavior:"smooth"}); }
+let fbBundle = null;
+function normalizeKey(s){
+  return String(s||"").trim().toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90) || "student";
+}
+function getLocalUid(){
+  const key = "jaiho_rank_local_uid";
+  try{
+    let uid = localStorage.getItem(key);
+    if(!uid){
+      uid = "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+      localStorage.setItem(key, uid);
+    }
+    return uid;
+  }catch(e){
+    return "local-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
+  }
+}
+function makeRankSort(score,timeTaken,submittedMs){
+  const scorePart = String(100000000000 - Math.round(Number(score||0)*100)).padStart(12,"0");
+  const timePart = String(Math.max(0, Math.floor(Number(timeTaken||0)))).padStart(7,"0");
+  const datePart = String(Number(submittedMs||Date.now())).padStart(13,"0");
+  return `${scorePart}_${timePart}_${datePart}`;
+}
+function withTimeout(promise, ms, message){
+  let timer;
+  const timeout = new Promise((_, reject)=>{ timer = setTimeout(()=>reject(new Error(message || "Firebase timeout")), ms); });
+  return Promise.race([promise, timeout]).finally(()=>clearTimeout(timer));
+}
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    var existing = document.querySelector('script[data-fb="1"][src="'+src+'"]');
+    if(existing){ resolve(); return; }
+    var s = document.createElement("script");
+    s.src = src; s.async = true; s.setAttribute("data-fb","1");
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error("Firebase SDK load नहीं हुआ। Internet ON रखें।"));
+    document.head.appendChild(s);
+  });
+}
+async function ensureFirebaseSdk(){
+  if(window.firebase && firebase.initializeApp && firebase.firestore) return;
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadScript("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
+}
+async function getFirebase(){
+  if(fbBundle) return fbBundle;
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) throw new Error("Firebase config missing");
+  await ensureFirebaseSdk();
+  if(!window.firebase || !firebase.initializeApp || !firebase.firestore){
+    throw new Error("Firebase SDK load नहीं हुआ। Internet ON रखें। अगर local file में दिक्कत हो तो HTML को hosting/link से खोलें।");
+  }
+  const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.firestore(app);
+  const user = { uid: getLocalUid() };
+  const fs = {
+    doc: (dbRef, ...path)=>dbRef.doc(path.join("/")),
+    collection: (dbRef, ...path)=>dbRef.collection(path.join("/")),
+    setDoc: (ref, data, opts)=>withTimeout(ref.set(data, opts), 20000, "Firestore write timeout. Rules और Internet check करें."),
+    getDoc: (ref)=>withTimeout(ref.get(), 20000, "Firestore read timeout. Rules और Internet check करें."),
+    serverTimestamp: ()=>firebase.firestore.FieldValue.serverTimestamp(),
+    query: (base, ...ops)=>ops.reduce((q,op)=>op(q), base),
+    orderBy: (field, dir)=>q=>q.orderBy(field, dir),
+    limit: (n)=>q=>q.limit(n),
+    getDocs: (q)=>withTimeout(q.get(), 20000, "Firestore read timeout. Rules और Internet check करें.")
+  };
+  fbBundle = {db, user, fs};
+  return fbBundle;
+}
+function renderRankList(items){
+  const top = items.slice(0, LEADER_TOP);
+  if(!top.length){ el("leaderList").innerHTML = ""; el("leaderHint").textContent = "अभी इस test में कोई rank data नहीं है।"; return; }
+  el("leaderHint").textContent = `इसी test की live Top ${LEADER_TOP} list — पूरी rank list सर के dashboard से आएगी।`;
+  el("leaderList").innerHTML = top.map((x,i)=>`<li><span class="lr">${i+1}</span><div><b>${escapeHTML(x.name||"Student")}</b><br><small>${x.accuracy!=null?`Accuracy ${x.accuracy}%`:""} ${x.timeTaken!=null?`• Time ${formatTime(x.timeTaken)}`:""}</small></div><span class="score">${escapeHTML(x.score ?? 0)}</span></li>`).join("");
+}
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+async function saveAttemptAndLoadRank(result){
+  el("ownRank").textContent = "—"; el("leaderList").innerHTML = "";
+  if(TEST.publishDateStr && TEST.publishDateStr !== todayDateStr()){
+    el("rankStatus").textContent = "यह टेस्ट अपनी launch वाली तारीख़ (" + TEST.publishDateStr + ") को ही live rank के लिए active था। अब यह सिर्फ़ practice के तौर पर काम करेगा — आपके marks और result पूरी तरह सुरक्षित हैं।";
+    el("leaderHint").textContent = "पुराने दिन के टेस्ट में अब live rank नहीं दिखेगी — नए दिन के टेस्ट में rank ज़रूर दिखेगी।";
+    return;
+  }
+  if(!RANKING_ENABLED || !FIREBASE_CONFIG){
+    el("rankStatus").textContent = "इस टेस्ट में live rank चालू नहीं है — यह सिर्फ़ practice के लिए है। आपके marks और result पूरी तरह दिखेंगे।";
+    el("leaderHint").textContent = "live rank चालू होने पर Top " + LEADER_TOP + " यहाँ अपने-आप दिखेगा।";
+    return;
+  }
+  el("rankStatus").textContent = "Rank निकाली जा रही है…";
+  el("leaderHint").textContent = "Leaderboard load हो रही है…";
+  try{
+    const testId = normalizeKey(result.testId || TEST.testId || "jaiho-test");
+    const nameKey = normalizeKey(result.name || "student");
+
+    const localDoneKey = "jaiho_done_" + testId + "_" + nameKey;
+    const localDone = storeGet(localDoneKey);
+    if(localDone && localDone.rankSort){
+      el("ownRank").textContent = "#" + (localDone.rank != null ? localDone.rank : "—");
+      el("rankStatus").textContent = "यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (" + numClean(localDone.score || 0) + " marks) से है: " + localDone.rank + " / " + localDone.total + ". (यह आपके phone में save है, extra internet/reads खर्च नहीं हुए।) Retake जितनी बार चाहें करें।";
+      renderRankList(Array.isArray(localDone.topList) ? localDone.topList : []);
+      return;
+    }
+
+    const {db,user,fs} = await withTimeout(getFirebase(), 20000, "Firebase connect timeout. Internet check करें.");
+    const submittedMs = Date.now();
+    const attemptId = "n-" + nameKey + "-" + user.uid;
+    const col = fs.collection(db,"tests",testId,"attempts");
+    const attemptRef = fs.doc(db,"tests",testId,"attempts",attemptId);
+
+    let firstData = null; let isRetake = false;
+    const snap = await fs.getDoc(attemptRef);
+    if(snap && snap.exists){ firstData = snap.data(); isRetake = true; }
+
+    if(!isRetake){
+      const rankSort = makeRankSort(result.score, result.timeTaken, submittedMs);
+      const payload = { ...result, testId, attemptId, uid: user.uid, studentKey: nameKey,
+        name: result.name || "Student", score: Number(result.score || 0),
+        timeTaken: Number(result.timeTaken || 0), accuracy: Number(result.accuracy || 0),
+        rankSort, submittedMs, submittedServerAt: fs.serverTimestamp() };
+      try{
+        await fs.setDoc(attemptRef, payload);
+        firstData = payload;
+      }catch(werr){
+        const again = await fs.getDoc(attemptRef);
+        if(again && again.exists){ firstData = again.data(); isRetake = true; }
+        else throw werr;
+      }
+      if(!isRetake){
+        await fs.setDoc(fs.doc(db,"tests",testId), {
+          testId,
+          title: result.testTitle || TEST.title || "Jai Ho Study Test",
+          shortTitle: TEST.shortTitle || "",
+          subtitle: TEST.subtitle || "UPPCS Prelims 2026 / RO-ARO",
+          totalQuestions: result.totalQuestions || QUESTIONS.length,
+          maxMarks: result.maxMarks || QUESTIONS.length*MARKS,
+          updatedAtMs: submittedMs,
+          updatedAt: fs.serverTimestamp(),
+          footerCredit: TEST.footerCredit || "© Jai Ho Study • Designed & Curated by Aditya Chauhan • aditya31chauhan@gmail.com"
+        }, {merge:true});
+      }
+    }
+
+    const myRankSort = String(firstData.rankSort || "");
+    let rank = null, total = null;
+    if(typeof col.count === "function"){
+      const belowSnap = await withTimeout(col.where("rankSort","<",myRankSort).count().get(), 20000, "Rank count timeout");
+      const totalSnap = await withTimeout(col.count().get(), 20000, "Total count timeout");
+      rank = Number(belowSnap.data().count) + 1;
+      total = Number(totalSnap.data().count);
+    } else {
+      const listSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(1000)));
+      const ids = listSnap.docs.map(d=>d.id);
+      const pos = ids.indexOf(attemptId);
+      rank = pos >= 0 ? pos + 1 : null;
+      total = listSnap.size >= 1000 ? "1000+" : listSnap.size;
+    }
+
+    const topSnap = await fs.getDocs(fs.query(col, fs.orderBy("rankSort","asc"), fs.limit(LEADER_TOP)));
+    const topListData = topSnap.docs.map(d=>d.data());
+    renderRankList(topListData);
+    try{ storeSet(localDoneKey, { rankSort: myRankSort, rank: rank, total: total, score: (firstData && firstData.score != null ? firstData.score : 0), topList: topListData, ts: Date.now() }); }catch(e){}
+
+    if(rank != null){
+      el("ownRank").textContent = "#" + rank;
+      if(isRetake){
+        el("rankStatus").textContent = `यह Retake practice था — rank में नहीं गिना गया। आपकी असली rank पहले प्रयास (${numClean(firstData.score || 0)} marks) से है: ${rank} / ${total}. Retake जितनी बार चाहें करें।`;
+      } else {
+        el("rankStatus").textContent = `आपकी rank इस test में ${rank} / ${total} है (पहला प्रयास)। Tie में ज़्यादा marks, कम time, फिर पहले submit ऊपर रहता है।`;
+      }
+    } else {
+      el("ownRank").textContent = "—";
+      el("rankStatus").textContent = "Rank data sync में थोड़ी देर लग रही है — कुछ देर बाद Retake के submit पर फिर दिखेगी।";
+    }
+  }catch(err){
+    console.error(err);
+    const errText = String(err && err.message ? err.message : err || "");
+    const errCode = String(err && err.code ? err.code : "");
+    const isQuotaIssue = errCode.indexOf("resource-exhausted") !== -1 || /quota|resource.exhausted|exceeded|429/i.test(errText);
+    el("ownRank").textContent = "—";
+    if(isQuotaIssue){
+      el("rankStatus").textContent = "आज रैंक लिस्ट अभी बहुत व्यस्त चल रही है — आपके marks और result पूरी तरह सुरक्षित हैं। Rank कुछ देर बाद या कल अपने आप दिखने लगेगी।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर Top 20 list फिर दिख जाएगी।";
+    } else {
+      el("rankStatus").textContent = "अभी rank list नहीं आ पाई — कोई चिंता की बात नहीं, आपके marks और result पूरी तरह सुरक्षित हैं।";
+      el("leaderHint").textContent = "थोड़ी देर बाद Retake करके submit करने पर rank दिख जाएगी।";
+    }
+  }
+}
+window.addEventListener("beforeunload", (e)=>{ if(testActive){ e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("DOMContentLoaded", ()=>{ try{ initHome(); }catch(e){ console.error(e); } try{ tryResume(); }catch(e){ console.error(e); } });
+</script>
+</body>
+</html>
