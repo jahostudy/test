@@ -173,6 +173,19 @@ footer{max-width:980px;margin:0 auto;padding:10px 16px 40px;color:var(--muted);f
     <label class="f" for="checkTest">कौन-सा टेस्ट? (उत्तर कुंजी)</label>
     <select id="checkTest"></select>
     <div id="checkTestInfo" class="note" style="margin-top:6px"></div>
+    <div id="quickKey" class="msg info hidden" style="margin-top:12px">
+      <b style="font-size:16px">पहला कदम: सही उत्तर (उत्तर कुंजी) डालें</b>
+      <div style="margin-top:4px">अंक तभी बनेंगे जब ऐप को सही उत्तर पता हों। नीचे सही उत्तर क्रम से लिखें या चिपकाएँ, जैसे <b>CACCBDCDAB…</b> (प्रश्न 1 से आगे)।</div>
+      <textarea id="qkText" placeholder="CACCBDCDABABADACCBDB…" style="margin-top:8px"></textarea>
+      <div class="chips" id="qkPresets">
+        <button class="chip on" data-p="2,0.66">+2 / −0.66 (GS)</button>
+        <button class="chip" data-p="2.5,0.83">+2.5 / −0.83 (CSAT)</button>
+        <button class="chip" data-p="1,0.33">+1 / −⅓</button>
+        <button class="chip" data-p="1,0">बिना कटौती</button>
+      </div>
+      <div class="btns"><button class="btn primary" id="qkSave">✅ उत्तर कुंजी सहेजें</button></div>
+      <div id="qkMsg"></div>
+    </div>
     <div class="row" style="margin-top:12px">
       <button class="btn primary big" id="camBtn">📷 कैमरा से फ़ोटो</button>
       <button class="btn big" id="galBtn">🖼️ गैलरी से</button>
@@ -185,6 +198,7 @@ footer{max-width:980px;margin:0 auto;padding:10px 16px 40px;color:var(--muted);f
       <div class="progress"><div id="procBar"></div></div>
     </div>
   </div>
+  <div id="summaryBox"></div>
   <div id="results"></div>
 </section>
 
@@ -246,7 +260,7 @@ footer{max-width:980px;margin:0 auto;padding:10px 16px 40px;color:var(--muted);f
     <select id="listTest"></select>
     <div class="btns">
       <button class="btn small" id="csvBtn">⬇️ Excel (CSV) डाउनलोड</button>
-      <button class="btn small" id="printListBtn">🖨️ प्रिंट</button>
+      <button class="btn small" id="copyListBtn">📋 सूची कॉपी करें (Excel/WhatsApp)</button>
       <button class="btn small danger" id="clearListBtn">🗑️ इस टेस्ट के सब परिणाम हटाएँ</button>
     </div>
     <div id="listSummary" class="note" style="margin-top:10px"></div>
@@ -299,6 +313,18 @@ footer{max-width:980px;margin:0 auto;padding:10px 16px 40px;color:var(--muted);f
 </main>
 
 <footer>OMR जाँचक · यह शीट-प्रारूप: THE STUDY IAS (100 प्रश्न, A–D) · पूरी तरह ऑफ़लाइन भी चलता है</footer>
+
+<!-- message modal -->
+<div class="modal" id="msgModal">
+  <div class="sheet">
+    <div id="msgText" style="font-size:16px;white-space:pre-wrap"></div>
+    <textarea id="msgCopy" class="hidden" readonly style="margin-top:10px;min-height:120px"></textarea>
+    <div class="btns" style="justify-content:flex-end">
+      <button class="btn small" id="msgNo">रद्द</button>
+      <button class="btn primary" id="msgYes">ठीक है</button>
+    </div>
+  </div>
+</div>
 
 <!-- edit modal -->
 <div class="modal" id="editModal">
@@ -1006,7 +1032,21 @@ let RESULTS=store.get('omr_results',[]);
 function saveTests(){store.set('omr_tests',TESTS);}
 function saveResults(){store.set('omr_results',RESULTS);}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
-function toastErr(m){alert(m);}
+function uiMsg(text,opts){opts=opts||{};return new Promise(res=>{
+  $('#msgText').textContent=text;const ta=$('#msgCopy');
+  if(opts.copy!=null){ta.value=opts.copy;ta.classList.remove('hidden');setTimeout(()=>{try{ta.focus();ta.select();}catch(e){}},50);}else ta.classList.add('hidden');
+  $('#msgNo').classList.toggle('hidden',!opts.confirm);$('#msgYes').textContent=opts.confirm?(opts.yes||'हाँ'):'ठीक है';
+  const m=$('#msgModal');m.classList.add('on');
+  const done=v=>{m.classList.remove('on');$('#msgYes').onclick=null;$('#msgNo').onclick=null;res(v);};
+  $('#msgYes').onclick=()=>done(true);$('#msgNo').onclick=()=>done(false);});}
+const uiAlert=m=>uiMsg(m);
+const uiConfirm=(m,yes)=>uiMsg(m,{confirm:true,yes});
+function copyText(text,okMsg){
+  const fallback=()=>uiMsg('नीचे का लिखा अपने-आप चुना गया है — इसे कॉपी कर लें:',{copy:text});
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>uiAlert(okMsg),fallback);return;}}catch(e){}
+  fallback();
+}
+function toastErr(m){uiAlert(m);}
 
 /* ---------------- DOM सहायक ---------------- */
 const $=s=>document.querySelector(s);
@@ -1035,10 +1075,20 @@ function fillTestSelects(){
   if(last&&!$('#checkTest').dataset.touched&&TESTS.some(t=>t.id===last))$('#checkTest').value=last;
   updateCheckInfo();
 }
-function updateCheckInfo(){const t=TESTS.find(x=>x.id===$('#checkTest').value);const info=$('#checkTestInfo');
+function updateCheckInfo(){setTimeout(renderSummary,0);const t=TESTS.find(x=>x.id===$('#checkTest').value);const info=$('#checkTestInfo');$('#quickKey').classList.toggle('hidden',!!t);
   if(!t){info.innerHTML=TESTS.length?'कुंजी न चुनने पर केवल उत्तर, नाम, रोल पढ़े जाएँगे; अंक नहीं बनेंगे।':'अभी कोई उत्तर कुंजी नहीं है। अंक पाने के लिए पहले “② उत्तर कुंजी” में टेस्ट बनाएँ — या बिना कुंजी सिर्फ़ शीट पढ़ें।';return;}
   const filled=t.key.slice(0,t.n).filter(Boolean).length;
   info.innerHTML='प्रश्न: <b>'+t.n+'</b> · सही: <b>+'+fmt(t.plus)+'</b> · ग़लत: <b>−'+fmt(t.minus)+'</b> · कुंजी भरी: <b>'+filled+'/'+t.n+'</b>'+(filled<t.n?' <span style="color:var(--warn)">(अधूरी कुंजी — ख़ाली कुंजी वाले प्रश्न गिने नहीं जाएँगे)</span>':'');}
+let qkPlus=2,qkMinus=0.66;
+document.querySelectorAll('#qkPresets .chip').forEach(c=>c.addEventListener('click',()=>{const [a,b]=c.dataset.p.split(',');qkPlus=+a;qkMinus=+b;document.querySelectorAll('#qkPresets .chip').forEach(x=>x.classList.toggle('on',x===c));}));
+$('#qkSave').addEventListener('click',()=>{
+  const {key,errs}=parseKey($('#qkText').value);let last=0;key.forEach((v,i)=>{if(v)last=i+1;});
+  if(!last){$('#qkMsg').innerHTML='<div class="msg err">उत्तर समझ नहीं आए। A, B, C, D क्रम से लिखें — जैसे CACCBD…</div>';return;}
+  const d=new Date();const obj={id:uid(),name:'टेस्ट '+d.getDate()+'/'+(d.getMonth()+1),n:last,plus:qkPlus,minus:qkMinus,multiWrong:true,key:key.slice(0,100),created:Date.now(),updated:Date.now()};
+  TESTS.push(obj);saveTests();fillTestSelects();$('#checkTest').value=obj.id;$('#checkTest').dataset.touched='1';try{localStorage.setItem('omr_lasttest',obj.id);}catch(e){}
+  updateCheckInfo();$('#qkText').value='';$('#qkMsg').innerHTML='';
+  uiAlert('उत्तर कुंजी सहेज ली ('+last+' प्रश्न, सही +'+fmt(qkPlus)+', ग़लत −'+fmt(qkMinus)+')।\nअब “कैमरा से फ़ोटो” या “गैलरी से” दबाकर छात्रों की OMR डालें — हर छात्र के अंक तुरंत दिखेंगे।'+(errs.length?'\n('+errs.join('; ')+')':''));
+});
 $('#checkTest').addEventListener('change',()=>{$('#checkTest').dataset.touched='1';try{localStorage.setItem('omr_lasttest',$('#checkTest').value);}catch(e){}updateCheckInfo();});
 
 function renderKeyGrid(){
@@ -1076,7 +1126,7 @@ $('#parseBtn').addEventListener('click',()=>{const {key,errs}=parseKey($('#keyTe
   editing.key=key;renderKeyGrid();$('#keyMsg').innerHTML='<div class="msg ok">'+cnt+' उत्तर भरे गए।'+(errs.length?' ('+esc(errs.join('; '))+')':'')+' नीचे ग्रिड में जाँच लें।</div>';});
 document.querySelectorAll('#presets .chip').forEach(c=>c.addEventListener('click',()=>{const [n,p,m]=c.dataset.p.split(',');$('#tN').value=n;$('#tPlus').value=p;$('#tMinus').value=m;document.querySelectorAll('#presets .chip').forEach(x=>x.classList.toggle('on',x===c));renderKeyGrid();}));
 $('#tN').addEventListener('input',renderKeyGrid);
-$('#clearKeyBtn').addEventListener('click',()=>{if(!confirm('सारे उत्तर साफ़ करें?'))return;editing.key=new Array(100).fill('');renderKeyGrid();syncKeyText();});
+$('#clearKeyBtn').addEventListener('click',async()=>{if(!await uiConfirm('सारे उत्तर साफ़ करें?','साफ़ करें'))return;editing.key=new Array(100).fill('');renderKeyGrid();syncKeyText();});
 function loadTestToForm(id){
   const t=TESTS.find(x=>x.id===id);
   if(!t){editing={id:null,key:new Array(100).fill('')};$('#formTitle').textContent='नया टेस्ट';$('#tName').value='';$('#tN').value=100;$('#tPlus').value=2;$('#tMinus').value=0.66;$('#tMulti').checked=true;$('#keyText').value='';}
@@ -1085,9 +1135,9 @@ function loadTestToForm(id){
 }
 $('#keySel').addEventListener('change',()=>loadTestToForm($('#keySel').value));
 $('#newTestBtn').addEventListener('click',()=>{$('#keySel').value='';loadTestToForm('');$('#tName').focus();});
-$('#delTestBtn').addEventListener('click',()=>{const id=$('#keySel').value;if(!id){alert('पहले ऊपर से कोई सहेजा टेस्ट चुनें।');return;}
+$('#delTestBtn').addEventListener('click',async()=>{const id=$('#keySel').value;if(!id){uiAlert('पहले ऊपर से कोई सहेजा टेस्ट चुनें।');return;}
   const t=TESTS.find(x=>x.id===id);const nres=RESULTS.filter(r=>r.testId===id).length;
-  if(!confirm('“'+t.name+'” हटाएँ?'+(nres?' इसके '+nres+' परिणाम भी हट जाएँगे।':'')))return;
+  if(!await uiConfirm('“'+t.name+'” हटाएँ?'+(nres?' इसके '+nres+' परिणाम भी हट जाएँगे।':''),'हटाएँ'))return;
   TESTS=TESTS.filter(x=>x.id!==id);RESULTS=RESULTS.filter(r=>r.testId!==id);saveTests();saveResults();loadTestToForm('');fillTestSelects();});
 $('#saveTestBtn').addEventListener('click',()=>{
   const name=$('#tName').value.trim();const n=parseInt($('#tN').value);const plus=parseFloat($('#tPlus').value);const minus=parseFloat($('#tMinus').value);
@@ -1157,7 +1207,7 @@ function addResult(res,fname,replaceId){
   recalcStored(rec,test);
   if(test){const i=RESULTS.findIndex(r=>r.id===rec.id);if(i>=0)RESULTS[i]=rec;else RESULTS.push(rec);saveResults();}
   SESSION[rec.id]={res,test};
-  renderResultCard(rec,replaceId);
+  renderResultCard(rec,replaceId);renderSummary();
 }
 function finalAnswers(rec){return rec.det.map((a,q)=>{const o=rec.ov&&rec.ov[q];if(o!==undefined)return {sel:o,st:o?'ok':'blank',ov:true,f:a.f};return a;});}
 function recalcStored(rec,test){const fa=finalAnswers(rec);const ev=evaluate(fa,test);rec.score=ev.score;rec.correct=ev.correct;rec.wrong=ev.wrong;rec.blank=ev.blank;rec.multi=ev.multi;rec.max=ev.max;rec.per=ev.per;rec.attempted=ev.attempted;rec.dropped=ev.dropped;
@@ -1236,20 +1286,27 @@ function renderResultCard(rec,replaceId){
   }
   const b=el('div',{class:'btns'});
   b.append(el('button',{class:'btn small',onclick:()=>copySummary(rec)},'📋 परिणाम कॉपी करें'));
-  b.append(el('button',{class:'btn small',onclick:()=>printCard(card)},'🖨️ प्रिंट'));
   if(ses&&ses.res)b.append(el('button',{class:'btn small',onclick:()=>openManual(ses.res.canvas,rec.file,rec.id,card)},'✋ हाथ से 4 कोने चुनें'));
-  b.append(el('button',{class:'btn small danger',onclick:()=>{if(!confirm('यह परिणाम हटाएँ?'))return;RESULTS=RESULTS.filter(r=>r.id!==rec.id);saveResults();card.remove();}},'🗑️ हटाएँ'));
+  b.append(el('button',{class:'btn small danger',onclick:async()=>{if(!await uiConfirm('यह परिणाम हटाएँ?','हटाएँ'))return;RESULTS=RESULTS.filter(r=>r.id!==rec.id);saveResults();card.remove();renderSummary();}},'🗑️ हटाएँ'));
   card.append(b);
   if(test)card.append(el('div',{class:'note',style:'margin-top:6px'},'✔ यह परिणाम “③ परिणाम सूची” में सहेज दिया गया है।'));
   const old=document.getElementById('rc-'+rec.id);
   if(old)old.replaceWith(card);else $('#results').prepend(card);
 }
+function renderSummary(){
+  const box=$('#summaryBox');const t=currentTest();if(!t){box.innerHTML='';return;}
+  const rows=RESULTS.filter(r=>r.testId===t.id).sort((a,b)=>b.score-a.score||b.correct-a.correct);
+  if(!rows.length){box.innerHTML='';return;}
+  let rank=0,prev=null;const tr=rows.map((r,i)=>{if(r.score!==prev){rank=i+1;prev=r.score;}
+    return '<tr class="click" data-id="'+r.id+'"><td>'+rank+'</td><td><b>'+esc(r.name||'(नाम नहीं)')+'</b>'+(r.roll?'<br><span class="muted" style="font-size:12px">रोल '+esc(r.roll)+'</span>':'')+'</td><td class="num"><b style="font-size:17px;color:var(--brand)">'+fmt(r.score)+'</b><span class="muted" style="font-size:12px"> / '+fmt(r.max)+'</span></td><td class="num">'+r.correct+' / '+r.wrong+' / '+r.blank+'</td></tr>';}).join('');
+  box.innerHTML='<div class="card"><h2>किसके कितने अंक — '+esc(t.name)+'</h2><div class="tablewrap"><table class="rank"><tr><th>रैंक</th><th>नाम</th><th class="num">अंक</th><th class="num">सही / ग़लत / छोड़े</th></tr>'+tr+'</table></div><div class="note" style="margin-top:6px">किसी नाम पर टैप करें तो उसकी पूरी शीट दिखेगी।</div></div>';
+  box.querySelectorAll('tr[data-id]').forEach(el2=>el2.addEventListener('click',()=>{const r=RESULTS.find(x=>x.id===el2.dataset.id);if(!r)return;renderResultCard(r);const c=document.getElementById('rc-'+r.id);if(c)c.scrollIntoView({behavior:'smooth'});}));
+}
 function copySummary(rec){
   const test=TESTS.find(t=>t.id===rec.testId);
   let s='नाम: '+(rec.name||'—')+'\nरोल: '+(rec.roll||'—')+'\nमोबाइल: '+(rec.mobile||'—');
   if(test)s+='\nटेस्ट: '+test.name+'\nअंक: '+fmt(rec.score)+' / '+fmt(rec.max)+'\nसही: '+rec.correct+', ग़लत: '+rec.wrong+', छोड़े: '+rec.blank;
-  const ok=()=>alert('परिणाम कॉपी हो गया — अब WhatsApp आदि में पेस्ट करें।');
-  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(s).then(ok,()=>prompt('इसे कॉपी करें:',s));else prompt('इसे कॉपी करें:',s);
+  copyText(s,'परिणाम कॉपी हो गया — अब WhatsApp आदि में पेस्ट करें।');
 }
 function printCard(card){const sec=$('#tab-check');const others=[...$('#results').children].filter(c=>c!==card);others.forEach(c=>c.classList.add('noprint'));const first=sec.querySelector('.card');first.classList.add('noprint');sec.classList.add('printing');
   const det=card.querySelector('details');const was=det?det.open:false;if(det&&!was){det.open=true;}
@@ -1269,7 +1326,7 @@ $('#editPick').querySelectorAll('button').forEach(b=>b.addEventListener('click',
 $('#editReset').addEventListener('click',()=>{if(!editCtx)return;const {rec,q}=editCtx;if(rec.ov)delete rec.ov[q];afterEdit(rec);});
 $('#editClose').addEventListener('click',()=>{$('#editModal').classList.remove('on');editCtx=null;});
 $('#editModal').addEventListener('click',e=>{if(e.target.id==='editModal'){$('#editModal').classList.remove('on');editCtx=null;}});
-function afterEdit(rec){const test=TESTS.find(t=>t.id===rec.testId)||null;recalcStored(rec,test);if(test){const i=RESULTS.findIndex(r=>r.id===rec.id);if(i>=0){RESULTS[i]=rec;saveResults();}}
+function afterEdit(rec){setTimeout(renderSummary,0);const test=TESTS.find(t=>t.id===rec.testId)||null;recalcStored(rec,test);if(test){const i=RESULTS.findIndex(r=>r.id===rec.id);if(i>=0){RESULTS[i]=rec;saveResults();}}
   $('#editModal').classList.remove('on');editCtx=null;
   if(document.getElementById('rc-'+rec.id))renderResultCard(rec);
   if($('#tab-list').classList.contains('on'))renderList();}
@@ -1295,10 +1352,10 @@ $('#manGo').addEventListener('click',()=>{
   const m=man;$('#manModal').classList.remove('on');man=null;
   setTimeout(()=>{
     try{const res=analyzeCanvas(m.canvas,H);
-      if(!res.ok){alert(res.error);return;}
+      if(!res.ok){uiAlert(res.error);return;}
       if(m.card&&!m.replaceId)m.card.remove();
       addResult(res,m.fname,m.replaceId||null);
-    }catch(err){console.error(err);alert('जाँच नहीं हो सकी। कोने दोबारा ध्यान से चुनें।');}
+    }catch(err){console.error(err);uiAlert('जाँच नहीं हो सकी। कोने दोबारा ध्यान से चुनें।');}
   },30);
 });
 
@@ -1330,13 +1387,20 @@ function fillTestSelectsListOnly(){const sel=$('#listTest');const cur=sel.value;
   let last=null;try{last=localStorage.getItem('omr_lasttest');}catch(e){}
   if(cur&&TESTS.some(t=>t.id===cur))sel.value=cur;else if(last&&TESTS.some(t=>t.id===last))sel.value=last;}
 $('#listTest').addEventListener('change',renderList);
-$('#clearListBtn').addEventListener('click',()=>{const id=$('#listTest').value;if(!id)return;const n=RESULTS.filter(r=>r.testId===id).length;if(!n)return;if(!confirm('इस टेस्ट के सभी '+n+' परिणाम हटाएँ? (पहले CSV डाउनलोड कर लें)'))return;RESULTS=RESULTS.filter(r=>r.testId!==id);saveResults();renderList();});
-$('#printListBtn').addEventListener('click',()=>{const s=$('#tab-list');s.classList.add('printing');setTimeout(()=>{window.print();s.classList.remove('printing');},100);});
+$('#copyListBtn').addEventListener('click',()=>{
+  const id=$('#listTest').value;const test=TESTS.find(t=>t.id===id);if(!test){uiAlert('पहले टेस्ट चुनें।');return;}
+  const rows=RESULTS.filter(r=>r.testId===id).sort((a,b)=>b.score-a.score||b.correct-a.correct);
+  if(!rows.length){uiAlert('इस टेस्ट का कोई परिणाम नहीं है।');return;}
+  const lines=[['रैंक','नाम','रोल','मोबाइल','अंक','सही','ग़लत','छोड़े'].join('\t')];let rank=0,prev=null;
+  rows.forEach((r,i)=>{if(r.score!==prev){rank=i+1;prev=r.score;}lines.push([rank,r.name||'',r.roll||'',r.mobile||'',fmt(r.score),r.correct,r.wrong,r.blank].join('\t'));});
+  copyText(test.name+'\n'+lines.join('\n'),'सूची कॉपी हो गई — Excel या WhatsApp में पेस्ट करें।');
+});
+$('#clearListBtn').addEventListener('click',async()=>{const id=$('#listTest').value;if(!id)return;const n=RESULTS.filter(r=>r.testId===id).length;if(!n)return;if(!await uiConfirm('इस टेस्ट के सभी '+n+' परिणाम हटाएँ? (पहले CSV डाउनलोड कर लें)','हटाएँ'))return;RESULTS=RESULTS.filter(r=>r.testId!==id);saveResults();renderList();});
 function download(name,text,type){const blob=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
 $('#csvBtn').addEventListener('click',()=>{
-  const id=$('#listTest').value;const test=TESTS.find(t=>t.id===id);if(!test){alert('पहले टेस्ट चुनें।');return;}
+  const id=$('#listTest').value;const test=TESTS.find(t=>t.id===id);if(!test){uiAlert('पहले टेस्ट चुनें।');return;}
   const rows=RESULTS.filter(r=>r.testId===id).sort((a,b)=>b.score-a.score||b.correct-a.correct);
-  if(!rows.length){alert('इस टेस्ट का कोई परिणाम नहीं है।');return;}
+  if(!rows.length){uiAlert('इस टेस्ट का कोई परिणाम नहीं है।');return;}
   const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
   const head=['रैंक','नाम','रोल नंबर','मोबाइल','श्रृंखला','अंक','कुल अंक','सही','ग़लत','छोड़े','एकाधिक','चेतावनी'];for(let i=1;i<=test.n;i++)head.push('Q'+i);
   const lines=[head.map(q).join(',')];let rank=0,prev=null;
